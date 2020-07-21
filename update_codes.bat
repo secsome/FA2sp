@@ -2,8 +2,6 @@ git init
 git remote add origin https://github.com/secsome/FA2sp.git
 git fetch
 git checkout master
-mkdir lib
-cd lib
 mkdir MFC42
 cd MFC42
 git init
