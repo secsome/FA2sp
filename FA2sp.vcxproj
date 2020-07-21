@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{3bbea2d2-97da-4b96-9516-36a6c8d3b4a3}</ProjectGuid>
+    <RootNamespace>FA2sp</RootNamespace>
+    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141_xp</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141_xp</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>MFC42\include;FA2pp;$(IncludePath)</IncludePath>
+    <LibraryPath>MFC42\lib;$(LibraryPath)</LibraryPath>
+    <LibraryWPath>$(WindowsSDK_MetadataPath);</LibraryWPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>MFC42\include;FA2pp;$(IncludePath)</IncludePath>
+    <LibraryPath>MFC42\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <ExceptionHandling>false</ExceptionHandling>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4065;4530;4731</DisableSpecificWarnings>
+      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <OptimizeReferences>false</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <ExceptionHandling>false</ExceptionHandling>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4065;4530;4731</DisableSpecificWarnings>
+      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>false</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="FA2sp\Utils\Misc\Hooks.BugFixes.cpp" />
+    <ClCompile Include="FA2sp\Ext\FA2Expand.cpp" />
+    <ClCompile Include="FA2sp\Ext\CAITriggerTypesEnable\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CAITriggerTypes\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CBasic\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CCellTag\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CChangeMapSize\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CCreateMap1\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CCreateMap2\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CCreateMap3A\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CCreateMap3B\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CCreateMap4\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CCredits\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CDialog289\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CEasterEgg\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CHouses\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CINIEditorImport\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CINIEditor\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CLighting\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CLoadingGraphics\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CLoading\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CLocal\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CMapD\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CMapScripts\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CMinimap\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CMMX\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CNewHouse\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\COptions\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CPropertyAircraft\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CPropertyBuilding\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CPropertyInfantry\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CPropertyUnit\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CRandomTree\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CSaveOption\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CScriptTypes\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CSearchWaypoint\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CSingleplayerSettings\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CSpecialFlags\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CTags\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CTaskforce\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CTaskforce\Hooks.cpp" />
+    <ClCompile Include="FA2sp\Ext\CTeamTypes\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CTileSetBrowserFrame\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CTileSetBrowserView\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CTriggerEvent\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CTriggerFrame\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CTriggerOption\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CUpdateProgress\Body.cpp" />
+    <ClCompile Include="FA2sp\FA2sp.cpp" />
+    <ClCompile Include="FA2sp\UI\Hooks.cpp" />
+    <ClCompile Include="FA2sp\Utils\GlobalVars.cpp" />
+    <ClCompile Include="FA2sp\Logger.cpp" />
+    <ClCompile Include="FA2sp\RunTime.cpp" />
+    <ClCompile Include="FA2sp\Utils\Misc\Hooks.Mix.cpp" />
+    <ClCompile Include="FA2sp\Utils\Misc\Hooks.RGBColors.cpp" />
+    <ClCompile Include="FA2sp\Utils\Replacement.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FA2sp\Ext\FA2Expand.h" />
+    <ClInclude Include="FA2sp\Ext\CAITriggerTypesEnable\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CAITriggerTypes\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CBasic\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CCellTag\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CChangeMapSize\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CCreateMap1\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CCreateMap2\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CCreateMap3A\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CCreateMap3B\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CCreateMap4\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CCredits\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CDialog289\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CEasterEgg\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CHouses\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CINIEditorImport\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CINIEditor\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CLighting\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CLoadingGraphics\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CLoading\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CLocal\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CMapD\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CMapScripts\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CMinimap\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CMMX\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CNewHouse\Body.h" />
+    <ClInclude Include="FA2sp\Ext\COptions\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CPropertyAircraft\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CPropertyBuilding\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CPropertyInfantry\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CPropertyUnit\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CRandomTree\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CSaveOption\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CScriptTypes\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CSearchWaypoint\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CSingleplayerSettings\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CSpecialFlags\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CTags\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CTaskforce\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CTeamTypes\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CTileSetBrowserFrame\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CTileSetBrowserView\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CTriggerEvent\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CTriggerFrame\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CTriggerOption\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CUpdateProgress\Body.h" />
+    <ClInclude Include="FA2sp\FA2sp.h" />
+    <ClInclude Include="FA2sp\Utils\GlobalVars.h" />
+    <ClInclude Include="FA2sp\Logger.h" />
+    <ClInclude Include="FA2sp\RunTime.h" />
+    <ClInclude Include="FA2sp\Utils\Replacement.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
