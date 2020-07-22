@@ -270,6 +270,9 @@
     <ClInclude Include="FA2sp\RunTime.h" />
     <ClInclude Include="FA2sp\Utils\Replacement.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="FA2sp\FA2sp.rc" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

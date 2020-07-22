@@ -5,6 +5,24 @@
 
 #include <Helpers/Macro.h>
 
+
+// Load our own accelerators
+// Still TODO
+DEFINE_HOOK(41FB05, LoadAccelerators_sub_41FAD0, 6)
+{
+	/*
+	const HINSTANCE hInstance = static_cast<HINSTANCE>(FA2sp::hInstance);
+	const LPCSTR lpTableName = MAKEINTRESOURCE(129);
+	if (HACCEL hAccel = LoadAccelerators(hInstance, lpTableName))
+	{
+		R->EAX(hAccel);
+		return 0x41FB0B;
+	}
+	*/
+	return 0;
+}
+
+
 // Replace the resources
 
 DEFINE_HOOK(56543B, FetchResource_CToolBar_LoadBitmapA, 6)
