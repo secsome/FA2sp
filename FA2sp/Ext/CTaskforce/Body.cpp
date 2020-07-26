@@ -6,30 +6,21 @@ void CTaskForceExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
 	auto constexpr taskforceCBMemberTypeMsg = CBN_KILLFOCUS;
-	auto taskforcePreTranslateAddr = &CTaskForceExt::PreTranslateMessageHook;
+	auto PreTranslateAddr = &CTaskForceExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x596B50 + sizeof(taskforceCBMemberTypeMsg), &taskforceCBMemberTypeMsg, sizeof(taskforceCBMemberTypeMsg));
-	RunTime::ResetMemoryContentAt(0x596C88, &taskforcePreTranslateAddr, sizeof(taskforcePreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x596C88, &PreTranslateAddr, sizeof(PreTranslateAddr));
+
 }
 
-BOOL CTaskForceExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CTaskForceExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 	case WM_KEYDOWN: {
-		switch (pMsg->wParam)
-		{
-		case   VK_RETURN:
-		{
-			//do not exit dialog when enter key pressed
-
-			/*
-			auto pEdit = this->CCBMemberType.GetWindow(GW_CHILD);
-			if (pMsg->hwnd == pEdit->m_hWnd) {
-				this->OnMemberEditChanged();
-			}
-			*/
+		switch (pMsg->wParam) {
+		case VK_RETURN: {
+			return TRUE; // Hey, we've processed it, don't exit!
 		}
-		return TRUE;
 		default:
 			break;
 		}
@@ -42,11 +33,12 @@ BOOL CTaskForceExt::PreTranslateMessageHook(MSG* pMsg)
 		}
 		break;
 	}
+
+	default:
+		break;
 	}
 	return this->FA2CDialog::PreTranslateMessage(pMsg);
 }
-
-
 
 #if 0
 bool IsMemberTypeSelectedFromBox = false;

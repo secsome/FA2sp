@@ -5,12 +5,12 @@ COptions* COptionsExt::Instance = nullptr;
 void COptionsExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &COptionsExt::PreTranslateMessageHook;
+	auto PreTranslateAddr = &COptionsExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x5984E0, &PreTranslateAddr, sizeof(PreTranslateAddr));
 }
 
-BOOL COptionsExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL COptionsExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

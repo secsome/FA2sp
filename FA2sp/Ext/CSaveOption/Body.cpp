@@ -5,12 +5,12 @@ CSaveOption* CSaveOptionExt::Instance = nullptr;
 void CSaveOptionExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CSaveOptionExt::PreTranslateMessageHook;
+	auto PreTranslateAddr = &CSaveOptionExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x595E30, &PreTranslateAddr, sizeof(PreTranslateAddr));
 }
 
-BOOL CSaveOptionExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CSaveOptionExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

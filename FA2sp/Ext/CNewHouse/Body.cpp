@@ -5,12 +5,12 @@ CNewHouse* CNewHouseExt::Instance = nullptr;
 void CNewHouseExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CNewHouseExt::PreTranslateMessageHook;
+	auto PreTranslateAddr = &CNewHouseExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x595950, &PreTranslateAddr, sizeof(PreTranslateAddr));
 }
 
-BOOL CNewHouseExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CNewHouseExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

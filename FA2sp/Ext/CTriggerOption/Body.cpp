@@ -5,12 +5,12 @@ CTriggerOption* CTriggerOptionExt::Instance = nullptr;
 void CTriggerOptionExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CTriggerOptionExt::PreTranslateMessageHook;
+	auto PreTranslateAddr = &CTriggerOptionExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x597EF8, &PreTranslateAddr, sizeof(PreTranslateAddr));
 }
 
-BOOL CTriggerOptionExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CTriggerOptionExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

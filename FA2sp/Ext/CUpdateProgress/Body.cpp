@@ -5,12 +5,12 @@ CUpdateProgress* CUpdateProgressExt::Instance = nullptr;
 void CUpdateProgressExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CUpdateProgressExt::PreTranslateMessageHook;
+	auto PreTranslateAddr = &CUpdateProgressExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x595A40, &PreTranslateAddr, sizeof(PreTranslateAddr));
 }
 
-BOOL CUpdateProgressExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CUpdateProgressExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

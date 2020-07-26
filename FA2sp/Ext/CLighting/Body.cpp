@@ -5,12 +5,12 @@ CLighting* CLightingExt::Instance = nullptr;
 void CLightingExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto lightingPreTranslateAddr = &CLightingExt::PreTranslateMessageHook;
+	auto lightingPreTranslateAddr = &CLightingExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x594788, &lightingPreTranslateAddr, sizeof(lightingPreTranslateAddr));
 }
 
-BOOL CLightingExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CLightingExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

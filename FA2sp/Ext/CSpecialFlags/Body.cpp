@@ -5,12 +5,12 @@ CSpecialFlags* CSpecialFlagsExt::Instance = nullptr;
 void CSpecialFlagsExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CSpecialFlagsExt::PreTranslateMessageHook;
+	auto PreTranslateAddr = &CSpecialFlagsExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x596898, &PreTranslateAddr, sizeof(PreTranslateAddr));
 }
 
-BOOL CSpecialFlagsExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CSpecialFlagsExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

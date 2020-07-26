@@ -1,4 +1,5 @@
 #include "FA2sp.h"
+#include "FA2sp.version.h"
 
 HANDLE FA2sp::hInstance;
 
@@ -19,10 +20,21 @@ BOOL APIENTRY DllMain(HANDLE hInstance, DWORD dwReason, LPVOID v)
 SYRINGE_HANDSHAKE(pInfo)
 {
 	if (pInfo) {
-		if (pInfo->Message) {
-			sprintf_s(pInfo->Message, pInfo->cchMessage, "Found FA2Copy Module");
+		/*if (pInfo->exeFilesize == 0x3EDB6BD4)
+		{
+			sprintf_s(pInfo->Message, pInfo->cchMessage, "Found Final Alert 2 version 1.02. Applying FA2sp 2020-07-22.");
+			return S_OK;
 		}
-		return S_OK;
+		else
+		{
+			sprintf_s(pInfo->Message, pInfo->cchMessage, "Requires Final Alert 2 version 1.02.");
+			return S_FALSE;
+		}*/
+		if (pInfo->Message)
+		{
+			sprintf_s(pInfo->Message, pInfo->cchMessage, "Found Final Alert 2 version 1.02. Applying FA2sp 2020-07-22.");
+			return S_OK;
+		}
 	}
 	return E_POINTER;
 }
@@ -30,12 +42,22 @@ SYRINGE_HANDSHAKE(pInfo)
 DEFINE_HOOK(537129, ExeRun, 9)
 {
 	Logger::Initialize();
-	Logger::Info("FA2Copy - Inline Version Applied. Version 0.1\n");
+	Logger::Info("Found Final Alert 2 version 1.02. Applying FA2sp 2020-07-22.\n");
 	Replacement::String();
+
+	/*
+	// Check ini file
+	Logger::Debug("Desert = %s Urban = %s UrbanNew = %s\n", 
+		reinterpret_cast<const char*>(0x5CE3E8),
+		reinterpret_cast<const char*>(0x5CE408),
+		reinterpret_cast<const char*>(0x5CE43C)
+	);
+	*/
+
 	FA2Expand::ExeRun();
 
 #ifdef _DEBUG
-	MessageBox(NULL, "Applying FA2Copy-IL DEBUG version\nSeveral functions might be unstable", "Debug Warning", MB_OK);
+	MessageBox(NULL, "Found Final Alert 2 version 1.02.\n Applying FA2sp DEBUGGING version.", VERSION_PREFIX VERSION_STR, MB_OK);
 
 #endif
 
@@ -44,7 +66,7 @@ DEFINE_HOOK(537129, ExeRun, 9)
 
 DEFINE_HOOK(537208, ExeTerminate, 9)
 {
-	Logger::Info("FA2Copy - Inline Version Terminating...\n");
+	Logger::Info("FA2sp Terminating...\n");
 	Logger::Close();
 	GET(UINT, result, EAX);
 	ExitProcess(result);

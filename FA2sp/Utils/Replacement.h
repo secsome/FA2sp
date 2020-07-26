@@ -2,7 +2,9 @@
 
 #include "../RunTime.h"
 
-#include <array>
+// Replacement also need to be noticed that you cannot overwrite
+// some important items, a too long string might cause problems
+// So just keep the original length of it is the best choice
 
 class Replacement {
 public:

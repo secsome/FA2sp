@@ -5,12 +5,12 @@ CCellTag* CCellTagExt::Instance = nullptr;
 void CCellTagExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto iniEditorPreTranslateAddr = &CCellTagExt::PreTranslateMessageHook;
+	auto iniEditorPreTranslateAddr = &CCellTagExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x592478, &iniEditorPreTranslateAddr, sizeof(iniEditorPreTranslateAddr));
 }
 
-BOOL CCellTagExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CCellTagExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

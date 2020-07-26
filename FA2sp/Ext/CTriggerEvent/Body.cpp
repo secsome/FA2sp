@@ -5,12 +5,12 @@ CTriggerEvent* CTriggerEventExt::Instance = nullptr;
 void CTriggerEventExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CTriggerEventExt::PreTranslateMessageHook;
+	auto PreTranslateAddr = &CTriggerEventExt::PreTranslateMessageExt;
 
-	RunTime::ResetMemoryContentAt(0x597D0C, &PreTranslateAddr, sizeof(PreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x597D18, &PreTranslateAddr, sizeof(PreTranslateAddr));
 }
 
-BOOL CTriggerEventExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CTriggerEventExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

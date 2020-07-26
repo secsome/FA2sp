@@ -5,12 +5,12 @@ CCreateMap4* CCreateMap4Ext::Instance = nullptr;
 void CCreateMap4Ext::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CCreateMap4Ext::PreTranslateMessageHook;
+	auto PreTranslateAddr = &CCreateMap4Ext::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x595770, &PreTranslateAddr, sizeof(PreTranslateAddr));
 }
 
-BOOL CCreateMap4Ext::PreTranslateMessageHook(MSG* pMsg)
+BOOL CCreateMap4Ext::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

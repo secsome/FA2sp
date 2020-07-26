@@ -11,7 +11,7 @@ public:
 	static CCreateMap3B* Instance;
 
 	//hook function to replace in virtual function map
-	BOOL PreTranslateMessageHook(MSG* pMsg);
+	BOOL PreTranslateMessageExt(MSG* pMsg);
 
 	static void ProgramStartupInit();
 

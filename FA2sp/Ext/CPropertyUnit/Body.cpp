@@ -5,12 +5,12 @@ CPropertyUnit* CPropertyUnitExt::Instance = nullptr;
 void CPropertyUnitExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CPropertyUnitExt::PreTranslateMessageHook;
+	auto PreTranslateAddr = &CPropertyUnitExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x5985D0, &PreTranslateAddr, sizeof(PreTranslateAddr));
 }
 
-BOOL CPropertyUnitExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CPropertyUnitExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

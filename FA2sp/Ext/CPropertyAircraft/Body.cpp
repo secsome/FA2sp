@@ -5,12 +5,12 @@ CPropertyAircraft* CPropertyAircraftExt::Instance = nullptr;
 void CPropertyAircraftExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto propertyAircraftPreTranslateAddr = &CPropertyAircraftExt::PreTranslateMessageHook;
+	auto propertyAircraftPreTranslateAddr = &CPropertyAircraftExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x591698, &propertyAircraftPreTranslateAddr, sizeof(propertyAircraftPreTranslateAddr));
 }
 
-BOOL CPropertyAircraftExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CPropertyAircraftExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

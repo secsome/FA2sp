@@ -5,12 +5,12 @@ CRandomTree* CRandomTreeExt::Instance = nullptr;
 void CRandomTreeExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CRandomTreeExt::PreTranslateMessageHook;
+	auto PreTranslateAddr = &CRandomTreeExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x595D40, &PreTranslateAddr, sizeof(PreTranslateAddr));
 }
 
-BOOL CRandomTreeExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CRandomTreeExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

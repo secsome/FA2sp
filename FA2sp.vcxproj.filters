@@ -168,6 +168,9 @@
     <ClInclude Include="FA2sp\Utils\Replacement.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2sp\FA2sp.version.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\Utils\GlobalVars.cpp">
@@ -320,9 +323,6 @@
     <ClCompile Include="FA2sp\UI\Hooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Ext\FA2Expand.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="FA2sp\RunTime.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -338,9 +338,15 @@
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.Mix.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FA2sp\Ext\FA2Expand.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FA2sp\FA2sp.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="FA2sp\UI\Dialog177.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>

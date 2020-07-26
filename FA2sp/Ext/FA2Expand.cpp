@@ -51,13 +51,13 @@ void __stdcall FA2Expand::ExeRun()
     CLoadingExt::ProgramStartupInit();
     CLoadingGraphicsExt::ProgramStartupInit();
     CUpdateProgressExt::ProgramStartupInit();
-
+    
     CCreateMap1Ext::ProgramStartupInit();
     CCreateMap2Ext::ProgramStartupInit();
     CCreateMap3AExt::ProgramStartupInit();
     CCreateMap3BExt::ProgramStartupInit();
     CCreateMap4Ext::ProgramStartupInit();
-
+    
     CTriggerFrameExt::ProgramStartupInit();
     CTriggerOptionExt::ProgramStartupInit();
     CTriggerEventExt::ProgramStartupInit();
@@ -78,7 +78,7 @@ void __stdcall FA2Expand::ExeRun()
     CSingleplayerSettingsExt::ProgramStartupInit();
     CSpecialFlagsExt::ProgramStartupInit();
     CLightingExt::ProgramStartupInit();
-
+    
     CSearchWaypointExt::ProgramStartupInit();
     CCellTagExt::ProgramStartupInit();
     CRandomTreeExt::ProgramStartupInit();
@@ -86,16 +86,16 @@ void __stdcall FA2Expand::ExeRun()
     CPropertyAircraftExt::ProgramStartupInit();
     CPropertyBuildingExt::ProgramStartupInit();
     CPropertyUnitExt::ProgramStartupInit();
-
+    
     CMinimapExt::ProgramStartupInit();
     COptionsExt::ProgramStartupInit();
     CCreditsExt::ProgramStartupInit();
     CEasterEggExt::ProgramStartupInit();
-
+    
     CMapScriptsExt::ProgramStartupInit();
     CSaveOptionExt::ProgramStartupInit();
     CMMXExt::ProgramStartupInit();
-
+    
     CDialog289Ext::ProgramStartupInit();
 }
 

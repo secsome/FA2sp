@@ -5,12 +5,12 @@ CMinimap* CMinimapExt::Instance = nullptr;
 void CMinimapExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CMinimapExt::PreTranslateMessageHook;
+	auto PreTranslateAddr = &CMinimapExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x594EE0, &PreTranslateAddr, sizeof(PreTranslateAddr));
 }
 
-BOOL CMinimapExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CMinimapExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

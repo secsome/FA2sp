@@ -160,8 +160,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="FA2sp\Utils\Misc\Hooks.BugFixes.cpp" />
     <ClCompile Include="FA2sp\Ext\FA2Expand.cpp" />
+    <ClCompile Include="FA2sp\Utils\Misc\Hooks.BugFixes.cpp" />
     <ClCompile Include="FA2sp\Ext\CAITriggerTypesEnable\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CAITriggerTypes\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CBasic\Body.cpp" />
@@ -265,6 +265,7 @@
     <ClInclude Include="FA2sp\Ext\CTriggerOption\Body.h" />
     <ClInclude Include="FA2sp\Ext\CUpdateProgress\Body.h" />
     <ClInclude Include="FA2sp\FA2sp.h" />
+    <ClInclude Include="FA2sp\FA2sp.version.h" />
     <ClInclude Include="FA2sp\Utils\GlobalVars.h" />
     <ClInclude Include="FA2sp\Logger.h" />
     <ClInclude Include="FA2sp\RunTime.h" />
@@ -272,6 +273,7 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FA2sp\FA2sp.rc" />
+    <ResourceCompile Include="FA2sp\UI\Dialog177.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

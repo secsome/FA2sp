@@ -5,12 +5,12 @@ CMapScripts* CMapScriptsExt::Instance = nullptr;
 void CMapScriptsExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CMapScriptsExt::PreTranslateMessageHook;
+	auto PreTranslateAddr = &CMapScriptsExt::PreTranslateMessageExt;
 
-	RunTime::ResetMemoryContentAt(0x597D0C, &PreTranslateAddr, sizeof(PreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x5986C4, &PreTranslateAddr, sizeof(PreTranslateAddr));
 }
 
-BOOL CMapScriptsExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CMapScriptsExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

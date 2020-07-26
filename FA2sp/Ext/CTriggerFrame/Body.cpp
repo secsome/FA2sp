@@ -5,12 +5,12 @@ CTriggerFrame* CTriggerFrameExt::Instance = nullptr;
 void CTriggerFrameExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CTriggerFrameExt::PreTranslateMessageHook;
+	auto PreTranslateAddr = &CTriggerFrameExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x594D60, &PreTranslateAddr, sizeof(PreTranslateAddr));
 }
 
-BOOL CTriggerFrameExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CTriggerFrameExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

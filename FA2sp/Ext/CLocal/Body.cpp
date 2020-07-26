@@ -5,12 +5,12 @@ CLocal* CLocalExt::Instance = nullptr;
 void CLocalExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto localPreTranslateAddr = &CLocalExt::PreTranslateMessageHook;
+	auto localPreTranslateAddr = &CLocalExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x593B18, &localPreTranslateAddr, sizeof(localPreTranslateAddr));
 }
 
-BOOL CLocalExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CLocalExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

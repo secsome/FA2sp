@@ -5,12 +5,12 @@ CAITriggerTypes* CAITriggerTypesExt::Instance = nullptr;
 void CAITriggerTypesExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto aiTriggerTypesPreTranslateAddr = &CAITriggerTypesExt::PreTranslateMessageHook;
+	auto aiTriggerTypesPreTranslateAddr = &CAITriggerTypesExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x591B08, &aiTriggerTypesPreTranslateAddr, sizeof(aiTriggerTypesPreTranslateAddr));
 }
 
-BOOL CAITriggerTypesExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CAITriggerTypesExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

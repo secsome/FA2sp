@@ -5,12 +5,12 @@ CLoadingGraphics* CLoadingGraphicsExt::Instance = nullptr;
 void CLoadingGraphicsExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto loadingGraphicsPreTranslateAddr = &CLoadingGraphicsExt::PreTranslateMessageHook;
+	auto loadingGraphicsPreTranslateAddr = &CLoadingGraphicsExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x592910, &loadingGraphicsPreTranslateAddr, sizeof(loadingGraphicsPreTranslateAddr));
 }
 
-BOOL CLoadingGraphicsExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CLoadingGraphicsExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

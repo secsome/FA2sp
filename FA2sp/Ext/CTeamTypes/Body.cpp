@@ -5,12 +5,12 @@ CTeamTypes* CTeamTypesExt::Instance = nullptr;
 void CTeamTypesExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CTeamTypesExt::PreTranslateMessageHook;
+	auto PreTranslateAddr = &CTeamTypesExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x5971F8, &PreTranslateAddr, sizeof(PreTranslateAddr));
 }
 
-BOOL CTeamTypesExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CTeamTypesExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 

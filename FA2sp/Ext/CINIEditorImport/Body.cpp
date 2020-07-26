@@ -5,12 +5,12 @@ CINIEditorImport* CINIEditorImportExt::Instance = nullptr;
 void CINIEditorImportExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
-	auto insertINIFilePreTranslateAddr = &CINIEditorImportExt::PreTranslateMessageHook;
+	auto insertINIFilePreTranslateAddr = &CINIEditorImportExt::PreTranslateMessageExt;
 
 	RunTime::ResetMemoryContentAt(0x593F08, &insertINIFilePreTranslateAddr, sizeof(insertINIFilePreTranslateAddr));
 }
 
-BOOL CINIEditorImportExt::PreTranslateMessageHook(MSG* pMsg)
+BOOL CINIEditorImportExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 
