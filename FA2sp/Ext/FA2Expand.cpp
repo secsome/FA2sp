@@ -41,6 +41,7 @@
 #include "CTeamTypes/Body.h"
 #include "CTileSetBrowserFrame/Body.h"
 #include "CTileSetBrowserView/Body.h"
+#include "CTriggerAction/Body.h"
 #include "CTriggerEvent/Body.h"
 #include "CTriggerFrame/Body.h"
 #include "CTriggerOption/Body.h"
@@ -61,6 +62,7 @@ void __stdcall FA2Expand::ExeRun()
     CTriggerFrameExt::ProgramStartupInit();
     CTriggerOptionExt::ProgramStartupInit();
     CTriggerEventExt::ProgramStartupInit();
+    CTriggerActionExt::ProgramStartupInit();
     CTagsExt::ProgramStartupInit();
     CTaskForceExt::ProgramStartupInit();
     CScriptTypesExt::ProgramStartupInit();

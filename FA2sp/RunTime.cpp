@@ -21,8 +21,3 @@ void RunTime::ResetMemoryContentAt(ptr_type addr, const void* content, size_t si
 	memcpy(&pplContent[offset], content, size);
 	ret = VirtualProtectEx(process, &pplContent[offset], size, oldProtect, &newProtect);
 }
-
-CString RunTime::ExePath()
-{
-	return reinterpret_cast<char*>(0x72A738);
-}

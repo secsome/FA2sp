@@ -11,6 +11,4 @@ public:
 	RunTime();
 	~RunTime();
 
-	static CString ExePath();
-
 };

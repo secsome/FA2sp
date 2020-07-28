@@ -1,6 +1,8 @@
 #include "FA2sp.h"
 #include "FA2sp.version.h"
 
+#include <INI.h>
+
 HANDLE FA2sp::hInstance;
 
 // DllMain
@@ -44,16 +46,6 @@ DEFINE_HOOK(537129, ExeRun, 9)
 	Logger::Initialize();
 	Logger::Info("Found Final Alert 2 version 1.02. Applying FA2sp 2020-07-22.\n");
 	Replacement::String();
-
-	/*
-	// Check ini file
-	Logger::Debug("Desert = %s Urban = %s UrbanNew = %s\n", 
-		reinterpret_cast<const char*>(0x5CE3E8),
-		reinterpret_cast<const char*>(0x5CE408),
-		reinterpret_cast<const char*>(0x5CE43C)
-	);
-	*/
-
 	FA2Expand::ExeRun();
 
 #ifdef _DEBUG
@@ -66,6 +58,7 @@ DEFINE_HOOK(537129, ExeRun, 9)
 
 DEFINE_HOOK(537208, ExeTerminate, 9)
 {
+
 	Logger::Info("FA2sp Terminating...\n");
 	Logger::Close();
 	GET(UINT, result, EAX);
@@ -79,4 +72,5 @@ DEFINE_HOOK(43273E, ExitMessageBox, 5)
 	R->EAX(MB_OK);
 	return 0x432743;
 }
+
 #endif
