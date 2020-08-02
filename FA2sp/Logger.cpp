@@ -6,7 +6,7 @@ FILE* Logger::file_pointer_;
 bool Logger::is_initialized_;
 
 void Logger::Initialize() {
-	file_pointer_ = _fsopen("FA2Copy-IL.log", "w", _SH_DENYWR);
+	file_pointer_ = _fsopen("FA2sp.log", "w", _SH_DENYWR);
 	is_initialized_ = file_pointer_;
 }
 

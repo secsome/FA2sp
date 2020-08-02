@@ -58,6 +58,14 @@ DEFINE_HOOK(537129, ExeRun, 9)
 
 DEFINE_HOOK(537208, ExeTerminate, 9)
 {
+#include<INI.h>
+#include<GlobalVars.h>
+
+	DWORD rules = GlobalVars::INIFiles::Rules();
+	LPCSTR debug = GetValue(rules, "GACNST", "Cost");
+	Logger::Debug("%s\n", debug);
+
+
 
 	Logger::Info("FA2sp Terminating...\n");
 	Logger::Close();
@@ -72,5 +80,70 @@ DEFINE_HOOK(43273E, ExitMessageBox, 5)
 	R->EAX(MB_OK);
 	return 0x432743;
 }
+
+//DEFINE_HOOK(40A016, sub_40A010, 6)
+//{
+//	GET_STACK(INT, iUkn, STACK_OFFS(0x10, -0x4));
+//	GET_STACK(CString*, lpKey, STACK_OFFS(0x10, -0x8));
+//
+//	Logger::Debug(__FUNCTION__" %X %s\n", iUkn, *lpKey);
+//
+//	return 0;
+//}
+
+/*
+DEFINE_HOOK(40A075, sub_40A010_return, 5)
+{
+	GET(INT, iResult, EAX);
+	Logger::Debug("sub_40A010 returned %X as result TYPE\n");
+	return 0;
+}
+
+DEFINE_HOOK_AGAIN(40A0A8, sub_40A010_return, 5);
+DEFINE_HOOK_AGAIN(40A0EA, sub_40A010_return, 5);
+DEFINE_HOOK_AGAIN(40A101, sub_40A010_return, 5);
+*/
+
+//DEFINE_HOOK(407DA6, sub_407DA0, 6)
+//{
+//	GET_STACK(INT, arg_0, STACK_OFFS(0x10, -0x4));
+//	GET_STACK(LPCSTR, lpSection, STACK_OFFS(0x10, -0x8));
+//
+//	Logger::Debug(__FUNCTION__" %X %s\n", arg_0, lpSection);
+//
+//	return 0;
+//}
+
+
+
+//DEFINE_HOOK(408054, sub_407EA0_return, 8) // INI::GetSection
+//{
+//	GET(CString*, lpResult, EAX);
+//
+//	Logger::Debug(__FUNCTION__" %s\n", *lpResult);
+//
+//	return 0;
+//}
+
+
+/*
+DEFINE_HOOK(4032E0, StringPairCallerDebug, 7)
+{
+	GET_STACK(DWORD, CallAddress, 0x0);
+	CallAddress - reinterpret_cast<DWORD>(FA2sp::hInstance) + 0x10000000;
+	Logger::Raw("0X%8X\n", CallAddress);
+	return 0;
+}
+*/
+
+//DEFINE_HOOK(4032E0, StringPairDTORDebugger, 7)
+//{
+//	GET_STACK(DWORD, dwCallAddress, 0x0);
+//	dwCallAddress - reinterpret_cast<DWORD>(FA2sp::hInstance) + 0x10000000;
+//#include <INI.h>
+//	GET(CStringPair*, pThis, ECX);
+//	Logger::Info(__FUNCTION__" Caller Address:0x%6X , Key = %s, Value = %s\n", dwCallAddress, pThis->Key, pThis->Value);
+//	return 0;
+//}
 
 #endif

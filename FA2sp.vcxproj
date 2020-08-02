@@ -211,7 +211,6 @@
     <ClCompile Include="FA2sp\Ext\CUpdateProgress\Body.cpp" />
     <ClCompile Include="FA2sp\FA2sp.cpp" />
     <ClCompile Include="FA2sp\UI\Hooks.cpp" />
-    <ClCompile Include="FA2sp\Utils\GlobalVars.cpp" />
     <ClCompile Include="FA2sp\Logger.cpp" />
     <ClCompile Include="FA2sp\RunTime.cpp" />
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.Mix.cpp" />
@@ -268,7 +267,6 @@
     <ClInclude Include="FA2sp\Ext\CUpdateProgress\Body.h" />
     <ClInclude Include="FA2sp\FA2sp.h" />
     <ClInclude Include="FA2sp\FA2sp.version.h" />
-    <ClInclude Include="FA2sp\Utils\GlobalVars.h" />
     <ClInclude Include="FA2sp\Logger.h" />
     <ClInclude Include="FA2sp\RunTime.h" />
     <ClInclude Include="FA2sp\Utils\Replacement.h" />
