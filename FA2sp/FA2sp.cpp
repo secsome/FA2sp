@@ -1,7 +1,7 @@
 #include "FA2sp.h"
 #include "FA2sp.version.h"
 
-#include <INI.h>
+#include <GlobalVars.h>
 
 HANDLE FA2sp::hInstance;
 
@@ -45,7 +45,7 @@ DEFINE_HOOK(537129, ExeRun, 9)
 {
 	Logger::Initialize();
 	Logger::Info("Found Final Alert 2 version 1.02. Applying FA2sp 2020-07-22.\n");
-	Replacement::String();
+	//Replacement::String();
 	FA2Expand::ExeRun();
 
 #ifdef _DEBUG
@@ -58,15 +58,6 @@ DEFINE_HOOK(537129, ExeRun, 9)
 
 DEFINE_HOOK(537208, ExeTerminate, 9)
 {
-#include<INI.h>
-#include<GlobalVars.h>
-
-	DWORD rules = GlobalVars::INIFiles::Rules();
-	LPCSTR debug = GetValue(rules, "GACNST", "Cost");
-	Logger::Debug("%s\n", debug);
-
-
-
 	Logger::Info("FA2sp Terminating...\n");
 	Logger::Close();
 	GET(UINT, result, EAX);

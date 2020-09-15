@@ -1,7 +1,5 @@
-#include <CINI.h>
 #include <Helpers/Macro.h>
-
-#include "../../Logger.h"
+#include <GlobalVars.h>
 
 struct ColorTuple
 {
@@ -38,31 +36,29 @@ constexpr ColorTuple HsvToRgb(ColorTuple const hsv) noexcept {
 
 DEFINE_HOOK(468B44, sub_468760_RGBColor, 5)
 {
-	return 0;
-
     REF_STACK(FAString, name, STACK_OFFS(0xA4, 0x94));
 
-	INIClass* pRules = reinterpret_cast<INIClass*>(0x7EDDE0);
+	INIClass* pRules = &GlobalVars::INIFiles::Rules.get();
 
-    if (!name.c_str())
-    {	
-        if (auto const pSection = pRules->GetSection("Colors")) {
-            if (auto const pValue = pSection->GetValue(name)) {
-                ColorTuple hsv{};
-                if (sscanf_s(
-                    pValue->c_str(),
-                    "%hhu,%hhu,%hhu",
-                    &hsv.a, &hsv.b, &hsv.c) == 3
-                    )
-                {
+	CString* pName = reinterpret_cast<CString*>(&name);
+	if (!pName->IsEmpty()) {
+		if (auto const& pEntries = pRules->GetEntries("Colors")) {
+			if (auto const& pItem = pEntries->Items.GetItem(*pName)) {
+				ColorTuple hsv{};
+				if (sscanf_s(
+					pItem->Value.c_str(),
+					"%hhu,%hhu,%hhu",
+					&hsv.a, &hsv.b, &hsv.c) == 3
+					)
+				{
 					auto const rgb = HsvToRgb(hsv);
 					name.~FAString();
 					R->EAX<unsigned int>(rgb.a | rgb.b << 8u | rgb.c << 16u);
 					return 0x468ED3;
-                }
+				}
 
-            }
-        }
-    }
+			}
+		}
+	}
     return 0;
 }
