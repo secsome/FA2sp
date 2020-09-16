@@ -5,6 +5,8 @@
 #include "Utils/Replacement.h"
 #include <Helpers\Macro.h>
 
+typedef unsigned char byte;
+
 class FA2sp
 {
 public:

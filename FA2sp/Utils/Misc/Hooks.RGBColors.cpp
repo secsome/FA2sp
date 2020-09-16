@@ -42,22 +42,18 @@ DEFINE_HOOK(468B44, sub_468760_RGBColor, 5)
 
 	CString* pName = reinterpret_cast<CString*>(&name);
 	if (!pName->IsEmpty()) {
-		if (auto const& pEntries = pRules->GetEntries("Colors")) {
-			if (auto const& pItem = pEntries->Items.GetItem(*pName)) {
-				ColorTuple hsv{};
-				if (sscanf_s(
-					pItem->Value.c_str(),
-					"%hhu,%hhu,%hhu",
-					&hsv.a, &hsv.b, &hsv.c) == 3
-					)
-				{
-					auto const rgb = HsvToRgb(hsv);
-					name.~FAString();
-					R->EAX<unsigned int>(rgb.a | rgb.b << 8u | rgb.c << 16u);
-					return 0x468ED3;
-				}
-
-			}
+		auto const pValue = pRules->Read("Colors", name);
+		ColorTuple hsv{};
+		if (sscanf_s(
+			pValue,
+			"%hhu,%hhu,%hhu",
+			&hsv.a, &hsv.b, &hsv.c) == 3
+			)
+		{
+			auto const rgb = HsvToRgb(hsv);
+			name.~FAString();
+			R->EAX<unsigned int>(rgb.a | rgb.b << 8u | rgb.c << 16u);
+			return 0x468ED3;
 		}
 	}
     return 0;

@@ -45,7 +45,7 @@ DEFINE_HOOK(537129, ExeRun, 9)
 {
 	Logger::Initialize();
 	Logger::Info("Found Final Alert 2 version 1.02. Applying FA2sp 2020-07-22.\n");
-	//Replacement::String();
+	Replacement::String();
 	FA2Expand::ExeRun();
 
 #ifdef _DEBUG
