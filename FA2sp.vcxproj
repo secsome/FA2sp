@@ -106,6 +106,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FA2sp\Ext\CTileSetBrowserView\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerAction\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\FA2Expand.cpp" />
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.BugFixes.cpp" />
