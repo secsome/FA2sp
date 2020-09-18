@@ -35,10 +35,10 @@ DEFINE_HOOK(47A3CC, FileNames_EvaIni, 7)
         *reinterpret_cast<bool*>(0x5D32AC) // bSupportYR
         )
     {
-        pFile = pFAData->Read("Filenames", "EVAYR", "evamd.ini");
+        pFile = pFAData->GetString("Filenames", "EVAYR", "evamd.ini");
     }
     else
-        pFile = pFAData->Read("Filenames", "EVA", "eva.ini");
+        pFile = pFAData->GetString("Filenames", "EVA", "eva.ini");
     
     //&GlobalVars::INIFiles::Eva.get() - 4
     pThis->_47FFB0_loadfiles(pFile, reinterpret_cast<INIHeaderClass*>(0x7ED848), FALSE);
@@ -57,10 +57,10 @@ DEFINE_HOOK(47A342, FileNames_SoundIni, 7)
         *reinterpret_cast<bool*>(0x5D32AC) // bSupportYR
         )
     {
-        pFile = pFAData->Read("Filenames", "SoundYR", "soundmd.ini");
+        pFile = pFAData->GetString("Filenames", "SoundYR", "soundmd.ini");
     }
     else
-        pFile = pFAData->Read("Filenames", "Sound", "sound.ini");
+        pFile = pFAData->GetString("Filenames", "Sound", "sound.ini");
 
     //&GlobalVars::INIFiles::Sound.get() - 4
     pThis->_47FFB0_loadfiles(pFile, reinterpret_cast<INIHeaderClass*>(0x7EDA78), FALSE);
@@ -79,10 +79,10 @@ DEFINE_HOOK(47A450, FileNames_ThemeIni, 7)
         *reinterpret_cast<bool*>(0x5D32AC) // bSupportYR
         )
     {
-        pFile = pFAData->Read("Filenames", "ThemeYR", "thememd.ini");
+        pFile = pFAData->GetString("Filenames", "ThemeYR", "thememd.ini");
     }
     else
-        pFile = pFAData->Read("Filenames", "Theme", "theme.ini");
+        pFile = pFAData->GetString("Filenames", "Theme", "theme.ini");
 
     //&GlobalVars::INIFiles::Theme.get() - 4
     pThis->_47FFB0_loadfiles(pFile, reinterpret_cast<INIHeaderClass*>(0x7ED730), FALSE);
@@ -95,7 +95,7 @@ DEFINE_HOOK(47A4D4, FileNames_AIIni, 7)
 
     INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
     CString pFile;
-    pFile = pFAData->Read("Filenames", "AI", "ai.ini");
+    pFile = pFAData->GetString("Filenames", "AI", "ai.ini");
     pThis->_47FFB0_loadfiles(pFile, reinterpret_cast<INIHeaderClass*>(0x7EDB90), FALSE);
     if (
         *reinterpret_cast<bool*>(0x5CE3B8) // bLoadYRFiles
@@ -103,7 +103,7 @@ DEFINE_HOOK(47A4D4, FileNames_AIIni, 7)
         *reinterpret_cast<bool*>(0x5D32AC) // bSupportYR
         )
     {
-        pFile = pFAData->Read("Filenames", "AIYR", "aimd.ini");
+        pFile = pFAData->GetString("Filenames", "AIYR", "aimd.ini");
         pThis->_47FFB0_loadfiles(pFile, reinterpret_cast<INIHeaderClass*>(0x7EDB90), TRUE);
     }
 
@@ -118,7 +118,7 @@ DEFINE_HOOK(479F8F, FileNames_RulesIni, 7)
 
     INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
     CString pFile;
-    pFile = pFAData->Read("Filenames", "Rules", "rules.ini");
+    pFile = pFAData->GetString("Filenames", "Rules", "rules.ini");
     pThis->_47FFB0_loadfiles(pFile, reinterpret_cast<INIHeaderClass*>(0x7EDDD8), FALSE);
     if (
         *reinterpret_cast<bool*>(0x5CE3B8) // bLoadYRFiles
@@ -126,11 +126,11 @@ DEFINE_HOOK(479F8F, FileNames_RulesIni, 7)
         *reinterpret_cast<bool*>(0x5D32AC) // bSupportYR
         )
     {
-        pFile = pFAData->Read("Filenames", "RulesYR", "rulesmd.ini");
+        pFile = pFAData->GetString("Filenames", "RulesYR", "rulesmd.ini");
         pThis->_47FFB0_loadfiles(pFile, reinterpret_cast<INIHeaderClass*>(0x7EDDD8), TRUE);
         return 0x47A041;
         // helper->_452270_lockBits();
-        // pFile = pFAData->Read("Filenames", "RulesYR", "rulesmd.ini");
+        // pFile = pFAData->GetString("Filenames", "RulesYR", "rulesmd.ini");
         // pThis->_47FFB0_loadfiles(pFile, reinterpret_cast<INIHeaderClass*>(helper), TRUE);
         // return 0x479FE6;
     }
@@ -146,7 +146,7 @@ DEFINE_HOOK(47A0C4, FileNames_ArtIni, 7)
 
     INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
     CString pFile;
-    pFile = pFAData->Read("Filenames", "Art", "art.ini");
+    pFile = pFAData->GetString("Filenames", "Art", "art.ini");
     pThis->_47FFB0_loadfiles(pFile, reinterpret_cast<INIHeaderClass*>(0x7EDCA8), FALSE);
     if (
         *reinterpret_cast<bool*>(0x5CE3B8) // bLoadYRFiles
@@ -154,11 +154,11 @@ DEFINE_HOOK(47A0C4, FileNames_ArtIni, 7)
         *reinterpret_cast<bool*>(0x5D32AC) // bSupportYR
         )
     {
-        pFile = pFAData->Read("Filenames", "ArtYR", "artmd.ini");
+        pFile = pFAData->GetString("Filenames", "ArtYR", "artmd.ini");
         pThis->_47FFB0_loadfiles(pFile, reinterpret_cast<INIHeaderClass*>(0x7EDCA8), TRUE);
         return 0x47A180;
         // helper->_452270_lockBits();
-        // pFile = pFAData->Read("Filenames", "ArtYR", "artmd.ini");
+        // pFile = pFAData->GetString("Filenames", "ArtYR", "artmd.ini");
         // pThis->_47FFB0_loadfiles(pFile, reinterpret_cast<INIHeaderClass*>(helper), TRUE);
         // return 0x47A11B;
     }
@@ -172,7 +172,7 @@ DEFINE_HOOK(hookaddr, hookname, 7)\
     GET(FA2CMainWnd*, pThis, EBP);\
     INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();\
     CString pFile;\
-    pFile = pFAData->Read("Filenames", ra2key, ra2def);\
+    pFile = pFAData->GetString("Filenames", ra2key, ra2def);\
     pThis->_47FFB0_loadfiles(pFile, reinterpret_cast<INIHeaderClass*>(storeaddr), FALSE);\
     if (\
         *reinterpret_cast<bool*>(0x5CE3B8)\
@@ -180,7 +180,7 @@ DEFINE_HOOK(hookaddr, hookname, 7)\
         *reinterpret_cast<bool*>(0x5D32AC)\
         )\
     {\
-        pFile = pFAData->Read("Filenames", yrkey, yrdef);\
+        pFile = pFAData->GetString("Filenames", yrkey, yrdef);\
         pThis->_47FFB0_loadfiles(pFile, reinterpret_cast<INIHeaderClass*>(storeaddr), TRUE);\
     }\
     return retaddr;\
@@ -204,7 +204,7 @@ DEFINE_HOOK(47A76A, FileNames_UrbanNIni, 7)
 {
     GET(FA2CMainWnd*, pThis, EBP);
     INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
-    CString pFile = pFAData->Read("Filenames", "UrbanNYR", "UrbanNMd.ini");
+    CString pFile = pFAData->GetString("Filenames", "UrbanNYR", "UrbanNMd.ini");
     pThis->_47FFB0_loadfiles(pFile, reinterpret_cast<INIHeaderClass*>(0x7ED0A0), FALSE);
     return 0x47A77D;
 }
@@ -213,7 +213,7 @@ DEFINE_HOOK(47A9E3, FileNames_LunarIni, 7)
 {
     GET(FA2CMainWnd*, pThis, EBP);
     INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
-    CString pFile = pFAData->Read("Filenames", "LunarYR", "lunarmd.ini");
+    CString pFile = pFAData->GetString("Filenames", "LunarYR", "lunarmd.ini");
     pThis->_47FFB0_loadfiles(pFile, reinterpret_cast<INIHeaderClass*>(0x7ECF88), FALSE);
     return 0x47A9F6;
 }
@@ -222,7 +222,7 @@ DEFINE_HOOK(47AA67, FileNames_DesertIni, 7)
 {
     GET(FA2CMainWnd*, pThis, EBP);
     INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
-    CString pFile = pFAData->Read("Filenames", "DesertYR", "desertmd.ini");
+    CString pFile = pFAData->GetString("Filenames", "DesertYR", "desertmd.ini");
     pThis->_47FFB0_loadfiles(pFile, reinterpret_cast<INIHeaderClass*>(0x7ECE70), FALSE);
     return 0x47AA7A;
 }
@@ -232,7 +232,7 @@ DEFINE_HOOK(47AA67, FileNames_DesertIni, 7)
 //    GET(FA2CMainWnd*, pThis, EBP);
 //    REF_STACK(CString, pFront, 0x2C);
 //    INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
-//    CString pExtension = pFAData->Read("Filenames", "MixExtension", "md");
+//    CString pExtension = pFAData->GetString("Filenames", "MixExtension", "md");
 //    pFront += pExtension;
 //
 //    return 0x487699;

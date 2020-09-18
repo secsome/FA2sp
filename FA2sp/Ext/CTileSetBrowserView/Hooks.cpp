@@ -9,12 +9,12 @@ DEFINE_HOOK(4F1670, CTileSetBrowserView_ReloadComboboxes, 6)
 
     GET_STACK(int, overlayIdx, 0x24);
 
-    if (pFAData->ReadBool("Debug", "WallConnectionFilter")) {
+    if (pFAData->GetBool("Debug", "OverlayFilter")) {
         char buf[8];
         _itoa_s(overlayIdx, buf, 10);
-        auto const& pOvlName = pRules->Read("OverlayTypes", buf);
+        auto const& pOvlName = pRules->GetString("OverlayTypes", buf);
 
-        if (!pRules->ReadBool(pOvlName, "Wall.HasConnection", true))
+        if (!pRules->GetBool(pOvlName, "Wall.HasConnection", true))
             return 0x4F1695;
     }
 

@@ -42,7 +42,7 @@ DEFINE_HOOK(468B44, sub_468760_RGBColor, 5)
 
 	CString* pName = reinterpret_cast<CString*>(&name);
 	if (!pName->IsEmpty()) {
-		auto const pValue = pRules->Read("Colors", name);
+		auto const pValue = pRules->GetString("Colors", name);
 		ColorTuple hsv{};
 		if (sscanf_s(
 			pValue,
