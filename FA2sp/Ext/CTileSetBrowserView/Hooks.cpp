@@ -20,6 +20,6 @@ DEFINE_HOOK(4F1670, CTileSetBrowserView_ReloadComboboxes, 6)
 
     GET(CString, name, ECX);
     name.Format("%04d (%s)", overlayIdx, name);
-    R->ECX((const char*)name);
+    R->ECX<const char*>(name);
     return 0;
 }
