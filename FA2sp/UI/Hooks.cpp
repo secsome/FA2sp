@@ -146,11 +146,10 @@ DEFINE_HOOK(551E57, FetchResource_CDialog_DoModal, 5)
 	}
 #endif
 	if (HRSRC hResInfo = FindResource(hModule, lpName, lpType)) {
-		R->EAX(hResInfo);
 		if (HGLOBAL hResData = LoadResource(hModule, hResInfo)) {
+			R->EBX(hModule);
 			R->EDI(hResData);
-			LockResource(hResData);
-			return 0x551E78;
+			return 0x551E6D;
 		}
 	}
 	return 0;

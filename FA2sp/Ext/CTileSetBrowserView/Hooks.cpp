@@ -2,14 +2,15 @@
 #include <Helpers/Macro.h>
 #include <GlobalVars.h>
 
+#include "../../FA2sp.h"
+
 DEFINE_HOOK(4F1670, CTileSetBrowserView_ReloadComboboxes, 6)
 {
-    INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
     INIClass* pRules = &GlobalVars::INIFiles::Rules.get();
 
     GET_STACK(int, overlayIdx, 0x24);
 
-    if (pFAData->GetBool("Debug", "OverlayFilter")) {
+    if (ExtConfigs::OverlayFilter) {
         char buf[8];
         _itoa_s(overlayIdx, buf, 10);
         auto const& pOvlName = pRules->GetString("OverlayTypes", buf);

@@ -11,5 +11,13 @@ class FA2sp
 {
 public:
     static HANDLE hInstance;
+    static void ExtConfigsInitialize();
 };
+
+
+namespace ExtConfigs
+{
+    static bool OverlayFilter;
+    static bool AllowIncludes;
+}
 

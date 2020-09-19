@@ -5,6 +5,22 @@
 
 HANDLE FA2sp::hInstance;
 
+//bool ExtConfigs::AllowIncludes = false;
+//bool ExtConfigs::OverlayFilter = false;
+
+DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
+{
+	FA2sp::ExtConfigsInitialize();
+	return 0;
+}
+
+void FA2sp::ExtConfigsInitialize()
+{
+	INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
+	ExtConfigs::AllowIncludes = pFAData->GetBool("ExtConfigs", "AllowIncludes");
+	ExtConfigs::OverlayFilter = pFAData->GetBool("ExtConfigs", "OverlayFilter");
+}
+
 // DllMain
 BOOL APIENTRY DllMain(HANDLE hInstance, DWORD dwReason, LPVOID v)
 {
