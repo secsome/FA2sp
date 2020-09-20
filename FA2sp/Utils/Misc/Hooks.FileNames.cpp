@@ -17,15 +17,6 @@ public:
     }
 };
 
-class _452270_struct
-{
-public:
-    void _452270_lockBits()
-    {
-        JMP_THIS(0x452270);
-    }
-};
-
 DEFINE_HOOK(47A3CC, FileNames_EvaIni, 7)
 {
     GET(FA2CMainWnd*, pThis, EBP);

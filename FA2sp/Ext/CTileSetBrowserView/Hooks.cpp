@@ -2,10 +2,14 @@
 #include <Helpers/Macro.h>
 #include <GlobalVars.h>
 
+#include <FA2PP.h>
+
 #include "../../FA2sp.h"
 
 DEFINE_HOOK(4F1670, CTileSetBrowserView_ReloadComboboxes, 6)
 {
+    CTreeView
+
     INIClass* pRules = &GlobalVars::INIFiles::Rules.get();
 
     GET_STACK(int, overlayIdx, 0x24);
