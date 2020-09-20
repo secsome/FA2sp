@@ -95,6 +95,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalOptions> -DISOLATION_AWARE_ENABLED %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -106,6 +107,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FA2sp\Ext\CScriptTypes\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTileSetBrowserView\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerAction\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\FA2Expand.cpp" />
@@ -224,6 +226,10 @@
   <ItemGroup>
     <ResourceCompile Include="FA2sp\FA2sp.rc" />
     <ResourceCompile Include="FA2sp\UI\Dialog177.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FA2sp\FA2sp.manifest" />
+    <None Include="Winuser.rh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

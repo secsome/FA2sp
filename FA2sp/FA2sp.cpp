@@ -3,6 +3,8 @@
 
 #include <GlobalVars.h>
 
+
+
 HANDLE FA2sp::hInstance;
 
 //bool ExtConfigs::AllowIncludes = false;

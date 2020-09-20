@@ -353,6 +353,9 @@
     <ClCompile Include="FA2sp\Ext\CTileSetBrowserView\Hooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CScriptTypes\Hooks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FA2sp\FA2sp.rc">
@@ -361,5 +364,9 @@
     <ResourceCompile Include="FA2sp\UI\Dialog177.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Winuser.rh" />
+    <None Include="FA2sp\FA2sp.manifest" />
   </ItemGroup>
 </Project>
