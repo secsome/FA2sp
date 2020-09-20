@@ -10,7 +10,8 @@ DEFINE_HOOK(4F1670, CTileSetBrowserView_ReloadComboboxes, 6)
 
     GET_STACK(int, overlayIdx, 0x24);
 
-    if (ExtConfigs::OverlayFilter) {
+    //if (ExtConfigs::OverlayFilter) {
+    if (1) {
         char buf[8];
         _itoa_s(overlayIdx, buf, 10);
         auto const& pOvlName = pRules->GetString("OverlayTypes", buf);

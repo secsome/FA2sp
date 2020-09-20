@@ -117,8 +117,6 @@ DEFINE_HOOK(479F8F, FileNames_RulesIni, 7)
 {
     GET(FA2CMainWnd*, pThis, EBP);
 
-    //auto helper = reinterpret_cast<_452270_struct*>(0x5CC308);
-
     INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
     CString pFile;
     pFile = pFAData->GetString("Filenames", "Rules", "rules.ini");
@@ -132,14 +130,24 @@ DEFINE_HOOK(479F8F, FileNames_RulesIni, 7)
         pFile = pFAData->GetString("Filenames", "RulesYR", "rulesmd.ini");
         pThis->_47FFB0_loadTSINI(pFile, reinterpret_cast<INIHeaderClass*>(0x7EDDD8), TRUE);
     }
+
+    INIClass* pRules = &GlobalVars::INIFiles::Rules.get();
+    if (INISection* pSection = pRules->GetSection("#include"))
+    {
+        const int& cnt = pSection->Entries.Count;
+        for (int i = 0; i < cnt; i++)
+        {
+            FAString* pIncludeName = pSection->Entries.GetValue(i);
+            pThis->_47FFB0_loadTSINI(*pIncludeName, reinterpret_cast<INIHeaderClass*>(0x7EDDD8), TRUE);
+        }
+    }
+
     return 0x47A041;
 }
 
 DEFINE_HOOK(47A0C4, FileNames_ArtIni, 7)
 {
     GET(FA2CMainWnd*, pThis, EBP);
-
-    //auto helper = reinterpret_cast<_452270_struct*>(0x5CC308);
 
     INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
     CString pFile;
@@ -230,30 +238,30 @@ DEFINE_HOOK(47AA67, FileNames_DesertIni, 7)
 //}
 
 //TODO
-DEFINE_HOOK(480880, INIClass_LoadTSINI_IncludeSupport, 5)
-{
-    //if (ExtConfigs::AllowIncludes)
-    if(1)
-    {
-        GET_STACK(FA2CMainWnd*, pThis, 0x10);
-        GET(CString, pFile, ESI);
-        GET_STACK(INIHeaderClass*, pINIHeader, 0x48);
-        // GET_STACK(bool, bMerge, 0x4C);
-
-        GET(DWORD, ebp, EBX);
-        Logger::Debug("%08X\n", ebp);
-
-        INIClass*& pINI = pINIHeader->file;
-
-        if (INISection* pSection = pINI->GetSection("#include"))
-        {
-            const int& cnt = pSection->Entries.Count;
-            for (int i = 0; i < cnt; i++)
-            {
-                FAString* pIncludeName = pSection->Entries.GetValue(i);
-                pThis->_47FFB0_loadTSINI(*pIncludeName, pINIHeader, TRUE);
-            }
-        }
-    }
-    return 0;
-}
+//DEFINE_HOOK(480880, INIClass_LoadTSINI_IncludeSupport, 5)
+//{
+//    //if (ExtConfigs::AllowIncludes)
+//    if(1)
+//    {
+//        GET_STACK(FA2CMainWnd*, pThis, 0x10);
+//        GET(CString, pFile, ESI);
+//        GET_STACK(INIHeaderClass*, pINIHeader, 0x48);
+//        // GET_STACK(bool, bMerge, 0x4C);
+//
+//        GET(DWORD, ebp, EBX);
+//        Logger::Debug("%08X\n", ebp);
+//
+//        INIClass*& pINI = pINIHeader->file;
+//
+//        if (INISection* pSection = pINI->GetSection("#include"))
+//        {
+//            const int& cnt = pSection->Entries.Count;
+//            for (int i = 0; i < cnt; i++)
+//            {
+//                FAString* pIncludeName = pSection->Entries.GetValue(i);
+//                pThis->_47FFB0_loadTSINI(*pIncludeName, pINIHeader, TRUE);
+//            }
+//        }
+//    }
+//    return 0;
+//}
