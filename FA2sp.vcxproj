@@ -228,10 +228,6 @@
     <ResourceCompile Include="FA2sp\UI\CScriptTypes.rc" />
     <ResourceCompile Include="FA2sp\UI\Dialog177.rc" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="FA2sp\FA2sp.manifest" />
-    <None Include="Winuser.rh" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

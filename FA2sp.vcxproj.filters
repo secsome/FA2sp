@@ -368,8 +368,4 @@
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Winuser.rh" />
-    <None Include="FA2sp\FA2sp.manifest" />
-  </ItemGroup>
 </Project>
