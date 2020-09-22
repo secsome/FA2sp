@@ -364,6 +364,9 @@
     <ResourceCompile Include="FA2sp\UI\Dialog177.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+    <ResourceCompile Include="FA2sp\UI\CScriptTypes.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Winuser.rh" />

@@ -24,3 +24,12 @@
 //
 //    return 0x4D8E06;
 //}
+
+DEFINE_HOOK(4D8D3C, test__, 7)
+{
+    GET(CScriptTypes*, pThis, ECX);
+    HWND hwndThis = pThis->m_hWnd;
+    HWND hwndTest = pThis->GetDlgItem(1919)->m_hWnd;
+    Logger::Debug("this = %08X, test = %08X", hwndThis, hwndTest);
+    return 0;
+}
