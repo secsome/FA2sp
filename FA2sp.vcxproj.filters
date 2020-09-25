@@ -356,6 +356,9 @@
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Hooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FA2sp\Ext\Miscs\Hooks.LoadParams.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FA2sp\FA2sp.rc">

@@ -111,6 +111,7 @@
     <ClCompile Include="FA2sp\Ext\CTileSetBrowserView\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerAction\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\FA2Expand.cpp" />
+    <ClCompile Include="FA2sp\Ext\Miscs\Hooks.LoadParams.cpp" />
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.BugFixes.cpp" />
     <ClCompile Include="FA2sp\Ext\CAITriggerTypesEnable\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CAITriggerTypes\Body.cpp" />
