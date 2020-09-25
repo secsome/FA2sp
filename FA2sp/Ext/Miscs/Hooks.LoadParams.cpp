@@ -1,5 +1,5 @@
 //#include <GlobalVars.h>
-#include <Miscs/LoadParams.h>
+#include <Miscs/Miscs.LoadParams.h>
 #include <Helpers/Macro.h>
 
 #include "../../Logger.h"
@@ -57,3 +57,5 @@ DEFINE_HOOK(43CFE4, Miscs_LoadParams_SpeechBubble, 6)
     AddString(hComboBox, "3 - Exclamation mark(!)");
     return 0x43D037;
 }
+
+#undef AddString

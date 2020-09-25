@@ -122,16 +122,16 @@ DEFINE_HOOK(479F8F, FileNames_RulesIni, 7)
         pThis->_47FFB0_loadTSINI(pFile, reinterpret_cast<INIHeaderClass*>(0x7EDDD8), TRUE);
     }
 
-    INIClass* pRules = &GlobalVars::INIFiles::Rules.get();
-    if (INISection* pSection = pRules->GetSection("#include"))
-    {
-        const int& cnt = pSection->Entries.Count;
-        for (int i = 0; i < cnt; i++)
-        {
-            FAString* pIncludeName = pSection->Entries.GetValue(i);
-            pThis->_47FFB0_loadTSINI(*pIncludeName, reinterpret_cast<INIHeaderClass*>(0x7EDDD8), TRUE);
-        }
-    }
+    //INIClass* pRules = &GlobalVars::INIFiles::Rules.get();
+    //if (INISection* pSection = pRules->GetSection("#include"))
+    //{
+    //    const int& cnt = pSection->Entries.Count;
+    //    for (int i = 0; i < cnt; i++)
+    //    {
+    //        FAString* pIncludeName = pSection->Entries.GetValue(i);
+    //        pThis->_47FFB0_loadTSINI(*pIncludeName, reinterpret_cast<INIHeaderClass*>(0x7EDDD8), TRUE);
+    //    }
+    //}
 
     return 0x47A041;
 }

@@ -16,7 +16,8 @@ public:
 	static void ProgramStartupInit();
 
 	// Ext Functions
-	BOOL OnInitDialog();
+	BOOL ExtOnInitDialog();
+	int ExtOnActionUpdateParams();
 
 	CScriptTypesExt() {};
 	~CScriptTypesExt() {};
