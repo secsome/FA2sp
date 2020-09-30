@@ -169,6 +169,8 @@
     <ClCompile Include="FA2sp\Utils\Replacement.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FA2pp\Miscs\Miscs.h" />
+    <ClInclude Include="FA2pp\Miscs\Miscs.LoadParams.h" />
     <ClInclude Include="FA2sp\Ext\CTriggerAction\Body.h" />
     <ClInclude Include="FA2sp\Ext\FA2Expand.h" />
     <ClInclude Include="FA2sp\Ext\CAITriggerTypesEnable\Body.h" />

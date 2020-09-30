@@ -36,12 +36,11 @@ constexpr ColorTuple HsvToRgb(ColorTuple const hsv) noexcept {
 
 DEFINE_HOOK(468B44, sub_468760_RGBColor, 5)
 {
-    REF_STACK(FAString, name, STACK_OFFS(0xA4, 0x94));
+    REF_STACK(CString, name, STACK_OFFS(0xA4, 0x94));
 
 	INIClass* pRules = &GlobalVars::INIFiles::Rules.get();
 
-	CString* pName = reinterpret_cast<CString*>(&name);
-	if (!pName->IsEmpty()) {
+	if (name.IsEmpty()) {
 		auto const pValue = pRules->GetString("Colors", name);
 		ColorTuple hsv{};
 		if (sscanf_s(
@@ -51,7 +50,7 @@ DEFINE_HOOK(468B44, sub_468760_RGBColor, 5)
 			)
 		{
 			auto const rgb = HsvToRgb(hsv);
-			name.~FAString();
+			name.~CString();
 			R->EAX<unsigned int>(rgb.a | rgb.b << 8u | rgb.c << 16u);
 			return 0x468ED3;
 		}
