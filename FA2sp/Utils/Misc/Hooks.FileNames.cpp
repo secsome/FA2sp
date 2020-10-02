@@ -3,8 +3,6 @@
 
 #include <FA2PPCore.h>
 
-#include <filesystem>
-
 #include "../../Logger.h"
 #include "../../FA2sp.h"
 
@@ -22,6 +20,7 @@ DEFINE_HOOK(47A3CC, FileNames_EvaIni, 7)
     GET(FA2CMainWnd*, pThis, EBP);
 
     INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
+
     CString pFile;
     if (
         *reinterpret_cast<bool*>(0x5CE3B8) // bLoadYRFiles
