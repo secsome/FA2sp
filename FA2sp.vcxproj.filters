@@ -177,10 +177,10 @@
     <ClInclude Include="FA2sp\Helpers\INIParser.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="FA2pp\Miscs\Miscs.LoadParams.h">
+    <ClInclude Include="FA2pp\Structures\FAMap.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="FA2pp\Miscs\Miscs.h">
+    <ClInclude Include="FA2pp\Structures\FATree.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

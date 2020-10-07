@@ -3,7 +3,8 @@
 
 #include <GlobalVars.h>
 
-
+#include <Structures/FATree.h>
+#include <Structures/FAMap.h>
 
 HANDLE FA2sp::hInstance;
 
@@ -19,9 +20,9 @@ DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
 void FA2sp::ExtConfigsInitialize()
 {
 	//INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
-	INIClass* pFAData = reinterpret_cast<INIClass*>(0x7EDDD8);
-	ExtConfigs::AllowIncludes = pFAData->GetBool("ExtConfigs", "AllowIncludes");
-	ExtConfigs::OverlayFilter = pFAData->GetBool("ExtConfigs", "OverlayFilter");
+	auto pFAData = reinterpret_cast<std::map<const char*, INISection>*>(0x7EDDDC);
+	//ExtConfigs::AllowIncludes = pFAData->GetBool("ExtConfigs", "AllowIncludes");
+	//ExtConfigs::OverlayFilter = pFAData->GetBool("ExtConfigs", "OverlayFilter");
 }
 
 // DllMain
