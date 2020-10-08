@@ -14,7 +14,6 @@ public:
     static void ExtConfigsInitialize();
 };
 
-
 namespace ExtConfigs
 {
     static bool OverlayFilter;

@@ -1,5 +1,7 @@
 #include "FA2sp.h"
-#include "FA2sp.version.h"
+#include "FA2sp.Macros.h"
+
+#include "Helpers/MutexHelper.h"
 
 #include <GlobalVars.h>
 
@@ -28,8 +30,6 @@ void FA2sp::ExtConfigsInitialize()
 		x->first, 
 		x->second.EntriesDictionary.size(), 
 		x->second.IndicesDictionary.size());
-	auto& idic = x->second.IndicesDictionary;
-	Logger::Debug("idic first is %d : %s\n", idic.begin()->first, idic.begin()->second);
 	/*for (auto itr = pFAData->begin(); itr != pFAData->end(); ++itr)
 	{
 		Logger::Debug("Text = %s\n", itr->first);
@@ -76,6 +76,11 @@ SYRINGE_HANDSHAKE(pInfo)
 
 DEFINE_HOOK(537129, ExeRun, 9)
 {
+	bool bMutexResult = MutexHelper::Attach(MUTEX_HASH_VAL);
+	if (!bMutexResult) {
+		MessageBox(nullptr, MUTEX_INIT_ERROR_MSG, MUTEX_INIT_ERROR_TIT, MB_OK);
+		ExitProcess(114514u);
+	}
 	Logger::Initialize();
 	Logger::Info(APPLY_INFO"\n");
 	Replacement::String();
@@ -85,6 +90,7 @@ DEFINE_HOOK(537129, ExeRun, 9)
 
 DEFINE_HOOK(537208, ExeTerminate, 9)
 {
+	MutexHelper::Detach();
 	Logger::Info("FA2sp Terminating...\n");
 	Logger::Close();
 	GET(UINT, result, EAX);

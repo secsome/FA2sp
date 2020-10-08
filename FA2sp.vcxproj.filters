@@ -165,9 +165,6 @@
     <ClInclude Include="FA2sp\Utils\Replacement.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="FA2sp\FA2sp.version.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="FA2sp\Ext\CTriggerAction\Body.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -175,6 +172,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FA2sp\Helpers\INIParser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\Helpers\MutexHelper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\FA2sp.Macros.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -357,6 +360,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Ext\Miscs\Hooks.LoadParams.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Helpers\MutexHelper.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

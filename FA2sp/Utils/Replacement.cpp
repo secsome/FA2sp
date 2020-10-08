@@ -1,5 +1,5 @@
 #include "Replacement.h"
-#include "../FA2sp.version.h"
+#include "../FA2sp.Macros.h"
 
 void Replacement::String() {
 	ReplaceStringAt(FILE_SUFFIX, 0x5CED6C);
