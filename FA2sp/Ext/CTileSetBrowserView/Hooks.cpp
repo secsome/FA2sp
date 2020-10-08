@@ -11,7 +11,7 @@ DEFINE_HOOK(4F1670, CTileSetBrowserView_ReloadComboboxes, 6)
     INIClass* pRules = &GlobalVars::INIFiles::Rules.get();
 
     GET_STACK(int, overlayIdx, 0x24);
-
+#ifdef _RN_
     //if (ExtConfigs::OverlayFilter) {
     if (1) {
         char buf[8];
@@ -21,7 +21,7 @@ DEFINE_HOOK(4F1670, CTileSetBrowserView_ReloadComboboxes, 6)
         if (!pRules->GetBool(pOvlName, "Wall.HasConnection", true))
             return 0x4F1695;
     }
-
+#endif
     GET(CString, name, ECX);
     name.Format("%04d (%s)", overlayIdx, name);
     R->ECX<const char*>(name);

@@ -30,11 +30,6 @@ void FA2sp::ExtConfigsInitialize()
 		x->first, 
 		x->second.EntriesDictionary.size(), 
 		x->second.IndicesDictionary.size());
-	/*for (auto itr = pFAData->begin(); itr != pFAData->end(); ++itr)
-	{
-		Logger::Debug("Text = %s\n", itr->first);
-	}*/
-
 	/* ====================================DEBUGGING   END========================================== */
 }
 
