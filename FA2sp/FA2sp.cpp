@@ -17,14 +17,25 @@ DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
 void FA2sp::ExtConfigsInitialize()
 {
 	//setlocale(NULL, "");
-	INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
-	//auto pFAData = reinterpret_cast<std::FAMap<const char*, INISection>*>(0x7ED61C);
+	//INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
+	//ExtConfigs::AllowIncludes = pFAData->GetBool("ExtConfigs", "AllowIncludes");
+	//ExtConfigs::OverlayFilter = pFAData->GetBool("ExtConfigs", "OverlayFilter");
+
+	/* ====================================DEBUGGING BEGIN========================================== */ 
+	auto pFAData = reinterpret_cast<std::FAMap<const char*, INISection>*>(0x7ED61C);
+	auto x = pFAData->begin();
+	Logger::Debug("first = %s, second owns %d / %d items.\n", 
+		x->first, 
+		x->second.EntriesDictionary.size(), 
+		x->second.IndicesDictionary.size());
+	auto& idic = x->second.IndicesDictionary;
+	Logger::Debug("idic first is %d : %s\n", idic.begin()->first, idic.begin()->second);
 	/*for (auto itr = pFAData->begin(); itr != pFAData->end(); ++itr)
 	{
 		Logger::Debug("Text = %s\n", itr->first);
 	}*/
-	ExtConfigs::AllowIncludes = pFAData->GetBool("ExtConfigs", "AllowIncludes");
-	ExtConfigs::OverlayFilter = pFAData->GetBool("ExtConfigs", "OverlayFilter");
+
+	/* ====================================DEBUGGING   END========================================== */
 }
 
 // DllMain
@@ -46,7 +57,7 @@ SYRINGE_HANDSHAKE(pInfo)
 	if (pInfo) {
 		//if (pInfo->exeFilesize == 0x1F4000)
 		//{
-		//	sprintf_s(pInfo->Message, pInfo->cchMessage, "Found Final Alert 2 version 1.02. Applying FA2sp 2020-07-22.");
+		//	sprintf_s(pInfo->Message, pInfo->cchMessage, APPLY_INFO);
 		//	return S_OK;
 		//}
 		//else
@@ -56,7 +67,7 @@ SYRINGE_HANDSHAKE(pInfo)
 		//}
 		if (pInfo->Message)
 		{
-			sprintf_s(pInfo->Message, pInfo->cchMessage, "Found Final Alert 2 version 1.02. Applying FA2sp 2020-07-22.");
+			sprintf_s(pInfo->Message, pInfo->cchMessage, APPLY_INFO);
 			return S_OK;
 		}
 	}
@@ -66,7 +77,7 @@ SYRINGE_HANDSHAKE(pInfo)
 DEFINE_HOOK(537129, ExeRun, 9)
 {
 	Logger::Initialize();
-	Logger::Info("Found Final Alert 2 version 1.02. Applying FA2sp 2020-07-22.\n");
+	Logger::Info(APPLY_INFO"\n");
 	Replacement::String();
 	FA2Expand::ExeRun();
 	return 0;
