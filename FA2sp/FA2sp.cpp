@@ -19,6 +19,10 @@ void FA2sp::ExtConfigsInitialize()
 	//setlocale(NULL, "");
 	INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
 	//auto pFAData = reinterpret_cast<std::FAMap<const char*, INISection>*>(0x7ED61C);
+	/*for (auto itr = pFAData->begin(); itr != pFAData->end(); ++itr)
+	{
+		Logger::Debug("Text = %s\n", itr->first);
+	}*/
 	ExtConfigs::AllowIncludes = pFAData->GetBool("ExtConfigs", "AllowIncludes");
 	ExtConfigs::OverlayFilter = pFAData->GetBool("ExtConfigs", "OverlayFilter");
 }
