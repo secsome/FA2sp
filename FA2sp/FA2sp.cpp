@@ -26,10 +26,12 @@ void FA2sp::ExtConfigsInitialize()
 	/* ====================================DEBUGGING BEGIN========================================== */ 
 	auto pFAData = reinterpret_cast<std::FAMap<const char*, INISection>*>(0x7ED61C);
 	auto x = pFAData->begin();
-	Logger::Debug("first = %s, second owns %d / %d items.\n", 
+	Logger::Debug("first = %s, second owns %d / %d items. DTOR = %s\n", 
 		x->first, 
 		x->second.EntriesDictionary.size(), 
-		x->second.IndicesDictionary.size());
+		x->second.IndicesDictionary.size(),
+		x->second.__DTOR__
+		);
 	/* ====================================DEBUGGING   END========================================== */
 }
 
@@ -71,11 +73,13 @@ SYRINGE_HANDSHAKE(pInfo)
 
 DEFINE_HOOK(537129, ExeRun, 9)
 {
+#ifdef ONLY_ONE
 	bool bMutexResult = MutexHelper::Attach(MUTEX_HASH_VAL);
 	if (!bMutexResult) {
 		MessageBox(nullptr, MUTEX_INIT_ERROR_MSG, MUTEX_INIT_ERROR_TIT, MB_OK);
 		ExitProcess(114514u);
 	}
+#endif
 	Logger::Initialize();
 	Logger::Info(APPLY_INFO"\n");
 	Replacement::String();
@@ -85,7 +89,9 @@ DEFINE_HOOK(537129, ExeRun, 9)
 
 DEFINE_HOOK(537208, ExeTerminate, 9)
 {
+#ifdef ONLY_ONE
 	MutexHelper::Detach();
+#endif
 	Logger::Info("FA2sp Terminating...\n");
 	Logger::Close();
 	GET(UINT, result, EAX);
