@@ -10,8 +10,6 @@ DEFINE_HOOK(4D8D20, CScriptTypes_OnInitDialog, 6)
     return 0x4D8E06;
 }
 
-
-#if 0
 DEFINE_HOOK(4D6B01, CScriptTypes_OnActionUpdateParams, 7)
 {
     GET(CScriptTypesExt*, pThis, ESI);
@@ -22,4 +20,10 @@ DEFINE_HOOK(4D6B01, CScriptTypes_OnActionUpdateParams, 7)
     return pReturnAddress;
 }
 
-#endif
+/*
+* Before ini reading is done, let's use this
+* hook as a temporary solution
+* - secsome
+*/
+
+// TODO?

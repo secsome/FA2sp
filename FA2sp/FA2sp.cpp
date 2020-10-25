@@ -26,12 +26,19 @@ void FA2sp::ExtConfigsInitialize()
 	/* ====================================DEBUGGING BEGIN========================================== */ 
 	auto pFAData = reinterpret_cast<std::FAMap<const char*, INISection>*>(0x7ED61C);
 	auto x = pFAData->begin();
-	Logger::Debug("first = %s, second owns %d / %d items. DTOR = %s\n", 
+	Logger::Debug("first = %s, second owns %d / %d items. DTOR = %p\n", 
 		x->first, 
 		x->second.EntriesDictionary.size(), 
 		x->second.IndicesDictionary.size(),
 		x->second.__DTOR__
 		);
+	x._Inc();
+	Logger::Debug("first = %s, second owns %d / %d items. DTOR = %p\n",
+		x->first,
+		x->second.EntriesDictionary.size(),
+		x->second.IndicesDictionary.size(),
+		x->second.__DTOR__
+	);
 	/* ====================================DEBUGGING   END========================================== */
 }
 
