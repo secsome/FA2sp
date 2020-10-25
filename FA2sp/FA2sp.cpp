@@ -18,28 +18,9 @@ DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
 
 void FA2sp::ExtConfigsInitialize()
 {
-	//setlocale(NULL, "");
-	//INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
-	//ExtConfigs::AllowIncludes = pFAData->GetBool("ExtConfigs", "AllowIncludes");
-	//ExtConfigs::OverlayFilter = pFAData->GetBool("ExtConfigs", "OverlayFilter");
-
-	/* ====================================DEBUGGING BEGIN========================================== */ 
-	auto pFAData = reinterpret_cast<std::FAMap<const char*, INISection>*>(0x7ED61C);
-	auto x = pFAData->begin();
-	Logger::Debug("first = %s, second owns %d / %d items. DTOR = %p\n", 
-		x->first, 
-		x->second.EntriesDictionary.size(), 
-		x->second.IndicesDictionary.size(),
-		x->second.__DTOR__
-		);
-	x._Inc();
-	Logger::Debug("first = %s, second owns %d / %d items. DTOR = %p\n",
-		x->first,
-		x->second.EntriesDictionary.size(),
-		x->second.IndicesDictionary.size(),
-		x->second.__DTOR__
-	);
-	/* ====================================DEBUGGING   END========================================== */
+	auto pFAData = &GlobalVars::INIFiles::FAData();
+	ExtConfigs::AllowIncludes = pFAData->GetBool("ExtConfigs", "AllowIncludes");
+	ExtConfigs::OverlayFilter = pFAData->GetBool("ExtConfigs", "OverlayFilter");
 }
 
 // DllMain
