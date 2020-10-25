@@ -139,9 +139,9 @@ DEFINE_HOOK(47A0C4, FileNames_ArtIni, 7)
 {
     GET(FA2CMainWnd*, pThis, EBP);
 
-    INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
+    INIClass& pFAData = GlobalVars::INIFiles::FAData();
     CString pFile;
-    pFile = pFAData->GetString("Filenames", "Art", "art.ini");
+    pFile = pFAData.GetString("Filenames", "Art", "art.ini");
     pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Art(), FALSE);
     if (
         *reinterpret_cast<bool*>(0x5CE3B8) // bLoadYRFiles
@@ -149,7 +149,7 @@ DEFINE_HOOK(47A0C4, FileNames_ArtIni, 7)
         *reinterpret_cast<bool*>(0x5D32AC) // bSupportYR
         )
     {
-        pFile = pFAData->GetString("Filenames", "ArtYR", "artmd.ini");
+        pFile = pFAData.GetString("Filenames", "ArtYR", "artmd.ini");
         pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Art(), TRUE);
     }
     return 0x47A180;
