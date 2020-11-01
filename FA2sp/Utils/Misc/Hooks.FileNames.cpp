@@ -1,5 +1,6 @@
 #include <Helpers/Macro.h>
 #include <GlobalVars.h>
+#include <FAMemory.h>
 
 #include <FA2PPCore.h>
 
@@ -9,7 +10,7 @@
 class FA2CMainWnd : FA2CWnd
 {
 public:
-    void _47FFB0_loadTSINI(LPCSTR pFileName, INIClass* pINIHeader, BOOL bAllowOverwrite)
+    void _47FFB0_loadTSINI(LPCSTR pFileName, INIClass* pINIFile, BOOL bAllowOverwrite)
     {
         JMP_THIS(0x47FFB0);
     }
@@ -33,7 +34,6 @@ DEFINE_HOOK(47A3CC, FileNames_EvaIni, 7)
     else
         pFile = pFAData->GetString("Filenames", "EVA", "eva.ini");
     
-    //&GlobalVars::INIFiles::Eva.get() - 4
     pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Eva(), FALSE);
     return 0x47A3DF;
 }
@@ -55,7 +55,6 @@ DEFINE_HOOK(47A342, FileNames_SoundIni, 7)
     else
         pFile = pFAData->GetString("Filenames", "Sound", "sound.ini");
 
-    //&GlobalVars::INIFiles::Sound.get() - 4
     pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Sound(), FALSE);
     return 0x47A355;
 }
@@ -77,7 +76,6 @@ DEFINE_HOOK(47A450, FileNames_ThemeIni, 7)
     else
         pFile = pFAData->GetString("Filenames", "Theme", "theme.ini");
 
-    //&GlobalVars::INIFiles::Theme.get() - 4
     pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Theme(), FALSE);
     return 0x47A463;
 }
@@ -121,17 +119,6 @@ DEFINE_HOOK(479F8F, FileNames_RulesIni, 7)
         pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Rules(), TRUE);
     }
 
-    //INIClass* pRules = &GlobalVars::INIFiles::Rules.get();
-    //if (INISection* pSection = pRules->GetSection("#include"))
-    //{
-    //    const int& cnt = pSection->Entries.Count;
-    //    for (int i = 0; i < cnt; i++)
-    //    {
-    //        FAString* pIncludeName = pSection->Entries.GetValue(i);
-    //        pThis->_47FFB0_loadTSINI(*pIncludeName, reinterpret_cast<INIHeaderClass*>(0x7EDDD8), TRUE);
-    //    }
-    //}
-
     return 0x47A041;
 }
 
@@ -139,9 +126,9 @@ DEFINE_HOOK(47A0C4, FileNames_ArtIni, 7)
 {
     GET(FA2CMainWnd*, pThis, EBP);
 
-    INIClass& pFAData = GlobalVars::INIFiles::FAData();
+    INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
     CString pFile;
-    pFile = pFAData.GetString("Filenames", "Art", "art.ini");
+    pFile = pFAData->GetString("Filenames", "Art", "art.ini");
     pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Art(), FALSE);
     if (
         *reinterpret_cast<bool*>(0x5CE3B8) // bLoadYRFiles
@@ -149,7 +136,7 @@ DEFINE_HOOK(47A0C4, FileNames_ArtIni, 7)
         *reinterpret_cast<bool*>(0x5D32AC) // bSupportYR
         )
     {
-        pFile = pFAData.GetString("Filenames", "ArtYR", "artmd.ini");
+        pFile = pFAData->GetString("Filenames", "ArtYR", "artmd.ini");
         pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Art(), TRUE);
     }
     return 0x47A180;
@@ -253,29 +240,35 @@ DEFINE_HOOK(47AA67, FileNames_DesertIni, 7)
 //    return 0x487699;
 //}
 
-//TODO
+// STUPID INCLUDE SUPPORT
+// WHY IM TRYING TO DO THIS?
 //DEFINE_HOOK(480880, INIClass_LoadTSINI_IncludeSupport, 5)
 //{
-//    //if (ExtConfigs::AllowIncludes)
-//    if(1)
+//    if (ExtConfigs::AllowIncludes)
 //    {
 //        GET_STACK(FA2CMainWnd*, pThis, 0x10);
 //        GET(CString, pFile, ESI);
-//        GET_STACK(INIHeaderClass*, pINIHeader, 0x48);
-//        // GET_STACK(bool, bMerge, 0x4C);
+//        GET_STACK(INIClass*, pINIFile, 0x48);
 //
-//        GET(DWORD, ebp, EBX);
-//        Logger::Debug("%08X\n", ebp);
-//
-//        INIClass*& pINI = pINIHeader->file;
-//
-//        if (INISection* pSection = pINI->GetSection("#include"))
+//        if (pINIFile->SectionExists("#include"))
 //        {
-//            const int& cnt = pSection->Entries.Count;
-//            for (int i = 0; i < cnt; i++)
+//            auto& mData = pINIFile->GetData();
+//            auto& nSection = pINIFile->GetSection("#include");
+//            for (auto& itr : nSection.EntriesDictionary)
 //            {
-//                FAString* pIncludeName = pSection->Entries.GetValue(i);
-//                pThis->_47FFB0_loadTSINI(*pIncludeName, pINIHeader, TRUE);
+//                INIClass* pIncludeINI = GameCreate<INIClass>();
+//                auto& mIncludeINIData = pIncludeINI->GetData();
+//                pThis->_47FFB0_loadTSINI(pFile, pIncludeINI, TRUE);
+//                for (auto& includedata : mIncludeINIData)
+//                {
+//                    auto& findItr = mData.find(includedata.first);
+//                    if (findItr != mData.end())
+//                    {
+//
+//                    }
+//                    else
+//                        
+//                }
 //            }
 //        }
 //    }

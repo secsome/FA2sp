@@ -6,9 +6,8 @@
 #include <GlobalVars.h>
 
 HANDLE FA2sp::hInstance;
-
-//bool ExtConfigs::AllowIncludes = false;
-//bool ExtConfigs::OverlayFilter = false;
+bool ExtConfigs::OverlayFilter;
+bool ExtConfigs::AllowIncludes;
 
 DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
 {
