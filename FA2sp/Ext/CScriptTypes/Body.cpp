@@ -5,7 +5,54 @@
 
 #include "../../Logger.h"
 
-CScriptTypes* CScriptTypesExt::Instance = nullptr;
+#include <map>
+
+CScriptTypeUnit::CScriptTypeUnit(const char* lpSrc)
+{
+	CString lpStr = lpSrc;
+	lpStr.TrimLeft();
+	lpStr.TrimRight();
+	int bDisplay;
+	int nCount = sscanf_s(lpSrc, "%d,%s,%d,%s,%d",
+		&Index, Name, &ParamType, Description, &bDisplay);
+	switch (nCount)
+	{
+	default:
+	case 0:
+	case 1:
+	case 2:
+		Index = -1;
+		Name[0] = '\0';
+		ParamType = -1;
+		Description[0] = '\0';
+		DisplayInList = false;
+		break;
+	case 3:
+	case 4:
+		DisplayInList = true;
+		break;
+	case 5:
+		switch (toupper(static_cast<unsigned char>(*lpSrc)))
+		{
+		case '1':
+		case 'T':
+		case 'Y':
+		default:
+			DisplayInList = true;
+			break;
+		case '0':
+		case 'F':
+		case 'N':
+			DisplayInList = false;
+			break;
+		}
+	}
+}
+
+BOOL CScriptTypesExt::PreTranslateMessageExt(MSG* pMsg)
+{
+	return this->FA2CDialog::PreTranslateMessage(pMsg);
+}
 
 void CScriptTypesExt::ProgramStartupInit()
 {
@@ -15,111 +62,101 @@ void CScriptTypesExt::ProgramStartupInit()
 	RunTime::ResetMemoryContentAt(0x596148, &scripttypesPreTranslateAddr, sizeof(scripttypesPreTranslateAddr));
 }
 
-BOOL CScriptTypesExt::PreTranslateMessageExt(MSG* pMsg)
+//
+// Ext Functions
+//
+
+BOOL CScriptTypesExt::OnInitDialog()
 {
-	switch (pMsg->message) {
+	BOOL bReturn = FA2CDialog::OnInitDialog();
 
-	default:
-		break;
-	}
-	return this->FA2CDialog::PreTranslateMessage(pMsg);
-}
+	while (::SendMessage(CCBCurrentAction, CB_DELETESTRING, 0, 0) != -1)
+		;
 
-BOOL CScriptTypesExt::ExtOnInitDialog() {
-	this->FA2CDialog::OnInitDialog();
+	constexpr int nOriginActionCount = 59;
+	auto lpActionName = reinterpret_cast<const char**>(0x5D035C);
 
-	while (this->CCBCurrentAction.DeleteString(0) != -1)
-		continue;
+	std::map<int, CString> mActions;
+	for (int i = 0; i < nOriginActionCount; ++i)
+		mActions[i] = lpActionName[i];
 
-	constexpr int FA2ActionNamesArraySize = 59;
-	const char** pFA2ActionNamesArray = reinterpret_cast<const char**>(0x5D035C);
-	for (int i = 0; i < FA2ActionNamesArraySize; ++i)
+	INIClass& fadata = GlobalVars::INIFiles::FAData();
+	if (fadata.SectionExists("ScriptsRA2"))
 	{
-		int idx = this->CCBCurrentAction.AddString(pFA2ActionNamesArray[i]);
-		this->CCBCurrentAction.SetItemData(idx, i);
-	}
-
-	INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
-
-	return TRUE;
-}
-
-int CScriptTypesExt::ExtOnActionUpdateParams() {
-
-	enum {
-		FAIL = 0,
-		SUCCESS = 0x4D7182
-	};
-
-	//while (this->CCBScriptParameter.DeleteString(0) != -1)
-	//	continue;
-	//int nCurrentScriptIndex = this->CCBCurrentScript.GetCurSel();
-	//if (nCurrentScriptIndex < 0)
-	//	return FAIL;
-
-	//CString strCurrentScriptString;
-	//this->CCBCurrentScript.GetLBText(
-	//	nCurrentScriptIndex, strCurrentScriptString);
-
-	//Miscs::TrimIndex(strCurrentScriptString);
-
-	int nCurrentActionIndex = this->CCBCurrentAction.GetCurSel();
-	int nCurrentActionData = this->CCBCurrentAction.GetItemData(nCurrentActionIndex);
-
-	CComboBox& ParamCbb = this->CCBScriptParameter;
-
-	auto funcAddString = [](CComboBox& cbb,
-		const char* string,
-		int data)
-	{
-		int idx = cbb.AddString(string);
-		if (idx > 0) cbb.SetItemData(idx, data);
-	};
-
-	switch (nCurrentActionData) {
-	case 0:
-	{	
-		int nCurrentParam = ParamCbb.GetCurSel();
-		while (ParamCbb.DeleteString(0) != -1)
-			continue;
-		
-		funcAddString(ParamCbb, "0 - Not specified", 0);
-		funcAddString(ParamCbb, "1 - Anything (uses auto-targeting)", 1);
-		funcAddString(ParamCbb, "2 - Buildings", 2);
-		funcAddString(ParamCbb, "3 - Harvesters", 3);
-		funcAddString(ParamCbb, "4 - Infantry", 4);
-		funcAddString(ParamCbb, "5 - Vehicles", 5);
-		funcAddString(ParamCbb, "6 - Factories", 6);
-		funcAddString(ParamCbb, "7 - Base defenses", 7);
-		funcAddString(ParamCbb, "9 - Power plants", 9);
-		funcAddString(ParamCbb, "10 - Occupiables", 10);
-		funcAddString(ParamCbb, "11 - Tech Buildings", 11);
-
-		if (ParamCbb.GetCount() > 0) {
-			if (nCurrentParam < 0) nCurrentParam = 0;
-			ParamCbb.SetCurSel(nCurrentParam);
+		INISection& section = fadata.GetSection("ScriptsRA2");
+		for (auto& pairs : section.EntriesDictionary)
+		{
+			CScriptTypeUnit unit{ pairs.second };
+			ExtMap[unit.Index] = unit;
 		}
-
-		this->CSTParameterOfSection.SetWindowText("Target");
-
-		return SUCCESS;
 	}
-	case 52:
+
+	for (auto& unit : ExtMap)
 	{
-		int nCurrentParam = ParamCbb.GetCurSel();
-
-		while (ParamCbb.DeleteString(0) != -1)
-			continue;
-
-		funcAddString(ParamCbb, "0 - None", 0);
-		funcAddString(ParamCbb, "1 - Asterisk(*)", 1);
-		funcAddString(ParamCbb, "2 - Question mark(?)", 2);
-		funcAddString(ParamCbb, "3 - Exclamation mark(!)", 3);
-
-		this->CSTParameterOfSection.SetWindowText("Speech\nBubble:");
-		return SUCCESS;
+		if (mActions.find(unit.first) == mActions.end())
+		{
+			if (unit.second.DisplayInList)
+				mActions[unit.first] = unit.second.Name;
+		}
+		else
+		{
+			if (unit.second.DisplayInList)
+				mActions[unit.first] = unit.second.Name;
+			else
+				mActions.erase(unit.first);
+		}
 	}
-	default:
-		return FAIL;
-	}
+
+	for (auto& name : mActions)
+		::SendMessage(CCBCurrentAction, CB_ADDSTRING, 0, (LPARAM)(LPCSTR)name.second);
+
+	return bReturn;
+}
+
+void CScriptTypesExt::DoDataExchange(CDataExchange* pDX)
+{
+}
+
+void CScriptTypesExt::OnCBCurrentScriptSelectChanged()
+{
+}
+
+void CScriptTypesExt::OnLBScriptActionsSelectChanged()
+{
+}
+
+void CScriptTypesExt::OnETScriptNameChanged()
+{
+}
+
+void CScriptTypesExt::OnCBCurrentActionEditChanged()
+{
+}
+
+void CScriptTypesExt::OnCBCurrentActionSelectChanged()
+{
+}
+
+void CScriptTypesExt::OnCBScriptParameterEditChanged()
+{
+}
+
+void CScriptTypesExt::OnCBScriptParameterSelectChanged()
+{
+}
+
+void CScriptTypesExt::OnBNAddActionClicked()
+{
+}
+
+void CScriptTypesExt::OnBNDeleteActionClicked()
+{
+}
+
+void CScriptTypesExt::OnBNAddScriptClicked()
+{
+}
+
+void CScriptTypesExt::OnBNDeleteScriptClicked()
+{
 }

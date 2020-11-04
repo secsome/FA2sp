@@ -17,7 +17,10 @@ DEFINE_HOOK(43CE50, Miscs_LoadParamsToCombobox, 7)
         0x43D058;
 }
 
-#define AddString(hwnd, string) SendMessage(hwnd,CB_ADDSTRING,NULL,(LPARAM)string)
+auto AddString = [](HWND hComboBox, const char* lpString)
+{
+    SendMessage(hComboBox, CB_ADDSTRING, NULL, (LPARAM)lpString);
+};
 
 DEFINE_HOOK(43CFB4, Miscs_LoadParams_CrateTypes, 6)
 {
