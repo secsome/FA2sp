@@ -19,8 +19,11 @@ public:
 	// Ext Functions
 	//
 
+	static void* GetMessageMap();
+
 	BOOL OnInitDialog();
 	void DoDataExchange(CDataExchange* pDX);
+
 	void OnCBCurrentScriptSelectChanged();
 	void OnLBScriptActionsSelectChanged();
 	void OnETScriptNameChanged();
@@ -32,7 +35,6 @@ public:
 	void OnBNDeleteActionClicked();
 	void OnBNAddScriptClicked();
 	void OnBNDeleteScriptClicked();
-
 
 	CScriptTypesExt() {};
 	~CScriptTypesExt() {};

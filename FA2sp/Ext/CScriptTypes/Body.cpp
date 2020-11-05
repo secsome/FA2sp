@@ -70,7 +70,7 @@ BOOL CScriptTypesExt::OnInitDialog()
 {
 	BOOL bReturn = FA2CDialog::OnInitDialog();
 
-	while (::SendMessage(CCBCurrentAction, CB_DELETESTRING, 0, 0) != -1)
+	while (CCBCurrentAction.DeleteString(0) != -1)
 		;
 
 	constexpr int nOriginActionCount = 59;
@@ -108,13 +108,55 @@ BOOL CScriptTypesExt::OnInitDialog()
 	}
 
 	for (auto& name : mActions)
-		::SendMessage(CCBCurrentAction, CB_ADDSTRING, 0, (LPARAM)(LPCSTR)name.second);
+		CCBCurrentAction.AddString(name.second);
 
 	return bReturn;
 }
 
 void CScriptTypesExt::DoDataExchange(CDataExchange* pDX)
 {
+	this->FA2CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, 1407, CETDescription);
+	DDX_Control(pDX, 1064, CCBCurrentAction);
+	DDX_Control(pDX, 1193, CCBCurrentScript);
+	DDX_Control(pDX, 1196, CCBScriptParameter);
+	DDX_Control(pDX, 1170, CLBScriptActions);
+	DDX_Text(pDX, 1010, CString_ScriptName);
+}
+
+void* CScriptTypesExt::GetMessageMap()
+{
+	struct _AFX_MSGMAP
+	{
+		const _AFX_MSGMAP* (PASCAL* pfnGetBaseMap)();
+		const AFX_MSGMAP_ENTRY* lpEntries;
+	};
+
+	static AFX_MSGMAP_ENTRY pMsgEntries[] =
+	{
+		// Originals
+		//ON_CBN_EDITCHANGE(1193, OnCBCurrentActionEditChanged)
+		ON_CBN_SELCHANGE(1193, OnCBCurrentScriptSelectChanged)
+		ON_LBN_SELCHANGE(1170, OnLBScriptActionsSelectChanged)
+		ON_EN_CHANGE(1010, OnETScriptNameChanged)
+		ON_CBN_EDITCHANGE(1064, OnCBCurrentActionEditChanged)
+		ON_CBN_SELCHANGE(1064, OnCBCurrentActionSelectChanged)
+		ON_CBN_EDITCHANGE(1196, OnCBScriptParameterEditChanged)
+		ON_CBN_SELCHANGE(1196, OnCBScriptParameterSelectChanged)
+		ON_BN_CLICKED(1173, OnBNAddActionClicked)
+		ON_BN_CLICKED(1174, OnBNDeleteActionClicked)
+		ON_BN_CLICKED(1154, OnBNAddScriptClicked)
+		ON_BN_CLICKED(1066, OnBNDeleteScriptClicked)
+		{0, 0, 0, 0, AfxSig_end, (AFX_PMSG)0 }
+	};
+
+	static _AFX_MSGMAP pMsgMap =
+	{
+		(const _AFX_MSGMAP * (PASCAL*)())0x59A548,
+		pMsgEntries
+	};
+
+	return &pMsgMap;
 }
 
 void CScriptTypesExt::OnCBCurrentScriptSelectChanged()
