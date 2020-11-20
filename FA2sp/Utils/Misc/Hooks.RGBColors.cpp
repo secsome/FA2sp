@@ -40,7 +40,7 @@ DEFINE_HOOK(468B44, sub_468760_RGBColor, 5)
 
 	INIClass* pRules = &GlobalVars::INIFiles::Rules.get();
 
-	if (name.IsEmpty()) {
+	if (!name.IsEmpty()) {
 		auto const pValue = pRules->GetString("Colors", name);
 		ColorTuple hsv{};
 		if (sscanf_s(
@@ -50,7 +50,7 @@ DEFINE_HOOK(468B44, sub_468760_RGBColor, 5)
 			)
 		{
 			auto const rgb = HsvToRgb(hsv);
-			name.~CString();
+			// GameDelete(&name);
 			R->EAX<unsigned int>(rgb.a | rgb.b << 8u | rgb.c << 16u);
 			return 0x468ED3;
 		}

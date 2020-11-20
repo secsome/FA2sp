@@ -6,7 +6,7 @@
 #include <map>
 
 // Forward Declartion
-struct CScriptTypeUnit;
+struct CScriptTypeAction;
 
 class NOVTABLE CScriptTypesExt : public CScriptTypes
 {
@@ -19,10 +19,10 @@ public:
 	// Ext Functions
 	//
 
-	static void* GetMessageMap();
+	/*static void* GetMessageMap();*/
 
 	BOOL OnInitDialog();
-	void DoDataExchange(CDataExchange* pDX);
+	/*void DoDataExchange(CDataExchange* pDX);
 
 	void OnCBCurrentScriptSelectChanged();
 	void OnLBScriptActionsSelectChanged();
@@ -34,26 +34,25 @@ public:
 	void OnBNAddActionClicked();
 	void OnBNDeleteActionClicked();
 	void OnBNAddScriptClicked();
-	void OnBNDeleteScriptClicked();
+	void OnBNDeleteScriptClicked();*/
 
 	CScriptTypesExt() {};
 	~CScriptTypesExt() {};
 
 private:
-
+	
 };
 
-struct CScriptTypeUnit
+static std::map<int, CScriptTypeAction> ExtMap;
+
+struct CScriptTypeAction
 {
-	CScriptTypeUnit() = default;
-	CScriptTypeUnit(const char* lpSrc);
+	CScriptTypeAction();
+	CScriptTypeAction(const char* buffer);
 
-	int Index;
-	char Name[0x80];
-	int ParamType;
-	char Description[0x400];
-	bool DisplayInList;
+	char lpName[0x40];
+	char lpDesc[0x400];
+	int nIndex;
+	int nCode;
+	bool bDisplay;
 };
-
-// Statics
-static std::map<int, CScriptTypeUnit> ExtMap;

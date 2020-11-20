@@ -8,22 +8,11 @@
 
 DEFINE_HOOK(4F1670, CTileSetBrowserView_ReloadComboboxes, 6)
 {
-    INIClass* pRules = &GlobalVars::INIFiles::Rules.get();
-
     GET_STACK(int, overlayIdx, 0x24);
-#ifdef _RN_
-    //if (ExtConfigs::OverlayFilter) {
-    if (1) {
-        char buf[8];
-        _itoa_s(overlayIdx, buf, 10);
-        auto const& pOvlName = pRules->GetString("OverlayTypes", buf);
-
-        if (!pRules->GetBool(pOvlName, "Wall.HasConnection", true))
-            return 0x4F1695;
-    }
-#endif
+    GET(CComboBox*, pComboBox, EDI);
     GET(CString, name, ECX);
     name.Format("%04d (%s)", overlayIdx, name);
-    R->ECX<const char*>(name);
-    return 0;
+    int idx = pComboBox->AddString(name);
+    pComboBox->SetItemData(idx, overlayIdx);
+    return 0x4F1695;
 }

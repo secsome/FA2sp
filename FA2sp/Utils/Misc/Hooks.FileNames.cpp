@@ -231,13 +231,11 @@ DEFINE_HOOK(47AA67, FileNames_DesertIni, 7)
 
 //DEFINE_HOOK(48768B, FileNames_MixExtension, 5)
 //{
-//    GET(FA2CMainWnd*, pThis, EBP);
-//    REF_STACK(CString, pFront, 0x2C);
-//    INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
-//    CString pExtension = pFAData->GetString("Filenames", "MixExtension", "md");
-//    pFront += pExtension;
-//
-//    return 0x487699;
+//    INIClass* pFAData = &GlobalVars::INIFiles::FAData();
+//    const char* lpExtension =
+//        pFAData->GetString("Filenames", "MixExtension", "md");
+//    PUSH_VAR32(lpExtension);
+//    return 0x487690;
 //}
 
 // STUPID INCLUDE SUPPORT

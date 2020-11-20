@@ -2,29 +2,39 @@
 
 #include <Helpers/Macro.h>
 
-DEFINE_HOOK(4D8D20, CScriptTypes_OnInitDialog, 6)
+//DEFINE_HOOK(4D8D20, CScriptTypes_OnInitDialog, 6)
+//{
+//    GET(CScriptTypesExt*, pThis, ECX);
+//    BOOL bResult = pThis->CScriptTypesExt::OnInitDialog();
+//    R->EAX<BOOL>(bResult);
+//    return 0x4D8E06;
+//}
+
+
+// A bug fix, should be no longer used after replaced the process
+DEFINE_HOOK(4D6E4D, CScriptTypeClass_OnItemSelectChanged_Houses, 6)
 {
-    GET(CScriptTypesExt*, pThis, ECX);
-    BOOL bResult = pThis->CScriptTypesExt::OnInitDialog();
-    R->EAX<BOOL>(bResult);
-    return 0x4D8E06;
+    R->Stack(0x0, true);
+    R->Stack(0x4, true);
+    return 0;
 }
 
-DEFINE_HOOK(4D5BE0, CScriptTypes_DoDataExchange, 8)
-{
-	return 0;
-
-	//GET(CScriptTypesExt*, pThis, ECX);
-	//GET_STACK(CDataExchange*, pDX, 4);
-	//pThis->CScriptTypesExt::DoDataExchange(pDX);
- //   return 0x4D5C65;
-}
-
-DEFINE_HOOK(4D5C70, CScriptTypes_GetMessageMap, 5)
-{
-	R->EAX<void*>(CScriptTypesExt::GetMessageMap());
-	return 0x4D5C75;
-}
+//
+//DEFINE_HOOK(4D5BE0, CScriptTypes_DoDataExchange, 8)
+//{
+//	return 0;
+//
+//	//GET(CScriptTypesExt*, pThis, ECX);
+//	//GET_STACK(CDataExchange*, pDX, 4);
+//	//pThis->CScriptTypesExt::DoDataExchange(pDX);
+// //   return 0x4D5C65;
+//}
+//
+//DEFINE_HOOK(4D5C70, CScriptTypes_GetMessageMap, 5)
+//{
+//	R->EAX<void*>(CScriptTypesExt::GetMessageMap());
+//	return 0x4D5C75;
+//}
 //
 //DEFINE_HOOK(4D61B0, CScriptTypes_OnCBCurrentScriptSelectChanged, 7)
 //{

@@ -5,9 +5,17 @@
 
 #include <GlobalVars.h>
 
+#include <clocale>
+
 HANDLE FA2sp::hInstance;
 bool ExtConfigs::OverlayFilter;
 bool ExtConfigs::AllowIncludes;
+
+//DEFINE_HOOK(497430, DEBUGGING_CSF_, 5)
+//{
+//	CSFDict* csffile = reinterpret_cast<CSFDict*>(0x13A88A8);
+//	return 0;
+//}
 
 DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
 {

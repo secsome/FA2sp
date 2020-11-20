@@ -19,7 +19,7 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{3bbea2d2-97da-4b96-9516-36a6c8d3b4a3}</ProjectGuid>
     <RootNamespace>FA2sp</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -216,6 +216,7 @@
     <ClCompile Include="FA2sp\Logger.cpp" />
     <ClCompile Include="FA2sp\RunTime.cpp" />
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.FileNames.cpp" />
+    <ClCompile Include="FA2sp\Utils\Misc\Hooks.Includes.cpp" />
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.Mix.cpp" />
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.RGBColors.cpp" />
     <ClCompile Include="FA2sp\Utils\Replacement.cpp" />

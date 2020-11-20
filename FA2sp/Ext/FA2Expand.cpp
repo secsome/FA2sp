@@ -49,7 +49,7 @@
 
 void __stdcall FA2Expand::ExeRun()
 {
-    CLoadingExt::ProgramStartupInit();
+    /*CLoadingExt::ProgramStartupInit();
     CLoadingGraphicsExt::ProgramStartupInit();
     CUpdateProgressExt::ProgramStartupInit();
     
@@ -98,7 +98,7 @@ void __stdcall FA2Expand::ExeRun()
     CSaveOptionExt::ProgramStartupInit();
     CMMXExt::ProgramStartupInit();
     
-    CDialog289Ext::ProgramStartupInit();
+    CDialog289Ext::ProgramStartupInit();*/
 }
 
 FA2Expand::FA2Expand()
