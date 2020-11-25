@@ -21,7 +21,7 @@ static FA2CMainWnd* LoadingPtr = nullptr;
 
 DEFINE_HOOK(47FFB0, INIClass_LoadTSINI_IncludeSupport_1, 7)
 {
-    return 0;
+    //return 0;
     if (ExtConfigs::AllowIncludes)
     {
         GET(FA2CMainWnd*, LoadingPtr, ECX);
@@ -36,7 +36,7 @@ DEFINE_HOOK(47FFB0, INIClass_LoadTSINI_IncludeSupport_1, 7)
 
 DEFINE_HOOK(480880, INIClass_LoadTSINI_IncludeSupport2, 5)
 {
-    return 0;
+    //return 0;
     if (ExtConfigs::AllowIncludes)
     {
         char buffer[0x80];
@@ -55,7 +55,7 @@ DEFINE_HOOK(480880, INIClass_LoadTSINI_IncludeSupport2, 5)
             ++LastReadIndex;
             buffer[0] = '\0';
             strcpy_s(buffer ,xINI->GetString(section, key, ""));
-            if (buffer) {
+            if (buffer && strlen(buffer) > 0) {
                 bool canLoad = true;
                 for (size_t j = 0; j < LoadedINIFiles.size(); ++j) {
                     if (!strcmp(LoadedINIFiles[j], buffer)) {
@@ -65,6 +65,7 @@ DEFINE_HOOK(480880, INIClass_LoadTSINI_IncludeSupport2, 5)
                 }
 
                 if (canLoad) {
+                    Logger::Debug("Include Ext Loaded File: %s\n", buffer);
                     LoadingPtr->_47FFB0_loadTSINI(
                         buffer, xINI, TRUE
                     );
@@ -73,7 +74,7 @@ DEFINE_HOOK(480880, INIClass_LoadTSINI_IncludeSupport2, 5)
         }
 
         if (LoadedINIs.size() > 0)
-            LoadedINIs.erase(LoadedINIs.end());
+            LoadedINIs.erase(LoadedINIs.end() - 1);
         if (!LoadedINIs.size()) {
             for (int j = LoadedINIFiles.size() - 1; j >= 0; --j) {
                 if (char* ptr = LoadedINIFiles[j]) {

@@ -159,6 +159,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FA2sp\Ext\CIsoView\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CIsoView\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTileSetBrowserView\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerAction\Body.cpp" />
@@ -223,6 +225,9 @@
     <ClCompile Include="FA2sp\Helpers\MutexHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FA2pp\CMixFile.h" />
+    <ClInclude Include="FA2pp\Helpers\Functional.h" />
+    <ClInclude Include="FA2sp\Ext\CIsoView\Body.h" />
     <ClInclude Include="FA2sp\Ext\CTriggerAction\Body.h" />
     <ClInclude Include="FA2sp\Ext\FA2Expand.h" />
     <ClInclude Include="FA2sp\Ext\CAITriggerTypesEnable\Body.h" />

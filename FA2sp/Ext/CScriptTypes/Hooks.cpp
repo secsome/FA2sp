@@ -10,7 +10,6 @@
 //    return 0x4D8E06;
 //}
 
-
 // A bug fix, should be no longer used after replaced the process
 DEFINE_HOOK(4D6E4D, CScriptTypeClass_OnItemSelectChanged_Houses, 6)
 {

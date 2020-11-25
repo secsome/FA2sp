@@ -28,6 +28,8 @@ void CScriptTypesExt::ProgramStartupInit()
 
 BOOL CScriptTypesExt::OnInitDialog()
 {
+	using ActionParamStructure = std::tuple<CString, int, bool, bool, CString>;
+
 	BOOL bReturn = FA2CDialog::OnInitDialog();
 
 	while (CCBCurrentAction.DeleteString(0) != -1)
@@ -40,35 +42,10 @@ BOOL CScriptTypesExt::OnInitDialog()
 	for (int i = 0; i < nOriginActionCount; ++i)
 		mActions[i] = lpActionName[i];
 
-	/*INIClass& fadata = GlobalVars::INIFiles::FAData();
-	if (fadata.SectionExists("ScriptsRA2"))
-	{
-		INISection& section = fadata.GetSection("ScriptsRA2");
-		for (auto& pairs : section.EntriesDictionary)
-		{
-			CScriptTypeAction unit{ pairs.second };
-			ExtMap[unit.nIndex] = unit;
-		}
-	}
-
-	for (auto& unit : ExtMap)
-	{
-		if (mActions.find(unit.first) == mActions.end())
-		{
-			if (unit.second.bDisplay)
-				mActions[unit.first] = unit.second.lpName;
-		}
-		else
-		{
-			if (unit.second.bDisplay)
-				mActions[unit.first] = unit.second.lpName;
-			else
-				mActions.erase(unit.first);
-		}
-	}*/
-
 	for (auto& name : mActions)
 		CCBCurrentAction.AddString(name.second);
+
+	
 
 	return bReturn;
 }

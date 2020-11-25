@@ -42,17 +42,3 @@ public:
 private:
 	
 };
-
-static std::map<int, CScriptTypeAction> ExtMap;
-
-struct CScriptTypeAction
-{
-	CScriptTypeAction();
-	CScriptTypeAction(const char* buffer);
-
-	char lpName[0x40];
-	char lpDesc[0x400];
-	int nIndex;
-	int nCode;
-	bool bDisplay;
-};
