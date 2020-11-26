@@ -4,48 +4,13 @@
 #include "Helpers/MutexHelper.h"
 
 #include <GlobalVars.h>
-#include <CMixFile.h>
 
 #include <clocale>
 
 HANDLE FA2sp::hInstance;
+std::map<CString, CString> FA2sp::StringTableDictionary;
 bool ExtConfigs::OverlayFilter;
 bool ExtConfigs::AllowIncludes;
-
-//DEFINE_HOOK(5257D0, MixNameDebug, 6)
-//{
-//	GET(char*, filename, ESI);
-//	GET(char*, name2, EAX);
-//	GET(int, val, EBX);
-//	Logger::Debug(__FUNCTION__" %s %s %d\n", filename, name2, val);
-//	return 0;
-//}
-
-DEFINE_HOOK(497430, DEBUGGING_MIXINI_, 5)
-{
-	//CSFDict* csffile = reinterpret_cast<CSFDict*>(0x13A88A8);
-	
-	static bool flg = false;
-	if (!flg) {
-		bool ret = 
-			CMixFile::FindAndCopyTo("stringtable09.csf", "C:\\Users\\30270\\Desktop\\test.csf");
-		Logger::Debug(__FUNCTION__ " %d\n", ret);
-		flg = true;
-	}
-	return 0;
-}
-
-//DEFINE_HOOK(470A66, Debug_dword_72A870, 7)
-//{
-//	Logger::Debug(__FUNCTION__" Called! Caller Address = %p\n", R->Stack32(0x0));
-//	using UnknownMap = FAMap<CString, BOOL, 0x5D8CD0, 0>;
-//	UnknownMap* data = reinterpret_cast<UnknownMap*>(0x72A870);
-//	for (auto& x : *data)
-//	{
-//		Logger::Debug("first = %s, second = %s\n", x.first, x.second ? "TRUE" : "FALSE");
-//	}
-//	return 0;
-//}
 
 DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
 {

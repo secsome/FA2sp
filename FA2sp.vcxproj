@@ -221,12 +221,11 @@
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.Includes.cpp" />
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.Mix.cpp" />
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.RGBColors.cpp" />
+    <ClCompile Include="FA2sp\Utils\Misc\Hooks.Stringtables.cpp" />
     <ClCompile Include="FA2sp\Utils\Replacement.cpp" />
     <ClCompile Include="FA2sp\Helpers\MutexHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FA2pp\CMixFile.h" />
-    <ClInclude Include="FA2pp\Helpers\Functional.h" />
     <ClInclude Include="FA2sp\Ext\CIsoView\Body.h" />
     <ClInclude Include="FA2sp\Ext\CTriggerAction\Body.h" />
     <ClInclude Include="FA2sp\Ext\FA2Expand.h" />
