@@ -15,20 +15,6 @@ bool ParseCSFFile(char* buffer, DWORD& size);
 void WriteCSFFile();
 bool LoadToBuffer();
 
-//DEFINE_HOOK(492F3A, CSFFiles_Stringtables_Support_0, 6)
-//{
-// This buffer is empty, let's hook another place!
-//    //R->EAX<DWORD>(0x5D44AC);
-//    Logger::Debug("%p\n", R->EDI());
-//    return 0x49305F;
-//}
-
-//DEFINE_HOOK(492F4C, TASD, 5)
-//{
-//    MessageBox(NULL, "NULL BUFFER", "", MB_OK);
-//    return 0;
-//}
-
 DEFINE_HOOK(492D10, CSFFiles_Stringtables_Support_1, 5)
 {
     LoadCSFFiles(R->Stack32(0x2C0 - 0x268));
