@@ -17,21 +17,25 @@ bool LoadToBuffer();
 
 DEFINE_HOOK(492D10, CSFFiles_Stringtables_Support_1, 5)
 {
-    LoadCSFFiles(R->Stack32(0x2C0 - 0x268));
-    bLoadRes = LoadToBuffer();
-    if (bLoadRes)
+    if (ExtConfigs::Stringtables)
     {
-        R->EDI(pEDIBuffer);
-        return 0x49305F;
+        LoadCSFFiles(R->Stack32(0x2C0 - 0x268));
+        bLoadRes = LoadToBuffer();
+        if (bLoadRes)
+        {
+            R->EDI(pEDIBuffer);
+            return 0x49305F;
+        }
+        else
+            return 0;
     }
-    else
-        return 0;
+    return 0;
 }
 
 DEFINE_HOOK(49433B, CSFFiles_Stringtables_Support_2, 6)
 {
     // Cleanning up
-    if (bLoadRes)
+    if (ExtConfigs::Stringtables && bLoadRes)
     {
         GameDelete(pEDIBuffer);
         char tmpCsfFile[0x400];

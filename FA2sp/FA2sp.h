@@ -20,5 +20,6 @@ class ExtConfigs
 public:
     static bool OverlayFilter;
     static bool AllowIncludes;
+    static bool Stringtables;
 };
 

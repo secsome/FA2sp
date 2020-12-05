@@ -10,6 +10,7 @@
 HANDLE FA2sp::hInstance;
 bool ExtConfigs::OverlayFilter;
 bool ExtConfigs::AllowIncludes;
+bool ExtConfigs::Stringtables;
 
 DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
 {
@@ -22,6 +23,7 @@ void FA2sp::ExtConfigsInitialize()
 	auto pFAData = &GlobalVars::INIFiles::FAData();
 	ExtConfigs::AllowIncludes = pFAData->GetBool("ExtConfigs", "AllowIncludes");
 	ExtConfigs::OverlayFilter = pFAData->GetBool("ExtConfigs", "OverlayFilter");
+	ExtConfigs::Stringtables = pFAData->GetBool("ExtConfigs", "Stringtables");
 }
 
 // DllMain
@@ -72,7 +74,7 @@ DEFINE_HOOK(537129, ExeRun, 9)
 #endif
 	Logger::Initialize();
 	Logger::Info(APPLY_INFO"\n");
-	Replacement::String();
+	// Replacement::String();
 	FA2Expand::ExeRun();
 	return 0;
 }
