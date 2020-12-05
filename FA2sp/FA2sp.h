@@ -6,8 +6,6 @@
 
 #include <Helpers\Macro.h>
 
-#include <map>
-
 typedef unsigned char byte;
 
 class FA2sp
@@ -15,8 +13,6 @@ class FA2sp
 public:
     static HANDLE hInstance;
     static void ExtConfigsInitialize();
-
-    static std::map<CString, CString> StringTableDictionary;
 };
 
 class ExtConfigs

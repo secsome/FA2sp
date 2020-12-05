@@ -8,16 +8,22 @@ bool Logger::is_initialized_;
 void Logger::Initialize() {
 	file_pointer_ = _fsopen("FA2sp.log", "w", _SH_DENYWR);
 	is_initialized_ = file_pointer_;
+	char time[24];
+	Time(time);
+	Raw("FA2sp Logger Initializing at %s ", time);
 }
 
 void Logger::Close() {
+	char time[24];
+	Time(time);
+	Raw("FA2sp Logger Closing at %s ", time);
 	fclose(file_pointer_);
 }
 
 void Logger::Write(kLoggerType type, const char* format, va_list args) {
 	if (is_initialized_) {
-		char buffer[1024];
-		vsprintf_s(buffer, 1024, format, args);
+		char buffer[0x800];
+		vsprintf_s(buffer, format, args);
 		char type_str[6];
 		switch (type)
 		{
@@ -38,9 +44,7 @@ void Logger::Write(kLoggerType type, const char* format, va_list args) {
 			strcpy_s(type_str, 6, "Error");
 			break;
 		}
-		char time[24];
-		Time(time);
-		fprintf_s(file_pointer_, "%s [%s]::%s", time, type_str, buffer);
+		fprintf_s(file_pointer_, "[%s] %s", type_str, buffer);
 		fflush(file_pointer_);
 	}
 }

@@ -34,7 +34,7 @@ DEFINE_HOOK(47FFB0, INIClass_LoadTSINI_IncludeSupport_1, 7)
     return 0;
 }
 
-DEFINE_HOOK(480880, INIClass_LoadTSINI_IncludeSupport2, 5)
+DEFINE_HOOK(480880, INIClass_LoadTSINI_IncludeSupport_2, 5)
 {
     //return 0;
     if (ExtConfigs::AllowIncludes)

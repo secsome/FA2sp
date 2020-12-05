@@ -8,7 +8,6 @@
 #include <clocale>
 
 HANDLE FA2sp::hInstance;
-std::map<CString, CString> FA2sp::StringTableDictionary;
 bool ExtConfigs::OverlayFilter;
 bool ExtConfigs::AllowIncludes;
 
