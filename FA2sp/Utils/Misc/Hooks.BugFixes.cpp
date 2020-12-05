@@ -26,15 +26,3 @@ DEFINE_HOOK(421BCE, CFinalSunDlg_Easyview, 6)
 {
 	return 0x421DBD;
 }
-
-// Make Cliff works on lunar
-// Craaaaashes! Maybe FA2 hardcoded to use tileset 10?
-//DEFINE_HOOK(4353B8, FA2Main_CliffToolForLunar_Back, 5)
-//{
-//	return 0x4353D0;
-//}
-//
-//DEFINE_HOOK(435338, FA2Main_CliffToolForLunar_Front, 5)
-//{
-//	return 0x435350;
-//}

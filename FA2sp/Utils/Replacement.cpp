@@ -2,7 +2,7 @@
 #include "../FA2sp.Macros.h"
 
 void Replacement::String() {
-	ReplaceStringAt(FILE_SUFFIX, 0x5CED6C);
+	//ReplaceStringAt(FILE_SUFFIX, 0x5CED6C);
 	// ReplaceStringAt("MAIN WINDOW TITLE", 0x5CD808);
 
 	/*ReplaceStringAt("Desert" FILE_SUFFIX ".ini", 0x5CE3E8);

@@ -16,7 +16,7 @@ void Logger::Initialize() {
 void Logger::Close() {
 	char time[24];
 	Time(time);
-	Raw("FA2sp Logger Closing at %s ", time);
+	Raw("FA2sp Logger Closing at %s.\n", time);
 	fclose(file_pointer_);
 }
 

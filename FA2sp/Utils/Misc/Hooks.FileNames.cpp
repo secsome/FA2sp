@@ -86,8 +86,6 @@ DEFINE_HOOK(47A4D4, FileNames_AIIni, 7)
 
     INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
     CString pFile;
-    pFile = pFAData->GetString("Filenames", "AI", "ai.ini");
-    pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Ai(), FALSE);
     if (
         *reinterpret_cast<bool*>(0x5CE3B8) // bLoadYRFiles
         &&
@@ -95,8 +93,11 @@ DEFINE_HOOK(47A4D4, FileNames_AIIni, 7)
         )
     {
         pFile = pFAData->GetString("Filenames", "AIYR", "aimd.ini");
-        pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Ai(), TRUE);
     }
+    else
+        pFile = pFAData->GetString("Filenames", "AI", "ai.ini");
+
+    pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Ai(), FALSE);
 
     return 0x47A50C;
 }
@@ -107,8 +108,6 @@ DEFINE_HOOK(479F8F, FileNames_RulesIni, 7)
 
     INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
     CString pFile;
-    pFile = pFAData->GetString("Filenames", "Rules", "rules.ini");
-    pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Rules(), FALSE);
     if (
         *reinterpret_cast<bool*>(0x5CE3B8) // bLoadYRFiles
         &&
@@ -116,8 +115,11 @@ DEFINE_HOOK(479F8F, FileNames_RulesIni, 7)
         )
     {
         pFile = pFAData->GetString("Filenames", "RulesYR", "rulesmd.ini");
-        pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Rules(), TRUE);
     }
+    else
+        pFile = pFAData->GetString("Filenames", "Rules", "rules.ini");
+
+    pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Rules(), FALSE);
 
     return 0x47A041;
 }
@@ -229,46 +231,11 @@ DEFINE_HOOK(47AA67, FileNames_DesertIni, 7)
     return 0x47AA7A;
 }
 
-//DEFINE_HOOK(48768B, FileNames_MixExtension, 5)
-//{
-//    INIClass* pFAData = &GlobalVars::INIFiles::FAData();
-//    const char* lpExtension =
-//        pFAData->GetString("Filenames", "MixExtension", "md");
-//    PUSH_VAR32(lpExtension);
-//    return 0x487690;
-//}
-
-// STUPID INCLUDE SUPPORT
-// WHY IM TRYING TO DO THIS?
-//DEFINE_HOOK(480880, INIClass_LoadTSINI_IncludeSupport, 5)
-//{
-//    if (ExtConfigs::AllowIncludes)
-//    {
-//        GET_STACK(FA2CMainWnd*, pThis, 0x10);
-//        GET(CString, pFile, ESI);
-//        GET_STACK(INIClass*, pINIFile, 0x48);
-//
-//        if (pINIFile->SectionExists("#include"))
-//        {
-//            auto& mData = pINIFile->GetData();
-//            auto& nSection = pINIFile->GetSection("#include");
-//            for (auto& itr : nSection.EntriesDictionary)
-//            {
-//                INIClass* pIncludeINI = GameCreate<INIClass>();
-//                auto& mIncludeINIData = pIncludeINI->GetData();
-//                pThis->_47FFB0_loadTSINI(pFile, pIncludeINI, TRUE);
-//                for (auto& includedata : mIncludeINIData)
-//                {
-//                    auto& findItr = mData.find(includedata.first);
-//                    if (findItr != mData.end())
-//                    {
-//
-//                    }
-//                    else
-//                        
-//                }
-//            }
-//        }
-//    }
-//    return 0;
-//}
+DEFINE_HOOK(48768B, FileNames_MixExtension, 5)
+{
+    REF_STACK(CString, name, 40);
+    INIClass* pFAData = &GlobalVars::INIFiles::FAData();
+    name += pFAData->GetString("Filenames", "MixExtension", "md");
+    R->ECX<const char*>(name);
+    return 0x487699;
+}
