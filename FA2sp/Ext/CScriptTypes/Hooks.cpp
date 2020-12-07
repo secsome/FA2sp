@@ -2,13 +2,144 @@
 
 #include <Helpers/Macro.h>
 
-//DEFINE_HOOK(4D8D20, CScriptTypes_OnInitDialog, 6)
-//{
-//    GET(CScriptTypesExt*, pThis, ECX);
-//    BOOL bResult = pThis->CScriptTypesExt::OnInitDialog();
-//    R->EAX<BOOL>(bResult);
-//    return 0x4D8E06;
-//}
+DEFINE_HOOK(4D8AC0, Miscs_LoadParams_EnterStatus, 5)
+{
+    GET_STACK(CComboBox*, pComboBox, 0x4);
+    while (pComboBox->DeleteString(0) != -1);
+
+    const char* pStatus[] =
+    {
+        "Sleep",
+        "Attack nearest enemy",
+        "Move",
+        "QMove",
+        "Retreat home for R&R",
+        "Guard",
+        "Sticky (never recruit)",
+        "Enter object",
+        "Capture object",
+        "Move into & get eaten",
+        "Harvest",
+        "Area Guard",
+        "Return (to refinery)",
+        "Stop",
+        "Ambush (wait until discovered)",
+        "Hunt",
+        "Unload",
+        "Sabotage (move in & destroy)",
+        "Construction",
+        "Deconstruction",
+        "Repair",
+        "Rescue",
+        "Missile",
+        "Harmless",
+        "Open",
+        "Patrol",
+        "Paradrop approach drop zone",
+        "Paradrop overlay drop zone",
+        "Wait",
+        "Attack again",
+        "Spyplane approach",
+        "Spyplane overfly"
+    };
+
+    for (int i = 0; i < 32; ++i)
+    {
+        char buffer[0x40];
+        sprintf_s(buffer, "%u - %s", i, pStatus[i]);
+        int idx = pComboBox->AddString(buffer);
+        if (idx >= 0)
+            pComboBox->SetItemData(idx,i);
+    }
+
+    return 0x4D8D12;
+}
+
+DEFINE_HOOK(4463C0, Miscs_LoadParams_Attack, 6)
+{
+    GET_STACK(CComboBox*, pComboBox, 0x4);
+    int nCurSel = pComboBox->GetCurSel();
+    while (pComboBox->DeleteString(0) != -1);
+    
+    auto addString = [&pComboBox](const char* lpzStr, int data){
+        int idx = pComboBox->AddString(lpzStr);
+        if (idx >= 0)
+            pComboBox->SetItemData(idx, data);
+    };
+
+    addString("0 - Not specified", 0);
+    addString("1 - Anything (uses auto-targeting)", 1);
+    addString("2 - Buildings", 2);
+    addString("3 - Harvesters", 3);
+    addString("4 - Infantry", 4);
+    addString("5 - Vehicles", 5);
+    addString("6 - Factories", 6);
+    addString("7 - Base defenses", 7);
+    addString("9 - Power plants", 9);
+    addString("10 - Occupiables", 10);
+    addString("11 - Tech Buildings", 11);
+
+    if (nCurSel >= 0)
+        pComboBox->SetCurSel(nCurSel);
+
+    return 0x4464AB;
+}
+
+DEFINE_HOOK(4D75EF, CScriptTypes_OnParamEntered, A)
+{
+    GET(CScriptTypes*, pThis, ESI);
+    int cursel = pThis->CCBCurrentAction.GetCurSel();
+    if (cursel < 0)
+        return 0x4D763A;
+    int data = pThis->CCBCurrentAction.GetItemData(cursel);
+    auto& dict = CScriptTypesExt::ExtActions;
+    auto& itr = dict.find(data);
+    R->EAX(itr == dict.end() ? "==NO DESCRIPTION==" : itr->second.Description_);
+    return 0x4D7631;
+}
+
+DEFINE_HOOK(4D6621, CScriptTypes_OnLBScriptActionsSelectChanged_1, 6)
+{
+    GET(CScriptTypes*, pThis, ESI);
+    int cnt = pThis->CCBCurrentAction.GetCount();
+    int result = 0;
+    if (cnt >= 0)
+    {
+        while (pThis->CCBCurrentAction.GetItemData(cnt) != R->EAX())
+        {
+            if (--cnt < 0)
+                break;
+        }
+        result = cnt < 0 ? 0 : cnt;
+    }
+    R->EAX(result);
+    return 0;
+}
+
+DEFINE_HOOK(4D6667, CScriptTypes_OnLBScriptActionsSelectChanged_2, 7)
+{
+    GET(CScriptTypes*, pThis, ESI);
+    int cursel = pThis->CCBCurrentAction.GetCurSel();
+    if (cursel < 0)
+        return 0x4D669C;
+    int itemdata = pThis->CCBCurrentAction.GetItemData(cursel);
+    
+    auto& dict = CScriptTypesExt::ExtActions;
+    auto& itr = dict.find(itemdata);
+    if (itr != dict.end())
+        R->EDI<const char*>(itr->second.Description_);
+    else
+        return 0x4D669C;
+    return 0x4D6693;
+}
+
+DEFINE_HOOK(4D8D20, CScriptTypes_OnInitDialog, 6)
+{
+    GET(CScriptTypesExt*, pThis, ECX);
+    BOOL bResult = pThis->CScriptTypesExt::OnInitDialog();
+    R->EAX<BOOL>(bResult);
+    return 0x4D8E06;
+}
 
 // A bug fix, should be no longer used after replaced the process
 DEFINE_HOOK(4D6E4D, CScriptTypeClass_OnItemSelectChanged_Houses, 6)

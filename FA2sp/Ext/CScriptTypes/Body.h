@@ -39,6 +39,13 @@ public:
 	CScriptTypesExt() {};
 	~CScriptTypesExt() {};
 
-private:
-	
+	static std::map<int, CScriptTypeAction> ExtActions;
+};
+
+struct CScriptTypeAction {
+	const char* Name_;
+	int ParamCode_;
+	bool Hide_;
+	bool Editable_;
+	const char* Description_;
 };

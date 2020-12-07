@@ -4,10 +4,7 @@
 #include <Miscs/Miscs.h>
 
 #include "../../Logger.h"
-#include "../../Helpers/Parser.h"
-
-#include <map>
-#include <vector>
+#include "../../Helpers/Helper.h"
 
 BOOL CScriptTypesExt::PreTranslateMessageExt(MSG* pMsg)
 {
@@ -26,29 +23,70 @@ void CScriptTypesExt::ProgramStartupInit()
 // Ext Functions
 //
 
+std::map<int, CScriptTypeAction> CScriptTypesExt::ExtActions;
 BOOL CScriptTypesExt::OnInitDialog()
 {
-	using ActionParamStructure = std::tuple<CString, int, bool, bool, CString>;
-
 	BOOL bReturn = FA2CDialog::OnInitDialog();
+	if (bReturn)
+	{
+		while (CCBCurrentAction.DeleteString(0) != -1);
+		
+		// Initialize defaults
+		const char** pNames = reinterpret_cast<const char**>(0x5D035C);
+		const char** pDescriptions = reinterpret_cast<const char**>(0x5D0448);
+		for (int i = 0; i < 59; ++i)
+		{
+			auto& curAction = ExtActions[i];
+			curAction.Name_ = _strdup(pNames[i]);
+			curAction.Description_ = _strdup(pDescriptions[i]);
+			curAction.Editable_ = true;
+			curAction.Hide_ = false;
+			curAction.ParamCode_ = 0;
+		}
 
-	while (CCBCurrentAction.DeleteString(0) != -1)
-		;
+		auto& fadata = GlobalVars::INIFiles::FAData();
+		if (fadata.SectionExists("ScriptsRA2")) {
+			auto& entities = fadata.GetSection("ScriptsRA2");
+			char* pParseBuffer[5];
+			for (auto& pair : entities.EntriesDictionary)
+			{
+				int id = atoi(pair.first);
+				if (id < 0) continue;
+				auto count =
+					ParseList(pair.second, (const char**)(pParseBuffer), 5);
+				switch (count)
+				{
+				case 5:
+				default:
+					ExtActions[id].Description_ = _strdup((const char*)pParseBuffer[4]);
+				case 4:
+					ExtActions[id].Editable_ = ParseBool((const char*)pParseBuffer[3]);
+				case 3:
+					ExtActions[id].Hide_ = ParseBool((const char*)pParseBuffer[2]);
+				case 2:
+					ExtActions[id].ParamCode_ = atoi((const char*)pParseBuffer[1]);
+				case 1:
+					ExtActions[id].Name_ = _strdup((const char*)pParseBuffer[0]);
+				case 0:
+					continue;
+				}
+			}
+		}
 
-	constexpr int nOriginActionCount = 59;
-	auto lpActionName = reinterpret_cast<const char**>(0x5D035C);
+		for (auto& ent : ExtActions)
+		{
+			if (!ent.second.Hide_)
+			{
+				int data = CCBCurrentAction.AddString(ent.second.Name_);
+				CCBCurrentAction.SetItemData(data, data);
+			}
+		}
 
-	std::map<int, CString> mActions;
-	for (int i = 0; i < nOriginActionCount; ++i)
-		mActions[i] = lpActionName[i];
-
-	for (auto& name : mActions)
-		CCBCurrentAction.AddString(name.second);
-
-	
-
+	}
 	return bReturn;
 }
+
+
 //
 //void CScriptTypesExt::DoDataExchange(CDataExchange* pDX)
 //{
