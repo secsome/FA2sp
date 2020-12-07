@@ -2,6 +2,35 @@
 
 #include <Helpers/Macro.h>
 
+// Cleanning up
+DEFINE_HOOK(4D5B20, CScriptTypes_DTOR, 7)
+{
+    auto& dict = CScriptTypesExt::ExtActions;
+    for (auto& x : dict)
+    {
+        delete x.second.Description_;
+        delete x.second.Name_;
+    }
+    dict.clear();
+    return 0;
+}
+
+// TODO
+DEFINE_HOOK(43CE8D, Miscs_LoadParamToCombobox, 9)
+{
+    GET(CComboBox*, pComboBox, ESI);
+    GET(int, nCode, EAX);
+    while (pComboBox->DeleteString(0) != -1);
+    
+    enum {default = 0x43CE96, handled = 0x43D037};
+    
+    if (nCode < 40)
+    {
+        
+    }
+    return 0;
+}
+
 DEFINE_HOOK(4D8AC0, Miscs_LoadParams_EnterStatus, 5)
 {
     GET_STACK(CComboBox*, pComboBox, 0x4);
