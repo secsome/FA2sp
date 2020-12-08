@@ -24,13 +24,14 @@ void CScriptTypesExt::ProgramStartupInit()
 //
 
 std::map<int, CScriptTypeAction> CScriptTypesExt::ExtActions;
+std::map<int, CScriptTypeParam> CScriptTypesExt::ExtParams;
 BOOL CScriptTypesExt::OnInitDialog()
 {
 	BOOL bReturn = FA2CDialog::OnInitDialog();
 	if (bReturn)
 	{
 		while (CCBCurrentAction.DeleteString(0) != -1);
-		
+
 		// Initialize defaults
 		const char** pNames = reinterpret_cast<const char**>(0x5D035C);
 		const char** pDescriptions = reinterpret_cast<const char**>(0x5D0448);
@@ -45,6 +46,30 @@ BOOL CScriptTypesExt::OnInitDialog()
 		}
 
 		auto& fadata = GlobalVars::INIFiles::FAData();
+		
+		if (fadata.SectionExists("ScriptParams"))
+		{
+			auto& entities = fadata.GetSection("ScriptParams");
+			char* pParseBuffer[2];
+			for (auto& pair : entities.EntriesDictionary)
+			{
+				int id = atoi(pair.first);
+				if (id < 0) continue;
+				auto count =
+					ParseList(pair.second, (const char**)(pParseBuffer), 2);
+				switch (count)
+				{
+				default:
+				case 2:
+					ExtParams[id].Param_ = atoi((const char*)pParseBuffer[1]);
+				case 1:
+					ExtParams[id].Label_ = _strdup((const char*)pParseBuffer[0]);
+				case 0:
+					continue;
+				}
+			}
+		}
+		
 		if (fadata.SectionExists("ScriptsRA2")) {
 			auto& entities = fadata.GetSection("ScriptsRA2");
 			char* pParseBuffer[5];

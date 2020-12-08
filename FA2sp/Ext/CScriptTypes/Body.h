@@ -7,6 +7,7 @@
 
 // Forward Declartion
 struct CScriptTypeAction;
+struct CScriptTypeParam;
 
 class NOVTABLE CScriptTypesExt : public CScriptTypes
 {
@@ -40,6 +41,7 @@ public:
 	~CScriptTypesExt() {};
 
 	static std::map<int, CScriptTypeAction> ExtActions;
+	static std::map<int, CScriptTypeParam> ExtParams;
 };
 
 struct CScriptTypeAction {
@@ -48,4 +50,9 @@ struct CScriptTypeAction {
 	bool Hide_;
 	bool Editable_;
 	const char* Description_;
+};
+
+struct CScriptTypeParam {
+	const char* Label_;
+	int Param_;
 };

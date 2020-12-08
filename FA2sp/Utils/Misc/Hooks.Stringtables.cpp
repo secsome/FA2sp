@@ -72,6 +72,7 @@ void LoadCSFFiles(DWORD pThisAddr)
 
 void LoadCSFFile(const char* tmpFilePath, const char* pName, DWORD& pThisAddr)
 {
+    bool flag = true;
     HANDLE hFile = INVALID_HANDLE_VALUE;
     char directoryBuffer[0x400];
     strcpy_s(directoryBuffer, GlobalVars::FilePath());
@@ -81,33 +82,30 @@ void LoadCSFFile(const char* tmpFilePath, const char* pName, DWORD& pThisAddr)
         OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
     if (hFile == INVALID_HANDLE_VALUE)
     {
-        if (!CMixFile::FindAndCopyTo(pName, tmpFilePath, pThisAddr))
-            goto failed;
-        hFile = CreateFile(tmpFilePath, GENERIC_READ, FILE_SHARE_READ, nullptr,
-            OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
-        if (hFile == INVALID_HANDLE_VALUE)
-            goto failed;
+        if (CMixFile::FindAndCopyTo(pName, tmpFilePath, pThisAddr))
+        {
+            hFile = CreateFile(tmpFilePath, GENERIC_READ, FILE_SHARE_READ, nullptr,
+                OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+            if (hFile == INVALID_HANDLE_VALUE)
+                flag = false;
+        }
+        else
+            flag = false;
     }
-    DWORD filesize = GetFileSize(hFile, nullptr);
-    ULONG nReadBytes;
-    char* fileBuffer = new char[filesize];
-    if (ReadFile(hFile, fileBuffer, filesize, &nReadBytes, nullptr) == FALSE)
-        goto failed;
-    bool result = ParseCSFFile(fileBuffer, filesize);
-    delete fileBuffer;
-    DeleteFile(tmpFilePath);
-    if (result)
-        goto succeed;
-    else
-        goto failed;
-
-failed:
-    Logger::Debug("Cannot read %s while parsing CSFFiles.\n", pName);
-    CloseHandle(hFile);
-    return;
-succeed:
-    Logger::Debug("Successfully Loaded file %s.\n", pName);
-    CloseHandle(hFile);
+    if (flag)
+    {
+        DWORD filesize = GetFileSize(hFile, nullptr);
+        ULONG nReadBytes;
+        char* fileBuffer = new char[filesize];
+        if (ReadFile(hFile, fileBuffer, filesize, &nReadBytes, nullptr) == TRUE)
+        {
+            bool result = ParseCSFFile(fileBuffer, filesize);
+            flag = result;
+        }
+        CloseHandle(hFile);
+        delete[] fileBuffer;
+    }
+    Logger::Debug(flag ? "Successfully Loaded file %s.\n" : "Cannot read %s while parsing CSFFiles.\n", pName);
     return;
 }
 
@@ -176,8 +174,8 @@ bool ParseCSFFile(char* buffer, DWORD& size)
                 pos += strLength;
             }
             CSFFiles_Stringtable[labelstr] = CString(value);
-            delete labelstr;
-            delete value;
+            delete[] labelstr;
+            delete[] value;
 
             for (int j = 1; j < numPairs; ++j)
             {

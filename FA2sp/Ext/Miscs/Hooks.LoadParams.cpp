@@ -4,19 +4,6 @@
 
 #include "../../Logger.h"
 
-// replace switch here
-DEFINE_HOOK(43CE50, Miscs_LoadParamsToCombobox, 7)
-{
-    GET_STACK(CComboBox*, pComboBox, -0x8);
-    GET_STACK(int, nParamCode, -0x4);
-    
-    //Logger::Debug("%08X %08X\n", pComboBox, pComboBox->m_hWnd);
-
-    return 
-        true ? 0 : 
-        0x43D058;
-}
-
 auto AddString = [](HWND hComboBox, const char* lpString)
 {
     SendMessage(hComboBox, CB_ADDSTRING, NULL, (LPARAM)lpString);
@@ -60,5 +47,3 @@ DEFINE_HOOK(43CFE4, Miscs_LoadParams_SpeechBubble, 6)
     AddString(hComboBox, "3 - Exclamation mark(!)");
     return 0x43D037;
 }
-
-#undef AddString

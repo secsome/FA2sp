@@ -1,120 +1,90 @@
 #include "Body.h"
+#include "Functional.h"
 
 #include <Helpers/Macro.h>
+#include <GlobalVars.h>
 
 // Cleanning up
 DEFINE_HOOK(4D5B20, CScriptTypes_DTOR, 7)
 {
-    auto& dict = CScriptTypesExt::ExtActions;
-    for (auto& x : dict)
+    auto& dict_1 = CScriptTypesExt::ExtActions;
+    for (auto& x : dict_1)
     {
-        delete x.second.Description_;
-        delete x.second.Name_;
+        delete[] x.second.Description_;
+        delete[] x.second.Name_;
     }
-    dict.clear();
+    dict_1.clear();
+
+    auto& dict_2 = CScriptTypesExt::ExtParams;
+    for (auto& x : dict_2)
+        delete[] x.second.Label_;
+
     return 0;
 }
 
-// TODO
-DEFINE_HOOK(43CE8D, Miscs_LoadParamToCombobox, 9)
+DEFINE_HOOK(4D6A10, CScriptTypes_OnCBCurrentActionEditChanged, 7)
 {
-    GET(CComboBox*, pComboBox, ESI);
-    GET(int, nCode, EAX);
-    while (pComboBox->DeleteString(0) != -1);
-    
-    enum {default = 0x43CE96, handled = 0x43D037};
-    
-    if (nCode < 40)
+    enum {end = 0x4D7569};
+
+    GET(CScriptTypes*, pThis, ECX);
+    INIClass* pDocument = INIMapFieldUpdate::UpdateMapFieldData(1);
+    while (pThis->CCBScriptParameter.DeleteString(0) != -1);
+    int lbCurSel = pThis->CLBScriptActions.GetCurSel();
+    if (lbCurSel >= 0)
     {
-        
+        int scriptCurSel = pThis->CCBCurrentScript.GetCurSel();
+        if (scriptCurSel < 0)
+            return end;
+        CString scriptId;
+        pThis->CCBCurrentScript.GetLBText(scriptCurSel, scriptId);
+        TrimIndex(scriptId);
+        int actionCurSel = pThis->CCBCurrentAction.GetCurSel();
+        if (actionCurSel < 0) 
+            return end;
+        int actionData = pThis->CCBCurrentAction.GetItemData(actionCurSel);
+        CScriptTypeParam actionParam = 
+            CScriptTypesExt::ExtParams[CScriptTypesExt::ExtActions[actionData].ParamCode_];
+        pThis->CSTParameterOfSection.SetWindowTextA(actionParam.Label_);
+        switch (actionParam.Param_)
+        {
+        default:
+        case 0:
+            break;
+        case 1:
+            CScriptTypes_LoadParams_Target(pThis->CCBScriptParameter);
+            break;
+        case 2:
+            CScriptTypes_LoadParams_Waypoint(pThis->CCBScriptParameter);
+            break;
+        case 3:
+            CScriptTypes_LoadParams_ScriptLine(
+                pThis->CCBScriptParameter,
+                pThis->CLBScriptActions.GetCount()
+            );
+            break;
+        case 4:
+            CScriptTypes_LoadParams_SplitGroup(pThis->CCBScriptParameter);
+            break;
+        case 5:
+            CScriptTypes_LoadParams_GlobalVariables(pThis->CCBScriptParameter);
+            break;
+        case 6:
+            CScriptTypes_LoadParams_ScriptTypes(
+                pThis->CCBScriptParameter,
+                pThis->CCBCurrentScript);
+            break;
+        case 18:
+            CScriptTypes_LoadParams_TalkBubble(pThis->CCBScriptParameter);
+            break;
+        case 19:
+            CScriptTypes_LoadParams_Status(pThis->CCBScriptParameter);
+            break;
+        }
     }
-    return 0;
+    return end;
 }
 
-DEFINE_HOOK(4D8AC0, Miscs_LoadParams_EnterStatus, 5)
-{
-    GET_STACK(CComboBox*, pComboBox, 0x4);
-    while (pComboBox->DeleteString(0) != -1);
-
-    const char* pStatus[] =
-    {
-        "Sleep",
-        "Attack nearest enemy",
-        "Move",
-        "QMove",
-        "Retreat home for R&R",
-        "Guard",
-        "Sticky (never recruit)",
-        "Enter object",
-        "Capture object",
-        "Move into & get eaten",
-        "Harvest",
-        "Area Guard",
-        "Return (to refinery)",
-        "Stop",
-        "Ambush (wait until discovered)",
-        "Hunt",
-        "Unload",
-        "Sabotage (move in & destroy)",
-        "Construction",
-        "Deconstruction",
-        "Repair",
-        "Rescue",
-        "Missile",
-        "Harmless",
-        "Open",
-        "Patrol",
-        "Paradrop approach drop zone",
-        "Paradrop overlay drop zone",
-        "Wait",
-        "Attack again",
-        "Spyplane approach",
-        "Spyplane overfly"
-    };
-
-    for (int i = 0; i < 32; ++i)
-    {
-        char buffer[0x40];
-        sprintf_s(buffer, "%u - %s", i, pStatus[i]);
-        int idx = pComboBox->AddString(buffer);
-        if (idx >= 0)
-            pComboBox->SetItemData(idx,i);
-    }
-
-    return 0x4D8D12;
-}
-
-DEFINE_HOOK(4463C0, Miscs_LoadParams_Attack, 6)
-{
-    GET_STACK(CComboBox*, pComboBox, 0x4);
-    int nCurSel = pComboBox->GetCurSel();
-    while (pComboBox->DeleteString(0) != -1);
-    
-    auto addString = [&pComboBox](const char* lpzStr, int data){
-        int idx = pComboBox->AddString(lpzStr);
-        if (idx >= 0)
-            pComboBox->SetItemData(idx, data);
-    };
-
-    addString("0 - Not specified", 0);
-    addString("1 - Anything (uses auto-targeting)", 1);
-    addString("2 - Buildings", 2);
-    addString("3 - Harvesters", 3);
-    addString("4 - Infantry", 4);
-    addString("5 - Vehicles", 5);
-    addString("6 - Factories", 6);
-    addString("7 - Base defenses", 7);
-    addString("9 - Power plants", 9);
-    addString("10 - Occupiables", 10);
-    addString("11 - Tech Buildings", 11);
-
-    if (nCurSel >= 0)
-        pComboBox->SetCurSel(nCurSel);
-
-    return 0x4464AB;
-}
-
-DEFINE_HOOK(4D75EF, CScriptTypes_OnParamEntered, A)
+DEFINE_HOOK(4D75EF, CScriptTypes_OnCBCurrentActionSelectChanged, A)
 {
     GET(CScriptTypes*, pThis, ESI);
     int cursel = pThis->CCBCurrentAction.GetCurSel();
@@ -123,7 +93,7 @@ DEFINE_HOOK(4D75EF, CScriptTypes_OnParamEntered, A)
     int data = pThis->CCBCurrentAction.GetItemData(cursel);
     auto& dict = CScriptTypesExt::ExtActions;
     auto& itr = dict.find(data);
-    R->EAX(itr == dict.end() ? "==NO DESCRIPTION==" : itr->second.Description_);
+    R->EAX(itr == dict.end() ? "***NO DESCRIPTION***" : itr->second.Description_);
     return 0x4D7631;
 }
 
@@ -171,7 +141,7 @@ DEFINE_HOOK(4D8D20, CScriptTypes_OnInitDialog, 6)
 }
 
 // A bug fix, should be no longer used after replaced the process
-DEFINE_HOOK(4D6E4D, CScriptTypeClass_OnItemSelectChanged_Houses, 6)
+DEFINE_HOOK(4D6E4D, CScriptTypeClass_OnCBCurrentActionEditChanged_Houses, 6)
 {
     R->Stack(0x0, true);
     R->Stack(0x4, true);

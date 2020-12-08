@@ -186,6 +186,9 @@
     <ClInclude Include="FA2sp\Helpers\Helper.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2sp\Ext\CScriptTypes\Functional.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">
@@ -397,5 +400,8 @@
     <ResourceCompile Include="FA2sp\UI\CScriptTypes.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FA2sp\Utils\Misc\Hooks.LoadParamToCombobox.cpp" />
   </ItemGroup>
 </Project>
