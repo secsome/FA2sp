@@ -23,14 +23,17 @@ public:
 	/*static void* GetMessageMap();*/
 
 	BOOL OnInitDialog();
+
+	void OnCBCurrentActionEditChanged();
+	void OnCBScriptParameterEditChanged();
+
 	/*void DoDataExchange(CDataExchange* pDX);
 
 	void OnCBCurrentScriptSelectChanged();
 	void OnLBScriptActionsSelectChanged();
 	void OnETScriptNameChanged();
-	void OnCBCurrentActionEditChanged();
+	
 	void OnCBCurrentActionSelectChanged();
-	void OnCBScriptParameterEditChanged();
 	void OnCBScriptParameterSelectChanged();
 	void OnBNAddActionClicked();
 	void OnBNDeleteActionClicked();

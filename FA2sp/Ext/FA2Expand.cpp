@@ -47,6 +47,8 @@
 #include "CTriggerOption/Body.h"
 #include "CUpdateProgress/Body.h"
 
+#include <CMixFile.h>
+
 void __stdcall FA2Expand::ExeRun()
 {
     /*CLoadingExt::ProgramStartupInit();

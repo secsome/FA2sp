@@ -165,6 +165,7 @@ bool ParseCSFFile(char* buffer, DWORD& size)
             int valueBufferSize = WideCharToMultiByte(CP_ACP, NULL, ptrWideBuffer, strLength, value, 0, NULL, NULL) + 1;
             value = new char[valueBufferSize];
             WideCharToMultiByte(CP_ACP, NULL, ptrWideBuffer, strLength, value, valueBufferSize, NULL, NULL);
+            delete[] tmpWideBuffer;
             value[valueBufferSize - 1] = '\0';
 
             pos += (strLength << 1);

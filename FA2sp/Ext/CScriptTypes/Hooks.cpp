@@ -1,5 +1,6 @@
 #include "Body.h"
-#include "Functional.h"
+
+#include "../../Helpers/Helper.h"
 
 #include <Helpers/Macro.h>
 #include <GlobalVars.h>
@@ -22,79 +23,39 @@ DEFINE_HOOK(4D5B20, CScriptTypes_DTOR, 7)
     return 0;
 }
 
-DEFINE_HOOK(4D6A10, CScriptTypes_OnCBCurrentActionEditChanged, 7)
+DEFINE_HOOK(4D7670, CScriptTypes_OnCBScriptParameterEditChanged, 7)
 {
-    enum {end = 0x4D7569};
-
-    GET(CScriptTypes*, pThis, ECX);
-    INIClass* pDocument = INIMapFieldUpdate::UpdateMapFieldData(1);
-    while (pThis->CCBScriptParameter.DeleteString(0) != -1);
-    int lbCurSel = pThis->CLBScriptActions.GetCurSel();
-    if (lbCurSel >= 0)
-    {
-        int scriptCurSel = pThis->CCBCurrentScript.GetCurSel();
-        if (scriptCurSel < 0)
-            return end;
-        CString scriptId;
-        pThis->CCBCurrentScript.GetLBText(scriptCurSel, scriptId);
-        TrimIndex(scriptId);
-        int actionCurSel = pThis->CCBCurrentAction.GetCurSel();
-        if (actionCurSel < 0) 
-            return end;
-        int actionData = pThis->CCBCurrentAction.GetItemData(actionCurSel);
-        CScriptTypeParam actionParam = 
-            CScriptTypesExt::ExtParams[CScriptTypesExt::ExtActions[actionData].ParamCode_];
-        pThis->CSTParameterOfSection.SetWindowTextA(actionParam.Label_);
-        switch (actionParam.Param_)
-        {
-        default:
-        case 0:
-            break;
-        case 1:
-            CScriptTypes_LoadParams_Target(pThis->CCBScriptParameter);
-            break;
-        case 2:
-            CScriptTypes_LoadParams_Waypoint(pThis->CCBScriptParameter);
-            break;
-        case 3:
-            CScriptTypes_LoadParams_ScriptLine(
-                pThis->CCBScriptParameter,
-                pThis->CLBScriptActions.GetCount()
-            );
-            break;
-        case 4:
-            CScriptTypes_LoadParams_SplitGroup(pThis->CCBScriptParameter);
-            break;
-        case 5:
-            CScriptTypes_LoadParams_GlobalVariables(pThis->CCBScriptParameter);
-            break;
-        case 6:
-            CScriptTypes_LoadParams_ScriptTypes(
-                pThis->CCBScriptParameter,
-                pThis->CCBCurrentScript);
-            break;
-        case 18:
-            CScriptTypes_LoadParams_TalkBubble(pThis->CCBScriptParameter);
-            break;
-        case 19:
-            CScriptTypes_LoadParams_Status(pThis->CCBScriptParameter);
-            break;
-        }
-    }
-    return end;
+    GET(CScriptTypesExt*, pThis, ECX);
+    pThis->CScriptTypesExt::OnCBScriptParameterEditChanged();
+    return 0x4D7A44;
 }
 
-DEFINE_HOOK(4D75EF, CScriptTypes_OnCBCurrentActionSelectChanged, A)
+DEFINE_HOOK(4D6A10, CScriptTypes_OnCBCurrentActionEditChanged, 7)
 {
-    GET(CScriptTypes*, pThis, ESI);
-    int cursel = pThis->CCBCurrentAction.GetCurSel();
-    if (cursel < 0)
-        return 0x4D763A;
-    int data = pThis->CCBCurrentAction.GetItemData(cursel);
-    auto& dict = CScriptTypesExt::ExtActions;
-    auto& itr = dict.find(data);
-    R->EAX(itr == dict.end() ? "***NO DESCRIPTION***" : itr->second.Description_);
-    return 0x4D7631;
+    GET(CScriptTypesExt*, pThis, ECX);
+    pThis->CScriptTypesExt::OnCBCurrentActionEditChanged();
+    return 0x4D7569;
+}
+
+DEFINE_HOOK(4D75D0, CScriptTypes_OnCBCurrentActionSelectChanged, 7)
+{
+    GET(CScriptTypesExt*, pThis, ECX);
+    int curActionIdx = pThis->CCBCurrentAction.GetCurSel();
+    if (curActionIdx >= 0)
+    {
+        int curActionData = pThis->CCBCurrentAction.GetItemData(curActionIdx);
+        auto& dict = CScriptTypesExt::ExtActions;
+        auto itr = dict.find(curActionData);
+        if (itr != dict.end())
+        {
+            pThis->CScriptTypesExt::OnCBCurrentActionEditChanged();
+            
+            pThis->CETDescription.SetWindowText(itr->second.Description_);
+            pThis->CETDescription.EnableWindow(itr->second.Editable_);
+            pThis->CCBScriptParameter.EnableWindow(itr->second.Editable_);
+        }
+    }
+    return 0x4D7662;
 }
 
 DEFINE_HOOK(4D6621, CScriptTypes_OnLBScriptActionsSelectChanged_1, 6)
@@ -140,13 +101,14 @@ DEFINE_HOOK(4D8D20, CScriptTypes_OnInitDialog, 6)
     return 0x4D8E06;
 }
 
+// updated on 2020/12/10 by secsome: yeah, removed
 // A bug fix, should be no longer used after replaced the process
-DEFINE_HOOK(4D6E4D, CScriptTypeClass_OnCBCurrentActionEditChanged_Houses, 6)
-{
-    R->Stack(0x0, true);
-    R->Stack(0x4, true);
-    return 0;
-}
+//DEFINE_HOOK(4D6E4D, CScriptTypeClass_OnCBCurrentActionEditChanged_Houses, 6)
+//{
+//    R->Stack(0x0, true);
+//    R->Stack(0x4, true);
+//    return 0;
+//}
 
 //
 //DEFINE_HOOK(4D5BE0, CScriptTypes_DoDataExchange, 8)

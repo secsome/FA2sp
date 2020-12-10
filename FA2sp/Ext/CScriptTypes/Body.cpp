@@ -1,7 +1,7 @@
 #include "Body.h"
+#include "Functional.h"
 
 #include <GlobalVars.h>
-#include <Miscs/Miscs.h>
 
 #include "../../Logger.h"
 #include "../../Helpers/Helper.h"
@@ -68,6 +68,8 @@ BOOL CScriptTypesExt::OnInitDialog()
 					continue;
 				}
 			}
+            delete[] pParseBuffer[0];
+            delete[] pParseBuffer[1];
 		}
 		
 		if (fadata.SectionExists("ScriptsRA2")) {
@@ -96,6 +98,11 @@ BOOL CScriptTypesExt::OnInitDialog()
 					continue;
 				}
 			}
+            delete[] pParseBuffer[0];
+            delete[] pParseBuffer[1];
+            delete[] pParseBuffer[2];
+            delete[] pParseBuffer[3];
+            delete[] pParseBuffer[4];
 		}
 
 		for (auto& ent : ExtActions)
@@ -111,53 +118,6 @@ BOOL CScriptTypesExt::OnInitDialog()
 	return bReturn;
 }
 
-
-//
-//void CScriptTypesExt::DoDataExchange(CDataExchange* pDX)
-//{
-//	this->FA2CDialog::DoDataExchange(pDX);
-//	DDX_Control(pDX, 1407, CETDescription);
-//	DDX_Control(pDX, 1064, CCBCurrentAction);
-//	DDX_Control(pDX, 1193, CCBCurrentScript);
-//	DDX_Control(pDX, 1196, CCBScriptParameter);
-//	DDX_Control(pDX, 1170, CLBScriptActions);
-//	DDX_Text(pDX, 1010, CString_ScriptName);
-//}
-//
-//void* CScriptTypesExt::GetMessageMap()
-//{
-//	struct _AFX_MSGMAP
-//	{
-//		const _AFX_MSGMAP* (PASCAL* pfnGetBaseMap)();
-//		const AFX_MSGMAP_ENTRY* lpEntries;
-//	};
-//
-//	static AFX_MSGMAP_ENTRY pMsgEntries[] =
-//	{
-//		// Originals
-//		ON_CBN_EDITCHANGE(1193, OnCBCurrentActionEditChanged)
-//		ON_CBN_SELCHANGE(1193, OnCBCurrentScriptSelectChanged)
-//		ON_LBN_SELCHANGE(1170, OnLBScriptActionsSelectChanged)
-//		ON_EN_CHANGE(1010, OnETScriptNameChanged)
-//		ON_CBN_EDITCHANGE(1064, OnCBCurrentActionEditChanged)
-//		ON_CBN_SELCHANGE(1064, OnCBCurrentActionSelectChanged)
-//		ON_CBN_EDITCHANGE(1196, OnCBScriptParameterEditChanged)
-//		ON_CBN_SELCHANGE(1196, OnCBScriptParameterSelectChanged)
-//		ON_BN_CLICKED(1173, OnBNAddActionClicked)
-//		ON_BN_CLICKED(1174, OnBNDeleteActionClicked)
-//		ON_BN_CLICKED(1154, OnBNAddScriptClicked)
-//		ON_BN_CLICKED(1066, OnBNDeleteScriptClicked)
-//		{0, 0, 0, 0, AfxSig_end, (AFX_PMSG)0 }
-//	};
-//
-//	static _AFX_MSGMAP pMsgMap =
-//	{
-//		(const _AFX_MSGMAP * (PASCAL*)())0x59A548,
-//		pMsgEntries
-//	};
-//
-//	return &pMsgMap;
-//}
 //
 //void CScriptTypesExt::OnCBCurrentScriptSelectChanged()
 //{
@@ -171,17 +131,136 @@ BOOL CScriptTypesExt::OnInitDialog()
 //{
 //}
 //
-//void CScriptTypesExt::OnCBCurrentActionEditChanged()
-//{
-//}
+void CScriptTypesExt::OnCBCurrentActionEditChanged()
+{
+    INIClass* pDocument = INIMapFieldUpdate::UpdateMapFieldData(1);
+    while (this->CCBScriptParameter.DeleteString(0) != -1);
+    int lbCurSel = this->CLBScriptActions.GetCurSel();
+    if (lbCurSel >= 0)
+    {
+        int scriptCurSel = this->CCBCurrentScript.GetCurSel();
+        if (scriptCurSel < 0)
+            return;
+        CString scriptId;
+        this->CCBCurrentScript.GetLBText(scriptCurSel, scriptId);
+        TrimIndex(scriptId);
+        int actionCurSel = this->CCBCurrentAction.GetCurSel();
+        if (actionCurSel < 0)
+            return;
+        int actionData = this->CCBCurrentAction.GetItemData(actionCurSel);
+        CScriptTypeParam actionParam =
+            CScriptTypesExt::ExtParams[CScriptTypesExt::ExtActions[actionData].ParamCode_];
+        this->CSTParameterOfSection.SetWindowText(actionParam.Label_);
+        switch (actionParam.Param_)
+        {
+        default:
+        case 0:
+            break;
+        case 1:
+            CScriptTypes_LoadParams_Target(this->CCBScriptParameter);
+            break;
+        case 2:
+            CScriptTypes_LoadParams_Waypoint(this->CCBScriptParameter);
+            break;
+        case 3:
+            CScriptTypes_LoadParams_ScriptLine(
+                this->CCBScriptParameter,
+                this->CLBScriptActions.GetCount()
+            );
+            break;
+        case 4:
+            CScriptTypes_LoadParams_SplitGroup(this->CCBScriptParameter);
+            break;
+        case 5:
+            CScriptTypes_LoadParams_GlobalVariables(this->CCBScriptParameter);
+            break;
+        case 6:
+            CScriptTypes_LoadParams_ScriptTypes(this->CCBScriptParameter);
+            break;
+        case 7:
+            CScriptTypes_LoadParams_TeamTypes(this->CCBScriptParameter);
+            break;
+        case 8:
+            CScriptTypes_LoadParams_Houses(this->CCBScriptParameter);
+            break;
+        case 9:
+            CScriptTypes_LoadParams_Speechs(this->CCBScriptParameter);
+            break;
+        case 10:
+            CScriptTypes_LoadParams_Sounds(this->CCBScriptParameter);
+            break;
+        case 11:
+            CScriptTypes_LoadParams_Movies(this->CCBScriptParameter);
+            break;
+        case 12:
+            CScriptTypes_LoadParams_Themes(this->CCBScriptParameter);
+            break;
+        case 13:
+            CScriptTypes_LoadParams_Countries(this->CCBScriptParameter);
+            break;
+        case 14:
+            CScriptTypes_LoadParams_LocalVariables(this->CCBScriptParameter);
+            break;
+        case 15:
+            CScriptTypes_LoadParams_Facing(this->CCBScriptParameter);
+            break;
+        case 16:
+            CScriptTypes_LoadParams_BuildingTypes(this->CCBScriptParameter);
+            break;
+        case 17:
+            CScriptTypes_LoadParams_Animations(this->CCBScriptParameter);
+            break;
+        case 18:
+            CScriptTypes_LoadParams_TalkBubble(this->CCBScriptParameter);
+            break;
+        case 19:
+            CScriptTypes_LoadParams_Status(this->CCBScriptParameter);
+            break;
+        }
+
+        if (this->CLBScriptActions.GetCount() > 0 && lbCurSel >= 0)
+        {
+            CString index, result, buffer;
+            index.Format("%d", lbCurSel);
+            result = pDocument->GetString(scriptId, index, "0,0");
+            int idx = result.ReverseFind(',') + 1;
+            result = result.Mid(idx);
+            buffer.Format("%d,%s", actionCurSel, result);
+            pDocument->WriteString(scriptId, index, buffer);
+        }
+    }
+}
 //
 //void CScriptTypesExt::OnCBCurrentActionSelectChanged()
 //{
 //}
 //
-//void CScriptTypesExt::OnCBScriptParameterEditChanged()
-//{
-//}
+void CScriptTypesExt::OnCBScriptParameterEditChanged()
+{
+    int lbCurSel = this->CLBScriptActions.GetCurSel();
+    if (lbCurSel >= 0)
+    {
+        int scriptCurSel = this->CCBCurrentScript.GetCurSel();
+        if (scriptCurSel < 0)
+            return;
+        CString scriptId;
+        this->CCBCurrentScript.GetLBText(scriptCurSel, scriptId);
+        TrimIndex(scriptId);
+        int actionCurSel = this->CCBCurrentAction.GetCurSel();
+        if (actionCurSel < 0)
+            return;
+        auto& doc = GlobalVars::INIFiles::CurrentDocument();
+        if (this->CLBScriptActions.GetCount() > 0 && lbCurSel >= 0)
+        {
+            CString index, result, buffer;
+            index.Format("%d", lbCurSel);
+            this->CCBScriptParameter.GetWindowText(result);
+            TrimIndex(result);
+            buffer.Format("%d,%s", actionCurSel, result);
+            doc.WriteString(scriptId, index, buffer);
+        }
+    }
+}
 //
 //void CScriptTypesExt::OnCBScriptParameterSelectChanged()
 //{
