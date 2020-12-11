@@ -42,7 +42,7 @@ DEFINE_HOOK(49433B, CSFFiles_Stringtables_Support_2, 6)
         strcpy_s(tmpCsfFile, GlobalVars::ExePath());
         strcat_s(tmpCsfFile, "\\RA2Tmp.csf");
         DeleteFile(tmpCsfFile);
-        Logger::Debug("Successfully loaded %d csf labels.",CSFFiles_Stringtable.size());
+        Logger::Debug("Successfully loaded %d csf labels.\n",CSFFiles_Stringtable.size());
         CSFFiles_Stringtable.clear();
         bLoadRes = false;
     }
