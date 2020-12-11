@@ -58,57 +58,22 @@ DEFINE_HOOK(4D75D0, CScriptTypes_OnCBCurrentActionSelectChanged, 7)
     return 0x4D7662;
 }
 
-DEFINE_HOOK(4D6621, CScriptTypes_OnLBScriptActionsSelectChanged_1, 6)
+DEFINE_HOOK(4D6500, CScriptTypes_OnLBScriptActionsSelectChanged, 7)
 {
-    GET(CScriptTypes*, pThis, ESI);
-    int cnt = pThis->CCBCurrentAction.GetCount();
-    int result = 0;
-    if (cnt >= 0)
-    {
-        while (pThis->CCBCurrentAction.GetItemData(cnt) != R->EAX())
-        {
-            if (--cnt < 0)
-                break;
-        }
-        result = cnt < 0 ? 0 : cnt;
-    }
-    R->EAX(result);
-    return 0;
-}
-
-DEFINE_HOOK(4D6667, CScriptTypes_OnLBScriptActionsSelectChanged_2, 7)
-{
-    GET(CScriptTypes*, pThis, ESI);
-    int cursel = pThis->CCBCurrentAction.GetCurSel();
-    if (cursel < 0)
-        return 0x4D669C;
-    int itemdata = pThis->CCBCurrentAction.GetItemData(cursel);
-    
-    auto& dict = CScriptTypesExt::ExtActions;
-    auto& itr = dict.find(itemdata);
-    if (itr != dict.end())
-        R->EDI<const char*>(itr->second.Description_);
-    else
-        return 0x4D669C;
-    return 0x4D6693;
+    GET(CScriptTypesExt*, pThis, ECX);
+    pThis->CScriptTypesExt::OnLBScriptActionsSelectChanged();
+    return 0x4D676C;
 }
 
 DEFINE_HOOK(4D8D20, CScriptTypes_OnInitDialog, 6)
 {
+    auto constexpr kill_focus = CBN_KILLFOCUS;
+    RunTime::ResetMemoryContentAt(0x596010 + 0x4, &kill_focus, sizeof kill_focus);
     GET(CScriptTypesExt*, pThis, ECX);
     BOOL bResult = pThis->CScriptTypesExt::OnInitDialog();
     R->EAX<BOOL>(bResult);
     return 0x4D8E06;
 }
-
-// updated on 2020/12/10 by secsome: yeah, removed
-// A bug fix, should be no longer used after replaced the process
-//DEFINE_HOOK(4D6E4D, CScriptTypeClass_OnCBCurrentActionEditChanged_Houses, 6)
-//{
-//    R->Stack(0x0, true);
-//    R->Stack(0x4, true);
-//    return 0;
-//}
 
 //
 //DEFINE_HOOK(4D5BE0, CScriptTypes_DoDataExchange, 8)

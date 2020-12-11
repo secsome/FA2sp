@@ -16,6 +16,9 @@ public:
 
 	static void ProgramStartupInit();
 
+
+	void UpdateParams(int actionIndex);
+
 	//
 	// Ext Functions
 	//
@@ -26,11 +29,11 @@ public:
 
 	void OnCBCurrentActionEditChanged();
 	void OnCBScriptParameterEditChanged();
+	void OnLBScriptActionsSelectChanged();
 
 	/*void DoDataExchange(CDataExchange* pDX);
 
 	void OnCBCurrentScriptSelectChanged();
-	void OnLBScriptActionsSelectChanged();
 	void OnETScriptNameChanged();
 	
 	void OnCBCurrentActionSelectChanged();
@@ -43,6 +46,7 @@ public:
 	CScriptTypesExt() {};
 	~CScriptTypesExt() {};
 
+	static int ExtParamID;
 	static std::map<int, CScriptTypeAction> ExtActions;
 	static std::map<int, CScriptTypeParam> ExtParams;
 };
