@@ -1,5 +1,6 @@
 #include <CINI.h>
 #include <vector>
+#include <CMixFile.h>
 #include "../../FA2sp.h"
 
 using std::vector;

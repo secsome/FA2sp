@@ -30,6 +30,7 @@ void CScriptTypesExt::UpdateParams(int actionIndex)
 	{
 	default:
 	case 0:
+		while (this->CCBScriptParameter.DeleteString(0) != -1);
 		break;
 	case 1:
 		CScriptTypes_LoadParams_Target(this->CCBScriptParameter);

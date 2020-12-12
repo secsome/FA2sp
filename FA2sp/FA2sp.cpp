@@ -63,7 +63,9 @@ SYRINGE_HANDSHAKE(pInfo)
 
 DEFINE_HOOK(537129, ExeRun, 9)
 {
+#ifdef _DEBUG
 	MessageBox(NULL, "For Syringe Debug", "", MB_OK);
+#endif
 #ifdef ONLY_ONE
 	bool bMutexResult = MutexHelper::Attach(MUTEX_HASH_VAL);
 	if (!bMutexResult) {
