@@ -6,12 +6,12 @@
 
 #include "../../FA2sp.h"
 
-//DEFINE_HOOK(51CD20, ObjectBrowserControl_Redraw, 7)
-//{
-//    GET(ObjectBrowserControlExt*, pThis, ECX);
-//    pThis->Redraw();
-//    return 0x523173;
-//}
+DEFINE_HOOK(51CD20, ObjectBrowserControl_Redraw, 7)
+{
+    GET(ObjectBrowserControlExt*, pThis, ECX);
+    pThis->Redraw();
+    return 0x523173;
+}
 
 //void PrintNode(CTreeCtrl* pTree, HTREEITEM hNode)
 //{

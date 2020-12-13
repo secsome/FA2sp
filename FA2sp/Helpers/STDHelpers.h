@@ -11,7 +11,7 @@
 class STDHelpers
 {
 public:
-    static std::vector<CString> SplitString(const char* pSource, char cSplit = 'c')
+    static std::vector<CString> SplitString(const char* pSource, char cSplit = ',')
     {
         std::vector<CString> ret;
         std::istringstream iss(pSource);
@@ -21,6 +21,14 @@ public:
             ret.push_back(tmp.c_str());
         }
 
+        return ret;
+    }
+
+    static int ParseToInt(const char* pSource, int nDefault = 0)
+    {
+        int ret;
+        if (sscanf_s(pSource, "%d", &ret) != 1)
+            return nDefault;
         return ret;
     }
 };
