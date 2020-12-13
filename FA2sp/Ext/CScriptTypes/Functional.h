@@ -473,3 +473,12 @@ void CScriptTypes_LoadParams_Status(CComboBox& comboBox)
             comboBox.SetItemData(idx, i);
     }
 }
+
+// 20
+void CScriptTypes_LoadParams_Boolean(CComboBox& comboBox)
+{
+    while (comboBox.DeleteString(0) != -1);
+
+    comboBox.SetItemData(comboBox.AddString("0 - FALSE"), 0);
+    comboBox.SetItemData(comboBox.AddString("1 - TRUE"), 1);
+}

@@ -92,6 +92,9 @@ void CScriptTypesExt::UpdateParams(int actionIndex)
 	case 19:
 		CScriptTypes_LoadParams_Status(this->CCBScriptParameter);
 		break;
+	case 20:
+		CScriptTypes_LoadParams_Boolean(this->CCBScriptParameter);
+		break;
 	}
 	this->CSTParameterOfSection.SetWindowText(param.Label_);
 	this->CSTParameterOfSection.EnableWindow(action.Editable_);

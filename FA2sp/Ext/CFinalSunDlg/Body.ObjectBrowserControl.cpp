@@ -77,52 +77,5 @@ void ObjectBrowserControlExt::Redraw_Owner()
 
 int ObjectBrowserControlExt::GuessSide(const char* pRegName, int nType)
 {
-    auto& rules = GlobalVars::INIFiles::Rules();
-    int nSideCount = rules.GetKeyCount("Sides");
-
-    switch (nType)
-    {
-    case 0:
-    {
-        int planning = atoi(rules.GetString(pRegName, "AIBasePlanningSide", "-1"));
-        if (planning >= nSideCount)  return -1;
-        if (planning >= 0)
-            return planning;
-        else
-        {
-            auto& conyards = STDHelpers::SplitString(rules.GetString("AI", "BuildConst"));
-            auto itr = std::lower_bound(conyards.begin(), conyards.end(), pRegName);
-            if (itr != conyards.end())
-                return itr - conyards.begin();
-        }
-        break;
-    }
-    case 1:
-        break;
-    case 2:
-        break;
-    case 3:
-        break;
-    default:
-        return -1;
-    }
-
-    auto GuessByEnum = []()
-    {
-
-    };
-
-    for (auto& prerequest : STDHelpers::SplitString(rules.GetString(pRegName, "Prerequisite", "")))
-    {
-        if (rules.KeyExists("GenericPrerequisites", prerequest))
-        {
-            for (auto& subprere : STDHelpers::SplitString(rules.GetString("GenericPrerequisites", prerequest, "")))
-            {
-                
-                if (int guess = GuessSide(subprere, 0) != -1)
-                    return guess;
-            }
-        }
-    }
     return -1;
 }
