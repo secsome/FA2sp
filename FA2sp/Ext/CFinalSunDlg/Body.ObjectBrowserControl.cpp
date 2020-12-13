@@ -166,7 +166,7 @@ void ObjectBrowserControlExt::Redraw_Infantry()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            rules.GetString(inf.second, "Name", inf.second), 
+            CSFQuery::GetUIName(inf.second), 
             Const_Infantry + index, 
             subNodes[side]
         );
@@ -210,7 +210,7 @@ void ObjectBrowserControlExt::Redraw_Vehicle()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            rules.GetString(veh.second, "Name", veh.second),
+            CSFQuery::GetUIName(veh.second),
             Const_Vehicle + index,
             subNodes[side]
         );
@@ -245,16 +245,16 @@ void ObjectBrowserControlExt::Redraw_Aircraft()
 
     if (!rules.SectionExists("AircraftTypes"))
         return;
-    auto& vehicles = rules.GetSection("AircraftTypes").EntriesDictionary;
-    for (auto& veh : vehicles)
+    auto& aircrafts = rules.GetSection("AircraftTypes").EntriesDictionary;
+    for (auto& air : aircrafts)
     {
-        int index = STDHelpers::ParseToInt(veh.first);
+        int index = STDHelpers::ParseToInt(air.first);
         if (index == -1)   continue;
-        int side = GuessSide(veh.second, Set_Aircraft);
+        int side = GuessSide(air.second, Set_Aircraft);
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            rules.GetString(veh.second, "Name", veh.second),
+            CSFQuery::GetUIName(air.second),
             Const_Aircraft + index,
             subNodes[side]
         );
@@ -298,7 +298,7 @@ void ObjectBrowserControlExt::Redraw_Building()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            rules.GetString(bud.second, "Name", bud.second),
+            CSFQuery::GetUIName(bud.second),
             Const_Building + index,
             subNodes[side]
         );
@@ -321,10 +321,12 @@ void ObjectBrowserControlExt::Redraw_Terrain()
     {
         if (!rules.SectionExists(ter.second))
             continue;
+        if (!rules.KeyExists(ter.second, "SnowOccupationBits"))
+            continue;
         int index = STDHelpers::ParseToInt(ter.first);
         if (index == -1)   continue;
         this->InsertString(
-            rules.GetString(ter.second, "Name", ter.second),
+            CSFQuery::GetUIName(ter.second),
             Const_Terrain + index,
             hTerrain
         );
@@ -345,6 +347,8 @@ void ObjectBrowserControlExt::Redraw_Smudge()
     for (auto& smu : smudges)
     {
         if (!rules.SectionExists(smu.second))
+            continue;
+        if (!rules.GetKeyCount(smu.second))
             continue;
         int index = STDHelpers::ParseToInt(smu.first);
         if (index == -1)   continue;
@@ -395,9 +399,10 @@ void ObjectBrowserControlExt::Redraw_Overlay()
             continue;
         int index = STDHelpers::ParseToInt(ovl.first);
         if (index == -1)   continue;
+        if (index >= 255 || index < 0) continue;
         if (rules.GetBool(ovl.second, "Wall"))
             this->InsertString(
-                rules.GetString(ovl.second, "Name", ovl.second),
+                CSFQuery::GetUIName(ovl.second),
                 Const_Overlay + index,
                 hWalls
             );

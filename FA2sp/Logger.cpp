@@ -10,7 +10,7 @@ void Logger::Initialize() {
 	is_initialized_ = file_pointer_;
 	char time[24];
 	Time(time);
-	Raw("FA2sp Logger Initializing at %s ", time);
+	Raw("FA2sp Logger Initializing at %s.\n", time);
 }
 
 void Logger::Close() {
