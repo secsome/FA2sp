@@ -10,14 +10,13 @@ class CFinalSunDlgExt
 
 };
 
-
-
 class ObjectBrowserControlExt : public ObjectBrowserControl
 {
     enum {
         Root_Nothing = 0, Root_Ground, Root_Owner, Root_Infantry, Root_Vehicle,
         Root_Aircraft, Root_Building, Root_Terrain, Root_Smudge, Root_Overlay,
-        Root_Waypoint, Root_Celltag, Root_Basenode, Root_PlayerLocation, Root_Delete
+        Root_Waypoint, Root_Celltag, Root_Basenode, Root_Tunnel, Root_PlayerLocation,
+        Root_Delete
     };
 
     enum {
@@ -32,6 +31,7 @@ class ObjectBrowserControlExt : public ObjectBrowserControl
     };
 
     static std::unordered_map<int, HTREEITEM> ExtNodes;
+    static std::unordered_set<std::string> IgnoreSet;
     static std::unordered_set<std::string> ExtSets[Set_Count];
     static std::unordered_map<std::string, int> KnownItem;
     HTREEITEM InsertString(const char* pString, DWORD dwItemData = 0, 
@@ -40,6 +40,7 @@ class ObjectBrowserControlExt : public ObjectBrowserControl
         HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
     void Redraw_Initialize();
     void Redraw_MainList();
+    void Redraw_Ground();
     void Redraw_Owner();
     void Redraw_Infantry();
     void Redraw_Vehicle();
@@ -51,6 +52,7 @@ class ObjectBrowserControlExt : public ObjectBrowserControl
     void Redraw_Waypoint();
     void Redraw_Celltag();
     void Redraw_Basenode();
+    void Redraw_Tunnel();
     void Redraw_PlayerLocation();
 public:
     void Redraw();

@@ -135,7 +135,7 @@ BOOL CScriptTypesExt::OnInitDialog()
 		{
 			auto& entities = fadata.GetSection("ScriptParams");
 			char* pParseBuffer[2];
-			for (auto& pair : entities.EntriesDictionary)
+			for (auto& pair : entities.EntitiesDictionary)
 			{
 				int id = atoi(pair.first);
 				if (id < 0) continue;
@@ -159,7 +159,7 @@ BOOL CScriptTypesExt::OnInitDialog()
 		if (fadata.SectionExists("ScriptsRA2")) {
 			auto& entities = fadata.GetSection("ScriptsRA2");
 			char* pParseBuffer[5];
-			for (auto& pair : entities.EntriesDictionary)
+			for (auto& pair : entities.EntitiesDictionary)
 			{
 				int id = atoi(pair.first);
 				if (id < 0) continue;

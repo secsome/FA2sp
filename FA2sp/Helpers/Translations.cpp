@@ -37,8 +37,8 @@ bool Translations::GetTranslationItem(const char* pLabelName, CString& ret)
     if (falanguage.SectionExists(pLanguage[0]))
     {
         auto& section = falanguage.GetSection(pLanguage[0]);
-        auto itr = section.EntriesDictionary.find(pLabelName);
-        if (itr != section.EntriesDictionary.end())
+        auto itr = section.EntitiesDictionary.find(pLabelName);
+        if (itr != section.EntitiesDictionary.end())
         {
             ret = itr->second;
             return true;
@@ -47,8 +47,8 @@ bool Translations::GetTranslationItem(const char* pLabelName, CString& ret)
     if (falanguage.SectionExists(pLanguage[1]))
     {
         auto& section = falanguage.GetSection(pLanguage[1]);
-        auto itr = section.EntriesDictionary.find(pLabelName);
-        if (itr != section.EntriesDictionary.end())
+        auto itr = section.EntitiesDictionary.find(pLabelName);
+        if (itr != section.EntitiesDictionary.end())
         {
             ret = itr->second;
             return true;

@@ -7,6 +7,7 @@
 #include <clocale>
 
 HANDLE FA2sp::hInstance;
+bool ExtConfigs::BrowserRedraw;
 bool ExtConfigs::OverlayFilter;
 bool ExtConfigs::AllowIncludes;
 bool ExtConfigs::Stringtables;
@@ -20,6 +21,7 @@ DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
 void FA2sp::ExtConfigsInitialize()
 {
 	auto pFAData = &GlobalVars::INIFiles::FAData();
+	ExtConfigs::BrowserRedraw = pFAData->GetBool("ExtConfigs", "BrowserRedraw");
 	ExtConfigs::AllowIncludes = pFAData->GetBool("ExtConfigs", "AllowIncludes");
 	ExtConfigs::OverlayFilter = pFAData->GetBool("ExtConfigs", "OverlayFilter");
 	ExtConfigs::Stringtables = pFAData->GetBool("ExtConfigs", "Stringtables");
@@ -64,7 +66,7 @@ SYRINGE_HANDSHAKE(pInfo)
 DEFINE_HOOK(537129, ExeRun, 9)
 {
 #ifdef _DEBUG
-	MessageBox(NULL, "For Syringe Debug", "", MB_OK);
+	MessageBox(NULL, APPLY_INFO, PRODUCT_NAME, MB_OK);
 #endif
 #ifdef ONLY_ONE
 	bool bMutexResult = MutexHelper::Attach(MUTEX_HASH_VAL);
@@ -93,9 +95,9 @@ DEFINE_HOOK(537208, ExeTerminate, 9)
 
 #ifdef _DEBUG
 // Just for test, lol
-DEFINE_HOOK(43273B, ExitMessageBox, 8)
-{
-	R->EAX(MB_OK);
-	return 0x432743;
-}
+//DEFINE_HOOK(43273B, ExitMessageBox, 8)
+//{
+//	R->EAX(MB_OK);
+//	return 0x432743;
+//}
 #endif

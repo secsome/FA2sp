@@ -18,6 +18,7 @@ public:
 class ExtConfigs
 {
 public:
+    static bool BrowserRedraw;
     static bool OverlayFilter;
     static bool AllowIncludes;
     static bool Stringtables;

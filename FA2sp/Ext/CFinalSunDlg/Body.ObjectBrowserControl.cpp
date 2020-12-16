@@ -2,10 +2,12 @@
 
 #include "../../Helpers/Translations.h"
 #include "../../Helpers/STDHelpers.h"
+#include "../../Helpers/MultimapHelper.h"
 
 #include <GlobalVars.h>
 
 std::unordered_map<int, HTREEITEM> ObjectBrowserControlExt::ExtNodes;
+std::unordered_set<std::string> ObjectBrowserControlExt::IgnoreSet;
 std::unordered_set<std::string> ObjectBrowserControlExt::ExtSets[Set_Count];
 std::unordered_map<std::string, int> ObjectBrowserControlExt::KnownItem;
 
@@ -19,29 +21,15 @@ HTREEITEM ObjectBrowserControlExt::InsertTranslatedString(const char* pOriginStr
     HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
     CString buffer;
-    Translations::GetTranslationItem(pOriginString, buffer);
-    return InsertString(buffer, dwItemData, hParent, hInsertAfter);
+    bool result = Translations::GetTranslationItem(pOriginString, buffer);
+    return InsertString(result ? buffer : pOriginString, dwItemData, hParent, hInsertAfter);
 }
 
-/*
-* A HUGE PROJECT FOR REPLACING FA2
-* ObjectBrowserControl TO EXTEND ITS FEATURES
-* FA2 USES ITEMDATA TO KNOW WHAT SHOULD BE DRAWN
-* CONSTANT + INDEX
-* CONSTANT LIST:
-* INFANTRY = 10000
-* BUILDING = 20000
-* AIRCRAFT = 30000
-* VEHICLE  = 40000
-* TERRAIN  = 50000
-* OVERLAY  = 63000
-* HOUSES   = 70000
-* SMUDGE   = 80000
-*/
 void ObjectBrowserControlExt::Redraw()
 {
     Redraw_Initialize();
     Redraw_MainList();
+    Redraw_Ground();
     Redraw_Owner();
     Redraw_Infantry();
     Redraw_Vehicle();
@@ -53,6 +41,7 @@ void ObjectBrowserControlExt::Redraw()
     Redraw_Waypoint();
     Redraw_Celltag();
     Redraw_Basenode();
+    Redraw_Tunnel();
     Redraw_PlayerLocation();
 }
 
@@ -60,9 +49,11 @@ void ObjectBrowserControlExt::Redraw_Initialize()
 {
     ExtNodes.clear();
     KnownItem.clear();
+    IgnoreSet.clear();
     this->DeleteAllItems();
 
     auto& rules = GlobalVars::INIFiles::Rules();
+    auto& fadata = GlobalVars::INIFiles::FAData();
     auto& doc = GlobalVars::INIFiles::CurrentDocument();
 
     auto loadSet = [&rules, &doc](const char* pTypeName, int nType)
@@ -70,13 +61,13 @@ void ObjectBrowserControlExt::Redraw_Initialize()
         ExtSets[nType].clear();
         if (rules.SectionExists(pTypeName))
         {
-            auto& section = rules.GetSection(pTypeName).EntriesDictionary;
+            auto& section = rules.GetSection(pTypeName).EntitiesDictionary;
             for (auto& itr : section)
                 ExtSets[nType].insert((std::string)itr.second);
         }
         if (doc.SectionExists(pTypeName))
         {
-            auto& section = doc.GetSection(pTypeName).EntriesDictionary;
+            auto& section = doc.GetSection(pTypeName).EntitiesDictionary;
             for (auto& itr : section)
                 ExtSets[nType].insert((std::string)itr.second);
         }
@@ -84,13 +75,35 @@ void ObjectBrowserControlExt::Redraw_Initialize()
 
     loadSet("BuildingTypes", Set_Building);
     loadSet("InfantryTypes", Set_Infantry);
-    loadSet("VehicleTypes" , Set_Vehicle);
+    loadSet("VehicleTypes", Set_Vehicle);
     loadSet("AircraftTypes", Set_Aircraft);
+
+    if (fadata.SectionExists("ForceSides"))
+    {
+        auto& knownSection = fadata.GetSection("ForceSides").EntitiesDictionary;
+        for (auto& item : knownSection)
+        {
+            int sideIndex = STDHelpers::ParseToInt(item.second, -1);
+            if (sideIndex >= rules.GetKeyCount("Sides"))
+                continue;
+            if (sideIndex < -1)
+                sideIndex = -1;
+            KnownItem[(std::string)item.first] = sideIndex;
+        }
+    }
+
+    if (fadata.SectionExists("IgnoreRA2"))
+    {
+        auto& ignores = fadata.GetSection("IgnoreRA2").EntitiesDictionary;
+        for (auto& item : ignores)
+            IgnoreSet.insert((std::string)item.second);
+    }
 }
 
 void ObjectBrowserControlExt::Redraw_MainList()
 {
     ExtNodes[Root_Nothing] = this->InsertTranslatedString("NothingObList", -2);
+    ExtNodes[Root_Ground] = this->InsertTranslatedString("GroundObList", 13);
     ExtNodes[Root_Owner] = this->InsertTranslatedString("ChangeOwnerObList");
     ExtNodes[Root_Infantry] = this->InsertTranslatedString("InfantryObList", 0);
     ExtNodes[Root_Vehicle] = this->InsertTranslatedString("VehiclesObList", 1);
@@ -102,8 +115,34 @@ void ObjectBrowserControlExt::Redraw_MainList()
     ExtNodes[Root_Waypoint] = this->InsertTranslatedString("WaypointsObList", 6);
     ExtNodes[Root_Celltag] = this->InsertTranslatedString("CelltagsObList", 7);
     ExtNodes[Root_Basenode] = this->InsertTranslatedString("BaseNodesObList", 8);
+    ExtNodes[Root_Tunnel] = this->InsertTranslatedString("TunnelObList", 9);
     ExtNodes[Root_PlayerLocation] = this->InsertTranslatedString("StartpointsObList", 12);
     ExtNodes[Root_Delete] = this->InsertTranslatedString("DelObjObList", 10);
+}
+
+void ObjectBrowserControlExt::Redraw_Ground()
+{
+    HTREEITEM& hGround = ExtNodes[Root_Ground];
+    if (hGround == NULL)    return;
+
+    auto& doc = GlobalVars::INIFiles::CurrentDocument();
+    CString theater = doc.GetString("Map", "Theater");
+    if (theater == "NEWURBAN")
+        theater = "UBN";
+
+    CString suffix;
+    if (theater != "")
+        suffix = theater.Mid(0, 3);
+
+    this->InsertTranslatedString("GroundClearObList" + suffix, 61, hGround);
+    this->InsertTranslatedString("GroundSandObList"  + suffix, 62, hGround);
+    this->InsertTranslatedString("GroundRoughObList" + suffix, 63, hGround);
+    this->InsertTranslatedString("GroundGreenObList" + suffix, 65, hGround);
+    this->InsertTranslatedString("GroundPaveObList"  + suffix, 66, hGround);
+    this->InsertTranslatedString("GroundWaterObList", 64, hGround);
+
+    if(theater == "UBN")
+        this->InsertTranslatedString("GroundPave2ObListUBN", 67, hGround);
 }
 
 void ObjectBrowserControlExt::Redraw_Owner()
@@ -111,20 +150,15 @@ void ObjectBrowserControlExt::Redraw_Owner()
     HTREEITEM& hOwner = ExtNodes[Root_Owner];
     if (hOwner == NULL)    return;
 
-    std::unordered_set<int> uniqueKeeper;
-
     auto& doc = GlobalVars::INIFiles::CurrentDocument();
     if (!doc.SectionExists("Houses"))
         return;
-    auto& section = doc.GetSection("Houses").EntriesDictionary;
+    auto& section = doc.GetSection("Houses").EntitiesDictionary;
     for (auto& house : section)
     {
         int index = STDHelpers::ParseToInt(house.first, -1);
         if (index == -1)
             continue;
-        if (uniqueKeeper.find(index) != uniqueKeeper.end())
-            continue;
-        uniqueKeeper.insert(index);
         this->InsertString(house.second, Const_House + index, hOwner);
     }
 }
@@ -134,10 +168,8 @@ void ObjectBrowserControlExt::Redraw_Infantry()
     HTREEITEM& hInfantry = ExtNodes[Root_Infantry];
     if (hInfantry == NULL)   return;
 
-    std::unordered_set<int> uniqueKeeper;
     std::unordered_map<int, HTREEITEM> subNodes;
 
-    auto& rules = GlobalVars::INIFiles::Rules();
     auto& fadata = GlobalVars::INIFiles::FAData();
 
     int i = 0;
@@ -149,25 +181,29 @@ void ObjectBrowserControlExt::Redraw_Infantry()
     }
     else
     {
-        auto& sides = fadata.GetSection("Sides").EntriesDictionary;
+        auto& sides = fadata.GetSection("Sides").EntitiesDictionary;
         for (auto& itr : sides)
             subNodes[i++] = this->InsertString(itr.second, -1, hInfantry);
     }
     subNodes[-1] = this->InsertString("Others", -1, hInfantry);
 
-    if (!rules.SectionExists("InfantryTypes"))
-        return;
-    auto& infantries = rules.GetSection("InfantryTypes").EntriesDictionary;
+    MultimapHelper mmh;
+    mmh.AddINI(&GlobalVars::INIFiles::Rules());
+    mmh.AddINI(&GlobalVars::INIFiles::CurrentDocument());
+
+    auto& infantries = mmh.GetSection("InfantryTypes");
     for (auto& inf : infantries)
     {
-        int index = STDHelpers::ParseToInt(inf.first);
+        if (IgnoreSet.find((std::string)inf.second) != IgnoreSet.end())
+            continue;
+        int index = STDHelpers::ParseToInt(inf.first, -1);
         if (index == -1)   continue;
         int side = GuessSide(inf.second, Set_Infantry);
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            CSFQuery::GetUIName(inf.second), 
-            Const_Infantry + index, 
+            CSFQuery::GetUIName(inf.second),
+            Const_Infantry + index,
             subNodes[side]
         );
     }
@@ -178,10 +214,8 @@ void ObjectBrowserControlExt::Redraw_Vehicle()
     HTREEITEM& hVehicle = ExtNodes[Root_Vehicle];
     if (hVehicle == NULL)   return;
 
-    std::unordered_set<int> uniqueKeeper;
     std::unordered_map<int, HTREEITEM> subNodes;
 
-    auto& rules = GlobalVars::INIFiles::Rules();
     auto& fadata = GlobalVars::INIFiles::FAData();
 
     int i = 0;
@@ -193,18 +227,22 @@ void ObjectBrowserControlExt::Redraw_Vehicle()
     }
     else
     {
-        auto& sides = fadata.GetSection("Sides").EntriesDictionary;
+        auto& sides = fadata.GetSection("Sides").EntitiesDictionary;
         for (auto& itr : sides)
             subNodes[i++] = this->InsertString(itr.second, -1, hVehicle);
     }
     subNodes[-1] = this->InsertString("Others", -1, hVehicle);
 
-    if (!rules.SectionExists("VehicleTypes"))
-        return;
-    auto& vehicles = rules.GetSection("VehicleTypes").EntriesDictionary;
+    MultimapHelper mmh;
+    mmh.AddINI(&GlobalVars::INIFiles::Rules());
+    mmh.AddINI(&GlobalVars::INIFiles::CurrentDocument());
+
+    auto& vehicles = mmh.GetSection("VehicleTypes");
     for (auto& veh : vehicles)
     {
-        int index = STDHelpers::ParseToInt(veh.first);
+        if (IgnoreSet.find((std::string)veh.second) != IgnoreSet.end())
+            continue;
+        int index = STDHelpers::ParseToInt(veh.first, -1);
         if (index == -1)   continue;
         int side = GuessSide(veh.second, Set_Vehicle);
         if (subNodes.find(side) == subNodes.end())
@@ -222,7 +260,6 @@ void ObjectBrowserControlExt::Redraw_Aircraft()
     HTREEITEM& hAircraft = ExtNodes[Root_Aircraft];
     if (hAircraft == NULL)   return;
 
-    std::unordered_set<int> uniqueKeeper;
     std::unordered_map<int, HTREEITEM> subNodes;
 
     auto& rules = GlobalVars::INIFiles::Rules();
@@ -237,18 +274,22 @@ void ObjectBrowserControlExt::Redraw_Aircraft()
     }
     else
     {
-        auto& sides = fadata.GetSection("Sides").EntriesDictionary;
+        auto& sides = fadata.GetSection("Sides").EntitiesDictionary;
         for (auto& itr : sides)
             subNodes[i++] = this->InsertString(itr.second, -1, hAircraft);
     }
     subNodes[-1] = this->InsertString("Others", -1, hAircraft);
 
-    if (!rules.SectionExists("AircraftTypes"))
-        return;
-    auto& aircrafts = rules.GetSection("AircraftTypes").EntriesDictionary;
+    MultimapHelper mmh;
+    mmh.AddINI(&GlobalVars::INIFiles::Rules());
+    mmh.AddINI(&GlobalVars::INIFiles::CurrentDocument());
+
+    auto& aircrafts = mmh.GetSection("AircraftTypes");
     for (auto& air : aircrafts)
     {
-        int index = STDHelpers::ParseToInt(air.first);
+        if (IgnoreSet.find((std::string)air.second) != IgnoreSet.end())
+            continue;
+        int index = STDHelpers::ParseToInt(air.first, -1);
         if (index == -1)   continue;
         int side = GuessSide(air.second, Set_Aircraft);
         if (subNodes.find(side) == subNodes.end())
@@ -266,7 +307,6 @@ void ObjectBrowserControlExt::Redraw_Building()
     HTREEITEM& hBuilding = ExtNodes[Root_Building];
     if (hBuilding == NULL)   return;
 
-    std::unordered_set<int> uniqueKeeper;
     std::unordered_map<int, HTREEITEM> subNodes;
 
     auto& rules = GlobalVars::INIFiles::Rules();
@@ -281,18 +321,22 @@ void ObjectBrowserControlExt::Redraw_Building()
     }
     else
     {
-        auto& sides = fadata.GetSection("Sides").EntriesDictionary;
+        auto& sides = fadata.GetSection("Sides").EntitiesDictionary;
         for (auto& itr : sides)
             subNodes[i++] = this->InsertString(itr.second, -1, hBuilding);
     }
     subNodes[-1] = this->InsertString("Others", -1, hBuilding);
 
-    if (!rules.SectionExists("BuildingTypes"))
-        return;
-    auto& buildings = rules.GetSection("BuildingTypes").EntriesDictionary;
+    MultimapHelper mmh;
+    mmh.AddINI(&GlobalVars::INIFiles::Rules());
+    mmh.AddINI(&GlobalVars::INIFiles::CurrentDocument());
+
+    auto& buildings = mmh.GetSection("BuildingTypes");
     for (auto& bud : buildings)
     {
-        int index = STDHelpers::ParseToInt(bud.first);
+        if (IgnoreSet.find((std::string)bud.second) != IgnoreSet.end())
+            continue;
+        int index = STDHelpers::ParseToInt(bud.first, -1);
         if (index == -1)   continue;
         int side = GuessSide(bud.second, Set_Building);
         if (subNodes.find(side) == subNodes.end())
@@ -316,17 +360,21 @@ void ObjectBrowserControlExt::Redraw_Terrain()
 
     if (!rules.SectionExists("TerrainTypes"))
         return;
-    auto& terrains = rules.GetSection("TerrainTypes").EntriesDictionary;
+    auto& terrains = rules.GetSection("TerrainTypes").EntitiesDictionary;
     for (auto& ter : terrains)
     {
+        if (IgnoreSet.find((std::string)ter.second) != IgnoreSet.end())
+            continue;
         if (!rules.SectionExists(ter.second))
             continue;
         if (!rules.KeyExists(ter.second, "SnowOccupationBits"))
             continue;
         int index = STDHelpers::ParseToInt(ter.first);
         if (index == -1)   continue;
-        this->InsertString(
-            CSFQuery::GetUIName(ter.second),
+        CString buffer;
+        buffer = CSFQuery::GetUIName(ter.second);
+        this->InsertTranslatedString(
+            buffer,
             Const_Terrain + index,
             hTerrain
         );
@@ -343,9 +391,11 @@ void ObjectBrowserControlExt::Redraw_Smudge()
 
     if (!rules.SectionExists("SmudgeTypes"))
         return;
-    auto& smudges = rules.GetSection("SmudgeTypes").EntriesDictionary;
+    auto& smudges = rules.GetSection("SmudgeTypes").EntitiesDictionary;
     for (auto& smu : smudges)
     {
+        if (IgnoreSet.find((std::string)smu.second) != IgnoreSet.end())
+            continue;
         if (!rules.SectionExists(smu.second))
             continue;
         if (!rules.GetKeyCount(smu.second))
@@ -373,7 +423,7 @@ void ObjectBrowserControlExt::Redraw_Overlay()
     this->InsertTranslatedString("DelOvrl0ObList", 60100, hTemp);
     this->InsertTranslatedString("DelOvrl1ObList", 60101, hTemp);
     this->InsertTranslatedString("DelOvrl2ObList", 60102, hTemp);
-    this->InsertTranslatedString("DelOvrl3ObList", 60103, hTemp);   
+    this->InsertTranslatedString("DelOvrl3ObList", 60103, hTemp);
 
     hTemp = this->InsertTranslatedString("GrTibObList", -1, hOverlay);
     this->InsertTranslatedString("DrawTibObList", 60210, hTemp);
@@ -390,11 +440,20 @@ void ObjectBrowserControlExt::Redraw_Overlay()
 
     hTemp = this->InsertTranslatedString("AllObList", -1, hOverlay);
 
+    this->InsertTranslatedString("OvrlManuallyObList", 60001, hOverlay);
+    this->InsertTranslatedString("OvrlDataManuallyObList", 60002, hOverlay);
+
     if (!rules.SectionExists("OverlayTypes"))
         return;
-    auto& overlays = rules.GetSection("OverlayTypes").EntriesDictionary;
+    auto& overlays = rules.GetSection("OverlayTypes").EntitiesDictionary;
+
+    // a rough support for tracks
+    this->InsertTranslatedString("Tracks", Const_Overlay + 39, hOverlay);
+    
     for (auto& ovl : overlays)
     {
+        if (IgnoreSet.find((std::string)ovl.second) != IgnoreSet.end())
+            continue;
         if (!rules.SectionExists(ovl.second))
             continue;
         int index = STDHelpers::ParseToInt(ovl.first);
@@ -443,6 +502,18 @@ void ObjectBrowserControlExt::Redraw_Basenode()
     this->InsertTranslatedString("CreateNodeNoDelObList", 40, hBasenode);
     this->InsertTranslatedString("CreateNodeDelObList", 41, hBasenode);
     this->InsertTranslatedString("DelNodeObList", 42, hBasenode);
+}
+
+void ObjectBrowserControlExt::Redraw_Tunnel()
+{
+    HTREEITEM& hTunnel = ExtNodes[Root_Tunnel];
+    if (hTunnel == NULL)   return;
+
+    if (GlobalVars::INIFiles::FAData().GetBool("Debug", "AllowTunnels"))
+    {
+        this->InsertTranslatedString("NewTunnelObList", 50, hTunnel);
+        this->InsertTranslatedString("DelTunnelObList", 51, hTunnel);
+    }
 }
 
 void ObjectBrowserControlExt::Redraw_PlayerLocation()

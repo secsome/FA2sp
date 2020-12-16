@@ -52,7 +52,7 @@ void CScriptTypes_LoadParams_Waypoint(CComboBox& comboBox)
     if (doc.SectionExists("Waypoints"))
     {
         auto& entries = doc.GetSection("Waypoints");
-        for (auto& x : entries.EntriesDictionary)
+        for (auto& x : entries.EntitiesDictionary)
         {
             if (x.first != "Name" && !IsNullOrEmpty(x.second))
             {
@@ -114,7 +114,7 @@ void CScriptTypes_LoadParams_GlobalVariables(CComboBox& comboBox)
     {
         auto& entities = rules.GetSection("VariableNames");
         CString text;
-        for (auto& x : entities.EntriesDictionary)
+        for (auto& x : entities.EntitiesDictionary)
         {
             if (x.first != "Name" && !IsNullOrEmpty(x.first))
             {
@@ -136,7 +136,7 @@ void CScriptTypes_LoadParams_ScriptTypes(CComboBox& comboBox)
     {
         CString text;
         auto& entries = doc.GetSection("ScriptTypes");
-        for (auto& ent : entries.EntriesDictionary)
+        for (auto& ent : entries.EntitiesDictionary)
         {
             if (doc.SectionExists(ent.second) && !IsNullOrEmpty(ent.second))
             {
@@ -160,7 +160,7 @@ void CScriptTypes_LoadParams_TeamTypes(CComboBox& comboBox)
     {
         CString text;
         auto& entries = doc.GetSection("TeamTypes");
-        for (auto& ent : entries.EntriesDictionary)
+        for (auto& ent : entries.EntitiesDictionary)
         {
             if (doc.SectionExists(ent.second) && !IsNullOrEmpty(ent.second))
             {
@@ -184,7 +184,7 @@ void CScriptTypes_LoadParams_Houses(CComboBox& comboBox)
     {
         CString text;
         auto& entries = doc.GetSection("Houses");
-        for (auto& ent : entries.EntriesDictionary)
+        for (auto& ent : entries.EntitiesDictionary)
         {
             if (doc.SectionExists(ent.second) && !IsNullOrEmpty(ent.second))
             {
@@ -206,7 +206,7 @@ void CScriptTypes_LoadParams_Speechs(CComboBox& comboBox)
     {
         CString text;
         auto& entries = eva.GetSection("DialogList");
-        for (auto& ent : entries.EntriesDictionary)
+        for (auto& ent : entries.EntitiesDictionary)
         {
             if (eva.SectionExists(ent.second))
             {
@@ -228,7 +228,7 @@ void CScriptTypes_LoadParams_Sounds(CComboBox& comboBox)
     {
         CString text;
         auto& entries = sound.GetSection("SoundList");
-        for (auto& ent : entries.EntriesDictionary)
+        for (auto& ent : entries.EntitiesDictionary)
         {
             if (sound.SectionExists(ent.second) && !IsNullOrEmpty(ent.second))
             {
@@ -250,7 +250,7 @@ void CScriptTypes_LoadParams_Movies(CComboBox& comboBox)
     {
         CString text;
         auto& entries = art.GetSection("Movies");
-        for (auto& ent : entries.EntriesDictionary)
+        for (auto& ent : entries.EntitiesDictionary)
         {
             if (ent.first != "Name")
             {
@@ -272,7 +272,7 @@ void CScriptTypes_LoadParams_Themes(CComboBox& comboBox)
     {
         CString text;
         auto& entries = theme.GetSection("Themes");
-        for (auto& ent : entries.EntriesDictionary)
+        for (auto& ent : entries.EntitiesDictionary)
         {
             if (theme.SectionExists(ent.second) && !IsNullOrEmpty(ent.second))
             {
@@ -294,7 +294,7 @@ void CScriptTypes_LoadParams_Countries(CComboBox& comboBox)
     {
         CString text;
         auto& entries = doc.GetSection("Countries");
-        for (auto& ent : entries.EntriesDictionary)
+        for (auto& ent : entries.EntitiesDictionary)
         {
             if (doc.SectionExists(ent.second) && !IsNullOrEmpty(ent.second))
             {
@@ -316,7 +316,7 @@ void CScriptTypes_LoadParams_LocalVariables(CComboBox& comboBox)
     {
         auto& entities = doc.GetSection("VariableNames");
         CString text;
-        for (auto& x : entities.EntriesDictionary)
+        for (auto& x : entities.EntitiesDictionary)
         {
             if (IsNullOrEmpty(x.first) || x.first == "Name")
                 continue;
@@ -354,13 +354,13 @@ void CScriptTypes_LoadParams_BuildingTypes(CComboBox& comboBox)
     {
         auto& entities = rules.GetSection("BuildingTypes");
         CString text;
-        for (auto& x : entities.EntriesDictionary)
+        for (auto& x : entities.EntitiesDictionary)
         {
             if (rules.SectionExists(x.second) && !IsNullOrEmpty(x.second))
             {
                 int l = atoi(x.first);
                 HashSet.insert(l);
-                text.Format("%d - %s - %s", l, x.second, rules.GetString(x.second, "Name"));
+                text.Format("%d - %s - %s", l, x.second, CSFQuery::GetUIName(x.second));
                 comboBox.SetItemData(comboBox.AddString(text), l);
             }
         }
@@ -371,12 +371,12 @@ void CScriptTypes_LoadParams_BuildingTypes(CComboBox& comboBox)
     {
         auto& entities = doc.GetSection("BuildingTypes");
         CString text;
-        for (auto& x : entities.EntriesDictionary)
+        for (auto& x : entities.EntitiesDictionary)
         {
             if (rules.SectionExists(x.second) && doc.SectionExists(x.second) && !IsNullOrEmpty(x.second))
             {
                 int l = atoi(x.first);
-                text.Format("%d - %s - %s", l, x.second, rules.GetString(x.second, "Name"));
+                text.Format("%d - %s - %s", l, x.second, CSFQuery::GetUIName(x.second));
                 if (HashSet.find(l) != HashSet.end())
                 {
                     comboBox.DeleteString(l);
@@ -400,7 +400,7 @@ void CScriptTypes_LoadParams_Animations(CComboBox& comboBox)
     {
         auto& entities = rules.GetSection("Animations");
         CString text;
-        for (auto& x : entities.EntriesDictionary)
+        for (auto& x : entities.EntitiesDictionary)
         {
             if (x.first != "Name" && !IsNullOrEmpty(x.first))
             {

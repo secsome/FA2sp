@@ -31,4 +31,13 @@ public:
             return nDefault;
         return ret;
     }
+
+    static bool IsNullOrEmpty(const char* pSource)
+    {
+        int len = strlen(pSource);
+        if (len == 0)  return true;
+        for (int i = 0; i < len; ++i)
+            if (pSource[i] != ' ' && pSource[i] != '\0')  return false;
+        return true;
+    }
 };

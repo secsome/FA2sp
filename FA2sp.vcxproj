@@ -225,6 +225,7 @@
     <ClCompile Include="FA2sp\Ext\CTriggerAction\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\FA2Expand.cpp" />
     <ClCompile Include="FA2sp\Ext\Miscs\Hooks.LoadParams.cpp" />
+    <ClCompile Include="FA2sp\Helpers\MultimapHelper.cpp" />
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.BugFixes.cpp" />
     <ClCompile Include="FA2sp\Ext\CAITriggerTypesEnable\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CAITriggerTypes\Body.cpp" />
@@ -340,6 +341,7 @@
     <ClInclude Include="FA2sp\FA2sp.Macros.h" />
     <ClInclude Include="FA2sp\Helpers\Helper.h" />
     <ClInclude Include="FA2sp\Helpers\INIParser.h" />
+    <ClInclude Include="FA2sp\Helpers\MultimapHelper.h" />
     <ClInclude Include="FA2sp\Helpers\Parser.h" />
     <ClInclude Include="FA2sp\Helpers\STDHelpers.h" />
     <ClInclude Include="FA2sp\Logger.h" />

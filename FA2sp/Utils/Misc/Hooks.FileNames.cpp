@@ -120,7 +120,6 @@ DEFINE_HOOK(479F8F, FileNames_RulesIni, 7)
         pFile = pFAData->GetString("Filenames", "Rules", "rules.ini");
 
     pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Rules(), FALSE);
-
     return 0x47A041;
 }
 
@@ -130,8 +129,6 @@ DEFINE_HOOK(47A0C4, FileNames_ArtIni, 7)
 
     INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
     CString pFile;
-    pFile = pFAData->GetString("Filenames", "Art", "art.ini");
-    pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Art(), FALSE);
     if (
         *reinterpret_cast<bool*>(0x5CE3B8) // bLoadYRFiles
         &&
@@ -139,8 +136,10 @@ DEFINE_HOOK(47A0C4, FileNames_ArtIni, 7)
         )
     {
         pFile = pFAData->GetString("Filenames", "ArtYR", "artmd.ini");
-        pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Art(), TRUE);
     }
+    else
+        pFile = pFAData->GetString("Filenames", "Art", "art.ini");
+    pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Art(), FALSE);
     return 0x47A180;
 }
 
@@ -150,8 +149,6 @@ DEFINE_HOOK(47A57D, FileNames_TemperateIni, 7)
 
     INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
     CString pFile;
-    pFile = pFAData->GetString("Filenames", "Temperate", "Temperat.ini");
-    pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Temperate(), FALSE);
     if (
         *reinterpret_cast<bool*>(0x5CE3B8) // bLoadYRFiles
         &&
@@ -159,8 +156,10 @@ DEFINE_HOOK(47A57D, FileNames_TemperateIni, 7)
         )
     {
         pFile = pFAData->GetString("Filenames", "TemperateYR", "TemperatMd.ini");
-        pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Temperate(), TRUE);
     }
+    else
+        pFile = pFAData->GetString("Filenames", "Temperate", "Temperat.ini");
+    pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Temperate(), FALSE);
     return 0x47A5AC;
 }
 
@@ -170,8 +169,6 @@ DEFINE_HOOK(47A61D, FileNames_SnowIni, 7)
 
     INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
     CString pFile;
-    pFile = pFAData->GetString("Filenames", "Snow", "Snow.ini");
-    pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Snow(), FALSE);
     if (
         *reinterpret_cast<bool*>(0x5CE3B8) // bLoadYRFiles
         &&
@@ -179,8 +176,10 @@ DEFINE_HOOK(47A61D, FileNames_SnowIni, 7)
         )
     {
         pFile = pFAData->GetString("Filenames", "SnowYR", "SnowMd.ini");
-        pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Snow(), TRUE);
     }
+    else
+        pFile = pFAData->GetString("Filenames", "Snow", "Snow.ini");
+    pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Snow(), FALSE);
     return 0x47A64C;
 }
 
@@ -190,8 +189,6 @@ DEFINE_HOOK(47A6BD, FileNames_UrbanIni, 7)
 
     INIClass* pFAData = &GlobalVars::INIFiles::FAData.get();
     CString pFile;
-    pFile = pFAData->GetString("Filenames", "Urban", "Urban.ini");
-    pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Urban(), FALSE);
     if (
         *reinterpret_cast<bool*>(0x5CE3B8) // bLoadYRFiles
         &&
@@ -199,8 +196,10 @@ DEFINE_HOOK(47A6BD, FileNames_UrbanIni, 7)
         )
     {
         pFile = pFAData->GetString("Filenames", "UrbanYR", "UrbanMd.ini");
-        pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Urban(), TRUE);
     }
+    else
+        pFile = pFAData->GetString("Filenames", "Urban", "Urban.ini");
+    pThis->_47FFB0_loadTSINI(pFile, &GlobalVars::INIFiles::Urban(), FALSE);
     return 0x47A6EC;
 }
 
