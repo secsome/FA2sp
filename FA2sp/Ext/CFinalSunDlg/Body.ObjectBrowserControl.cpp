@@ -151,6 +151,8 @@ void ObjectBrowserControlExt::Redraw_Owner()
     if (hOwner == NULL)    return;
 
     auto& doc = GlobalVars::INIFiles::CurrentDocument();
+    bool bMultiplayer = doc.GetBool("Basic", "MultiplayerOnly");
+
     if (!doc.SectionExists("Houses"))
         return;
     auto& section = doc.GetSection("Houses").EntitiesDictionary;
@@ -159,6 +161,9 @@ void ObjectBrowserControlExt::Redraw_Owner()
         int index = STDHelpers::ParseToInt(house.first, -1);
         if (index == -1)
             continue;
+        if (bMultiplayer)
+            if (house.second != "Neutral" && house.second != "Special")
+                continue;
         this->InsertString(house.second, Const_House + index, hOwner);
     }
 }

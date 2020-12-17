@@ -5,25 +5,33 @@
 
 #include <map>
 
-static std::map<CString, CString> CSFFiles_Stringtable;
-static char* pEDIBuffer;
-static bool bLoadRes = false;
+class StringtableLoader
+{
+public:
+    static void LoadCSFFiles(DWORD pThisAddr);
+    static void LoadCSFFile(const char* tmpFilePath, const char* pName, DWORD& pThisAddr);
+    static bool ParseCSFFile(char* buffer, DWORD& size);
+    static void WriteCSFFile();
+    static bool LoadToBuffer();
 
-void LoadCSFFiles(DWORD pThisAddr);
-void LoadCSFFile(const char* tmpFilePath, const char* pName, DWORD& pThisAddr);
-bool ParseCSFFile(char* buffer, DWORD& size);
-void WriteCSFFile();
-bool LoadToBuffer();
+    static std::map<CString, CString> CSFFiles_Stringtable;
+    static char* pEDIBuffer;
+    static bool bLoadRes;
+};
+
+bool StringtableLoader::bLoadRes = false;
+char* StringtableLoader::pEDIBuffer = nullptr;
+std::map<CString, CString> StringtableLoader::CSFFiles_Stringtable;
 
 DEFINE_HOOK(492D10, CSFFiles_Stringtables_Support_1, 5)
 {
     if (ExtConfigs::Stringtables)
     {
-        LoadCSFFiles(R->Stack32(0x2C0 - 0x268));
-        bLoadRes = LoadToBuffer();
-        if (bLoadRes)
+        StringtableLoader::LoadCSFFiles(R->Stack32(0x2C0 - 0x268));
+        StringtableLoader::bLoadRes = StringtableLoader::LoadToBuffer();
+        if (StringtableLoader::bLoadRes)
         {
-            R->EDI(pEDIBuffer);
+            R->EDI(StringtableLoader::pEDIBuffer);
             return 0x49305F;
         }
         else
@@ -35,21 +43,21 @@ DEFINE_HOOK(492D10, CSFFiles_Stringtables_Support_1, 5)
 DEFINE_HOOK(49433B, CSFFiles_Stringtables_Support_2, 6)
 {
     // Cleanning up
-    if (ExtConfigs::Stringtables && bLoadRes)
+    if (ExtConfigs::Stringtables && StringtableLoader::bLoadRes)
     {
-        GameDelete(pEDIBuffer);
+        GameDelete(StringtableLoader::pEDIBuffer);
         char tmpCsfFile[0x400];
         strcpy_s(tmpCsfFile, GlobalVars::ExePath());
         strcat_s(tmpCsfFile, "\\RA2Tmp.csf");
         DeleteFile(tmpCsfFile);
-        Logger::Debug("Successfully loaded %d csf labels.\n",CSFFiles_Stringtable.size());
-        CSFFiles_Stringtable.clear();
-        bLoadRes = false;
+        Logger::Debug("Successfully loaded %d csf labels.\n", StringtableLoader::CSFFiles_Stringtable.size());
+        StringtableLoader::CSFFiles_Stringtable.clear();
+        StringtableLoader::bLoadRes = false;
     }
     return 0;
 }
 
-void LoadCSFFiles(DWORD pThisAddr)
+void StringtableLoader::LoadCSFFiles(DWORD pThisAddr)
 {
     char tmpCsfFile[0x400];
     strcpy_s(tmpCsfFile, GlobalVars::ExePath());
@@ -70,7 +78,7 @@ void LoadCSFFiles(DWORD pThisAddr)
     WriteCSFFile();
 }
 
-void LoadCSFFile(const char* tmpFilePath, const char* pName, DWORD& pThisAddr)
+void StringtableLoader::LoadCSFFile(const char* tmpFilePath, const char* pName, DWORD& pThisAddr)
 {
     bool flag = true;
     HANDLE hFile = INVALID_HANDLE_VALUE;
@@ -105,11 +113,12 @@ void LoadCSFFile(const char* tmpFilePath, const char* pName, DWORD& pThisAddr)
         CloseHandle(hFile);
         delete[] fileBuffer;
     }
-    Logger::Debug(flag ? "Successfully Loaded file %s.\n" : "Cannot read %s while parsing CSFFiles.\n", pName);
+    if(flag)
+        Logger::Debug("Successfully Loaded file %s.\n", pName);
     return;
 }
 
-bool ParseCSFFile(char* buffer, DWORD& size)
+bool StringtableLoader::ParseCSFFile(char* buffer, DWORD& size)
 {
     char* pos = buffer;
 
@@ -174,7 +183,7 @@ bool ParseCSFFile(char* buffer, DWORD& size)
                 read_int(&strLength);
                 pos += strLength;
             }
-            CSFFiles_Stringtable[labelstr] = CString(value);
+            StringtableLoader::CSFFiles_Stringtable[labelstr] = CString(value);
             delete[] labelstr;
             delete[] value;
 
@@ -197,7 +206,7 @@ bool ParseCSFFile(char* buffer, DWORD& size)
     return true;
 }
 
-void WriteCSFFile()
+void StringtableLoader::WriteCSFFile()
 {
     char tmpCsfFile[0x400];
     strcpy_s(tmpCsfFile, GlobalVars::ExePath());
@@ -218,13 +227,13 @@ void WriteCSFFile()
     // CSF header
     write_to_stream(" FSC");
     write_int(3);
-    write_int(CSFFiles_Stringtable.size());
-    write_int(CSFFiles_Stringtable.size());
+    write_int(StringtableLoader::CSFFiles_Stringtable.size());
+    write_int(StringtableLoader::CSFFiles_Stringtable.size());
     write_to_stream("sFA2"); // useless
     write_int(0);
 
     // CSF labels
-    for (auto& lbl : CSFFiles_Stringtable)
+    for (auto& lbl : StringtableLoader::CSFFiles_Stringtable)
     {
         // label
         write_to_stream(" LBL");
@@ -249,7 +258,7 @@ void WriteCSFFile()
     CloseHandle(hFile);
 }
 
-bool LoadToBuffer()
+bool StringtableLoader::LoadToBuffer()
 {
     HANDLE hFile = INVALID_HANDLE_VALUE;
     char directoryBuffer[0x400];
@@ -261,8 +270,10 @@ bool LoadToBuffer()
     if (hFile != INVALID_HANDLE_VALUE)
     {
         DWORD dwFileSize = GetFileSize(hFile, nullptr);
-        pEDIBuffer = GameCreateArray<char>(dwFileSize);
-        return pEDIBuffer != nullptr && ReadFile(hFile, pEDIBuffer, dwFileSize, nullptr, nullptr);
+        StringtableLoader::pEDIBuffer = GameCreateArray<char>(dwFileSize);
+        return 
+            StringtableLoader::pEDIBuffer != nullptr && 
+            ReadFile(hFile, StringtableLoader::pEDIBuffer, dwFileSize, nullptr, nullptr);
     }
     return false;
 }

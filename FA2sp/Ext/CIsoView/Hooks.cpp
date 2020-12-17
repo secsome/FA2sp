@@ -15,6 +15,36 @@
 //	return 0;
 //}
 
+DEFINE_HOOK(45AF03, CIsoView_StatusBar_YXTOXY_YToX_1, 7)
+{
+	GET_STACK(int, nPointX, 0x30);
+	R->EDI(nPointX);
+	R->ECX(R->lea_Stack<DWORD>(0x458));
+	return 0x45AF0A;
+}
+
+DEFINE_HOOK(45AF21, CIsoView_StatusBar_YXTOXY_YToX_2, 7)
+{
+	GET_STACK(int, nPointY, 0x38);
+	R->EDI(nPointY);
+	return 0;
+}
+
+DEFINE_HOOK(45AF44, CIsoView_StatusBar_YXTOXY_XToY_1, 7)
+{
+	GET_STACK(int, nPointY, 0x38);
+	R->EBX(nPointY);
+	R->EAX(R->lea_Stack<DWORD>(0x458));
+	return 0x45AF4B;
+}
+
+DEFINE_HOOK(45AF57, CIsoView_StatusBar_YXTOXY_XToY_2, 7)
+{
+	GET_STACK(int, nPointX, 0x30);
+	R->EBX(nPointX);
+	return 0;
+}
+
 // Fix on wrong infantry facing
 DEFINE_HOOK(473E46, CIsoView_UpdatePaint_InfantryFacing, 9)
 {
