@@ -8,6 +8,8 @@
 
 // Load our own accelerators
 // Notice, our accelerator's id need to be the same as FA2's
+#ifdef _DEBUG
+#undef _DEBUG
 
 DEFINE_HOOK(41FAFD, LoadAccelerators_sub_41FAD0, 7)
 {
@@ -177,3 +179,6 @@ DEFINE_HOOK(554C8A, FetchResource_Cwnd_ExecuteDlgInit, 5)
 	}
 	return 0;
 }
+
+#define _DEBUG
+#endif

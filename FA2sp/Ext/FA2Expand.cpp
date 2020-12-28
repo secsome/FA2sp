@@ -46,61 +46,70 @@
 #include "CTriggerFrame/Body.h"
 #include "CTriggerOption/Body.h"
 #include "CUpdateProgress/Body.h"
-
-#include <CMixFile.h>
+//
+//#include <CMixFile.h>
 
 void __stdcall FA2Expand::ExeRun()
 {
-    /*CLoadingExt::ProgramStartupInit();
-    CLoadingGraphicsExt::ProgramStartupInit();
-    CUpdateProgressExt::ProgramStartupInit();
-    
-    CCreateMap1Ext::ProgramStartupInit();
-    CCreateMap2Ext::ProgramStartupInit();
-    CCreateMap3AExt::ProgramStartupInit();
-    CCreateMap3BExt::ProgramStartupInit();
-    CCreateMap4Ext::ProgramStartupInit();
-    
-    CTriggerFrameExt::ProgramStartupInit();
-    CTriggerOptionExt::ProgramStartupInit();
-    CTriggerEventExt::ProgramStartupInit();
-    CTriggerActionExt::ProgramStartupInit();
-    CTagsExt::ProgramStartupInit();
+    //CLoadingExt::ProgramStartupInit();
+    //CLoadingGraphicsExt::ProgramStartupInit();
+    //CUpdateProgressExt::ProgramStartupInit();
+    //
+    //CCreateMap1Ext::ProgramStartupInit();
+    //CCreateMap2Ext::ProgramStartupInit();
+    //CCreateMap3AExt::ProgramStartupInit();
+    //CCreateMap3BExt::ProgramStartupInit();
+    //CCreateMap4Ext::ProgramStartupInit();
+    //
+    //CTriggerFrameExt::ProgramStartupInit();
+    //CTriggerOptionExt::ProgramStartupInit();
+    //CTriggerEventExt::ProgramStartupInit();
+    //CTriggerActionExt::ProgramStartupInit();
+    //CTagsExt::ProgramStartupInit();
     CTaskForceExt::ProgramStartupInit();
-    CScriptTypesExt::ProgramStartupInit();
+    //CScriptTypesExt::ProgramStartupInit();
     CTeamTypesExt::ProgramStartupInit();
-    CAITriggerTypesExt::ProgramStartupInit();
-    CAITriggerTypesEnableExt::ProgramStartupInit();
-    CLocalExt::ProgramStartupInit();
-    CINIEditorExt::ProgramStartupInit();
-    CINIEditorImportExt::ProgramStartupInit();
-    CHousesExt::ProgramStartupInit();
-    CNewHouseExt::ProgramStartupInit();
-    CBasicExt::ProgramStartupInit();
-    CMapDExt::ProgramStartupInit();
-    CChangeMapSizeExt::ProgramStartupInit();
-    CSingleplayerSettingsExt::ProgramStartupInit();
-    CSpecialFlagsExt::ProgramStartupInit();
-    CLightingExt::ProgramStartupInit();
-    
-    CSearchWaypointExt::ProgramStartupInit();
-    CCellTagExt::ProgramStartupInit();
-    CRandomTreeExt::ProgramStartupInit();
-    CPropertyInfantryExt::ProgramStartupInit();
-    CPropertyAircraftExt::ProgramStartupInit();
-    CPropertyBuildingExt::ProgramStartupInit();
-    CPropertyUnitExt::ProgramStartupInit();
-    
-    CMinimapExt::ProgramStartupInit();
-    COptionsExt::ProgramStartupInit();
-    CCreditsExt::ProgramStartupInit();
-    CEasterEggExt::ProgramStartupInit();
-    
-    CMapScriptsExt::ProgramStartupInit();
-    CSaveOptionExt::ProgramStartupInit();
-    CMMXExt::ProgramStartupInit();
-    
-    CDialog289Ext::ProgramStartupInit();*/
+    //CAITriggerTypesExt::ProgramStartupInit();
+    //CAITriggerTypesEnableExt::ProgramStartupInit();
+    //CLocalExt::ProgramStartupInit();
+    //CINIEditorExt::ProgramStartupInit();
+    //CINIEditorImportExt::ProgramStartupInit();
+    //CHousesExt::ProgramStartupInit();
+    //CNewHouseExt::ProgramStartupInit();
+    //CBasicExt::ProgramStartupInit();
+    //CMapDExt::ProgramStartupInit();
+    //CChangeMapSizeExt::ProgramStartupInit();
+    //CSingleplayerSettingsExt::ProgramStartupInit();
+    //CSpecialFlagsExt::ProgramStartupInit();
+    //CLightingExt::ProgramStartupInit();
+    //
+    //CSearchWaypointExt::ProgramStartupInit();
+    //CCellTagExt::ProgramStartupInit();
+    //CRandomTreeExt::ProgramStartupInit();
+    //CPropertyInfantryExt::ProgramStartupInit();
+    //CPropertyAircraftExt::ProgramStartupInit();
+    //CPropertyBuildingExt::ProgramStartupInit();
+    //CPropertyUnitExt::ProgramStartupInit();
+    //
+    //CMinimapExt::ProgramStartupInit();
+    //COptionsExt::ProgramStartupInit();
+    //CCreditsExt::ProgramStartupInit();
+    //CEasterEggExt::ProgramStartupInit();
+    //
+    //CMapScriptsExt::ProgramStartupInit();
+    //CSaveOptionExt::ProgramStartupInit();
+    //CMMXExt::ProgramStartupInit();
+    //
+    //CDialog289Ext::ProgramStartupInit();
+
+    /*auto ReplaceOnInitDialog = [](auto pOnInitDialogExt, DWORD dwOrigin) {
+        auto address = pOnInitDialogExt;
+        RunTime::ResetMemoryContentAt(dwOrigin, &address, 4);
+    };*/
+
+    //ReplaceOnInitDialog(&CTaskForceExt::OnInitDialog, 0x596CB4);
+
+
 }
 
 FA2Expand::FA2Expand()

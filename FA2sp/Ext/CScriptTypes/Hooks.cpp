@@ -67,8 +67,8 @@ DEFINE_HOOK(4D6500, CScriptTypes_OnLBScriptActionsSelectChanged, 7)
 
 DEFINE_HOOK(4D8D20, CScriptTypes_OnInitDialog, 6)
 {
-    auto constexpr kill_focus = CBN_KILLFOCUS;
-    RunTime::ResetMemoryContentAt(0x596010 + 0x4, &kill_focus, sizeof kill_focus);
+    RunTime::ResetMemoryContentAt(0x595FC8 + 0x4, &RunTime::Messages::EDIT_KILLFOCUS, 4); // name update
+    RunTime::ResetMemoryContentAt(0x596010 + 0x4, &RunTime::Messages::COMBOBOX_KILLFOCUS, 4); // param update
     GET(CScriptTypesExt*, pThis, ECX);
     BOOL bResult = pThis->CScriptTypesExt::OnInitDialog();
     R->EAX<BOOL>(bResult);

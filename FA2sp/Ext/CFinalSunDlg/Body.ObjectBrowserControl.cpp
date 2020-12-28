@@ -4,6 +4,8 @@
 #include "../../Helpers/STDHelpers.h"
 #include "../../Helpers/MultimapHelper.h"
 
+#include "../../Logger.h"
+
 #include <GlobalVars.h>
 
 std::unordered_map<int, HTREEITEM> ObjectBrowserControlExt::ExtNodes;
@@ -164,6 +166,13 @@ void ObjectBrowserControlExt::Redraw_Owner()
         if (bMultiplayer)
             if (house.second != "Neutral" && house.second != "Special")
                 continue;
+        /*CString uiname = house.second.Mid(0, house.second.Find(' '));
+        CString queryname = CSFQuery::GetUIName(uiname);
+        this->InsertString(
+            (uiname == queryname) && (queryname != "MISSING") ? house.second : queryname,
+            Const_House + index,
+            hOwner
+        );*/
         this->InsertString(house.second, Const_House + index, hOwner);
     }
 }
@@ -370,10 +379,10 @@ void ObjectBrowserControlExt::Redraw_Terrain()
     {
         if (IgnoreSet.find((std::string)ter.second) != IgnoreSet.end())
             continue;
-        if (!rules.SectionExists(ter.second))
-            continue;
-        if (!rules.KeyExists(ter.second, "SnowOccupationBits"))
-            continue;
+        //if (!rules.SectionExists(ter.second))
+        //    continue;
+        //if (!rules.KeyExists(ter.second, "SnowOccupationBits"))
+        //    continue;
         int index = STDHelpers::ParseToInt(ter.first);
         if (index == -1)   continue;
         CString buffer;
@@ -401,10 +410,10 @@ void ObjectBrowserControlExt::Redraw_Smudge()
     {
         if (IgnoreSet.find((std::string)smu.second) != IgnoreSet.end())
             continue;
-        if (!rules.SectionExists(smu.second))
-            continue;
-        if (!rules.GetKeyCount(smu.second))
-            continue;
+        //if (!rules.SectionExists(smu.second))
+        //    continue;
+        //if (!rules.GetKeyCount(smu.second))
+        //    continue;
         int index = STDHelpers::ParseToInt(smu.first);
         if (index == -1)   continue;
         this->InsertString(
@@ -459,9 +468,9 @@ void ObjectBrowserControlExt::Redraw_Overlay()
     {
         if (IgnoreSet.find((std::string)ovl.second) != IgnoreSet.end())
             continue;
-        if (!rules.SectionExists(ovl.second))
-            continue;
-        int index = STDHelpers::ParseToInt(ovl.first);
+        //if (!rules.SectionExists(ovl.second))
+        //    continue;
+        int index = STDHelpers::ParseToInt(ovl.first, -1);
         if (index == -1)   continue;
         if (index >= 255 || index < 0) continue;
         if (rules.GetBool(ovl.second, "Wall"))

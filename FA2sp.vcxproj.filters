@@ -201,6 +201,9 @@
     <ClInclude Include="FA2sp\Helpers\MultimapHelper.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2sp\Helpers\FAINIHelper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">
@@ -411,6 +414,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Helpers\MultimapHelper.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CTeamTypes\Hooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

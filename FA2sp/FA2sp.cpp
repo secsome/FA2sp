@@ -12,6 +12,13 @@ bool ExtConfigs::OverlayFilter;
 bool ExtConfigs::AllowIncludes;
 bool ExtConfigs::Stringtables;
 
+//DEFINE_HOOK(407DA0, DEBUGASFHIAKSN, 5)
+//{
+//	GET_STACK(DWORD, dwAddr, -0x4);
+//	Logger::Debug(__FUNCTION__" %p %s\n", dwAddr, R->EAX());
+//	return 0;
+//}
+
 DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
 {
 	FA2sp::ExtConfigsInitialize();

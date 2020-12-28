@@ -6,14 +6,13 @@
 class NOVTABLE CTaskForceExt : public CTaskForce
 {
 public:
-	typedef BOOL(*FuncT_PTM)(MSG* pMsg);
-
-	static CTaskForce* Instance;
-
-	//hook function to replace in virtual function map
-	BOOL PreTranslateMessageExt(MSG* pMsg);
 
 	static void ProgramStartupInit();
+
+	//
+	// Ext Functions
+	//
+
 
 	CTaskForceExt() {};
 	~CTaskForceExt() {};

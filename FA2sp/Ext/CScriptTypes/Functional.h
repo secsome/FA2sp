@@ -6,7 +6,10 @@
 
 #include <unordered_set>
 
-void TrimIndex(CString& string) {
+class CScriptTypesFunctions
+{
+public:
+static void TrimIndex(CString& string) {
     string.TrimLeft();
     string.TrimRight();
     int spaceIndex = string.Find(' ');
@@ -14,7 +17,7 @@ void TrimIndex(CString& string) {
         string = string.Mid(0, spaceIndex);
 }
 
-bool IsNullOrEmpty(const CString& string)
+static bool IsNullOrEmpty(const CString& string)
 {
     int len = string.GetLength();
     if (len == 0)  return true;
@@ -24,7 +27,7 @@ bool IsNullOrEmpty(const CString& string)
 }
 
 // 1
-void CScriptTypes_LoadParams_Target(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Target(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -42,7 +45,7 @@ void CScriptTypes_LoadParams_Target(CComboBox& comboBox)
 }
 
 // 2
-void CScriptTypes_LoadParams_Waypoint(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Waypoint(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -68,7 +71,7 @@ void CScriptTypes_LoadParams_Waypoint(CComboBox& comboBox)
         if (waypoints[i] >= 0)
         {
             sprintf_s(buffer, "%u - (%u, %u)", 
-                i, waypoints[i] / 1000, waypoints[i] % 1000);
+                i, waypoints[i] % 1000, waypoints[i] / 1000);
             int idx = comboBox.AddString(buffer);
             comboBox.SetItemData(idx, i);
         }
@@ -76,7 +79,7 @@ void CScriptTypes_LoadParams_Waypoint(CComboBox& comboBox)
 }
 
 // 3
-void CScriptTypes_LoadParams_ScriptLine(CComboBox& comboBox, int cnt)
+static void CScriptTypes_LoadParams_ScriptLine(CComboBox& comboBox, int cnt)
 {
     // up to 50
     if (cnt > 50)
@@ -94,7 +97,7 @@ void CScriptTypes_LoadParams_ScriptLine(CComboBox& comboBox, int cnt)
 }
 
 // 4
-void CScriptTypes_LoadParams_SplitGroup(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_SplitGroup(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
     
@@ -105,7 +108,7 @@ void CScriptTypes_LoadParams_SplitGroup(CComboBox& comboBox)
 }
 
 // 5
-void CScriptTypes_LoadParams_GlobalVariables(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_GlobalVariables(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -127,7 +130,7 @@ void CScriptTypes_LoadParams_GlobalVariables(CComboBox& comboBox)
 }
 
 // 6
-void CScriptTypes_LoadParams_ScriptTypes(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_ScriptTypes(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -151,7 +154,7 @@ void CScriptTypes_LoadParams_ScriptTypes(CComboBox& comboBox)
 }
 
 // 7
-void CScriptTypes_LoadParams_TeamTypes(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_TeamTypes(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -175,7 +178,7 @@ void CScriptTypes_LoadParams_TeamTypes(CComboBox& comboBox)
 }
 
 // 8
-void CScriptTypes_LoadParams_Houses(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Houses(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -194,10 +197,23 @@ void CScriptTypes_LoadParams_Houses(CComboBox& comboBox)
             }
         }
     }
+
+    bool bMultiplayer = doc.GetBool("Basic", "MultiplayerOnly");
+    if (bMultiplayer)
+    {
+        comboBox.SetItemData(comboBox.AddString("4475 - <Player @ A>"), 4475);
+        comboBox.SetItemData(comboBox.AddString("4476 - <Player @ B>"), 4476);
+        comboBox.SetItemData(comboBox.AddString("4477 - <Player @ C>"), 4477);
+        comboBox.SetItemData(comboBox.AddString("4478 - <Player @ D>"), 4478);
+        comboBox.SetItemData(comboBox.AddString("4479 - <Player @ E>"), 4479);
+        comboBox.SetItemData(comboBox.AddString("4480 - <Player @ F>"), 4480);
+        comboBox.SetItemData(comboBox.AddString("4481 - <Player @ G>"), 4481);
+        comboBox.SetItemData(comboBox.AddString("4482 - <Player @ H>"), 4482);
+    }
 }
 
 // 9
-void CScriptTypes_LoadParams_Speechs(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Speechs(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -219,7 +235,7 @@ void CScriptTypes_LoadParams_Speechs(CComboBox& comboBox)
 }
 
 // 10
-void CScriptTypes_LoadParams_Sounds(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Sounds(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -241,7 +257,7 @@ void CScriptTypes_LoadParams_Sounds(CComboBox& comboBox)
 }
 
 // 11
-void CScriptTypes_LoadParams_Movies(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Movies(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -263,7 +279,7 @@ void CScriptTypes_LoadParams_Movies(CComboBox& comboBox)
 }
 
 // 12
-void CScriptTypes_LoadParams_Themes(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Themes(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -285,11 +301,18 @@ void CScriptTypes_LoadParams_Themes(CComboBox& comboBox)
 }
 
 // 13
-void CScriptTypes_LoadParams_Countries(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Countries(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
     auto& doc = GlobalVars::INIFiles::CurrentDocument();
+    bool bMultiplayer = doc.GetBool("Basic", "MultiplayerOnly");
+    if (bMultiplayer)
+    {
+        CScriptTypes_LoadParams_Houses(comboBox);
+        return;
+    }
+
     if (doc.SectionExists("Countries"))
     {
         CString text;
@@ -307,7 +330,7 @@ void CScriptTypes_LoadParams_Countries(CComboBox& comboBox)
 }
 
 // 14
-void CScriptTypes_LoadParams_LocalVariables(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_LocalVariables(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -328,7 +351,7 @@ void CScriptTypes_LoadParams_LocalVariables(CComboBox& comboBox)
 }
 
 // 15
-void CScriptTypes_LoadParams_Facing(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Facing(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -343,7 +366,7 @@ void CScriptTypes_LoadParams_Facing(CComboBox& comboBox)
 }
 
 // 16
-void CScriptTypes_LoadParams_BuildingTypes(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_BuildingTypes(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -391,7 +414,7 @@ void CScriptTypes_LoadParams_BuildingTypes(CComboBox& comboBox)
 }
 
 // 17
-void CScriptTypes_LoadParams_Animations(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Animations(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -413,7 +436,7 @@ void CScriptTypes_LoadParams_Animations(CComboBox& comboBox)
 }
 
 // 18
-void CScriptTypes_LoadParams_TalkBubble(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_TalkBubble(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -424,7 +447,7 @@ void CScriptTypes_LoadParams_TalkBubble(CComboBox& comboBox)
 }
 
 // 19
-void CScriptTypes_LoadParams_Status(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Status(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -475,10 +498,12 @@ void CScriptTypes_LoadParams_Status(CComboBox& comboBox)
 }
 
 // 20
-void CScriptTypes_LoadParams_Boolean(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Boolean(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
     comboBox.SetItemData(comboBox.AddString("0 - FALSE"), 0);
     comboBox.SetItemData(comboBox.AddString("1 - TRUE"), 1);
 }
+
+};

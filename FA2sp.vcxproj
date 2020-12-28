@@ -221,6 +221,7 @@
     <ClCompile Include="FA2sp\Ext\CIsoView\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CIsoView\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Hooks.cpp" />
+    <ClCompile Include="FA2sp\Ext\CTeamTypes\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTileSetBrowserView\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerAction\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\FA2Expand.cpp" />
@@ -339,6 +340,7 @@
     <ClInclude Include="FA2sp\Ext\CUpdateProgress\Body.h" />
     <ClInclude Include="FA2sp\FA2sp.h" />
     <ClInclude Include="FA2sp\FA2sp.Macros.h" />
+    <ClInclude Include="FA2sp\Helpers\FAINIHelper.h" />
     <ClInclude Include="FA2sp\Helpers\Helper.h" />
     <ClInclude Include="FA2sp\Helpers\INIParser.h" />
     <ClInclude Include="FA2sp\Helpers\MultimapHelper.h" />

@@ -6,6 +6,13 @@
 class RunTime
 {
 public:
+	struct Messages
+	{
+		static auto constexpr EDIT_KILLFOCUS = EN_KILLFOCUS;
+		static auto constexpr COMBOBOX_KILLFOCUS = CBN_KILLFOCUS;
+	};
+	
+
 	using ptr_type = unsigned long;
 	static void ResetMemoryContentAt(ptr_type addr, const void* content, size_t size, size_t offset = 0);
 	RunTime();

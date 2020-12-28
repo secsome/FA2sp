@@ -33,67 +33,67 @@ void CScriptTypesExt::UpdateParams(int actionIndex)
 		while (this->CCBScriptParameter.DeleteString(0) != -1);
 		break;
 	case 1:
-		CScriptTypes_LoadParams_Target(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_Target(this->CCBScriptParameter);
 		break;
 	case 2:
-		CScriptTypes_LoadParams_Waypoint(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_Waypoint(this->CCBScriptParameter);
 		break;
 	case 3:
-		CScriptTypes_LoadParams_ScriptLine(
+		CScriptTypesFunctions::CScriptTypes_LoadParams_ScriptLine(
 			this->CCBScriptParameter,
 			this->CLBScriptActions.GetCount()
 		);
 		break;
 	case 4:
-		CScriptTypes_LoadParams_SplitGroup(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_SplitGroup(this->CCBScriptParameter);
 		break;
 	case 5:
-		CScriptTypes_LoadParams_GlobalVariables(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_GlobalVariables(this->CCBScriptParameter);
 		break;
 	case 6:
-		CScriptTypes_LoadParams_ScriptTypes(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_ScriptTypes(this->CCBScriptParameter);
 		break;
 	case 7:
-		CScriptTypes_LoadParams_TeamTypes(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_TeamTypes(this->CCBScriptParameter);
 		break;
 	case 8:
-		CScriptTypes_LoadParams_Houses(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_Houses(this->CCBScriptParameter);
 		break;
 	case 9:
-		CScriptTypes_LoadParams_Speechs(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_Speechs(this->CCBScriptParameter);
 		break;
 	case 10:
-		CScriptTypes_LoadParams_Sounds(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_Sounds(this->CCBScriptParameter);
 		break;
 	case 11:
-		CScriptTypes_LoadParams_Movies(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_Movies(this->CCBScriptParameter);
 		break;
 	case 12:
-		CScriptTypes_LoadParams_Themes(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_Themes(this->CCBScriptParameter);
 		break;
 	case 13:
-		CScriptTypes_LoadParams_Countries(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_Countries(this->CCBScriptParameter);
 		break;
 	case 14:
-		CScriptTypes_LoadParams_LocalVariables(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_LocalVariables(this->CCBScriptParameter);
 		break;
 	case 15:
-		CScriptTypes_LoadParams_Facing(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_Facing(this->CCBScriptParameter);
 		break;
 	case 16:
-		CScriptTypes_LoadParams_BuildingTypes(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_BuildingTypes(this->CCBScriptParameter);
 		break;
 	case 17:
-		CScriptTypes_LoadParams_Animations(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_Animations(this->CCBScriptParameter);
 		break;
 	case 18:
-		CScriptTypes_LoadParams_TalkBubble(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_TalkBubble(this->CCBScriptParameter);
 		break;
 	case 19:
-		CScriptTypes_LoadParams_Status(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_Status(this->CCBScriptParameter);
 		break;
 	case 20:
-		CScriptTypes_LoadParams_Boolean(this->CCBScriptParameter);
+		CScriptTypesFunctions::CScriptTypes_LoadParams_Boolean(this->CCBScriptParameter);
 		break;
 	}
 	this->CSTParameterOfSection.SetWindowText(param.Label_);
@@ -220,7 +220,7 @@ void CScriptTypesExt::OnLBScriptActionsSelectChanged()
 	if (scriptIndex >= 0 && listIndex >= 0)
 	{
 		this->CCBCurrentScript.GetLBText(scriptIndex, scriptId);
-		TrimIndex(scriptId);
+		CScriptTypesFunctions::TrimIndex(scriptId);
 		buffer.Format("%d", listIndex);
 		buffer = doc.GetString(scriptId, buffer, "0,0");
 		actionIndex = buffer.Find(',');
@@ -230,7 +230,7 @@ void CScriptTypesExt::OnLBScriptActionsSelectChanged()
 			actionIndex = buffer.GetLength() - 2;
 		}
 		tmp = buffer.Mid(actionIndex + 1);
-		TrimIndex(tmp);
+		CScriptTypesFunctions::TrimIndex(tmp);
 		this->CCBScriptParameter.SetWindowText(tmp);
 
 		actionIndex = atoi(buffer.Mid(0, actionIndex));
@@ -276,7 +276,7 @@ void CScriptTypesExt::OnCBCurrentActionEditChanged()
 	if (scriptIndex >= 0 && listIndex >= 0)
 	{
 		this->CCBCurrentScript.GetLBText(scriptIndex, scriptId);
-		TrimIndex(scriptId);
+		CScriptTypesFunctions::TrimIndex(scriptId);
 		buffer.Format("%d", listIndex);
 		buffer = doc.GetString(scriptId, buffer, "0,0");
 		actionIndex = buffer.Find(',');
@@ -315,7 +315,7 @@ void CScriptTypesExt::OnCBScriptParameterEditChanged()
 	if (scriptIndex >= 0 && listIndex >= 0)
 	{
 		this->CCBCurrentScript.GetLBText(scriptIndex, scriptId);
-		TrimIndex(scriptId);
+		CScriptTypesFunctions::TrimIndex(scriptId);
 		buffer.Format("%d", listIndex);
 		buffer = doc.GetString(scriptId, buffer, "0,0");
 		actionIndex = buffer.Find(',');
@@ -323,7 +323,7 @@ void CScriptTypesExt::OnCBScriptParameterEditChanged()
 			actionIndex = buffer.GetLength();
 		buffer = buffer.Mid(0, actionIndex);
 		this->CCBScriptParameter.GetWindowText(paramStr);
-		TrimIndex(paramStr);
+		CScriptTypesFunctions::TrimIndex(paramStr);
 		tmp.Format("%s,%s", buffer, paramStr);
 		listStr.Format("%d", listIndex);
 		doc.WriteString(scriptId, listStr, tmp);
