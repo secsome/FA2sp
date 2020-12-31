@@ -358,6 +358,7 @@
   <ItemGroup>
     <ResourceCompile Include="FA2sp\FA2sp.rc" />
     <ResourceCompile Include="FA2sp\UI\CHouses.rc" />
+    <ResourceCompile Include="FA2sp\UI\CTeamTypes.rc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FA2sp\Utils\Misc\Hooks.LoadParamToCombobox.cpp" />

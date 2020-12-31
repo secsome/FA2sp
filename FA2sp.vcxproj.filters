@@ -436,6 +436,9 @@
     <ResourceCompile Include="FA2sp\UI\CHouses.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+    <ResourceCompile Include="FA2sp\UI\CTeamTypes.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="FA2sp\Utils\Misc\Hooks.LoadParamToCombobox.cpp" />

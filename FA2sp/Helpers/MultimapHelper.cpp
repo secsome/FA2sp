@@ -1,6 +1,8 @@
 #include "MultimapHelper.h"
 #include "STDHelpers.h"
 
+#include <set>
+
 void MultimapHelper::AddINI(INIClass* pINI)
 {
     data.push_back(pINI);
@@ -16,6 +18,7 @@ std::vector<CString> MultimapHelper::ParseIndicies(const char* pSection, bool bP
     std::vector<CString> ret;
     std::map<unsigned int, CString> tmp;
     std::map<CString, unsigned int> tmp2;
+    std::map<CString, CString> tmp3; // Value - Key
     std::map<unsigned int, INIClass*> belonging;
 
     for (auto& pINI : data)
@@ -25,25 +28,33 @@ std::vector<CString> MultimapHelper::ParseIndicies(const char* pSection, bool bP
             auto& cur = pINI->ParseIndiciesData(pSection);
             for (auto& pair : cur)
             {
-                auto& itr = tmp2.find(pair.second);
-                if (itr == tmp2.end())
+                CString value = pINI->GetString(pSection, pair.second, pair.second);
+                auto& unitr = tmp2.find(value);
+                if (unitr == tmp2.end())
                 {
                     belonging[tmp2.size()] = pINI;
-                    tmp2[pair.second] = tmp2.size();
+                    tmp2[value] = tmp2.size();
                 }
+                else
+                {
+                    belonging[unitr->second] = pINI;
+                }
+                tmp3[value] = pair.second;
             }
         }
     }
+    
     for (auto& pair : tmp2)
         tmp[pair.second] = pair.first;
+
     ret.resize(tmp.size());
     size_t idx = 0;
     for (auto& x : tmp)
         ret[idx++] = x.second;
 
-    if (bParseIntoValue)
+    if (!bParseIntoValue)
         for (size_t i = 0, sz = ret.size(); i < sz; ++i)
-            ret[i] = belonging[i]->GetString(pSection, ret[i], ret[i]);
+            ret[i] = tmp3[ret[i]];
 
     return ret;
 }
