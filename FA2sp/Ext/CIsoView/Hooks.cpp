@@ -2,6 +2,8 @@
 
 #include <GlobalVars.h>
 
+#include <Windows.h>
+
 //DEFINE_HOOK(470A66, DEBUGGGGASD, 7)
 //{
 //	// DEBUG USE

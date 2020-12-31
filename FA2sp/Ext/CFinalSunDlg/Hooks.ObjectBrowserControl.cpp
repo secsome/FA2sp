@@ -17,6 +17,12 @@ DEFINE_HOOK(51CD20, ObjectBrowserControl_Redraw, 7)
     return 0;
 }
 
+//DEFINE_HOOK(51AF40, ObjectBrowserControl__OnSelectedChanged, 7)
+//{
+//    Logger::Debug("Caller = %p\n", R->Stack<DWORD>(0));
+//    return 0;
+//}
+
 //void PrintNode(CTreeCtrl* pTree, HTREEITEM hNode)
 //{
 //    static int depth = 0;

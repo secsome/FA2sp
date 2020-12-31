@@ -6,25 +6,12 @@
 
 #include <unordered_set>
 
+#include "../../Helpers/STDHelpers.h"
+#include "../../Helpers/ControlHelpers.h"
+
 class CScriptTypesFunctions
 {
 public:
-static void TrimIndex(CString& string) {
-    string.TrimLeft();
-    string.TrimRight();
-    int spaceIndex = string.Find(' ');
-    if (spaceIndex > 0)
-        string = string.Mid(0, spaceIndex);
-}
-
-static bool IsNullOrEmpty(const CString& string)
-{
-    int len = string.GetLength();
-    if (len == 0)  return true;
-    for (int i = 0; i < len; ++i)
-        if (string[i] != ' ' && string[i] != '\0')  return false;
-    return true;
-}
 
 // 1
 static void CScriptTypes_LoadParams_Target(CComboBox& comboBox)
@@ -57,7 +44,7 @@ static void CScriptTypes_LoadParams_Waypoint(CComboBox& comboBox)
         auto& entries = doc.GetSection("Waypoints");
         for (auto& x : entries.EntitiesDictionary)
         {
-            if (x.first != "Name" && !IsNullOrEmpty(x.second))
+            if (x.first != "Name" && !STDHelpers::IsNullOrEmpty(x.second))
             {
                 int l = atoi(x.first);
                 if (l <= 701 && l >= 0)
@@ -119,7 +106,7 @@ static void CScriptTypes_LoadParams_GlobalVariables(CComboBox& comboBox)
         CString text;
         for (auto& x : entities.EntitiesDictionary)
         {
-            if (x.first != "Name" && !IsNullOrEmpty(x.first))
+            if (x.first != "Name" && !STDHelpers::IsNullOrEmpty(x.first))
             {
                 int l = atoi(x.first);
                 text.Format("%d - %s", l, x.second);
@@ -141,7 +128,7 @@ static void CScriptTypes_LoadParams_ScriptTypes(CComboBox& comboBox)
         auto& entries = doc.GetSection("ScriptTypes");
         for (auto& ent : entries.EntitiesDictionary)
         {
-            if (doc.SectionExists(ent.second) && !IsNullOrEmpty(ent.second))
+            if (doc.SectionExists(ent.second) && !STDHelpers::IsNullOrEmpty(ent.second))
             {
                 int id = atoi(ent.first);
                 text = doc.GetString(ent.second, "Name");
@@ -165,7 +152,7 @@ static void CScriptTypes_LoadParams_TeamTypes(CComboBox& comboBox)
         auto& entries = doc.GetSection("TeamTypes");
         for (auto& ent : entries.EntitiesDictionary)
         {
-            if (doc.SectionExists(ent.second) && !IsNullOrEmpty(ent.second))
+            if (doc.SectionExists(ent.second) && !STDHelpers::IsNullOrEmpty(ent.second))
             {
                 int id = atoi(ent.first);
                 text = doc.GetString(ent.second, "Name");
@@ -180,36 +167,7 @@ static void CScriptTypes_LoadParams_TeamTypes(CComboBox& comboBox)
 // 8
 static void CScriptTypes_LoadParams_Houses(CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
-
-    auto& doc = GlobalVars::INIFiles::CurrentDocument();
-    if (doc.SectionExists("Houses"))
-    {
-        CString text;
-        auto& entries = doc.GetSection("Houses");
-        for (auto& ent : entries.EntitiesDictionary)
-        {
-            if (doc.SectionExists(ent.second) && !IsNullOrEmpty(ent.second))
-            {
-                int id = atoi(ent.first);
-                text.Format("%d - %s", id, ent.second);
-                comboBox.SetItemData(comboBox.AddString(text), id);
-            }
-        }
-    }
-
-    bool bMultiplayer = doc.GetBool("Basic", "MultiplayerOnly");
-    if (bMultiplayer)
-    {
-        comboBox.SetItemData(comboBox.AddString("4475 - <Player @ A>"), 4475);
-        comboBox.SetItemData(comboBox.AddString("4476 - <Player @ B>"), 4476);
-        comboBox.SetItemData(comboBox.AddString("4477 - <Player @ C>"), 4477);
-        comboBox.SetItemData(comboBox.AddString("4478 - <Player @ D>"), 4478);
-        comboBox.SetItemData(comboBox.AddString("4479 - <Player @ E>"), 4479);
-        comboBox.SetItemData(comboBox.AddString("4480 - <Player @ F>"), 4480);
-        comboBox.SetItemData(comboBox.AddString("4481 - <Player @ G>"), 4481);
-        comboBox.SetItemData(comboBox.AddString("4482 - <Player @ H>"), 4482);
-    }
+    ControlHelpers::ComboBox::LoadHouses(comboBox, true);
 }
 
 // 9
@@ -246,7 +204,7 @@ static void CScriptTypes_LoadParams_Sounds(CComboBox& comboBox)
         auto& entries = sound.GetSection("SoundList");
         for (auto& ent : entries.EntitiesDictionary)
         {
-            if (sound.SectionExists(ent.second) && !IsNullOrEmpty(ent.second))
+            if (sound.SectionExists(ent.second) && !STDHelpers::IsNullOrEmpty(ent.second))
             {
                 int id = atoi(ent.first);
                 text.Format("%d - %s", id, ent.second);
@@ -290,7 +248,7 @@ static void CScriptTypes_LoadParams_Themes(CComboBox& comboBox)
         auto& entries = theme.GetSection("Themes");
         for (auto& ent : entries.EntitiesDictionary)
         {
-            if (theme.SectionExists(ent.second) && !IsNullOrEmpty(ent.second))
+            if (theme.SectionExists(ent.second) && !STDHelpers::IsNullOrEmpty(ent.second))
             {
                 int id = atoi(ent.first);
                 text.Format("%d - %s", id, ent.second);
@@ -303,30 +261,7 @@ static void CScriptTypes_LoadParams_Themes(CComboBox& comboBox)
 // 13
 static void CScriptTypes_LoadParams_Countries(CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
-
-    auto& doc = GlobalVars::INIFiles::CurrentDocument();
-    bool bMultiplayer = doc.GetBool("Basic", "MultiplayerOnly");
-    if (bMultiplayer)
-    {
-        CScriptTypes_LoadParams_Houses(comboBox);
-        return;
-    }
-
-    if (doc.SectionExists("Countries"))
-    {
-        CString text;
-        auto& entries = doc.GetSection("Countries");
-        for (auto& ent : entries.EntitiesDictionary)
-        {
-            if (doc.SectionExists(ent.second) && !IsNullOrEmpty(ent.second))
-            {
-                int id = atoi(ent.first);
-                text.Format("%d - %s", id, ent.second);
-                comboBox.SetItemData(comboBox.AddString(text), id);
-            }
-        }
-    }
+    ControlHelpers::ComboBox::LoadCountries(comboBox, true);
 }
 
 // 14
@@ -341,7 +276,7 @@ static void CScriptTypes_LoadParams_LocalVariables(CComboBox& comboBox)
         CString text;
         for (auto& x : entities.EntitiesDictionary)
         {
-            if (IsNullOrEmpty(x.first) || x.first == "Name")
+            if (STDHelpers::IsNullOrEmpty(x.first) || x.first == "Name")
                 continue;
             int l = atoi(x.first);
             text.Format("%d - %s", l, x.second);
@@ -368,71 +303,13 @@ static void CScriptTypes_LoadParams_Facing(CComboBox& comboBox)
 // 16
 static void CScriptTypes_LoadParams_BuildingTypes(CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
-
-    std::unordered_set<int> HashSet;
-
-    auto& rules = GlobalVars::INIFiles::Rules();
-    if (rules.SectionExists("BuildingTypes"))
-    {
-        auto& entities = rules.GetSection("BuildingTypes");
-        CString text;
-        for (auto& x : entities.EntitiesDictionary)
-        {
-            if (rules.SectionExists(x.second) && !IsNullOrEmpty(x.second))
-            {
-                int l = atoi(x.first);
-                HashSet.insert(l);
-                text.Format("%d - %s - %s", l, x.second, CSFQuery::GetUIName(x.second));
-                comboBox.SetItemData(comboBox.AddString(text), l);
-            }
-        }
-    }
-
-    auto& doc = GlobalVars::INIFiles::CurrentDocument();
-    if (doc.SectionExists("BuildingTypes"))
-    {
-        auto& entities = doc.GetSection("BuildingTypes");
-        CString text;
-        for (auto& x : entities.EntitiesDictionary)
-        {
-            if (rules.SectionExists(x.second) && doc.SectionExists(x.second) && !IsNullOrEmpty(x.second))
-            {
-                int l = atoi(x.first);
-                text.Format("%d - %s - %s", l, x.second, CSFQuery::GetUIName(x.second));
-                if (HashSet.find(l) != HashSet.end())
-                {
-                    comboBox.DeleteString(l);
-                    comboBox.InsertString(l, text);
-                    comboBox.SetItemData(l, l);
-                }
-                else
-                    comboBox.SetItemData(comboBox.AddString(text), l);
-            }
-        }
-    }
+    ControlHelpers::ComboBox::LoadGenericList(comboBox, "BuildingTypes", true, true);
 }
 
 // 17
 static void CScriptTypes_LoadParams_Animations(CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
-
-    auto& rules = GlobalVars::INIFiles::Rules();
-    if (rules.SectionExists("Animations"))
-    {
-        auto& entities = rules.GetSection("Animations");
-        CString text;
-        for (auto& x : entities.EntitiesDictionary)
-        {
-            if (x.first != "Name" && !IsNullOrEmpty(x.first))
-            {
-                int l = atoi(x.first);
-                text.Format("%d - %s", l, x.second);
-                comboBox.SetItemData(comboBox.AddString(text), l);
-            }
-        }
-    }
+    ControlHelpers::ComboBox::LoadGenericList(comboBox, "Animations", true, true);
 }
 
 // 18

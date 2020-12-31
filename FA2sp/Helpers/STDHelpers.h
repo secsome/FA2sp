@@ -40,4 +40,18 @@ public:
             if (pSource[i] != ' ' && pSource[i] != '\0')  return false;
         return true;
     }
+
+    static void TrimString(CString& str)
+    {
+        str.TrimLeft();
+        str.TrimRight();
+    }
+
+    static void TrimIndex(CString& str)
+    {
+        TrimString(str);
+        int spaceIndex = str.Find(' ');
+        if (spaceIndex > 0)
+            str = str.Mid(0, spaceIndex);
+    }
 };

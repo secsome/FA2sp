@@ -6,13 +6,14 @@
 class NOVTABLE CHousesExt : public CHouses
 {
 public:
-	typedef BOOL(*FuncT_PTM)(MSG* pMsg);
-
-	static CHouses* Instance;
-
 	//hook function to replace in virtual function map
 	BOOL PreTranslateMessageExt(MSG* pMsg);
 
+	//
+	// Ext Functions
+	//
+
+	void UpdateComboboxContents();
 
 	static void ProgramStartupInit();
 

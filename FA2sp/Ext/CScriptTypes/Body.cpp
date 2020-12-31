@@ -220,7 +220,7 @@ void CScriptTypesExt::OnLBScriptActionsSelectChanged()
 	if (scriptIndex >= 0 && listIndex >= 0)
 	{
 		this->CCBCurrentScript.GetLBText(scriptIndex, scriptId);
-		CScriptTypesFunctions::TrimIndex(scriptId);
+		STDHelpers::TrimIndex(scriptId);
 		buffer.Format("%d", listIndex);
 		buffer = doc.GetString(scriptId, buffer, "0,0");
 		actionIndex = buffer.Find(',');
@@ -230,7 +230,7 @@ void CScriptTypesExt::OnLBScriptActionsSelectChanged()
 			actionIndex = buffer.GetLength() - 2;
 		}
 		tmp = buffer.Mid(actionIndex + 1);
-		CScriptTypesFunctions::TrimIndex(tmp);
+		STDHelpers::TrimIndex(tmp);
 		this->CCBScriptParameter.SetWindowText(tmp);
 
 		actionIndex = atoi(buffer.Mid(0, actionIndex));
@@ -276,7 +276,7 @@ void CScriptTypesExt::OnCBCurrentActionEditChanged()
 	if (scriptIndex >= 0 && listIndex >= 0)
 	{
 		this->CCBCurrentScript.GetLBText(scriptIndex, scriptId);
-		CScriptTypesFunctions::TrimIndex(scriptId);
+		STDHelpers::TrimIndex(scriptId);
 		buffer.Format("%d", listIndex);
 		buffer = doc.GetString(scriptId, buffer, "0,0");
 		actionIndex = buffer.Find(',');
@@ -315,7 +315,7 @@ void CScriptTypesExt::OnCBScriptParameterEditChanged()
 	if (scriptIndex >= 0 && listIndex >= 0)
 	{
 		this->CCBCurrentScript.GetLBText(scriptIndex, scriptId);
-		CScriptTypesFunctions::TrimIndex(scriptId);
+		STDHelpers::TrimIndex(scriptId);
 		buffer.Format("%d", listIndex);
 		buffer = doc.GetString(scriptId, buffer, "0,0");
 		actionIndex = buffer.Find(',');
@@ -323,7 +323,7 @@ void CScriptTypesExt::OnCBScriptParameterEditChanged()
 			actionIndex = buffer.GetLength();
 		buffer = buffer.Mid(0, actionIndex);
 		this->CCBScriptParameter.GetWindowText(paramStr);
-		CScriptTypesFunctions::TrimIndex(paramStr);
+		STDHelpers::TrimIndex(paramStr);
 		tmp.Format("%s,%s", buffer, paramStr);
 		listStr.Format("%d", listIndex);
 		doc.WriteString(scriptId, listStr, tmp);
