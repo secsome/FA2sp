@@ -1,4 +1,10 @@
 #include "Body.h"
+
+#include <GlobalVars.h>
+
+#include "../../Helpers/STDHelpers.h"
+#include "../../Helpers/Translations.h"
+
 void CTeamTypesExt::ProgramStartupInit()
 {
 	RunTime::ResetMemoryContentAt(0x596D00 + 0x4, &RunTime::Messages::EDIT_KILLFOCUS, 4); // name update
@@ -14,4 +20,110 @@ void CTeamTypesExt::ProgramStartupInit()
 	RunTime::ResetMemoryContentAt(0x5970C0 + 0x4, &RunTime::Messages::COMBOBOX_KILLFOCUS, 4); // tag update
 	RunTime::ResetMemoryContentAt(0x5970F0 + 0x4, &RunTime::Messages::COMBOBOX_KILLFOCUS, 4); // transport waypoint update
 	RunTime::ResetMemoryContentAt(0x597120 + 0x4, &RunTime::Messages::COMBOBOX_KILLFOCUS, 4); // mind control decision update
+
+	auto addr = &CTeamTypesExt::PreTranslateMessageExt;
+	RunTime::ResetMemoryContentAt(0x5971F8, &addr, 4);
+	auto addr2 = &CTeamTypesExt::OnInitDialogExt;
+	RunTime::ResetMemoryContentAt(0x597224, &addr2, 4);
+}
+
+BOOL CTeamTypesExt::PreTranslateMessageExt(MSG* pMsg)
+{
+	if (pMsg->message == WM_LBUTTONUP)
+	{
+		if (pMsg->hwnd == this->GetDlgItem(6001)->GetSafeHwnd())
+			this->OnBNCloneClicked();
+	}
+
+	return this->FA2CDialog::PreTranslateMessage(pMsg);
+}
+
+BOOL CTeamTypesExt::OnInitDialogExt()
+{
+	BOOL ret = this->FA2CDialog::OnInitDialog();
+	if (!ret)
+		return FALSE;
+
+	auto TranslateDlgItem = [this](int nID, const char* lpKey)
+	{
+		CString buffer;
+		if (Translations::GetTranslationItem(lpKey, buffer))
+			this->SetDlgItemText(nID, lpKey);
+	};
+
+	auto TranslateCItem = [](CWnd* pWnd, const char* lpKey)
+	{
+		CString buffer;
+		if (Translations::GetTranslationItem(lpKey, buffer))
+			pWnd->SetWindowText(buffer);
+	};
+
+	TranslateDlgItem(1110, "TeamTypesNewTeam");
+	TranslateDlgItem(1111, "TeamTypesDelTeam");
+	TranslateDlgItem(6001, "TeamTypesCloTeam");
+
+	return TRUE;
+}
+
+void CTeamTypesExt::OnBNCloneClicked()
+{
+	::MessageBox(NULL, "还没实装，爬", "咕咕咕", MB_OK);
+	return;
+	if (this->CCBTeamList.GetCount() > 0 && this->CCBTeamList.GetCurSel() >= 0)
+	{
+		CString src;
+		this->CCBTeamList.GetWindowText(src);
+		STDHelpers::TrimIndex(src);
+		this->OnBNNewTeamClicked();
+		CString des;
+		this->CCBTeamList.GetWindowText(des);
+		STDHelpers::TrimIndex(des);
+
+		auto& doc = GlobalVars::INIFiles::CurrentDocument();
+		
+		auto copy_team = [&doc, &src, &des](const char* pItem)
+		{
+			CString origin = doc.GetString(src, pItem);
+			doc.WriteString(des, pItem, origin);
+		};
+
+		copy_team("Max");
+		copy_team("Full");
+		copy_team("Name");
+		copy_team("Group");
+		copy_team("House");
+		copy_team("Script");
+		copy_team("Whiner");
+		copy_team("Droppod");
+		copy_team("Suicide");
+		copy_team("Loadable");
+		copy_team("Prebuild");
+		copy_team("Priority");
+		copy_team("Waypoint");
+		copy_team("Annoyance");
+		copy_team("IonImmune");
+		copy_team("Recruiter");
+		copy_team("Reinforce");
+		copy_team("TaskForce");
+		copy_team("TechLevel");
+		copy_team("Aggressive");
+		copy_team("Autocreate");
+		copy_team("GuardSlower");
+		copy_team("OnTransOnly");
+		copy_team("AvoidThreats");
+		copy_team("LooseRecruit");
+		copy_team("VeteranLevel");
+		copy_team("IsBaseDefense");
+		copy_team("TransportWaypoint");
+		copy_team("UseTransportOrigin");
+		copy_team("MindControlDecision");
+		copy_team("OnlyTargetHouseEnemy");
+		copy_team("TransportsReturnOnUnload");
+		copy_team("AreTeamMembersRecruitable");
+
+		doc.WriteString(des, "Name", 
+			doc.GetString(src, "Name", "Clone Script") + " Clone");
+
+		this->OnCBCurrentTeamSelectedChanged();
+	}
 }
