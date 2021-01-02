@@ -12,10 +12,9 @@ bool ExtConfigs::OverlayFilter;
 bool ExtConfigs::AllowIncludes;
 bool ExtConfigs::Stringtables;
 
-//DEFINE_HOOK(407DA0, DEBUGASFHIAKSN, 5)
+//DEFINE_HOOK(527592, DEBUGASFHIAKSN, 5)
 //{
-//	GET_STACK(DWORD, dwAddr, -0x4);
-//	Logger::Debug(__FUNCTION__" %p %s\n", dwAddr, R->EAX());
+//	Logger::Debug("%d %s\n", *reinterpret_cast<DWORD*>(0x884034), R->Stack<const char*>(0x15C));
 //	return 0;
 //}
 

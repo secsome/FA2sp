@@ -207,6 +207,9 @@
     <ClInclude Include="FA2sp\Helpers\ControlHelpers.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2sp\ExtraWindow\CTileManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">
@@ -428,6 +431,9 @@
     <ClCompile Include="FA2sp\Helpers\ControlHelpers.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FA2sp\ExtraWindow\CTileManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FA2sp\FA2sp.rc">
@@ -437,6 +443,12 @@
       <Filter>资源文件</Filter>
     </ResourceCompile>
     <ResourceCompile Include="FA2sp\UI\CTeamTypes.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="FA2sp\ExtraWindow\CTileManager.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="FA2sp\UI\CTileBrowserFrame.DialogBar.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>

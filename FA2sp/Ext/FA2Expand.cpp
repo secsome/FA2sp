@@ -55,6 +55,9 @@ void __stdcall FA2Expand::ExeRun()
     //CLoadingGraphicsExt::ProgramStartupInit();
     //CUpdateProgressExt::ProgramStartupInit();
     //
+    //CTileSetBrowserViewExt::ProgramStartupInit();
+    CTileSetBrowserFrameExt::ProgramStartupInit();
+    //
     //CCreateMap1Ext::ProgramStartupInit();
     //CCreateMap2Ext::ProgramStartupInit();
     //CCreateMap3AExt::ProgramStartupInit();

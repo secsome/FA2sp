@@ -288,6 +288,7 @@
     <ClCompile Include="FA2sp\Utils\Replacement.cpp" />
     <ClCompile Include="FA2sp\Helpers\MutexHelper.cpp" />
     <ClCompile Include="FA2sp\Helpers\Translations.cpp" />
+    <ClCompile Include="FA2sp\ExtraWindow\CTileManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FA2sp\Ext\CFinalSunDlg\Body.h" />
@@ -354,11 +355,14 @@
     <ClInclude Include="FA2sp\Utils\Replacement.h" />
     <ClInclude Include="FA2sp\Helpers\MutexHelper.h" />
     <ClInclude Include="FA2sp\Helpers\Translations.h" />
+    <ClInclude Include="FA2sp\ExtraWindow\CTileManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="FA2sp\ExtraWindow\CTileManager.rc" />
     <ResourceCompile Include="FA2sp\FA2sp.rc" />
     <ResourceCompile Include="FA2sp\UI\CHouses.rc" />
     <ResourceCompile Include="FA2sp\UI\CTeamTypes.rc" />
+    <ResourceCompile Include="FA2sp\UI\CTileBrowserFrame.DialogBar.rc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FA2sp\Utils\Misc\Hooks.LoadParamToCombobox.cpp" />
