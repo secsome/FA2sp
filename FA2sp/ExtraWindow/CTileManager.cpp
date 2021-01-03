@@ -244,16 +244,17 @@ void CTileManager::UpdateDetails(HWND hWnd, int kNode)
             Logger::Warn("No map was loaded or theater is invalid, [Map] Theater = %s\n.", theater);
             return;
         }
-        CString text;
+        CString text, buffer;
         for (auto& x : CTileManager::Datas[kNode])
         {
             text.Format("TileSet%04d", SendMessage(hTileComboBox, CB_GETITEMDATA, x, NULL));
             text = pTheaterINI->GetString(text, "SetName", "NO NAME");
             Translations::GetTranslationItem(text, text);
+            buffer.Format("(%04d) %s", x, text);
             SendMessage(
                 hTileDetails, 
                 LB_SETITEMDATA, 
-                SendMessage(hTileDetails, LB_ADDSTRING, NULL, (LPARAM)(LPCSTR)text), 
+                SendMessage(hTileDetails, LB_ADDSTRING, NULL, (LPARAM)(LPCSTR)buffer), 
                 x
             );
         }
