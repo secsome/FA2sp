@@ -247,10 +247,11 @@ void CTileManager::UpdateDetails(HWND hWnd, int kNode)
         CString text, buffer;
         for (auto& x : CTileManager::Datas[kNode])
         {
-            text.Format("TileSet%04d", SendMessage(hTileComboBox, CB_GETITEMDATA, x, NULL));
+            int data = SendMessage(hTileComboBox, CB_GETITEMDATA, x, NULL);
+            text.Format("TileSet%04d", data);
             text = pTheaterINI->GetString(text, "SetName", "NO NAME");
             Translations::GetTranslationItem(text, text);
-            buffer.Format("(%04d) %s", x, text);
+            buffer.Format("(%04d) %s", data, text);
             SendMessage(
                 hTileDetails, 
                 LB_SETITEMDATA, 
