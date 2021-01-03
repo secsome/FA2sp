@@ -16,6 +16,6 @@ class Translations
 {
 public:
     static bool GetTranslationItem(const char* pLabelName, CString& ret);
-    static char pLanguage[2][0x400];
+    static char pLanguage[4][0x400];
 };
 

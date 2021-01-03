@@ -13,8 +13,12 @@ DEFINE_HOOK(537129, Translations_Initialzation, 9)
     FinalAlertConfig::ReadString("FinalSun", "Language", "English");
     strcpy_s(Translations::pLanguage[0], FinalAlertConfig::pLastRead);
     strcpy_s(Translations::pLanguage[1], FinalAlertConfig::pLastRead);
+    strcpy_s(Translations::pLanguage[2], FinalAlertConfig::pLastRead);
+    strcpy_s(Translations::pLanguage[3], FinalAlertConfig::pLastRead);
     strcat_s(Translations::pLanguage[0], "-Strings");
     strcat_s(Translations::pLanguage[1], "-StringsRA2");
+    strcat_s(Translations::pLanguage[2], "-Translations");
+    strcat_s(Translations::pLanguage[3], "-TranslationsRA2");
     return 0;
 }
 
@@ -30,7 +34,7 @@ void FinalAlertConfig::WriteString(const char* pSection, const char* pKey, const
     WritePrivateProfileString(pSection, pKey, pContent, lpPath);
 };
 
-char Translations::pLanguage[2][0x400];
+char Translations::pLanguage[4][0x400];
 bool Translations::GetTranslationItem(const char* pLabelName, CString& ret)
 {
     auto& falanguage = GlobalVars::INIFiles::FALanguage();
@@ -47,6 +51,26 @@ bool Translations::GetTranslationItem(const char* pLabelName, CString& ret)
     if (falanguage.SectionExists(pLanguage[1]))
     {
         auto& section = falanguage.GetSection(pLanguage[1]);
+        auto itr = section.EntitiesDictionary.find(pLabelName);
+        if (itr != section.EntitiesDictionary.end())
+        {
+            ret = itr->second;
+            return true;
+        }
+    }
+    if (falanguage.SectionExists(pLanguage[2]))
+    {
+        auto& section = falanguage.GetSection(pLanguage[2]);
+        auto itr = section.EntitiesDictionary.find(pLabelName);
+        if (itr != section.EntitiesDictionary.end())
+        {
+            ret = itr->second;
+            return true;
+        }
+    }
+    if (falanguage.SectionExists(pLanguage[3]))
+    {
+        auto& section = falanguage.GetSection(pLanguage[3]);
         auto itr = section.EntitiesDictionary.find(pLabelName);
         if (itr != section.EntitiesDictionary.end())
         {

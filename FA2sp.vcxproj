@@ -223,6 +223,7 @@
     <ClCompile Include="FA2sp\Ext\CIsoView\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTeamTypes\Hooks.cpp" />
+    <ClCompile Include="FA2sp\Ext\CTileSetBrowserFrame\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTileSetBrowserView\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerAction\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\FA2Expand.cpp" />

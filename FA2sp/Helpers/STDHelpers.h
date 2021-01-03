@@ -54,4 +54,16 @@ public:
         if (spaceIndex > 0)
             str = str.Mid(0, spaceIndex);
     }
+
+    static bool Contains(const char* str, const char* query, bool bIgnoreCase = false)
+    {
+        std::string s = str;
+        std::string q = query;
+        if (bIgnoreCase)
+        {
+            std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+            std::transform(q.begin(), q.end(), q.begin(), ::tolower);
+        }
+        return s.find(q) != std::string::npos;
+    }
 };

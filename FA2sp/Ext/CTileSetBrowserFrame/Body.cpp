@@ -12,7 +12,7 @@ void CTileSetBrowserFrameExt::ProgramStartupInit()
 void CTileSetBrowserFrameExt::OnBNTileManagerClicked()
 {
 	if (CTileManager::GetHandle() == NULL)
-		CTileManager::Create(this->GetSafeHwnd());
+		CTileManager::Create(this);
 	else
 		::ShowWindow(CTileManager::GetHandle(), SW_SHOW);
 }
