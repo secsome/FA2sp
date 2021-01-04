@@ -41,7 +41,7 @@ BOOL CPropertyBuildingExt::PreTranslateMessageExt(MSG* pMsg)
 //
 //DEFINE_HOOK(417F40, CPropertyBuilding_OnInitDialog, 7)
 //{
-//	GET(CPropertyBuildingExt*, pThis, EDI);
+//	GET(CPropertyBuildingExt*, pThis, ECX);
 //	R->EAX(pThis->CPropertyBuildingExt::OnInitDialogExt());
 //
 //	return 0x41A4AE;
