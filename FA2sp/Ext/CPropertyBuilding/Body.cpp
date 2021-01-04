@@ -26,3 +26,23 @@ BOOL CPropertyBuildingExt::PreTranslateMessageExt(MSG* pMsg)
 // 
 // Powerups stupid error
 // Houses Reader
+//
+// You can have a look on CScriptTypesExt as a reference
+//
+//BOOL CPropertyBuildingExt::OnInitDialogExt()
+//{
+//	if (!this->FA2CDialog::OnInitDialog())
+//		return FALSE;
+//
+//	// INITIALIZE WORKS
+//
+//	return TRUE;
+//}
+//
+//DEFINE_HOOK(417F40, CPropertyBuilding_OnInitDialog, 7)
+//{
+//	GET(CPropertyBuildingExt*, pThis, EDI);
+//	R->EAX(pThis->CPropertyBuildingExt::OnInitDialogExt());
+//
+//	return 0x41A4AE;
+//}
