@@ -21,6 +21,7 @@ CTileManager::node_type CTileManager::Nodes = {
     "Shore",
     "Pavement",
     "Fix",
+    "LAT",
     "Other"
 };
 
@@ -185,29 +186,32 @@ void CTileManager::UpdateTypes(HWND hWnd)
         int nTile = SendMessage(hTileComboBox, CB_GETITEMDATA, idx, NULL);
         tile.Format("TileSet%04d", nTile);
         tile = pTheaterINI->GetString(tile, "SetName", "NO NAME");
+        bool other = true;
         if (STDHelpers::Contains(tile, "cliff", true))
-            CTileManager::Datas[Nodes_Cliff].push_back(idx);
-        else if (STDHelpers::Contains(tile, "water", true))
-            CTileManager::Datas[Nodes_Water].push_back(idx);
-        else if (STDHelpers::Contains(tile, "ramp", true) || STDHelpers::Contains(tile, "slope", true))
-            CTileManager::Datas[Nodes_Ramp].push_back(idx);
-        else if (STDHelpers::Contains(tile, "bridge", true))
-            CTileManager::Datas[Nodes_Bridge].push_back(idx);
-        else if (STDHelpers::Contains(tile, "road", true) || STDHelpers::Contains(tile, "highway", true))
-            CTileManager::Datas[Nodes_Road].push_back(idx);
-        else if (STDHelpers::Contains(tile, "feature", true) || STDHelpers::Contains(tile, "farm", true))
-            CTileManager::Datas[Nodes_Feature].push_back(idx);
-        else if (STDHelpers::Contains(tile, "rail", true) || STDHelpers::Contains(tile, "train", true))
-            CTileManager::Datas[Nodes_Rail].push_back(idx);
-        else if (STDHelpers::Contains(tile, "tunnel", true))
-            CTileManager::Datas[Nodes_Tunnel].push_back(idx);
-        else if (STDHelpers::Contains(tile, "shore", true))
-            CTileManager::Datas[Nodes_Shore].push_back(idx);
-        else if (STDHelpers::Contains(tile, "pave", true))
-            CTileManager::Datas[Nodes_Pave].push_back(idx);
-        else if (STDHelpers::Contains(tile, "fix", true))
-            CTileManager::Datas[Nodes_Fix].push_back(idx);
-        else
+            { CTileManager::Datas[Nodes_Cliff].push_back(idx); other = false; }
+        if (STDHelpers::Contains(tile, "water", true))
+            { CTileManager::Datas[Nodes_Water].push_back(idx); other = false; }
+        if (STDHelpers::Contains(tile, "ramp", true) || STDHelpers::Contains(tile, "slope", true))
+            { CTileManager::Datas[Nodes_Ramp].push_back(idx); other = false; }
+        if (STDHelpers::Contains(tile, "bridge", true))
+            { CTileManager::Datas[Nodes_Bridge].push_back(idx); other = false; }
+        if (STDHelpers::Contains(tile, "road", true) || STDHelpers::Contains(tile, "highway", true))
+            { CTileManager::Datas[Nodes_Road].push_back(idx); other = false; }
+        if (STDHelpers::Contains(tile, "feature", true) || STDHelpers::Contains(tile, "farm", true))
+            { CTileManager::Datas[Nodes_Feature].push_back(idx); other = false; }
+        if (STDHelpers::Contains(tile, "rail", true) || STDHelpers::Contains(tile, "train", true))
+            { CTileManager::Datas[Nodes_Rail].push_back(idx); other = false; }
+        if (STDHelpers::Contains(tile, "tunnel", true))
+            { CTileManager::Datas[Nodes_Tunnel].push_back(idx); other = false; }
+        if (STDHelpers::Contains(tile, "shore", true))
+            { CTileManager::Datas[Nodes_Shore].push_back(idx); other = false; }
+        if (STDHelpers::Contains(tile, "pave", true))
+            { CTileManager::Datas[Nodes_Pave].push_back(idx); other = false; }
+        if (STDHelpers::Contains(tile, "fix", true))
+            { CTileManager::Datas[Nodes_Fix].push_back(idx); other = false; }
+        if (STDHelpers::Contains(tile, "lat", true))
+            { CTileManager::Datas[Nodes_LAT].push_back(idx); other = false; }
+        if(other)
             CTileManager::Datas[Nodes_Other].push_back(idx);
     }
 

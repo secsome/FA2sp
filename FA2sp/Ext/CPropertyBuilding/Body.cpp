@@ -19,3 +19,10 @@ BOOL CPropertyBuildingExt::PreTranslateMessageExt(MSG* pMsg)
 	}
 	return this->FA2CDialog::PreTranslateMessage(pMsg);
 }
+
+// TODO
+// CACO TRY THIS, IT'S EASY
+// Hook/Rewrite OnInitDialog
+// 
+// Powerups stupid error
+// Houses Reader

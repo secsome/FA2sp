@@ -13,7 +13,7 @@ public:
     enum {
         Nodes_Cliff = 0, Nodes_Water, Nodes_Ramp, Nodes_Bridge,
         Nodes_Road, Nodes_Feature, Nodes_Rail, Nodes_Tunnel, Nodes_Shore,
-        Nodes_Pave, Nodes_Fix, Nodes_Other, Nodes_Count, Nodes_RemoveFlag = -1
+        Nodes_Pave, Nodes_Fix, Nodes_LAT, Nodes_Other, Nodes_Count, Nodes_RemoveFlag = -1
     };
 
     enum { ListBox_Types = 6100, ListBox_Details = 6101 };
