@@ -230,6 +230,8 @@
     <ClCompile Include="FA2sp\Ext\Miscs\Hooks.LoadParams.cpp" />
     <ClCompile Include="FA2sp\Helpers\ControlHelpers.cpp" />
     <ClCompile Include="FA2sp\Helpers\MultimapHelper.cpp" />
+    <ClCompile Include="FA2sp\Hooks.Debug.cpp" />
+    <ClCompile Include="FA2sp\UI\UIColor.cpp" />
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.BugFixes.cpp" />
     <ClCompile Include="FA2sp\Ext\CAITriggerTypesEnable\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CAITriggerTypes\Body.cpp" />
@@ -353,6 +355,7 @@
     <ClInclude Include="FA2sp\Helpers\STDHelpers.h" />
     <ClInclude Include="FA2sp\Logger.h" />
     <ClInclude Include="FA2sp\RunTime.h" />
+    <ClInclude Include="FA2sp\UI\UIColor.h" />
     <ClInclude Include="FA2sp\Utils\Replacement.h" />
     <ClInclude Include="FA2sp\Helpers\MutexHelper.h" />
     <ClInclude Include="FA2sp\Helpers\Translations.h" />

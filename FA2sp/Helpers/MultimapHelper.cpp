@@ -1,3 +1,11 @@
+/*
+* NOTICE
+* Implement of this class could be really composite and
+* hard to understand. Not only to other users, but for me
+* as well, so why not just use it as it's easy to call 
+* rather than understand how it works, isn't it?
+*/
+
 #include "MultimapHelper.h"
 #include "STDHelpers.h"
 

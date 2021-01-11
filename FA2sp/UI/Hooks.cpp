@@ -1,17 +1,18 @@
 #pragma once
 
+#include "UIColor.h"
+
 #include "../FA2sp.h"
 #include "../Logger.h"
 
-#include <Helpers/Macro.h>
-
+#include <FA2PP.h>
 
 // Load our own accelerators
 // Notice, our accelerator's id need to be the same as FA2's
 #ifdef _DEBUG
 #undef _DEBUG
 
-DEFINE_HOOK(41FAFD, LoadAccelerators_sub_41FAD0, 7)
+DEFINE_HOOK(41FAFD, LoadAccelerators_CFinalSunApp_InitInstance, 7)
 {
 	const HINSTANCE hInstance = static_cast<HINSTANCE>(FA2sp::hInstance);
 	R->EAX<HINSTANCE>(hInstance);
@@ -182,3 +183,124 @@ DEFINE_HOOK(554C8A, FetchResource_Cwnd_ExecuteDlgInit, 5)
 
 #define _DEBUG
 #endif
+
+//DEFINE_HOOK(5521AA, CDialog_OnCtlColor, 8)
+//{
+//	GET(CDialog*, pThis, ECX);
+//	GET_STACK(CDC*, pDC, 0x4);
+//	GET_STACK(CWnd*, pWnd, 0x8);
+//	GET_STACK(UINT, nCtlColor, 0xC);
+//
+//	switch (nCtlColor)
+//	{
+//	case CTLCOLOR_BTN:
+//	case CTLCOLOR_EDIT:
+//	case CTLCOLOR_LISTBOX:
+//	case CTLCOLOR_MSGBOX:
+//	case CTLCOLOR_SCROLLBAR:
+//	case CTLCOLOR_MAX:
+//		return 0;
+//	case CTLCOLOR_STATIC:
+//	{
+//		return 0;
+//		/*Logger::Debug("LINEED! res = %d\n", pDC->LineTo(5, 5));
+//		RECT rect;
+//		pWnd->GetClientRect(&rect);
+//		Logger::Debug("Client Rect = %d %d %d %d\n", rect.left, rect.top, rect.right, rect.bottom);
+//		pWnd->GetWindowRect(&rect);
+//		Logger::Debug("Window Rect = %d %d %d %d\n", rect.left, rect.top, rect.right, rect.bottom);
+//		Logger::Debug("HDC = %p\n", pDC->GetSafeHdc());
+//		R->EAX<HBRUSH>((HBRUSH)GetStockObject(HOLLOW_BRUSH));
+//		return 0x5521BB;*/
+//	}
+//	case CTLCOLOR_DLG:
+//		pDC->MoveTo(0, 0);
+//		pDC->SetBkMode(TRANSPARENT);
+//		pDC->SetBkColor(RGB(124, 0, 0));
+//		RECT rect;
+//		pWnd->GetWindowRect(&rect);
+//		pDC->LineTo(100, 100);
+//		pDC->DrawText("NMSLLLL", &rect, DT_CALCRECT);
+//		R->EAX<HBRUSH>((HBRUSH)GetStockObject(HOLLOW_BRUSH));
+//		//R->EAX(CreateSolidBrush(RGB(0, 0, 0)));
+//		return 0x5521BB;
+//	default:
+//		return 0;
+//	}
+//}
+
+// Customize Control Background Colors
+/*
+HBRUSH FA2sp::hBrush = NULL;
+DEFINE_HOOK(554901, CWnd_OnCtlColor, 6)
+{
+	GET(CWnd*, pThis, ECX);
+	GET_STACK(CDC*, pDC, 0x4);
+	GET_STACK(CWnd*, pWnd, 0x8);
+	GET_STACK(UINT, nCtlColor, 0xC);
+
+	switch (nCtlColor)
+	{
+	case CTLCOLOR_DLG:
+	case CTLCOLOR_BTN:
+	case CTLCOLOR_EDIT:
+	case CTLCOLOR_LISTBOX:
+	case CTLCOLOR_MSGBOX:
+	case CTLCOLOR_SCROLLBAR:
+	case CTLCOLOR_MAX:
+	case CTLCOLOR_STATIC:
+
+		//return 0x554925;
+	default:
+		return 0;
+	}
+}
+
+DEFINE_HOOK(5521AA, CDialog_OnCtlColor, 8)
+{
+	GET(CDialog*, pThis, ECX);
+	GET_STACK(CDC*, pDC, 0x4);
+	GET_STACK(CWnd*, pWnd, 0x8);
+	GET_STACK(UINT, nCtlColor, 0xC);
+
+	switch (nCtlColor)
+	{
+	case CTLCOLOR_DLG:
+	case CTLCOLOR_BTN:
+	case CTLCOLOR_EDIT:
+	case CTLCOLOR_LISTBOX:
+	case CTLCOLOR_MSGBOX:
+	case CTLCOLOR_SCROLLBAR:
+	case CTLCOLOR_MAX:
+	case CTLCOLOR_STATIC:
+
+		//return 0x5521BB;
+	default:
+		return 0;
+	}
+}
+
+DEFINE_HOOK(55F086, CControlBar_OnCtlColor, 7)
+{
+	GET(CControlBar*, pThis, ECX);
+	GET_STACK(CDC*, pDC, 0x4);
+	GET_STACK(CWnd*, pWnd, 0x8);
+	GET_STACK(UINT, nCtlColor, 0xC);
+
+	switch (nCtlColor)
+	{
+	case CTLCOLOR_DLG:
+	case CTLCOLOR_BTN:
+	case CTLCOLOR_EDIT:
+	case CTLCOLOR_LISTBOX:
+	case CTLCOLOR_MSGBOX:
+	case CTLCOLOR_SCROLLBAR:
+	case CTLCOLOR_MAX:
+	case CTLCOLOR_STATIC:
+
+		//return 0x55F0DB;
+	default:
+		return 0;
+	}
+}
+*/

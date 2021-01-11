@@ -27,6 +27,8 @@ HTREEITEM ObjectBrowserControlExt::InsertTranslatedString(const char* pOriginStr
     return InsertString(result ? buffer : pOriginString, dwItemData, hParent, hInsertAfter);
 }
 
+// ObjectBrowserControlExt::Redraw
+
 void ObjectBrowserControlExt::Redraw()
 {
     Redraw_Initialize();
@@ -623,4 +625,20 @@ int ObjectBrowserControlExt::GuessGenericSide(const char* pRegName, int nType)
             return guess;
     }
     return -1;
+}
+
+// ObjectBrowserControlExt::OnSelectChanged
+
+int ObjectBrowserControlExt::UpdateEngine(int nData)
+{
+    if (nData < 10000)
+        switch (nData)
+        {
+        case 114514:
+            return 0x51BB28;
+        default:
+            return 0x51AFBE;
+        }
+    else
+        return 0x51BB28;
 }

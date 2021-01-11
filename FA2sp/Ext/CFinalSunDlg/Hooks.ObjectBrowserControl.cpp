@@ -17,10 +17,11 @@ DEFINE_HOOK(51CD20, ObjectBrowserControl_Redraw, 7)
     return 0;
 }
 
-//DEFINE_HOOK(51AF40, ObjectBrowserControl__OnSelectedChanged, 7)
+//DEFINE_HOOK(51AFB8, ObjectBrowserControl_OnSelectedChanged, 6)
 //{
-//    Logger::Debug("Caller = %p\n", R->Stack<DWORD>(0));
-//    return 0;
+//    GET_STACK(ObjectBrowserControlExt*, pThis, 0x10);
+//    GET(int, nData, ECX);
+//    return pThis->UpdateEngine(nData);
 //}
 
 //void PrintNode(CTreeCtrl* pTree, HTREEITEM hNode)

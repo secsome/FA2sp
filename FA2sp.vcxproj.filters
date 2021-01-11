@@ -210,6 +210,9 @@
     <ClInclude Include="FA2sp\ExtraWindow\CTileManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2sp\UI\UIColor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">
@@ -435,6 +438,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Ext\CTileSetBrowserFrame\Hooks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\UI\UIColor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Hooks.Debug.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

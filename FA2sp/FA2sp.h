@@ -21,6 +21,7 @@ public:
     static bool BrowserRedraw;
     static bool OverlayFilter;
     static bool AllowIncludes;
+    static bool AllowPlusEqual;
     static bool Stringtables;
 };
 

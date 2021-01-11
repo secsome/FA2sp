@@ -56,6 +56,8 @@ class ObjectBrowserControlExt : public ObjectBrowserControl
     void Redraw_PlayerLocation();
 public:
     void Redraw();
+    int UpdateEngine(int nData);
+
 
 public:
     /// <summary>

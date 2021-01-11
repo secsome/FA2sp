@@ -1,6 +1,9 @@
 #include <CINI.h>
 #include <vector>
 #include <CMixFile.h>
+#include <CLoading.h>
+
+#include "../../Helpers/STDHelpers.h"
 #include "../../FA2sp.h"
 
 using std::vector;
@@ -9,23 +12,43 @@ static int LastReadIndex = -1;
 static vector<INIClass*> LoadedINIs;
 static vector<char*> LoadedINIFiles;
 
-class FA2CMainWnd : FA2CWnd
+static CLoading* LoadingPtr = nullptr;
+
+DEFINE_HOOK(4530F7, CLoading_ParseINI_PlusSupport, 8)
 {
-public:
-    void _47FFB0_loadTSINI(LPCSTR pFileName, INIClass* pINIFile, BOOL bAllowOverwrite)
+    if (ExtConfigs::AllowPlusEqual)
     {
-        JMP_THIS(0x47FFB0);
+        // length [0x1000]
+        GET_STACK(INIClass*, pINI, STACK_OFFS(0x22FC, 0x22D0));
+        LEA_STACK(char*, lpKey, STACK_OFFS(0x22FC, 0x200C));
+        LEA_STACK(const char*, lpSection, STACK_OFFS(0x22FC, 0x210C));
+
+        if (strcmp(lpKey, "+") == 0)
+        {
+            int attempt = 0;
+            while (true)
+            {
+                sprintf_s(lpKey, 0x1000, "FA2sp%d", attempt);
+                if (!pINI->KeyExists(lpSection, lpKey))
+                    break;
+                ++attempt;
+                if (attempt >= 10000)
+                {
+                    sprintf_s(lpKey, 0x1000, "+");
+                    break;
+                }
+            }
+        }
     }
-};
+    return 0;
+}
 
-static FA2CMainWnd* LoadingPtr = nullptr;
-
-DEFINE_HOOK(47FFB0, INIClass_LoadTSINI_IncludeSupport_1, 7)
+DEFINE_HOOK(47FFB0, CLoading_LoadTSINI_IncludeSupport_1, 7)
 {
     //return 0;
     if (ExtConfigs::AllowIncludes)
     {
-        GET(FA2CMainWnd*, LoadingPtr, ECX);
+        LoadingPtr = R->ECX<CLoading*>();
         GET_STACK(const char*, pFile, 0x4);
         GET_STACK(INIClass*, pINI, 0x8);
 
@@ -67,7 +90,7 @@ DEFINE_HOOK(480880, INIClass_LoadTSINI_IncludeSupport_2, 5)
 
                 if (canLoad) {
                     Logger::Debug("Include Ext Loaded File: %s\n", buffer);
-                    LoadingPtr->_47FFB0_loadTSINI(
+                    LoadingPtr->LoadTSINI(
                         buffer, xINI, TRUE
                     );
                 }

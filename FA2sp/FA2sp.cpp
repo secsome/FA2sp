@@ -10,6 +10,7 @@ HANDLE FA2sp::hInstance;
 bool ExtConfigs::BrowserRedraw;
 bool ExtConfigs::OverlayFilter;
 bool ExtConfigs::AllowIncludes;
+bool ExtConfigs::AllowPlusEqual;
 bool ExtConfigs::Stringtables;
 
 //DEFINE_HOOK(527592, DEBUGASFHIAKSN, 5)
@@ -28,8 +29,9 @@ void FA2sp::ExtConfigsInitialize()
 {
 	auto pFAData = &GlobalVars::INIFiles::FAData();
 	ExtConfigs::BrowserRedraw = pFAData->GetBool("ExtConfigs", "BrowserRedraw");
-	ExtConfigs::AllowIncludes = pFAData->GetBool("ExtConfigs", "AllowIncludes");
 	ExtConfigs::OverlayFilter = pFAData->GetBool("ExtConfigs", "OverlayFilter");
+	ExtConfigs::AllowIncludes = pFAData->GetBool("ExtConfigs", "AllowIncludes");
+	ExtConfigs::AllowPlusEqual = pFAData->GetBool("ExtConfigs", "AllowPlusEqual");
 	ExtConfigs::Stringtables = pFAData->GetBool("ExtConfigs", "Stringtables");
 }
 

@@ -58,7 +58,12 @@ DEFINE_HOOK(473E46, CIsoView_UpdatePaint_InfantryFacing, 9)
 
 DEFINE_HOOK(46CB96, CIsoView_UpdateOverlay_AutoConnect_1, 5)
 {
-	CIsoView::sub_469B20(R->EBP(), R->EBX());
+	// static int __stdcall sub_469B20(int Y, int X);
+	int X = R->EBX();
+	int Y = R->EBP();
+	PUSH_VAR32(X);
+	PUSH_VAR32(Y);
+	CALL(0x469B20);
 	return 0x46CBD3;
 }
 
