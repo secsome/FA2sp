@@ -1,18 +1,30 @@
 #include <CINI.h>
 #include <vector>
+#include <map>
 #include <CMixFile.h>
 #include <CLoading.h>
 
 #include "../../Helpers/STDHelpers.h"
 #include "../../FA2sp.h"
 
+using std::map;
 using std::vector;
 
-static int LastReadIndex = -1;
-static vector<INIClass*> LoadedINIs;
-static vector<char*> LoadedINIFiles;
+class INIIncludes
+{
+public:
+    static int LastReadIndex;
+    static vector<INIClass*> LoadedINIs;
+    static vector<char*> LoadedINIFiles;
+    static map<std::string, unsigned int> CurrentINIIdxHelper;
+    static CLoading* LoadingPtr;
+};
 
-static CLoading* LoadingPtr = nullptr;
+int INIIncludes::LastReadIndex = -1;
+vector<INIClass*> INIIncludes::LoadedINIs;
+vector<char*> INIIncludes::LoadedINIFiles;
+map<std::string, unsigned int> INIIncludes::CurrentINIIdxHelper;
+CLoading* INIIncludes::LoadingPtr = nullptr;
 
 DEFINE_HOOK(4530F7, CLoading_ParseINI_PlusSupport, 8)
 {
@@ -25,10 +37,10 @@ DEFINE_HOOK(4530F7, CLoading_ParseINI_PlusSupport, 8)
 
         if (strcmp(lpKey, "+") == 0)
         {
-            int attempt = 0;
+            unsigned int& attempt = INIIncludes::CurrentINIIdxHelper[lpSection];
             while (true)
             {
-                sprintf_s(lpKey, 0x1000, "FA2sp%d", attempt);
+                sprintf_s(lpKey, 0x1000, "FA2sp%u", attempt);
                 if (!pINI->KeyExists(lpSection, lpKey))
                     break;
                 ++attempt;
@@ -48,12 +60,12 @@ DEFINE_HOOK(47FFB0, CLoading_LoadTSINI_IncludeSupport_1, 7)
     //return 0;
     if (ExtConfigs::AllowIncludes)
     {
-        LoadingPtr = R->ECX<CLoading*>();
+        INIIncludes::LoadingPtr = R->ECX<CLoading*>();
         GET_STACK(const char*, pFile, 0x4);
         GET_STACK(INIClass*, pINI, 0x8);
 
-        LoadedINIs.push_back(pINI);
-        LoadedINIFiles.push_back(_strdup(pFile));
+        INIIncludes::LoadedINIs.push_back(pINI);
+        INIIncludes::LoadedINIFiles.push_back(_strdup(pFile));
     }
     return 0;
 }
@@ -64,25 +76,25 @@ DEFINE_HOOK(480880, INIClass_LoadTSINI_IncludeSupport_2, 5)
     if (ExtConfigs::AllowIncludes)
     {
         char buffer[0x80];
-        if (LoadedINIs.size() == 0)
+        if (INIIncludes::LoadedINIs.size() == 0)
             return 0;
-        INIClass* xINI = LoadedINIs.back();
+        INIClass* xINI = INIIncludes::LoadedINIs.back();
         if (!xINI)
             return 0;
 
         const char* section = "#include";
 
         int len = xINI->GetKeyCount(section);
-        for (int i = LastReadIndex; i < len; i = LastReadIndex)
+        for (int i = INIIncludes::LastReadIndex; i < len; i = INIIncludes::LastReadIndex)
         {
             const char* key = xINI->GetKeyName(section, i);
-            ++LastReadIndex;
+            ++INIIncludes::LastReadIndex;
             buffer[0] = '\0';
             strcpy_s(buffer ,xINI->GetString(section, key, ""));
             if (buffer && strlen(buffer) > 0) {
                 bool canLoad = true;
-                for (size_t j = 0; j < LoadedINIFiles.size(); ++j) {
-                    if (!strcmp(LoadedINIFiles[j], buffer)) {
+                for (size_t j = 0; j < INIIncludes::LoadedINIFiles.size(); ++j) {
+                    if (!strcmp(INIIncludes::LoadedINIFiles[j], buffer)) {
                         canLoad = false;
                         break;
                     }
@@ -90,23 +102,24 @@ DEFINE_HOOK(480880, INIClass_LoadTSINI_IncludeSupport_2, 5)
 
                 if (canLoad) {
                     Logger::Debug("Include Ext Loaded File: %s\n", buffer);
-                    LoadingPtr->LoadTSINI(
+                    INIIncludes::LoadingPtr->LoadTSINI(
                         buffer, xINI, TRUE
                     );
                 }
             }
         }
 
-        if (LoadedINIs.size() > 0)
-            LoadedINIs.erase(LoadedINIs.end() - 1);
-        if (!LoadedINIs.size()) {
-            for (int j = LoadedINIFiles.size() - 1; j >= 0; --j) {
-                if (char* ptr = LoadedINIFiles[j]) {
+        if (INIIncludes::LoadedINIs.size() > 0)
+            INIIncludes::LoadedINIs.erase(INIIncludes::LoadedINIs.end() - 1);
+        if (!INIIncludes::LoadedINIs.size()) {
+            for (int j = INIIncludes::LoadedINIFiles.size() - 1; j >= 0; --j) {
+                if (char* ptr = INIIncludes::LoadedINIFiles[j]) {
                     free(ptr);
+                    INIIncludes::CurrentINIIdxHelper.clear();
                 }
-                LoadedINIFiles.erase(LoadedINIFiles.begin() + j);
+                INIIncludes::LoadedINIFiles.erase(INIIncludes::LoadedINIFiles.begin() + j);
             }
-            LastReadIndex = -1;
+            INIIncludes::LastReadIndex = -1;
         }
 
     }
