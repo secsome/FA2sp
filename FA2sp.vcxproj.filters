@@ -177,9 +177,6 @@
     <ClInclude Include="FA2sp\Helpers\MutexHelper.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="FA2sp\FA2sp.Macros.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="FA2sp\Ext\CIsoView\Body.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -211,6 +208,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FA2sp\UI\UIColor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\FA2sp.Macros.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -398,9 +398,6 @@
     <ClCompile Include="FA2sp\Helpers\MutexHelper.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Utils\Misc\Hooks.Includes.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="FA2sp\Ext\CIsoView\Hooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -444,6 +441,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Hooks.Debug.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Utils\Misc\Hooks.INI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
