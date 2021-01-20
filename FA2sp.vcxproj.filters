@@ -204,13 +204,16 @@
     <ClInclude Include="FA2sp\Helpers\ControlHelpers.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="FA2sp\ExtraWindow\CTileManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="FA2sp\UI\UIColor.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FA2sp\FA2sp.Macros.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\ExtraWindow\CTileManager\CTileManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\ExtraWindow\CObjectSearch\CObjectSearch.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -431,9 +434,6 @@
     <ClCompile Include="FA2sp\Helpers\ControlHelpers.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\ExtraWindow\CTileManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="FA2sp\Ext\CTileSetBrowserFrame\Hooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -444,6 +444,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.INI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\ExtraWindow\CTileManager\CTileManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\ExtraWindow\CObjectSearch\CObjectSearch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -457,10 +463,13 @@
     <ResourceCompile Include="FA2sp\UI\CTeamTypes.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
-    <ResourceCompile Include="FA2sp\ExtraWindow\CTileManager.rc">
+    <ResourceCompile Include="FA2sp\UI\CTileBrowserFrame.DialogBar.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
-    <ResourceCompile Include="FA2sp\UI\CTileBrowserFrame.DialogBar.rc">
+    <ResourceCompile Include="FA2sp\ExtraWindow\CTileManager\CTileManager.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="FA2sp\ExtraWindow\CObjectSearch\CObjectSearch.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>

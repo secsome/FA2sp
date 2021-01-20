@@ -1,6 +1,6 @@
 #include "Body.h"
 
-#include "../../ExtraWindow/CTileManager.h"
+#include "../../ExtraWindow/CTileManager/CTileManager.h"
 
 void CTileSetBrowserFrameExt::ProgramStartupInit()
 {

@@ -122,6 +122,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FA2sp\ExtraWindow\CObjectSearch\CObjectSearch.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Body.ObjectBrowserControl.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Hooks.ObjectBrowserControl.cpp" />
@@ -198,9 +199,10 @@
     <ClCompile Include="FA2sp\Utils\Replacement.cpp" />
     <ClCompile Include="FA2sp\Helpers\MutexHelper.cpp" />
     <ClCompile Include="FA2sp\Helpers\Translations.cpp" />
-    <ClCompile Include="FA2sp\ExtraWindow\CTileManager.cpp" />
+    <ClCompile Include="FA2sp\ExtraWindow\CTileManager\CTileManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FA2sp\ExtraWindow\CObjectSearch\CObjectSearch.h" />
     <ClInclude Include="FA2sp\Ext\CFinalSunDlg\Body.h" />
     <ClInclude Include="FA2sp\Ext\CIsoView\Body.h" />
     <ClInclude Include="FA2sp\Ext\CScriptTypes\Functional.h" />
@@ -266,10 +268,11 @@
     <ClInclude Include="FA2sp\Utils\Replacement.h" />
     <ClInclude Include="FA2sp\Helpers\MutexHelper.h" />
     <ClInclude Include="FA2sp\Helpers\Translations.h" />
-    <ClInclude Include="FA2sp\ExtraWindow\CTileManager.h" />
+    <ClInclude Include="FA2sp\ExtraWindow\CTileManager\CTileManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="FA2sp\ExtraWindow\CTileManager.rc" />
+    <ResourceCompile Include="FA2sp\ExtraWindow\CObjectSearch\CObjectSearch.rc" />
+    <ResourceCompile Include="FA2sp\ExtraWindow\CTileManager\CTileManager.rc" />
     <ResourceCompile Include="FA2sp\FA2sp.rc" />
     <ResourceCompile Include="FA2sp\UI\CHouses.rc" />
     <ResourceCompile Include="FA2sp\UI\CTeamTypes.rc" />

@@ -2,9 +2,9 @@
 
 #include <GlobalVars.h>
 
-#include "../FA2sp.h"
-#include "../Helpers/Translations.h"
-#include "../Helpers/STDHelpers.h"
+#include "../../FA2sp.h"
+#include "../../Helpers/Translations.h"
+#include "../../Helpers/STDHelpers.h"
 
 HWND CTileManager::m_hwnd;
 CTileSetBrowserFrame* CTileManager::m_parent;
