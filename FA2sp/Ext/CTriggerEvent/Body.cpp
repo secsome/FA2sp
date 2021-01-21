@@ -1,13 +1,45 @@
 #include "Body.h"
 
-CTriggerEvent* CTriggerEventExt::Instance = nullptr;
+#include <GlobalVars.h>
+
+#include "../../Helpers/STDHelpers.h"
+#include "../../Helpers/Translations.h"
 
 void CTriggerEventExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CTriggerEventExt::PreTranslateMessageExt;
+	auto addr2 = &CTriggerEventExt::OnInitDialogExt;
+	RunTime::ResetMemoryContentAt(0x597D44, &addr2, 4);
+}
 
-	RunTime::ResetMemoryContentAt(0x597D18, &PreTranslateAddr, sizeof(PreTranslateAddr));
+BOOL CTriggerEventExt::OnInitDialogExt()
+{
+	BOOL ret = this->CTriggerEvent::OnInitDialog();
+	if (!ret)
+		return FALSE;
+
+	auto TranslateDlgItem = [this](int nID, const char* lpKey)
+	{
+		CString buffer;
+		if (Translations::GetTranslationItem(lpKey, buffer))
+			this->SetDlgItemText(nID, buffer);
+	};
+
+	auto TranslateCItem = [](CWnd* pWnd, const char* lpKey)
+	{
+		CString buffer;
+		if (Translations::GetTranslationItem(lpKey, buffer))
+			pWnd->SetWindowText(buffer);
+	};
+
+	TranslateDlgItem(50500, "TriggerEventCurrent");
+	TranslateDlgItem(50501, "TriggerEventOptions");
+	TranslateDlgItem(50502, "TriggerEventType");
+	TranslateDlgItem(50503, "TriggerEventParameter");
+	TranslateDlgItem(50504, "TriggerEventParamValue");
+	TranslateDlgItem(50505, "TriggerEventDesc");
+
+	TranslateDlgItem(1396, "TriggerEventNew");
+	TranslateDlgItem(1169, "TriggerEventDel");
 }
 
 BOOL CTriggerEventExt::PreTranslateMessageExt(MSG* pMsg)

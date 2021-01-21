@@ -271,6 +271,10 @@
     <ClInclude Include="FA2sp\ExtraWindow\CTileManager\CTileManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="FA2sp\UI\CTriggerFrame.rc" />
+    <ResourceCompile Include="FA2sp\UI\CTriggerOption.rc" />
+    <ResourceCompile Include="FA2sp\UI\CTriggerAction.rc" />
+    <ResourceCompile Include="FA2sp\UI\CTriggerEvent.rc" />
     <ResourceCompile Include="FA2sp\ExtraWindow\CObjectSearch\CObjectSearch.rc" />
     <ResourceCompile Include="FA2sp\ExtraWindow\CTileManager\CTileManager.rc" />
     <ResourceCompile Include="FA2sp\FA2sp.rc" />

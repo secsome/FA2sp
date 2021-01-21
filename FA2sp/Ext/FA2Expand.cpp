@@ -64,10 +64,10 @@ void __stdcall FA2Expand::ExeRun()
     //CCreateMap3BExt::ProgramStartupInit();
     //CCreateMap4Ext::ProgramStartupInit();
     //
-    //CTriggerFrameExt::ProgramStartupInit();
-    //CTriggerOptionExt::ProgramStartupInit();
-    //CTriggerEventExt::ProgramStartupInit();
-    //CTriggerActionExt::ProgramStartupInit();
+    CTriggerFrameExt::ProgramStartupInit();
+    CTriggerOptionExt::ProgramStartupInit();
+    CTriggerEventExt::ProgramStartupInit();
+    CTriggerActionExt::ProgramStartupInit();
     //CTagsExt::ProgramStartupInit();
     CTaskForceExt::ProgramStartupInit();
     //CScriptTypesExt::ProgramStartupInit();

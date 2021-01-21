@@ -103,6 +103,8 @@ BOOL CTeamTypesExt::OnInitDialogExt()
 	TranslateDlgItem(1138, "TeamTypesCheckBoxIsBaseDefense");
 	TranslateDlgItem(1139, "TeamTypesCheckBoxOnlyTargetHouseEnemy"); 
 	
+	
+
 	return TRUE;
 }
 

@@ -6,11 +6,12 @@
 class NOVTABLE CTriggerFrameExt : public CTriggerFrame
 {
 public:
-	typedef BOOL(*FuncT_PTM)(MSG* pMsg);
 
-	static CTriggerFrame* Instance;
+	//
+	// Ext Functions
+	//
 
-	//hook function to replace in virtual function map
+	BOOL OnInitDialogExt();
 	BOOL PreTranslateMessageExt(MSG* pMsg);
 
 	static void ProgramStartupInit();
