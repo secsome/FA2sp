@@ -1,13 +1,17 @@
 #pragma once
 
+#include "../FA2Expand.h"
 #include <CFinalSunDlg.h>
 
 #include <unordered_set>
 #include <unordered_map>
 
-class CFinalSunDlgExt
+class NOVTABLE CFinalSunDlgExt : CFinalSunDlg
 {
+public:
+    static void ProgramStartupInit();
 
+    BOOL PreTranslateMessageExt(MSG* pMsg);
 };
 
 class ObjectBrowserControlExt : public ObjectBrowserControl

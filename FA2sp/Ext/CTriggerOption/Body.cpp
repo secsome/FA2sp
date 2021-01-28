@@ -43,6 +43,8 @@ BOOL CTriggerOptionExt::OnInitDialogExt()
 	TranslateDlgItem(1424, "TriggerOptionEasy");
 	TranslateDlgItem(1425, "TriggerOptionMedium");
 	TranslateDlgItem(1426, "TriggerOptionHard");
+
+	return TRUE;
 }
 
 BOOL CTriggerOptionExt::PreTranslateMessageExt(MSG* pMsg)

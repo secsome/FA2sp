@@ -40,6 +40,8 @@ BOOL CTriggerActionExt::OnInitDialogExt()
 
 	TranslateDlgItem(1403, "TriggerActionNew");
 	TranslateDlgItem(1174, "TriggerActionDel");
+
+	return TRUE;
 }
 
 BOOL CTriggerActionExt::PreTranslateMessageExt(MSG* pMsg)

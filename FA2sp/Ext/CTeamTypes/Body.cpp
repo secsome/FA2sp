@@ -151,6 +151,12 @@ void CTeamTypesExt::OnBNCloneClicked()
 			Check[i]->SendMessage(WM_LBUTTONDOWN, CheckID[i], 0);
 			Check[i]->SendMessage(WM_LBUTTONUP, CheckID[i], 0);
 		}
+
+		for (int i = 0; i < 13; ++i)
+			SAFE_RELEASE(Edits[i]);
+
+		for (int i = 0; i < 20; ++i)
+			SAFE_RELEASE(Check[i]);
 	}
 
 	/*

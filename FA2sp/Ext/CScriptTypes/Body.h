@@ -25,7 +25,7 @@ public:
 
 	/*static void* GetMessageMap();*/
 
-	BOOL OnInitDialog();
+	BOOL OnInitDialogExt();
 
 	void OnCBCurrentActionEditChanged();
 	void OnCBScriptParameterEditChanged();
@@ -38,13 +38,20 @@ public:
 	
 	void OnCBCurrentActionSelectChanged();
 	void OnCBScriptParameterSelectChanged();
-	void OnBNAddActionClicked();
+	*/
+	void OnBNAddActionClickedExt();
+	/*
 	void OnBNDeleteActionClicked();
 	void OnBNAddScriptClicked();
 	void OnBNDeleteScriptClicked();*/
 
+
 	CScriptTypesExt() {};
 	~CScriptTypesExt() {};
+
+	// Functional Functions
+	void OnBNCloneScriptClicked();
+	void OnBNCloneItemClicked();
 
 	static int ExtParamID;
 	static std::map<int, CScriptTypeAction> ExtActions;

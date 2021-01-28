@@ -65,15 +65,6 @@ DEFINE_HOOK(4D6500, CScriptTypes_OnLBScriptActionsSelectChanged, 7)
     return 0x4D676C;
 }
 
-DEFINE_HOOK(4D8D20, CScriptTypes_OnInitDialog, 6)
-{
-    RunTime::ResetMemoryContentAt(0x595FC8 + 0x4, &RunTime::Messages::EDIT_KILLFOCUS, 4); // name update
-    RunTime::ResetMemoryContentAt(0x596010 + 0x4, &RunTime::Messages::COMBOBOX_KILLFOCUS, 4); // param update
-    GET(CScriptTypesExt*, pThis, ECX);
-    BOOL bResult = pThis->CScriptTypesExt::OnInitDialog();
-    R->EAX<BOOL>(bResult);
-    return 0x4D8E06;
-}
 
 //
 //DEFINE_HOOK(4D5BE0, CScriptTypes_DoDataExchange, 8)

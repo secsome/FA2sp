@@ -184,6 +184,8 @@ bool StringtableLoader::ParseCSFFile(char* buffer, DWORD& size)
                 pos += strLength;
             }
             StringtableLoader::CSFFiles_Stringtable[labelstr] = CString(value);
+            if (ExtConfigs::WIP_TutorialTexts)
+                FA2sp::WIP_TutorialTextMap[labelstr] = value;
             delete[] labelstr;
             delete[] value;
 

@@ -193,6 +193,7 @@
     <ClCompile Include="FA2sp\RunTime.cpp" />
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.FileNames.cpp" />
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.INI.cpp" />
+    <ClCompile Include="FA2sp\Utils\Misc\Hooks.LoadParamToCombobox.cpp" />
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.Mix.cpp" />
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.RGBColors.cpp" />
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.Stringtables.cpp" />
@@ -271,6 +272,7 @@
     <ClInclude Include="FA2sp\ExtraWindow\CTileManager\CTileManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="FA2sp\UI\CScriptTypes.rc" />
     <ResourceCompile Include="FA2sp\UI\CTriggerFrame.rc" />
     <ResourceCompile Include="FA2sp\UI\CTriggerOption.rc" />
     <ResourceCompile Include="FA2sp\UI\CTriggerAction.rc" />
@@ -283,7 +285,7 @@
     <ResourceCompile Include="FA2sp\UI\CTileBrowserFrame.DialogBar.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FA2sp\Utils\Misc\Hooks.LoadParamToCombobox.cpp" />
+    <Image Include="C:\Users\30270\Desktop\Pusheen_Zoom_Background_Beach_2020.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,18 +5,42 @@
 
 #include "../../Logger.h"
 #include "../../Helpers/Helper.h"
+#include "../../Helpers/STDHelpers.h"
+#include "../../Helpers/Translations.h"
 
 BOOL CScriptTypesExt::PreTranslateMessageExt(MSG* pMsg)
 {
+	if (pMsg->message == WM_LBUTTONUP)
+	{
+		if (pMsg->hwnd == this->GetDlgItem(6300)->GetSafeHwnd())
+			this->OnBNCloneScriptClicked();
+		elif (pMsg->hwnd == this->GetDlgItem(6301)->GetSafeHwnd())
+			this->OnBNCloneItemClicked();
+		elif (pMsg->hwnd == this->GetDlgItem(6302)->GetSafeHwnd())
+		{
+			bool bInsertMode = ::SendMessage(::GetDlgItem(*this, 6302), BM_GETCHECK, 0, 0) == BST_CHECKED;
+			::SendMessage(::GetDlgItem(*this, 6302), BM_SETCHECK, bInsertMode ? BST_UNCHECKED : BST_CHECKED, 0);
+		}
+		elif (pMsg->hwnd == this->GetDlgItem(1173)->GetSafeHwnd())
+		{
+			this->OnBNAddActionClickedExt();
+			return FALSE;
+		}
+			
+	}
+
 	return this->FA2CDialog::PreTranslateMessage(pMsg);
 }
 
 void CScriptTypesExt::ProgramStartupInit()
 {
-	/*Logger::Debug(__FUNCTION__"\n");
-	auto scripttypesPreTranslateAddr = &CScriptTypesExt::PreTranslateMessageExt;
+	RunTime::ResetMemoryContentAt(0x595FC8 + 0x4, &RunTime::Messages::EDIT_KILLFOCUS, 4); // name update
+	RunTime::ResetMemoryContentAt(0x596010 + 0x4, &RunTime::Messages::COMBOBOX_KILLFOCUS, 4); // param update
 
-	RunTime::ResetMemoryContentAt(0x596148, &scripttypesPreTranslateAddr, sizeof(scripttypesPreTranslateAddr));*/
+	auto addr = &CScriptTypesExt::PreTranslateMessageExt;
+	RunTime::ResetMemoryContentAt(0x596148, &addr, 4);
+	auto addr2 = &CScriptTypesExt::OnInitDialogExt;
+	RunTime::ResetMemoryContentAt(0x596174, &addr2, 4);
 }
 
 int CScriptTypesExt::ExtParamID = -1;
@@ -109,99 +133,131 @@ void CScriptTypesExt::UpdateParams(int actionIndex)
 
 std::map<int, CScriptTypeAction> CScriptTypesExt::ExtActions;
 std::map<int, CScriptTypeParam> CScriptTypesExt::ExtParams;
-BOOL CScriptTypesExt::OnInitDialog()
+BOOL CScriptTypesExt::OnInitDialogExt()
 {
-	BOOL bReturn = FA2CDialog::OnInitDialog();
-	if (bReturn)
+	BOOL ret = FA2CDialog::OnInitDialog();
+	if (!ret)
+		return FALSE;
+
+	auto TranslateDlgItem = [this](int nID, const char* lpKey)
 	{
-		while (CCBCurrentAction.DeleteString(0) != -1);
+		CString buffer;
+		if (Translations::GetTranslationItem(lpKey, buffer))
+			this->SetDlgItemText(nID, buffer);
+	};
 
-		// Initialize defaults
-		const char** pNames = reinterpret_cast<const char**>(0x5D035C);
-		const char** pDescriptions = reinterpret_cast<const char**>(0x5D0448);
-		for (int i = 0; i < 59; ++i)
-		{
-			auto& curAction = ExtActions[i];
-			curAction.Name_ = _strdup(pNames[i]);
-			curAction.Description_ = _strdup(pDescriptions[i]);
-			curAction.Editable_ = true;
-			curAction.Hide_ = false;
-			curAction.ParamCode_ = 0;
-		}
+	auto TranslateCItem = [](CWnd* pWnd, const char* lpKey)
+	{
+		CString buffer;
+		if (Translations::GetTranslationItem(lpKey, buffer))
+			pWnd->SetWindowText(buffer);
+	};
 
-		auto& fadata = GlobalVars::INIFiles::FAData();
-		
-		if (fadata.SectionExists("ScriptParams"))
-		{
-			auto& entities = fadata.GetSection("ScriptParams");
-			char* pParseBuffer[2];
-			for (auto& pair : entities.EntitiesDictionary)
-			{
-				int id = atoi(pair.first);
-				if (id < 0) continue;
-				auto count =
-					ParseList(pair.second, (const char**)(pParseBuffer), 2);
-				switch (count)
-				{
-				default:
-				case 2:
-					ExtParams[id].Param_ = atoi((const char*)pParseBuffer[1]);
-				case 1:
-					ExtParams[id].Label_ = _strdup((const char*)pParseBuffer[0]);
-				case 0:
-					continue;
-				}
-			}
-            SAFE_RELEASE(pParseBuffer[0]);
-            SAFE_RELEASE(pParseBuffer[1]);
-		}
-		
-		if (fadata.SectionExists("ScriptsRA2")) {
-			auto& entities = fadata.GetSection("ScriptsRA2");
-			char* pParseBuffer[5];
-			for (auto& pair : entities.EntitiesDictionary)
-			{
-				int id = atoi(pair.first);
-				if (id < 0) continue;
-				auto count =
-					ParseList(pair.second, (const char**)(pParseBuffer), 5);
-				switch (count)
-				{
-				case 5:
-				default:
-					ExtActions[id].Description_ = _strdup((const char*)pParseBuffer[4]);
-				case 4:
-					ExtActions[id].Editable_ = ParseBool((const char*)pParseBuffer[3]);
-				case 3:
-					ExtActions[id].Hide_ = ParseBool((const char*)pParseBuffer[2]);
-				case 2:
-					ExtActions[id].ParamCode_ = atoi((const char*)pParseBuffer[1]);
-				case 1:
-					ExtActions[id].Name_ = _strdup((const char*)pParseBuffer[0]);
-				case 0:
-					continue;
-				}
-			}
-            SAFE_RELEASE(pParseBuffer[0]);
-            SAFE_RELEASE(pParseBuffer[1]);
-            SAFE_RELEASE(pParseBuffer[2]);
-            SAFE_RELEASE(pParseBuffer[3]);
-            SAFE_RELEASE(pParseBuffer[4]);
-        }
+	TranslateCItem(this, "ScriptTypesTitle");
 
-        int counter = 0;
-		for (auto& ent : ExtActions)
+	TranslateDlgItem(50700, "ScriptTypesDesc");
+	TranslateDlgItem(50701, "ScriptTypesSelectedScript");
+	TranslateDlgItem(50702, "ScriptTypesName");
+	TranslateDlgItem(50703, "ScriptTypesActions");
+	TranslateDlgItem(50704, "ScriptTypesActionType");
+	TranslateDlgItem(50705, "ScriptTypesActionParam");
+	TranslateDlgItem(50706, "ScriptTypesActionDesc");
+
+	TranslateDlgItem(1154, "ScriptTypesAddScript");
+	TranslateDlgItem(1066, "ScriptTypesDelScript");
+	TranslateDlgItem(6300, "ScriptTypesCloScript");
+	TranslateDlgItem(1173, "ScriptTypesAddAction");
+	TranslateDlgItem(1174, "ScriptTypesDelAction");
+	TranslateDlgItem(6301, "ScriptTypesCloAction");
+	TranslateDlgItem(6302, "ScriptTypesInsertMode");
+
+	while (CCBCurrentAction.DeleteString(0) != -1);
+
+	// Initialize defaults
+	const char** pNames = reinterpret_cast<const char**>(0x5D035C);
+	const char** pDescriptions = reinterpret_cast<const char**>(0x5D0448);
+	for (int i = 0; i < 59; ++i)
+	{
+		auto& curAction = ExtActions[i];
+		curAction.Name_ = _strdup(pNames[i]);
+		curAction.Description_ = _strdup(pDescriptions[i]);
+		curAction.Editable_ = true;
+		curAction.Hide_ = false;
+		curAction.ParamCode_ = 0;
+	}
+
+	auto& fadata = GlobalVars::INIFiles::FAData();
+
+	if (fadata.SectionExists("ScriptParams"))
+	{
+		auto& entities = fadata.GetSection("ScriptParams");
+		char* pParseBuffer[2];
+		for (auto& pair : entities.EntitiesDictionary)
 		{
-			if (!ent.second.Hide_)
+			int id = atoi(pair.first);
+			if (id < 0) continue;
+			auto count =
+				ParseList(pair.second, (const char**)(pParseBuffer), 2);
+			switch (count)
 			{
-				int data = CCBCurrentAction.AddString(ent.second.Name_);
-				CCBCurrentAction.SetItemData(data, counter);
+			default:
+			case 2:
+				ExtParams[id].Param_ = atoi((const char*)pParseBuffer[1]);
+			case 1:
+				ExtParams[id].Label_ = _strdup((const char*)pParseBuffer[0]);
+			case 0:
+				continue;
 			}
-            ++counter;
 		}
+		SAFE_RELEASE(pParseBuffer[0]);
+		SAFE_RELEASE(pParseBuffer[1]);
+	}
+
+	if (fadata.SectionExists("ScriptsRA2")) {
+		auto& entities = fadata.GetSection("ScriptsRA2");
+		char* pParseBuffer[5];
+		for (auto& pair : entities.EntitiesDictionary)
+		{
+			int id = atoi(pair.first);
+			if (id < 0) continue;
+			auto count =
+				ParseList(pair.second, (const char**)(pParseBuffer), 5);
+			switch (count)
+			{
+			case 5:
+			default:
+				ExtActions[id].Description_ = _strdup((const char*)pParseBuffer[4]);
+			case 4:
+				ExtActions[id].Editable_ = ParseBool((const char*)pParseBuffer[3]);
+			case 3:
+				ExtActions[id].Hide_ = ParseBool((const char*)pParseBuffer[2]);
+			case 2:
+				ExtActions[id].ParamCode_ = atoi((const char*)pParseBuffer[1]);
+			case 1:
+				ExtActions[id].Name_ = _strdup((const char*)pParseBuffer[0]);
+			case 0:
+				continue;
+			}
+		}
+		SAFE_RELEASE(pParseBuffer[0]);
+		SAFE_RELEASE(pParseBuffer[1]);
+		SAFE_RELEASE(pParseBuffer[2]);
+		SAFE_RELEASE(pParseBuffer[3]);
+		SAFE_RELEASE(pParseBuffer[4]);
+	}
+
+	int counter = 0;
+	for (auto& ent : ExtActions)
+	{
+		if (!ent.second.Hide_)
+		{
+			int data = CCBCurrentAction.AddString(ent.second.Name_);
+			CCBCurrentAction.SetItemData(data, counter);
+		}
+		++counter;
 
 	}
-	return bReturn;
+	return TRUE;
 }
 
 //
@@ -211,6 +267,7 @@ BOOL CScriptTypesExt::OnInitDialog()
 //
 void CScriptTypesExt::OnLBScriptActionsSelectChanged()
 {
+	Logger::Debug(__FUNCTION__"\n");
 	auto& doc = GlobalVars::INIFiles::CurrentDocument();
 	CString scriptId ,buffer, tmp;
 	int scriptIndex, listIndex, actionIndex, selectIndex, L, R, M;
@@ -267,6 +324,7 @@ void CScriptTypesExt::OnLBScriptActionsSelectChanged()
 //
 void CScriptTypesExt::OnCBCurrentActionEditChanged()
 {
+	Logger::Debug(__FUNCTION__"\n");
 	auto& doc = *INIMapFieldUpdate::UpdateMapFieldData(1);
 	CString scriptId, buffer, listStr, tmp;
 	int scriptIndex, listIndex, actionIndex, actionData;
@@ -306,6 +364,7 @@ void CScriptTypesExt::OnCBCurrentActionEditChanged()
 //
 void CScriptTypesExt::OnCBScriptParameterEditChanged()
 {
+	Logger::Debug(__FUNCTION__"\n");
 	auto& doc = GlobalVars::INIFiles::CurrentDocument();
 	CString scriptId, buffer, listStr, paramStr, tmp;
 	int scriptIndex, listIndex, actionIndex;
@@ -334,9 +393,55 @@ void CScriptTypesExt::OnCBScriptParameterEditChanged()
 //{
 //}
 //
-//void CScriptTypesExt::OnBNAddActionClicked()
-//{
-//}
+void CScriptTypesExt::OnBNAddActionClickedExt()
+{
+	if (this->CCBCurrentScript.GetCount() <= 0 && this->CCBCurrentScript.GetCurSel() < 0)
+		return;
+
+	bool bInsertMode = ::SendMessage(::GetDlgItem(*this, 6302), BM_GETCHECK, 0, 0) == BST_CHECKED;
+	if (!bInsertMode)
+	{
+		this->OnBNAddActionClicked();
+		return;
+	}
+
+	// insert mode ON
+	/*CString scriptID;
+	this->CCBCurrentScript.GetWindowText(scriptID);
+	STDHelpers::TrimIndex(scriptID);
+
+	auto& doc = GlobalVars::INIFiles::CurrentDocument();
+	if (doc.SectionExists(scriptID))
+	{
+		int curIndex = this->CLBScriptActions.GetCurSel();
+		int actionCount = this->CLBScriptActions.GetCount();
+		this->OnBNAddActionClicked();
+
+		if (actionCount <= 0)
+			return;
+
+		if (curIndex == CB_ERR)
+			curIndex = 0;
+		
+		CString srcKey, destKey;
+
+		for (int i = actionCount - 1; i >= curIndex; --i)
+		{
+			srcKey.Format("%d", i);
+			destKey.Format("%d", i + 1);
+			CString temp = doc.GetString(scriptID, srcKey, "0,0");
+			Logger::Debug("%s %s %s %s\n", scriptID, srcKey, destKey, temp);
+			doc.WriteString(scriptID, destKey, temp);
+		}
+
+		srcKey.Format("%d", curIndex);
+		Logger::Debug("%s %s %s\n", scriptID, srcKey, "0,0");
+		doc.WriteString(scriptID, srcKey, "0,0");
+		this->OnCBCurrentScriptSelectChanged();
+	}*/
+
+	return;
+}
 //
 //void CScriptTypesExt::OnBNDeleteActionClicked()
 //{
@@ -349,3 +454,13 @@ void CScriptTypesExt::OnCBScriptParameterEditChanged()
 //void CScriptTypesExt::OnBNDeleteScriptClicked()
 //{
 //}
+
+void CScriptTypesExt::OnBNCloneScriptClicked()
+{
+
+}
+
+void CScriptTypesExt::OnBNCloneItemClicked()
+{
+
+}

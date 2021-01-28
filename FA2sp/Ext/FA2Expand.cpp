@@ -46,6 +46,8 @@
 #include "CTriggerFrame/Body.h"
 #include "CTriggerOption/Body.h"
 #include "CUpdateProgress/Body.h"
+#include "CFinalSunDlg/Body.h"
+#include "CIsoView/Body.h"
 //
 //#include <CMixFile.h>
 
@@ -70,7 +72,7 @@ void __stdcall FA2Expand::ExeRun()
     CTriggerActionExt::ProgramStartupInit();
     //CTagsExt::ProgramStartupInit();
     CTaskForceExt::ProgramStartupInit();
-    //CScriptTypesExt::ProgramStartupInit();
+    CScriptTypesExt::ProgramStartupInit();
     CTeamTypesExt::ProgramStartupInit();
     //CAITriggerTypesExt::ProgramStartupInit();
     //CAITriggerTypesEnableExt::ProgramStartupInit();
@@ -104,6 +106,8 @@ void __stdcall FA2Expand::ExeRun()
     //CMMXExt::ProgramStartupInit();
     //
     //CDialog289Ext::ProgramStartupInit();
+    //CFinalSunDlgExt::ProgramStartupInit();
+    //CIsoViewExt::ProgramStartupInit();
 
     /*auto ReplaceOnInitDialog = [](auto pOnInitDialogExt, DWORD dwOrigin) {
         auto address = pOnInitDialogExt;

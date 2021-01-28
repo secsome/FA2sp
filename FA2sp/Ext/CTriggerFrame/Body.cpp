@@ -39,6 +39,8 @@ BOOL CTriggerFrameExt::OnInitDialogExt()
 	TranslateDlgItem(1161, "TriggerFrameDel");
 	TranslateDlgItem(1162, "TriggerFramePlace");
 	TranslateDlgItem(1163, "TriggerFrameClone");
+
+	return TRUE;
 }
 
 BOOL CTriggerFrameExt::PreTranslateMessageExt(MSG* pMsg)

@@ -452,6 +452,9 @@
     <ClCompile Include="FA2sp\ExtraWindow\CObjectSearch\CObjectSearch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FA2sp\Utils\Misc\Hooks.LoadParamToCombobox.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FA2sp\FA2sp.rc">
@@ -484,8 +487,13 @@
     <ResourceCompile Include="FA2sp\UI\CTriggerFrame.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+    <ResourceCompile Include="FA2sp\UI\CScriptTypes.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="FA2sp\Utils\Misc\Hooks.LoadParamToCombobox.cpp" />
+    <Image Include="C:\Users\30270\Desktop\Pusheen_Zoom_Background_Beach_2020.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
 </Project>

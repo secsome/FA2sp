@@ -7,11 +7,16 @@
 #include <clocale>
 
 HANDLE FA2sp::hInstance;
+
+std::map<std::string, std::string> FA2sp::WIP_TutorialTextMap;
+
 bool ExtConfigs::BrowserRedraw;
 bool ExtConfigs::OverlayFilter;
 bool ExtConfigs::AllowIncludes;
 bool ExtConfigs::AllowPlusEqual;
 bool ExtConfigs::Stringtables;
+
+bool ExtConfigs::WIP_TutorialTexts;
 
 //DEFINE_HOOK(527592, DEBUGASFHIAKSN, 5)
 //{
@@ -33,6 +38,8 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::AllowIncludes = pFAData->GetBool("ExtConfigs", "AllowIncludes");
 	ExtConfigs::AllowPlusEqual = pFAData->GetBool("ExtConfigs", "AllowPlusEqual");
 	ExtConfigs::Stringtables = pFAData->GetBool("ExtConfigs", "Stringtables");
+
+	ExtConfigs::WIP_TutorialTexts = pFAData->GetBool("ExtConfigs", "WIP_TutorialTexts");
 }
 
 // DllMain
