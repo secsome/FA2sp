@@ -4,10 +4,7 @@
 
 class Replacement {
 public:
-	static void String();
+	static void HexFixes();
 private:
 
 };
-
-#define ReplaceStringAt(newString, address) \
-RunTime::ResetMemoryContentAt(address, newString, sizeof newString);

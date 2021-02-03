@@ -2,7 +2,6 @@
 #include "Translations.h"
 #include "STDHelpers.h"
 #include "MultimapHelper.h"
-#include "FAINIHelper.h"
 
 #include <GlobalVars.h>
 

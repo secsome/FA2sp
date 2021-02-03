@@ -5,33 +5,54 @@
 #include "../../Helpers/STDHelpers.h"
 #include "../../FA2sp.h"
 
-int CObjectSearch::sub_4B1BD0_mine(int nWaypoint)
+HWND CObjectSearch::m_hwnd;
+CFinalSunDlg* CObjectSearch::m_parent;
+
+BOOL CObjectSearch::JumpToCoord(CWnd* pWnd, int X, int Y)
 {
-    auto& doc = GlobalVars::INIFiles::CurrentDocument();
-    CString lpWaypoint;
-    lpWaypoint.Format("%d", nWaypoint);
-    int nCoord = doc.GetInteger("Waypoints", lpWaypoint, -1);
-    if (lpWaypoint == -1)
-        return -1;
-    CString lpMapSize = doc.GetString("Map", "Size");
-    int nMapWidth, nMapHeight;
-    if (STDHelpers::IsNullOrEmpty(lpMapSize))
-        return -1;
-    if (sscanf_s(lpMapSize, "%*d,%*d,%d,%d", &nMapWidth, &nMapHeight) != 2)
-        return -1;
-    return (nCoord / 1000) + (nCoord % 1000 * (nMapWidth + nMapHeight));
+    struct HelperView : public CView
+    {
+    public:
+        int sub_4763D0(int a2, int a3)
+            { JMP_THIS(0x4763D0); }
+    };
+
+    if (pWnd)
+    {
+        //HelperView* pIsoView = reinterpret_cast<HelperView*>(m_parent + 0x2158);
+        HelperView* pIsoView = reinterpret_cast<HelperView*>(pWnd);
+        int nHW = GlobalVars::CurrentMapWidthPlusHeight();
+        int nParam = X + Y * nHW;
+        RECT rect;
+        ::GetWindowRect(pIsoView->GetSafeHwnd(), &rect);
+        int v6 = (60 * (nParam % nHW)) / 4
+            + (30 * (nParam / nHW)) / 2
+            - 30
+            * *(unsigned __int8*)(((nParam % nHW
+                + nParam / nHW * nHW) << 6)
+                + *reinterpret_cast<DWORD*>(0x7ACDB8)
+                + 51)
+            / 2;
+        pIsoView->sub_4763D0(
+            30 * (nHW + (nParam / nHW)) - (rect.right - rect.left) / 2 - (30 * (nParam % nHW)) - rect.left,
+            v6 - (rect.bottom - rect.top) / 2 - rect.top
+        );
+        return ::RedrawWindow(pIsoView->GetSafeHwnd(), 0, 0, 0x101);
+    }
+    return FALSE;
 }
 
-DEFINE_HOOK(4766B1, sub_4766A0_Func4766B1, 9)
+DEFINE_HOOK(4766A0, sub_4766A0, 6)
 {
-    REF_STACK(int, nWaypoint, STACK_OFFS(0x28, -0x4));
-    int tmp = CObjectSearch::sub_4B1BD0_mine(nWaypoint);
-    if (tmp == -1)
+    GET(CWnd*, pWnd, ECX);
+    GET(int, nWP, EAX);
+    auto& doc = GlobalVars::INIFiles::CurrentDocument();
+    CString lpWaypoint;
+    lpWaypoint.Format("%d", nWP);
+    int nCoord = doc.GetInteger("Waypoints", lpWaypoint, -1);
+    if (lpWaypoint == -1)
         return 0;
-    else
-    {
-        R->EAX<int>(tmp);
-        nWaypoint = tmp;
-        return 0x4766BF;
-    }
+    R->EAX(CObjectSearch::JumpToCoord(pWnd, GET_COORD_X(nCoord), GET_COORD_Y(nCoord)));
+
+    return 0x4767A2;
 }

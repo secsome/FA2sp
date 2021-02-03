@@ -5,15 +5,15 @@
 #define str(x) str_(x)
 #define str_(x) #x
 
-#define PRODUCT_MAJOR 0
-#define PRODUCT_MINOR 10
-#define PRODUCT_REVISION 0
-#define PRODUCT_STR "0.3"
-#define DISPLAY_STR PRODUCT_STR
+constexpr int PRODUCT_MAJOR = 0;
+constexpr int PRODUCT_MINOR = 10;
+constexpr int PRODUCT_REVISION = 0;
+constexpr char* PRODUCT_STR = "0.3";
+constexpr char* DISPLAY_STR = PRODUCT_STR;
 
-#define PRODUCT_NAME str(FA2sp)
-#define APPLY_INFO "Found Final Alert 2 version 1.02. Applying FA2sp-"__DATE__"-"__TIME__
+constexpr char* PRODUCT_NAME = "FA2sp";
+constexpr char* APPLY_INFO = "Found Final Alert 2 version 1.02. Applying FA2sp - "  __DATE__ " - " __TIME__;
 
-#define MUTEX_HASH_VAL str(b8097bca8590a4f46c975ebb43503aab2243ce7f1c87f12f7984dbe1)
-#define MUTEX_INIT_ERROR_MSG str(The program has already launched!)
-#define MUTEX_INIT_ERROR_TIT str(FA2sp Init Checker)
+constexpr char* MUTEX_HASH_VAL = "b8097bca8590a4f46c975ebb43503aab2243ce7f1c87f12f7984dbe1";
+constexpr char* MUTEX_INIT_ERROR_MSG = "The program has already launched!";
+constexpr char* MUTEX_INIT_ERROR_TIT = "FA2sp Init Checker";

@@ -15,7 +15,11 @@ public:
     static void Error(const char*, ...);
     static void Raw(const char*, ...);
     static void Time(char*);
+    static void Wrap(unsigned int cnt = 1);
+
 private:
-    static FILE* file_pointer_;
-    static bool is_initialized_;
+    static char pTime[24];
+    static char pBuffer[0x800];
+    static FILE* pFile;
+    static bool bInitialized;
 };

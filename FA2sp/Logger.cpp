@@ -2,34 +2,32 @@
 #include <windows.h>
 #include <share.h>
 
-FILE* Logger::file_pointer_;
-bool Logger::is_initialized_;
+char Logger::pTime[24];
+char Logger::pBuffer[0x800];
+FILE* Logger::pFile;
+bool Logger::bInitialized;
 
 void Logger::Initialize() {
-	file_pointer_ = _fsopen("FA2sp.log", "w", _SH_DENYWR);
-	is_initialized_ = file_pointer_;
-	char time[24];
-	Time(time);
-	Raw("FA2sp Logger Initializing at %s.\n", time);
+	pFile = _fsopen("FA2sp.log", "w", _SH_DENYWR);
+	bInitialized = pFile;
+	Time(pTime);
+	Raw("FA2sp Logger Initializing at %s.\n", pTime);
 }
 
 void Logger::Close() {
-	char time[24];
-	Time(time);
-	Raw("FA2sp Logger Closing at %s.\n", time);
-	fclose(file_pointer_);
+	Time(pTime);
+	Raw("FA2sp Logger Closing at %s.\n", pTime);
+	fclose(pFile);
 }
 
 void Logger::Write(kLoggerType type, const char* format, va_list args) {
-	if (is_initialized_) {
-		char buffer[0x800];
-		vsprintf_s(buffer, format, args);
+	if (bInitialized) {
+		vsprintf_s(pBuffer, format, args);
 		char type_str[6];
 		switch (type)
 		{
 		default:
 		case Logger::kLoggerType::Raw:
-			strcpy_s(type_str, 6, "");
 			break;
 		case Logger::kLoggerType::Debug:
 			strcpy_s(type_str, 6, "Debug");
@@ -44,8 +42,11 @@ void Logger::Write(kLoggerType type, const char* format, va_list args) {
 			strcpy_s(type_str, 6, "Error");
 			break;
 		}
-		fprintf_s(file_pointer_, "[%s] %s", type_str, buffer);
-		fflush(file_pointer_);
+		if (type == Logger::kLoggerType::Raw)
+			fprintf_s(pFile, "%s", pBuffer);
+		else
+			fprintf_s(pFile, "[%s] %s", type_str, pBuffer);
+		fflush(pFile);
 	}
 }
 
@@ -90,4 +91,17 @@ void Logger::Time(char* ret) {
 	sprintf_s(ret, 24, "%04d/%02d/%02d %02d:%02d:%02d:%03d",
 		Sys.wYear, Sys.wMonth, Sys.wDay, Sys.wHour, Sys.wMinute,
 		Sys.wSecond, Sys.wMilliseconds);
+}
+
+void Logger::Wrap(unsigned int cnt) {
+	char buffer[0x100];
+	int idx = 0;
+	if (cnt > 0 && cnt < 100)
+	{
+		while (cnt--)
+			buffer[idx++] = '\n';
+		buffer[idx] = '\0';
+		fprintf_s(pFile, "%s", buffer);
+		fflush(pFile);
+	}
 }

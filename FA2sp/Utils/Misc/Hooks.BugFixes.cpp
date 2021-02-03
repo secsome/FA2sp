@@ -20,9 +20,3 @@ DEFINE_HOOK(41FDDB, CFinalSunDlg_GetFilePath_2, 6)
 {
 	return 0x41FDE9;
 }
-
-// No Easy View pls
-DEFINE_HOOK(421BCE, CFinalSunDlg_Easyview, 6)
-{
-	return 0x421DBD;
-}

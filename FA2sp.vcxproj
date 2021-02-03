@@ -123,6 +123,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\ExtraWindow\CObjectSearch\CObjectSearch.cpp" />
+    <ClCompile Include="FA2sp\ExtraWindow\CObjectSearch\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Body.ObjectBrowserControl.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Hooks.ObjectBrowserControl.cpp" />
@@ -257,7 +258,6 @@
     <ClInclude Include="FA2sp\FA2sp.h" />
     <ClInclude Include="FA2sp\FA2sp.Macros.h" />
     <ClInclude Include="FA2sp\Helpers\ControlHelpers.h" />
-    <ClInclude Include="FA2sp\Helpers\FAINIHelper.h" />
     <ClInclude Include="FA2sp\Helpers\Helper.h" />
     <ClInclude Include="FA2sp\Helpers\INIParser.h" />
     <ClInclude Include="FA2sp\Helpers\MultimapHelper.h" />

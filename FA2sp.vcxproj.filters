@@ -198,9 +198,6 @@
     <ClInclude Include="FA2sp\Helpers\MultimapHelper.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="FA2sp\Helpers\FAINIHelper.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="FA2sp\Helpers\ControlHelpers.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -453,6 +450,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Utils\Misc\Hooks.LoadParamToCombobox.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\ExtraWindow\CObjectSearch\Hooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
