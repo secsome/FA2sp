@@ -69,6 +69,7 @@ SYRINGE_HANDSHAKE(pInfo)
 		//	sprintf_s(pInfo->Message, pInfo->cchMessage, "Requires Final Alert 2 version 1.02.");
 		//	return S_FALSE;
 		//}
+		AfxFormatString1
 		if (pInfo->Message)
 		{
 			sprintf_s(pInfo->Message, pInfo->cchMessage, APPLY_INFO);

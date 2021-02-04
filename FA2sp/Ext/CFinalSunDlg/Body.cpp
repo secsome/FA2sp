@@ -1,6 +1,5 @@
 #include "Body.h"
 
-#include <MFC/CPaintDC.h>
 #include "../../FA2sp.h"
 
 void CFinalSunDlgExt::ProgramStartupInit()
