@@ -1,6 +1,8 @@
 #include <Helpers/Macro.h>
 #include <GlobalVars.h>
 
+#include <MFC/ppmfc_include.h>
+
 struct ColorTuple
 {
     unsigned char a, b, c;
@@ -36,12 +38,12 @@ constexpr ColorTuple HsvToRgb(ColorTuple const hsv) noexcept {
 
 DEFINE_HOOK(468B44, sub_468760_RGBColor, 5)
 {
-    REF_STACK(FAString, name, STACK_OFFS(0xA4, 0x94));
+    REF_STACK(ppmfc::CString, name, STACK_OFFS(0xA4, 0x94));
 
-	INIClass* pRules = &GlobalVars::INIFiles::Rules.get();
+	INIClass& rules = GlobalVars::INIFiles::Rules;
 
 	if (strlen(name) > 0) {
-		auto const pValue = pRules->GetString("Colors", name);
+		auto const pValue = rules.GetString("Colors", name);
 		ColorTuple hsv{};
 		if (sscanf_s(
 			pValue,
@@ -50,7 +52,7 @@ DEFINE_HOOK(468B44, sub_468760_RGBColor, 5)
 			)
 		{
 			auto const rgb = HsvToRgb(hsv);
-			name.DTOR();
+			name.~CString();
 			R->EAX<unsigned int>(rgb.a | rgb.b << 8u | rgb.c << 16u);
 			return 0x468ED3;
 		}
