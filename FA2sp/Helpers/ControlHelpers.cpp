@@ -17,9 +17,10 @@ namespace ControlHelpers
         ComboBox::Clear(combobox);
 
         auto& doc = GlobalVars::INIFiles::CurrentDocument();
+        MultimapHelper mmh;
+        mmh.AddINI(&doc);
 
-        auto& entries = doc.ParseIndicies("Houses");
-        doc.ParseKeys("Houses", entries);
+        auto& entries = mmh.ParseIndicies("Houses", true);
         CString buffer;
         for (size_t i = 0, sz = entries.size(); i < sz; ++i)
         {

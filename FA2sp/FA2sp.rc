@@ -5,12 +5,12 @@ BEGIN
     "S",            40002,                  VIRTKEY, SHIFT, CONTROL, NOINVERT
     "A",            40104,                  VIRTKEY, CONTROL, NOINVERT
     "C",            57634,                  VIRTKEY, CONTROL, NOINVERT
-    "F",            40115,                  VIRTKEY, NOINVERT
+    "F",            40115,                  VIRTKEY, CONTROL, NOINVERT
     "L",            40105,                  VIRTKEY, CONTROL, NOINVERT
     "V",            57637,                  VIRTKEY, CONTROL, NOINVERT
     "Y",            57644,                  VIRTKEY, CONTROL, NOINVERT
     "Z",            57643,                  VIRTKEY, CONTROL, NOINVERT
-    "F",            40133,                  VIRTKEY, CONTROL, NOINVERT
+    "F",            40133,                  VIRTKEY, SHIFT, CONTROL, NOINVERT
 END
 
 // 23333 BITMAP "D:\\Project\\FA2sp\\FA2sp\\Resources\\BMP_BK_PUSHEEN.bmp"

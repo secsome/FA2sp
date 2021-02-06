@@ -155,27 +155,30 @@ void ObjectBrowserControlExt::Redraw_Owner()
     if (hOwner == NULL)    return;
 
     auto& doc = GlobalVars::INIFiles::CurrentDocument();
-    bool bMultiplayer = doc.GetBool("Basic", "MultiplayerOnly");
 
-    if (!doc.SectionExists("Houses"))
-        return;
-    auto& section = doc.GetSection("Houses").EntitiesDictionary;
-    for (auto& house : section)
+    MultimapHelper mmh;
+    mmh.AddINI(&doc);
+
+    bool bMultiplayer = doc.GetBool("Basic", "MultiplayerOnly"); 
+    auto& section = mmh.ParseIndicies("Houses", true);
+
+    bool &bLoadOnlySpecial = bMultiplayer;
+    if (bMultiplayer && section.size() > 2)
+        bLoadOnlySpecial = 
+        ::MessageBox(
+            NULL,
+            "This map has MultiplayerOnly=yes but has more"
+            "Houses than two (Neutral and Special), do you"
+            "still want to load these houses?",
+            "WARNNING",
+            MB_YESNO
+        ) != IDYES;
+    for (size_t i = 0, sz = section.size(); i < sz; ++i)
     {
-        int index = STDHelpers::ParseToInt(house.first, -1);
-        if (index == -1)
-            continue;
         if (bMultiplayer)
-            if (house.second != "Neutral" && house.second != "Special")
+            if (section[i] != "Neutral House" && section[i] != "Special House")
                 continue;
-        /*CString uiname = house.second.Mid(0, house.second.Find(' '));
-        CString queryname = CSFQuery::GetUIName(uiname);
-        this->InsertString(
-            (uiname == queryname) && (queryname != "MISSING") ? house.second : queryname,
-            Const_House + index,
-            hOwner
-        );*/
-        this->InsertString(house.second, Const_House + index, hOwner);
+        this->InsertString(section[i], Const_House + i, hOwner);
     }
 }
 
@@ -372,30 +375,16 @@ void ObjectBrowserControlExt::Redraw_Terrain()
 
     this->InsertTranslatedString("RndTreeObList", 50999, hTerrain);
 
-    auto& rules = GlobalVars::INIFiles::Rules();
-
-    if (!rules.SectionExists("TerrainTypes"))
-        return;
-    auto& terrains = rules.GetSection("TerrainTypes").EntitiesDictionary;
-    for (auto& ter : terrains)
+    MultimapHelper mmh;
+    mmh.AddINI(&GlobalVars::INIFiles::Rules());
+    auto& terrains = mmh.ParseIndicies("TerrainTypes", true);
+    for (size_t i = 0, sz = terrains.size(); i < sz; ++i)
     {
-        if (IgnoreSet.find((std::string)ter.second) != IgnoreSet.end())
-            continue;
-        //if (!rules.SectionExists(ter.second))
-        //    continue;
-        //if (!rules.KeyExists(ter.second, "SnowOccupationBits"))
-        //    continue;
-        int index = STDHelpers::ParseToInt(ter.first);
-        if (index == -1)   continue;
         CString buffer;
-        buffer = CSFQuery::GetUIName(ter.second);
-        this->InsertTranslatedString(
-            buffer,
-            Const_Terrain + index,
-            hTerrain
-        );
+        buffer = CSFQuery::GetUIName(terrains[i]);
+        if (IgnoreSet.find((std::string)terrains[i]) == IgnoreSet.end())
+            this->InsertString(buffer, Const_Terrain + i, hTerrain);
     }
-
 }
 
 void ObjectBrowserControlExt::Redraw_Smudge()
@@ -403,28 +392,14 @@ void ObjectBrowserControlExt::Redraw_Smudge()
     HTREEITEM& hSmudge = ExtNodes[Root_Smudge];
     if (hSmudge == NULL)   return;
 
-    auto& rules = GlobalVars::INIFiles::Rules();
-
-    if (!rules.SectionExists("SmudgeTypes"))
-        return;
-    auto& smudges = rules.GetSection("SmudgeTypes").EntitiesDictionary;
-    for (auto& smu : smudges)
+    MultimapHelper mmh;
+    mmh.AddINI(&GlobalVars::INIFiles::Rules());
+    auto& smudges = mmh.ParseIndicies("SmudgeTypes", true);
+    for (size_t i = 0, sz = smudges.size(); i < sz; ++i)
     {
-        if (IgnoreSet.find((std::string)smu.second) != IgnoreSet.end())
-            continue;
-        //if (!rules.SectionExists(smu.second))
-        //    continue;
-        //if (!rules.GetKeyCount(smu.second))
-        //    continue;
-        int index = STDHelpers::ParseToInt(smu.first);
-        if (index == -1)   continue;
-        this->InsertString(
-            smu.second,
-            Const_Smudge + index,
-            hSmudge
-        );
+        if (IgnoreSet.find((std::string)smudges[i]) == IgnoreSet.end())
+            this->InsertString(smudges[i], Const_Smudge + i, hSmudge);
     }
-
 }
 
 void ObjectBrowserControlExt::Redraw_Overlay()
@@ -461,33 +436,26 @@ void ObjectBrowserControlExt::Redraw_Overlay()
 
     if (!rules.SectionExists("OverlayTypes"))
         return;
-    auto& overlays = rules.GetSection("OverlayTypes").EntitiesDictionary;
 
     // a rough support for tracks
     this->InsertTranslatedString("Tracks", Const_Overlay + 39, hOverlay);
     
-    for (auto& ovl : overlays)
+    MultimapHelper mmh;
+    mmh.AddINI(&GlobalVars::INIFiles::Rules());
+    auto& overlays = mmh.ParseIndicies("OverlayTypes", true);
+    for (size_t i = 0, sz = std::min<unsigned int>(overlays.size(), 255); i < sz; ++i)
     {
-        if (IgnoreSet.find((std::string)ovl.second) != IgnoreSet.end())
-            continue;
-        //if (!rules.SectionExists(ovl.second))
-        //    continue;
-        int index = STDHelpers::ParseToInt(ovl.first, -1);
-        if (index == -1)   continue;
-        if (index >= 255 || index < 0) continue;
-        if (rules.GetBool(ovl.second, "Wall"))
+        CString buffer;
+        buffer = CSFQuery::GetUIName(overlays[i]);
+        if (rules.GetBool(overlays[i], "Wall"))
             this->InsertString(
-                CSFQuery::GetUIName(ovl.second),
-                Const_Overlay + index,
+                CSFQuery::GetUIName(overlays[i]),
+                Const_Overlay + i,
                 hWalls
             );
-        this->InsertString(
-            ovl.second,
-            Const_Overlay + index,
-            hTemp
-        );
+        if (IgnoreSet.find((std::string)overlays[i]) == IgnoreSet.end())
+            this->InsertString(buffer, Const_Overlay + i, hTemp);
     }
-
 }
 
 void ObjectBrowserControlExt::Redraw_Waypoint()
