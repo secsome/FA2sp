@@ -6,6 +6,10 @@
 #include <algorithm>
 #include <vector>
 
+#include <MFC/ppmfc_cstring.h>
+
+#include <CINI.h>
+
 // A class uses STL containers for assistance use
 
 class STDHelpers
@@ -65,5 +69,15 @@ public:
             std::transform(q.begin(), q.end(), q.begin(), ::tolower);
         }
         return s.find(q) != std::string::npos;
+    }
+
+    // TODO : LCA to optimize the efficiency
+    static ppmfc::CString GetAvailableIndex(INIClass& ini)
+    {
+        CString buffer;
+        
+
+        ppmfc::CString ret(buffer);
+        return ret;
     }
 };

@@ -2,6 +2,7 @@
 #include "Functional.h"
 
 #include <GlobalVars.h>
+#include <CFinalSunDlg.h>
 
 #include "../../Logger.h"
 #include "../../Helpers/Helper.h"
@@ -267,7 +268,6 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 //
 void CScriptTypesExt::OnLBScriptActionsSelectChanged()
 {
-	Logger::Debug(__FUNCTION__"\n");
 	auto& doc = GlobalVars::INIFiles::CurrentDocument();
 	CString scriptId ,buffer, tmp;
 	int scriptIndex, listIndex, actionIndex, selectIndex, L, R, M;
@@ -324,7 +324,6 @@ void CScriptTypesExt::OnLBScriptActionsSelectChanged()
 //
 void CScriptTypesExt::OnCBCurrentActionEditChanged()
 {
-	Logger::Debug(__FUNCTION__"\n");
 	auto& doc = *INIMapFieldUpdate::UpdateMapFieldData(1);
 	CString scriptId, buffer, listStr, tmp;
 	int scriptIndex, listIndex, actionIndex, actionData;
@@ -364,7 +363,6 @@ void CScriptTypesExt::OnCBCurrentActionEditChanged()
 //
 void CScriptTypesExt::OnCBScriptParameterEditChanged()
 {
-	Logger::Debug(__FUNCTION__"\n");
 	auto& doc = GlobalVars::INIFiles::CurrentDocument();
 	CString scriptId, buffer, listStr, paramStr, tmp;
 	int scriptIndex, listIndex, actionIndex;
@@ -395,7 +393,7 @@ void CScriptTypesExt::OnCBScriptParameterEditChanged()
 //
 void CScriptTypesExt::OnBNAddActionClickedExt()
 {
-	if (this->CCBCurrentScript.GetCount() <= 0 && this->CCBCurrentScript.GetCurSel() < 0)
+	/*if (this->CCBCurrentScript.GetCount() <= 0 && this->CCBCurrentScript.GetCurSel() < 0)
 		return;
 
 	bool bInsertMode = ::SendMessage(::GetDlgItem(*this, 6302), BM_GETCHECK, 0, 0) == BST_CHECKED;
@@ -403,7 +401,7 @@ void CScriptTypesExt::OnBNAddActionClickedExt()
 	{
 		this->OnBNAddActionClicked();
 		return;
-	}
+	}*/
 
 	// insert mode ON
 	/*CString scriptID;
@@ -457,10 +455,54 @@ void CScriptTypesExt::OnBNAddActionClickedExt()
 
 void CScriptTypesExt::OnBNCloneScriptClicked()
 {
+	auto& doc = GlobalVars::INIFiles::CurrentDocument();
 
+	int nCurSel = this->CCBCurrentScript.GetCurSel();
+	if (nCurSel >= 0)
+	{
+		CString label;
+		this->CCBCurrentScript.GetLBText(nCurSel, label);
+		STDHelpers::TrimIndex(label);
+		INISection copied(doc.GetSection(label));
+		ppmfc::CString name;
+		name = copied.EntitiesDictionary["Name"];
+		name += " Clone";
+		((ppmfc::CString*)(&copied.EntitiesDictionary["Name"]))->AssignCopy(strlen(name), name);
+		//Logger::Debug("new name = %s\n", name);
+		ppmfc::CString id;
+		id = INIClass::GetAvailableIndex();
+		//Logger::Debug("available index get, id = %s\n", id);
+		doc.InsertSection(id.operator LPCTSTR(), copied);
+		/*Logger::Debug("section inserted!\n");
+		Logger::Debug("section detail:\n");
+		for (auto& x : copied.EntitiesDictionary)
+			Logger::Debug("%s %s\n", x.first, x.second);*/
+		ppmfc::CString key;
+		key = INIClass::GetAvailableKey("ScriptTypes");
+		//Logger::Debug("available section get, key = %s\n", key);
+		doc.WriteString("ScriptTypes", key, id);
+		//Logger::Debug("key inserted!\n");
+		/*INISection& scripttypes = doc.GetSection("ScriptTypes");
+		for (auto& x : scripttypes.EntitiesDictionary)
+			Logger::Debug("%s %s\n", x.first, x.second);*/
+
+		// objective : reload combobox
+		auto& scripts = this->CCBCurrentScript;
+		while (this->CCBCurrentScript.DeleteString(0) != CB_ERR)
+			;
+		auto& scripttypes = doc.GetSection("ScriptTypes");
+		for (auto& x : scripttypes.EntitiesDictionary)
+			this->CCBCurrentScript.AddString((CString)x.second + " (" + doc.GetString(x.second, "Name") + ")");
+
+		int idx = scripts.FindString(0, id);
+		scripts.SetCurSel(idx);
+
+		this->SetDlgItemText(1010, name);
+	}
+	return;
 }
 
 void CScriptTypesExt::OnBNCloneItemClicked()
 {
-
+	::MessageBox(NULL, "¿¡µ√–¥¡À", "πæπæπæ", MB_OK);
 }
