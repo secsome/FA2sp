@@ -161,7 +161,7 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 	TranslateDlgItem(50702, "ScriptTypesName");
 	TranslateDlgItem(50703, "ScriptTypesActions");
 	TranslateDlgItem(50704, "ScriptTypesActionType");
-	TranslateDlgItem(50705, "ScriptTypesActionParam");
+	TranslateDlgItem(1198, "ScriptTypesActionParam");//sbFA2
 	TranslateDlgItem(50706, "ScriptTypesActionDesc");
 
 	TranslateDlgItem(1154, "ScriptTypesAddScript");
