@@ -15,14 +15,14 @@
 class STDHelpers
 {
 public:
-    static std::vector<CString> SplitString(const char* pSource, char cSplit = ',')
+    static std::vector<std::string> SplitString(const char* pSource, char cSplit = ',')
     {
-        std::vector<CString> ret;
+        std::vector<std::string> ret;
         std::istringstream iss(pSource);
         std::string tmp;
 
         while (std::getline(iss, tmp, cSplit)) {
-            ret.push_back(tmp.c_str());
+            ret.push_back(tmp);
         }
 
         return ret;

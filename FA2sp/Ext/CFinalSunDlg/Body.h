@@ -38,6 +38,7 @@ class ObjectBrowserControlExt : public ObjectBrowserControl
     static std::unordered_set<std::string> IgnoreSet;
     static std::unordered_set<std::string> ExtSets[Set_Count];
     static std::unordered_map<std::string, int> KnownItem;
+    static std::unordered_map<std::string, int> Owners;
     HTREEITEM InsertString(const char* pString, DWORD dwItemData = 0, 
         HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
     HTREEITEM InsertTranslatedString(const char* pOriginString, DWORD dwItemData = 0,

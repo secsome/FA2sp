@@ -493,10 +493,8 @@ void CScriptTypesExt::OnBNCloneScriptClicked()
 		auto& scripttypes = doc.GetSection("ScriptTypes");
 		for (auto& x : scripttypes.EntitiesDictionary)
 			this->CCBCurrentScript.AddString((CString)x.second + " (" + doc.GetString(x.second, "Name") + ")");
-
 		int idx = scripts.FindString(0, id);
 		scripts.SetCurSel(idx);
-
 		this->SetDlgItemText(1010, name);
 	}
 	return;

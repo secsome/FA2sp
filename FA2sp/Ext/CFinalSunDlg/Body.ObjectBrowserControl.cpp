@@ -4,7 +4,7 @@
 #include "../../Helpers/STDHelpers.h"
 #include "../../Helpers/MultimapHelper.h"
 
-#include "../../Logger.h"
+#include "../../FA2sp.h"
 
 #include <GlobalVars.h>
 
@@ -12,6 +12,7 @@ std::unordered_map<int, HTREEITEM> ObjectBrowserControlExt::ExtNodes;
 std::unordered_set<std::string> ObjectBrowserControlExt::IgnoreSet;
 std::unordered_set<std::string> ObjectBrowserControlExt::ExtSets[Set_Count];
 std::unordered_map<std::string, int> ObjectBrowserControlExt::KnownItem;
+std::unordered_map<std::string, int> ObjectBrowserControlExt::Owners;
 
 HTREEITEM ObjectBrowserControlExt::InsertString(const char* pString, DWORD dwItemData,
     HTREEITEM hParent, HTREEITEM hInsertAfter)
@@ -26,8 +27,6 @@ HTREEITEM ObjectBrowserControlExt::InsertTranslatedString(const char* pOriginStr
     bool result = Translations::GetTranslationItem(pOriginString, buffer);
     return InsertString(result ? buffer : pOriginString, dwItemData, hParent, hInsertAfter);
 }
-
-// ObjectBrowserControlExt::Redraw
 
 void ObjectBrowserControlExt::Redraw()
 {
@@ -54,33 +53,37 @@ void ObjectBrowserControlExt::Redraw_Initialize()
     ExtNodes.clear();
     KnownItem.clear();
     IgnoreSet.clear();
+    Owners.clear();
     this->DeleteAllItems();
 
     auto& rules = GlobalVars::INIFiles::Rules();
     auto& fadata = GlobalVars::INIFiles::FAData();
     auto& doc = GlobalVars::INIFiles::CurrentDocument();
+    MultimapHelper mmh;
+    mmh.AddINI(&rules);
+    mmh.AddINI(&doc);
 
-    auto loadSet = [&rules, &doc](const char* pTypeName, int nType)
+    auto loadSet = [&mmh](const char* pTypeName, int nType)
     {
         ExtSets[nType].clear();
-        if (rules.SectionExists(pTypeName))
-        {
-            auto& section = rules.GetSection(pTypeName).EntitiesDictionary;
-            for (auto& itr : section)
-                ExtSets[nType].insert((std::string)itr.second);
-        }
-        if (doc.SectionExists(pTypeName))
-        {
-            auto& section = doc.GetSection(pTypeName).EntitiesDictionary;
-            for (auto& itr : section)
-                ExtSets[nType].insert((std::string)itr.second);
-        }
+        auto& section = mmh.GetSection(pTypeName);
+        for (auto& itr : section)
+            ExtSets[nType].insert((std::string)itr.second);
     };
 
     loadSet("BuildingTypes", Set_Building);
     loadSet("InfantryTypes", Set_Infantry);
     loadSet("VehicleTypes", Set_Vehicle);
     loadSet("AircraftTypes", Set_Aircraft);
+
+    auto loadOwner = [&mmh]()
+    {
+        auto& sides = mmh.ParseIndicies("Sides", true);
+        for (size_t i = 0, sz = sides.size(); i < sz; ++i)
+            for (auto& owner : STDHelpers::SplitString(sides[i]))
+                Owners[(std::string)owner] = i;
+    };
+    loadOwner();
 
     if (fadata.SectionExists("ForceSides"))
     {
@@ -102,6 +105,8 @@ void ObjectBrowserControlExt::Redraw_Initialize()
         for (auto& item : ignores)
             IgnoreSet.insert((std::string)item.second);
     }
+
+    
 }
 
 void ObjectBrowserControlExt::Redraw_MainList()
@@ -226,6 +231,16 @@ void ObjectBrowserControlExt::Redraw_Infantry()
             subNodes[side]
         );
     }
+
+    // Clear up
+    if (ExtConfigs::BrowserRedraw_CleanUp)
+    {
+        for (auto& subnode : subNodes)
+        {
+            if (!this->ItemHasChildren(subnode.second))
+                this->DeleteItem(subnode.second);
+        }
+    }
 }
 
 void ObjectBrowserControlExt::Redraw_Vehicle()
@@ -271,6 +286,16 @@ void ObjectBrowserControlExt::Redraw_Vehicle()
             Const_Vehicle + index,
             subNodes[side]
         );
+    }
+
+    // Clear up
+    if (ExtConfigs::BrowserRedraw_CleanUp)
+    {
+        for (auto& subnode : subNodes)
+        {
+            if (!this->ItemHasChildren(subnode.second))
+                this->DeleteItem(subnode.second);
+        }
     }
 }
 
@@ -319,6 +344,16 @@ void ObjectBrowserControlExt::Redraw_Aircraft()
             subNodes[side]
         );
     }
+
+    // Clear up
+    if (ExtConfigs::BrowserRedraw_CleanUp)
+    {
+        for (auto& subnode : subNodes)
+        {
+            if (!this->ItemHasChildren(subnode.second))
+                this->DeleteItem(subnode.second);
+        }
+    }
 }
 
 void ObjectBrowserControlExt::Redraw_Building()
@@ -365,6 +400,16 @@ void ObjectBrowserControlExt::Redraw_Building()
             Const_Building + index,
             subNodes[side]
         );
+    }
+
+    // Clear up
+    if (ExtConfigs::BrowserRedraw_CleanUp)
+    {
+        for (auto& subnode : subNodes)
+        {
+            if (!this->ItemHasChildren(subnode.second))
+                this->DeleteItem(subnode.second);
+        }
     }
 }
 
@@ -574,25 +619,46 @@ int ObjectBrowserControlExt::GuessBuildingSide(const char* pRegName)
 
 int ObjectBrowserControlExt::GuessGenericSide(const char* pRegName, int nType)
 {
-    auto& rules = GlobalVars::INIFiles::Rules();
+    MultimapHelper mmh;
+    mmh.AddINI(&GlobalVars::INIFiles::Rules());
+    mmh.AddINI(&GlobalVars::INIFiles::CurrentDocument());
+
     auto& set = ExtSets[nType];
 
     if (set.find(pRegName) == set.end())
         return -1;
-    for (auto& prep : STDHelpers::SplitString(rules.GetString(pRegName, "Prerequisite")))
+
+    switch (ExtConfigs::BrowserRedraw_GuessMode)
     {
-        int guess = -1;
-        for (auto& subprep : STDHelpers::SplitString(rules.GetString("GenericPrerequisites", prep)))
+    default:
+    case 0:
+    {
+        for (auto& prep : STDHelpers::SplitString(mmh.GetString(pRegName, "Prerequisite")))
         {
-            guess = GuessSide(subprep, GuessType(subprep));
+            int guess = -1;
+            for (auto& subprep : STDHelpers::SplitString(mmh.GetString("GenericPrerequisites", prep.c_str())))
+            {
+                guess = GuessSide(subprep.c_str(), GuessType(subprep.c_str()));
+                if (guess != -1)
+                    return guess;
+            }
+            guess = GuessSide(prep.c_str(), GuessType(prep.c_str()));
             if (guess != -1)
                 return guess;
         }
-        guess = GuessSide(prep, GuessType(prep));
-        if (guess != -1)
-            return guess;
+        return -1;
     }
-    return -1;
+    case 1:
+    {
+        auto& owners = STDHelpers::SplitString(mmh.GetString(pRegName, "Owner"));
+        if (owners.size() <= 0)
+            return -1;
+        auto& itr = Owners.find((std::string)owners[0]);
+        if (itr == Owners.end())
+            return -1;
+        return itr->second;
+    }
+    }
 }
 
 // ObjectBrowserControlExt::OnSelectChanged

@@ -21,6 +21,17 @@ INIClass* MultimapHelper::GetINIAt(int idx)
     return data.at(idx);
 }
 
+CString MultimapHelper::GetString(const char* pSection, const char* pKey, const char* pDefault)
+{
+    for (auto& ini : data)
+    {
+        if (!ini->KeyExists(pSection, pKey))
+            continue;
+        return ini->GetString(pSection, pKey, pDefault);
+    }
+    return pDefault;
+}
+
 std::vector<CString> MultimapHelper::ParseIndicies(const char* pSection, bool bParseIntoValue)
 {
     std::vector<CString> ret;
