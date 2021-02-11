@@ -1,3 +1,5 @@
+#Don't always push resource temp file OK?
+*.aps
 /VC5
 /MFC42
 /Debug
