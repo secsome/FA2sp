@@ -42,17 +42,17 @@ BOOL CObjectSearch::JumpToCoord(CWnd* pWnd, int X, int Y)
     return FALSE;
 }
 
-DEFINE_HOOK(4766A0, sub_4766A0, 6)
-{
-    GET(CWnd*, pWnd, ECX);
-    GET(int, nWP, EAX);
-    auto& doc = GlobalVars::INIFiles::CurrentDocument();
-    CString lpWaypoint;
-    lpWaypoint.Format("%d", nWP);
-    int nCoord = doc.GetInteger("Waypoints", lpWaypoint, -1);
-    if (lpWaypoint == -1)
-        return 0;
-    R->EAX(CObjectSearch::JumpToCoord(pWnd, GET_COORD_X(nCoord), GET_COORD_Y(nCoord)));
-
-    return 0x4767A2;
-}
+//DEFINE_HOOK(4766A0, sub_4766A0, 6)
+//{
+//    GET(CWnd*, pWnd, ECX);
+//    GET(int, nWP, EAX);
+//    auto& doc = GlobalVars::INIFiles::CurrentDocument();
+//    CString lpWaypoint;
+//    lpWaypoint.Format("%d", nWP);
+//    int nCoord = doc.GetInteger("Waypoints", lpWaypoint, -1);
+//    if (lpWaypoint == -1)
+//        return 0;
+//    R->EAX(CObjectSearch::JumpToCoord(pWnd, GET_COORD_X(nCoord), GET_COORD_Y(nCoord)));
+//
+//    return 0x4767A2;
+//}
