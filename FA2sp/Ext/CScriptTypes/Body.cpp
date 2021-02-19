@@ -66,7 +66,8 @@ void CScriptTypesExt::UpdateParams(int actionIndex)
 	case 3:
 		CScriptTypesFunctions::CScriptTypes_LoadParams_ScriptLine(
 			this->CCBScriptParameter,
-			this->CLBScriptActions.GetCount()
+			this->CCBCurrentScript,
+			this->CLBScriptActions
 		);
 		break;
 	case 4:
@@ -177,6 +178,14 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 	// Initialize defaults
 	const char** pNames = reinterpret_cast<const char**>(0x5D035C);
 	const char** pDescriptions = reinterpret_cast<const char**>(0x5D0448);
+	
+	/*auto& errAct = ExtActions[-1];
+	errAct.Description_ = "FA2sp Error Action Holder";
+	errAct.Editable_ = false;
+	errAct.Hide_ = true;
+	errAct.Name_ = "INVALID SCRIPT ACTION";
+	errAct.ParamCode_ = 0;*/
+
 	for (int i = 0; i < 59; ++i)
 	{
 		auto& curAction = ExtActions[i];

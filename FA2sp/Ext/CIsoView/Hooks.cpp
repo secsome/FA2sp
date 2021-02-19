@@ -85,3 +85,28 @@ DEFINE_HOOK(469A69, CIsoView_UpdateOverlay_AutoConnect_2, 8)
 	}
 	return 0x469B07;
 }
+
+//DEFINE_HOOK(474F36, CIsoView_OnPaint_WaypointColor, 5)
+//{
+//	CreatePen(0, 4, RGB(255, 255, 0));
+//	return 0x474F45;
+//}
+
+//
+//DEFINE_HOOK(47047E, CIsoView_OnPaint_DrawWaypoint, 6)
+//{
+//	R->Stack<DWORD>(4, RGB(255, 255, 0));
+//	return 0;
+//}
+
+//DEFINE_HOOK(5337DA, CDC_TextOutA, 6)
+//{
+//	Logger::Debug("Caller = %p, lpString = %s, color = %X\n", R->Stack<DWORD>(0), R->Stack<char*>(0xC), R->Stack<DWORD>(0x10));
+//	return 0;
+//}
+
+//DEFINE_HOOK(475093, CIsoView_OnPaint_Debug, 5)
+//{
+//	Logger::Debug("%s\n", R->EAX());
+//	return 0;
+//}

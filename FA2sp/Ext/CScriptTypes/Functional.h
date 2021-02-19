@@ -66,19 +66,32 @@ static void CScriptTypes_LoadParams_Waypoint(CComboBox& comboBox)
 }
 
 // 3
-static void CScriptTypes_LoadParams_ScriptLine(CComboBox& comboBox, int cnt)
+static void CScriptTypes_LoadParams_ScriptLine(CComboBox& comboBox, CComboBox& currentScript, CListBox& listBox)
 {
+    int cnt = listBox.GetCount();
     // up to 50
     if (cnt > 50)
         cnt = 50;
 
     while (comboBox.DeleteString(0) != -1);
 
-    char buf[3];
+    auto& doc = GlobalVars::INIFiles::CurrentDocument();
+
+    CString buffer, scriptName, parambuf;
+    currentScript.GetLBText(currentScript.GetCurSel(), scriptName);
+    STDHelpers::TrimIndex(scriptName);
+
     for (int i = 0; i < cnt; ++i)
     {
-        _itoa_s(i, buf, 10);
-        int idx = comboBox.AddString(buf);
+        buffer.Format("%d", i);
+        buffer = doc.GetString(scriptName, buffer, "0,0");
+        int actionIndex = buffer.Find(',');
+        if (actionIndex == CB_ERR)
+            actionIndex = -1;
+        else
+            actionIndex = atoi(buffer.Mid(0, actionIndex));
+        buffer.Format("%d - %s", i + 1, CScriptTypesExt::ExtActions[actionIndex].Name_);
+        int idx = comboBox.AddString(buffer);
         comboBox.SetItemData(idx, i);
     }
 }

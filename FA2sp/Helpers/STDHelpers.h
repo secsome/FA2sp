@@ -42,7 +42,9 @@ public:
         if (len == 0)  return true;
         for (int i = 0; i < len; ++i)
             if (pSource[i] != ' ' && pSource[i] != '\0')  return false;
-        return true;
+        return 
+            strcmp(pSource, "none") != 0 &&
+            strcmp(pSource, "<none>") != 0;
     }
 
     static void TrimString(CString& str)
