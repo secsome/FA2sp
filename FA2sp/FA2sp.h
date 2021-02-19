@@ -17,7 +17,7 @@ public:
     static HANDLE hInstance;
     static void ExtConfigsInitialize();
 
-    static std::map<std::string, std::string> WIP_TutorialTextMap;
+    static std::map<std::string, std::string> TutorialTextsMap;
 };
 
 class ExtConfigs
@@ -30,7 +30,7 @@ public:
     static bool AllowIncludes;
     static bool AllowPlusEqual;
     static bool Stringtables;
-
-    static bool WIP_TutorialTexts;
+    static bool TutorialTexts_Hide;
+    static bool TutorialTexts_Fix;
 };
 

@@ -8,7 +8,7 @@
 
 HANDLE FA2sp::hInstance;
 
-std::map<std::string, std::string> FA2sp::WIP_TutorialTextMap;
+std::map<std::string, std::string> FA2sp::TutorialTextsMap;
 
 bool ExtConfigs::BrowserRedraw;
 int	 ExtConfigs::BrowserRedraw_GuessMode;
@@ -17,8 +17,8 @@ bool ExtConfigs::OverlayFilter;
 bool ExtConfigs::AllowIncludes;
 bool ExtConfigs::AllowPlusEqual;
 bool ExtConfigs::Stringtables;
-
-bool ExtConfigs::WIP_TutorialTexts;
+bool ExtConfigs::TutorialTexts_Hide;
+bool ExtConfigs::TutorialTexts_Fix;
 
 //DEFINE_HOOK(527592, DEBUGASFHIAKSN, 5)
 //{
@@ -42,7 +42,8 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::AllowIncludes = pFAData->GetBool("ExtConfigs", "AllowIncludes");
 	ExtConfigs::AllowPlusEqual = pFAData->GetBool("ExtConfigs", "AllowPlusEqual");
 	ExtConfigs::Stringtables = pFAData->GetBool("ExtConfigs", "Stringtables");
-	ExtConfigs::WIP_TutorialTexts = pFAData->GetBool("ExtConfigs", "WIP.TutorialTexts");
+	ExtConfigs::TutorialTexts_Hide = pFAData->GetBool("ExtConfigs", "TutorialTexts.Hide");
+	ExtConfigs::TutorialTexts_Fix = pFAData->GetBool("ExtConfigs", "TutorialTexts.Fix");
 }
 
 // DllMain

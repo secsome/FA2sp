@@ -20,13 +20,18 @@
 
 DEFINE_HOOK(441910, Miscs_LoadParams_TutorialTexts, 7)
 {
-    if (ExtConfigs::Stringtables && ExtConfigs::WIP_TutorialTexts)
+    GET(CComboBox*, pComboBox, ESI);
+    if (ExtConfigs::TutorialTexts_Hide)
     {
-        GET(CComboBox*, pComboBox, ESI);
         while (pComboBox->DeleteString(0) != CB_ERR);
-        for (auto x : FA2sp::WIP_TutorialTextMap)
+        return 0x441A34;
+    }
+    if (ExtConfigs::Stringtables && ExtConfigs::TutorialTexts_Fix)
+    {   
+        while (pComboBox->DeleteString(0) != CB_ERR);
+        for (auto x : FA2sp::TutorialTextsMap)
             pComboBox->AddString((x.first + " : " + x.second).c_str());
-        Logger::Debug("%d csf entities added.\n", FA2sp::WIP_TutorialTextMap.size());
+        Logger::Debug("%d csf entities added.\n", FA2sp::TutorialTextsMap.size());
         return 0x441A34;
     }
     return 0;
