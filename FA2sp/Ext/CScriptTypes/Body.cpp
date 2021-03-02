@@ -454,9 +454,35 @@ void CScriptTypesExt::OnBNAddActionClickedExt()
 //{
 //}
 //
-//void CScriptTypesExt::OnBNAddScriptClicked()
-//{
-//}
+void CScriptTypesExt::OnBNAddScriptClicked()
+{
+	auto& doc = GlobalVars::INIFiles::CurrentDocument();
+	INISection SecGen;
+
+	CWnd* NameBox = GetDlgItem(1010);
+	ppmfc::CString name;
+	name = "New Script";
+	ppmfc::CString idx;
+	idx = INIClass::GetAvailableIndex();
+	doc.InsertSection(idx.operator LPCTSTR(), SecGen);
+	//Logger::Debug("new name = %s\n", name);
+	ppmfc::CString key;
+	key = INIClass::GetAvailableKey("ScriptTypes");
+	doc.WriteString("ScriptTypes", key, idx);
+
+	//reload cbb
+	auto& scripts = this->CCBCurrentScript;
+	while (this->CCBCurrentScript.DeleteString(0) != CB_ERR)
+		;
+	auto& scripttypes = doc.GetSection("ScriptTypes");
+	for (auto& x : scripttypes.EntitiesDictionary)
+		this->CCBCurrentScript.AddString((CString)x.second + " (" + doc.GetString(x.second, "Name") + ")");
+	int index = scripts.FindString(0, idx);
+	scripts.SetCurSel(index);
+	this->SetDlgItemText(1010, name);
+	//manually refresh
+	this->SendMessage(WM_COMMAND, MAKEWPARAM(1010, EN_KILLFOCUS), (LPARAM)NameBox->GetSafeHwnd());
+}
 //
 //void CScriptTypesExt::OnBNDeleteScriptClicked()
 //{

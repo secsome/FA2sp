@@ -42,7 +42,6 @@ public:
 	void OnBNAddActionClickedExt();
 	/*
 	void OnBNDeleteActionClicked();
-	void OnBNAddScriptClicked();
 	void OnBNDeleteScriptClicked();*/
 
 
@@ -50,6 +49,7 @@ public:
 	~CScriptTypesExt() {};
 
 	// Functional Functions
+	void OnBNAddScriptClicked();
 	void OnBNCloneScriptClicked();
 	void OnBNCloneItemClicked();
 

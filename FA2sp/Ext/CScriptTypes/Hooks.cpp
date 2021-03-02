@@ -132,12 +132,12 @@ DEFINE_HOOK(4D6500, CScriptTypes_OnLBScriptActionsSelectChanged, 7)
 //	return 0x4D7AB8;
 //}
 //
-//DEFINE_HOOK(4D7AC0, CScriptTypes_OnBNAddActionClicked, 7)
-//{
-//	GET(CScriptTypesExt*, pThis, ECX);
-//	pThis->CScriptTypesExt::OnBNAddActionClicked();
-//	return 0x4D7DC7;
-//}
+/*DEFINE_HOOK(4D7AC0, CScriptTypes_OnBNAddActionClicked, 7)
+{
+	GET(CScriptTypesExt*, pThis, ECX);
+	pThis->CScriptTypesExt::OnBNAddActionClicked();
+	return 0x4D7DC7;
+}*/
 //
 //DEFINE_HOOK(4D7DD0, CScriptTypes_OnBNDeleteActionClicked, 7)
 //{
@@ -146,12 +146,12 @@ DEFINE_HOOK(4D6500, CScriptTypes_OnLBScriptActionsSelectChanged, 7)
 //	return 0x4D8388;
 //}
 //
-//DEFINE_HOOK(4D8390, CScriptTypes_OnBNAddScriptClicked, 7)
-//{
-//	GET(CScriptTypesExt*, pThis, ECX);
-//	pThis->CScriptTypesExt::OnBNAddScriptClicked();
-//	return 0x4D8721;
-//}
+DEFINE_HOOK(4D8390, CScriptTypes_OnBNAddScriptClicked, 7)
+{
+	GET(CScriptTypesExt*, pThis, ECX);
+	pThis->CScriptTypesExt::OnBNAddScriptClicked();
+	return 0x4D8721;
+}
 //
 //DEFINE_HOOK(4D8730, CScriptTypes_OnBNDeleteScriptClicked, 7)
 //{
