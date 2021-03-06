@@ -1,3 +1,11 @@
+<pre>
+I've decided to make this repository public so that more developers can help me improving it.
+For now it had implemented all features that FA2Ext has and extended more logics than it.
+The codes might be a messy, so I'd appreciate it if someone could help me to make them better arranged.
+
+SDK: Visual Studio 2017 - Windows XP (v141_xp)
+C++ Standard: C++14 (Higher standard conflicts with INIClass right now)
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -339,4 +347,6 @@ noticed before.
 
 - CONTACT ME
 EMAIL : 3179369262@qq.com
+Discord : secsome#5043
 NO OTHER AVAILABLE METHODS ... FOR NOW ;D
+</pre>
