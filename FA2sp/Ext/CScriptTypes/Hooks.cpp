@@ -149,6 +149,12 @@ DEFINE_HOOK(4D6500, CScriptTypes_OnLBScriptActionsSelectChanged, 7)
 //DEFINE_HOOK(4D8390, CScriptTypes_OnBNAddScriptClicked, 7)
 //{
 //	GET(CScriptTypesExt*, pThis, ECX);
+//	pThis->CScriptTypesExt::OnBNAddScriptClicked();
+//	return 0x4D8721;
+//}
+//DEFINE_HOOK(4D8390, CScriptTypes_OnBNAddScriptClicked, 7)
+//{
+//	GET(CScriptTypesExt*, pThis, ECX);
 //	pThis->CScriptTypesExt::OnBNAddScriptClickedExt();
 //	return 0x4D8721;
 //}
