@@ -494,9 +494,4 @@
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="C:\Users\30270\Desktop\Pusheen_Zoom_Background_Beach_2020.bmp">
-      <Filter>资源文件</Filter>
-    </Image>
-  </ItemGroup>
 </Project>

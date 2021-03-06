@@ -1,6 +1,7 @@
 #include "Replacement.h"
 #include "../FA2sp.Macros.h"
 
+// should be fixed by hooks but using this to just make it works for now.
 void Replacement::HexFixes() {
 	
 	auto UndoRedoExtend = [](unsigned char extendNum)

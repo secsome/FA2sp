@@ -12,5 +12,3 @@ BEGIN
     "Z",            57643,                  VIRTKEY, CONTROL, NOINVERT
     "F",            40133,                  VIRTKEY, SHIFT, CONTROL, NOINVERT
 END
-
-// 23333 BITMAP "D:\\Project\\FA2sp\\FA2sp\\Resources\\BMP_BK_PUSHEEN.bmp"

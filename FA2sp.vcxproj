@@ -285,9 +285,6 @@
     <ResourceCompile Include="FA2sp\UI\CTeamTypes.rc" />
     <ResourceCompile Include="FA2sp\UI\CTileBrowserFrame.DialogBar.rc" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="C:\Users\30270\Desktop\Pusheen_Zoom_Background_Beach_2020.bmp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

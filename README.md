@@ -1,18 +1,20 @@
-<pre>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-======================= Changes (2021-01-XX) ==============================================================================================
+======================= Changes (2021-03-XX) ==============================================================================================
 *) Now the game directory FA2 reads would use the path in FinalAlert.ini instead of the one in registry
-*) Coordinates are now shown as X / Y - H.
+*) Coordinates are now shown as X / Y - H
+*) Undo/Redo extended to 127 steps (was 15 steps)
 *) ObjectBrowserControl refactored
     +) Not only Buildings, but Infantrys, Aircrafts and Vehicles now have been classified into sides
     +) Not only the original hardcoded overlays but also all overlays having Wall=yes will be auto connected
 *) Now infantry's facing will be correctly shown
 *) Overlay which has the index bigger than 255 will be ignored
+*) Teamtypes and Scripttypes are now able to use Clone just as Triggers
 *) House colors will be correctly drawn instead of using a hardcoded set of colors (for most, yellow)
 *) For most dialogs, the content will only be updated while lose focus. (Used to be content changed, and lead to famous stupid lag teamtype) 
+*) Dialogs UI Redrawn
 +) Support Ares' += and #include functions (not recommended to use, still has several bugs)
 +) Support Ares' stringtableXX.csf
 +) ScriptTypes now use a different set of params and can be extended
@@ -38,10 +40,14 @@ For now, I cannot ensure the stability of it, so save your maps frequently befor
     - FAData.ini
         +) [ExtConfigs] (All switches defaults to false)
             +) BrowserRedraw=BOOLEAN ; Enable refactored ObjectBrowserView
+            +) BrowserRedraw.GuessMode=0/1 ; Determines how FA2sp guess Technos' side, 0(Default) to Prerequisite, 1 to use first Owner 
+            +) BrowserRedraw.CleanUp=BOOLEAN ; Sides classification will clear empty items
             +) OverlayFilter=BOOLEAN ; Filt dangerous overlays (index larger than 255)
             +) AllowIncludes=BOOLEAN ; Read #include section for other ini (NOT RECOMMENDED) 
             +) AllowPlusEqual=BOOLEAN ; Read += (NOT RECOMMENDED)
             +) Stringtables=BOOLEAN ; Read stringtableXX.csf
+            +) TutorialTexts.Fix=BOOLEAN ; Replace original process while loading texts to comboboxes
+            +) TutorialTexts.Hide=BOOLEAN ; reduce lags, for texts in combobox might be useless
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.
@@ -277,9 +283,40 @@ For now, I cannot ensure the stability of it, so save your maps frequently befor
                 +) TeamTypesCheckBoxAreTeamMembersRecruitable = TEXT
                 +) TeamTypesCheckBoxIsBaseDefense = TEXT
                 +) TeamTypesCheckBoxOnlyTargetHouseEnemy = TEXT
+                +) TriggerFrameTitle = TEXT
+                +) TriggerFrameSelectedTrigger = TEXT
+                +) TriggerFrameNew = TEXT
+                +) TriggerFrameDel = TEXT
+                +) TriggerFramePlace = TEXT
+                +) TriggerFrameClone = TEXT
+                +) TriggerOptionType = TEXT
+                +) TriggerOptionName = TEXT
+                +) TriggerOptionHouse = TEXT
+                +) TriggerOptionAttached = TEXT
+                +) TriggerOptionDisabled = TEXT
+                +) TriggerOptionDisabledDesc = TEXT
+                +) TriggerOptionEasy = TEXT
+                +) TriggerOptionMedium = TEXT
+                +) TriggerOptionHard = TEXT
+                +) TriggerEventCurrent = TEXT
+                +) TriggerEventNew = TEXT
+                +) TriggerEventDel = TEXT
+                +) TriggerEventOptions = TEXT
+                +) TriggerEventType = TEXT
+                +) TriggerEventParameter = TEXT
+                +) TriggerEventParamValue = TEXT
+                +) TriggerEventDesc = TEXT
+                +) TriggerActionCurrent = TEXT
+                +) TriggerActionNew = TEXT
+                +) TriggerActionDel = TEXT
+                +) TriggerActionOptions = TEXT
+                +) TriggerActionType = TEXT
+                +) TriggerActionParameter = TEXT
+                +) TriggerActionParamValue = TEXT
+                +) TriggerActionDesc = TEXT
 
 - WORK IN PROGRESS
-    - Support for cloning teamtypes & scripts & taskforces & ai triggers
+    - Support for cloning scripts & taskforces & ai triggers
     - SHP turret rotation (currently doesn't change and always points to the north)
     - Custom palettes
     - ...
@@ -303,4 +340,3 @@ noticed before.
 - CONTACT ME
 EMAIL : 3179369262@qq.com
 NO OTHER AVAILABLE METHODS ... FOR NOW ;D
-</pre>
