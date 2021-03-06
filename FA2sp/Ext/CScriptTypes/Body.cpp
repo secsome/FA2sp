@@ -454,9 +454,10 @@ void CScriptTypesExt::OnBNAddActionClickedExt()
 //{
 //}
 //
-//void CScriptTypesExt::OnBNAddScriptClicked()
-//{
-//}
+void CScriptTypesExt::OnBNAddScriptClickedExt()
+{
+	// TODO : Jump to the script we have just inserted!
+}
 //
 //void CScriptTypesExt::OnBNDeleteScriptClicked()
 //{
@@ -511,5 +512,5 @@ void CScriptTypesExt::OnBNCloneScriptClicked()
 
 void CScriptTypesExt::OnBNCloneItemClicked()
 {
-	::MessageBox(NULL, "¿¡µ√–¥¡À", "πæπæπæ", MB_OK);
+	::MessageBox(NULL, "Implement Needed!", "TODO", MB_OK);
 }

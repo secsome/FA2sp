@@ -213,6 +213,9 @@
     <ClInclude Include="FA2sp\ExtraWindow\CObjectSearch\CObjectSearch.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2sp\Helpers\Templates.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">

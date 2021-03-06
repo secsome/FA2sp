@@ -94,14 +94,7 @@ void Logger::Time(char* ret) {
 }
 
 void Logger::Wrap(unsigned int cnt) {
-	char buffer[0x100];
-	int idx = 0;
-	if (cnt > 0 && cnt < 100)
-	{
-		while (cnt--)
-			buffer[idx++] = '\n';
-		buffer[idx] = '\0';
-		fprintf_s(pFile, "%s", buffer);
-		fflush(pFile);
-	}
+	while (cnt--)
+		fprintf_s(pFile, "\n");
+	fflush(pFile);
 }

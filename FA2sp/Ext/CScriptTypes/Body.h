@@ -40,10 +40,10 @@ public:
 	void OnCBScriptParameterSelectChanged();
 	*/
 	void OnBNAddActionClickedExt();
-	/*
-	void OnBNDeleteActionClicked();
-	void OnBNAddScriptClicked();
-	void OnBNDeleteScriptClicked();*/
+	
+	//void OnBNDeleteActionClicked();
+	void OnBNAddScriptClickedExt();
+	//void OnBNDeleteScriptClicked();
 
 
 	CScriptTypesExt() {};

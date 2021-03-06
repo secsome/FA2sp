@@ -92,10 +92,10 @@ DEFINE_HOOK(469A69, CIsoView_UpdateOverlay_AutoConnect_2, 8)
 //	return 0x474F45;
 //}
 
-//
-//DEFINE_HOOK(47047E, CIsoView_OnPaint_DrawWaypoint, 6)
+
+//DEFINE_HOOK(4704B0, CIsoView_OnPaint_DrawWaypoint, 5)
 //{
-//	R->Stack<DWORD>(4, RGB(255, 255, 0));
+//	Logger::Debug(__FUNCTION__" %s\n", R->EDX());
 //	return 0;
 //}
 
