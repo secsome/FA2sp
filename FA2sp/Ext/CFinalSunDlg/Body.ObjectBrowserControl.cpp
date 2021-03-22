@@ -29,7 +29,7 @@ HTREEITEM ObjectBrowserControlExt::InsertTranslatedString(const char* pOriginStr
     return InsertString(result ? buffer : pOriginString, dwItemData, hParent, hInsertAfter);
 }
 
-const char* ObjectBrowserControlExt::QueryUIName(const char* pRegName)
+CString ObjectBrowserControlExt::QueryUIName(CString pRegName)
 {
     static MultimapHelper mmh
     {
@@ -37,10 +37,12 @@ const char* ObjectBrowserControlExt::QueryUIName(const char* pRegName)
         &GlobalVars::INIFiles::CurrentDocument()
     };
 
-    if (ForceName.find(pRegName) != ForceName.end())
-        return CSFQuery::GetUIName(pRegName);
-    else
+    // Logger::Debug("QueryUIName runs, pRegName = %s, queryCSF = %s, name = %s\n", pRegName, CSFQuery::GetUIName(pRegName), mmh.GetString(pRegName, "Name", pRegName));
+
+    if (ForceName.find(pRegName.operator LPCTSTR()) != ForceName.end())
         return mmh.GetString(pRegName, "Name", pRegName);
+    else
+        return CSFQuery::GetUIName(pRegName); 
 }
 
 void ObjectBrowserControlExt::Redraw()
@@ -126,9 +128,9 @@ void ObjectBrowserControlExt::Redraw_Initialize()
 
     if (fadata.SectionExists("ForceName"))
     {
-        auto& ignores = fadata.GetSection("IgnoreRA2").EntitiesDictionary;
+        auto& ignores = fadata.GetSection("ForceName").EntitiesDictionary;
         for (auto& item : ignores)
-            IgnoreSet.insert((std::string)item.second);
+            ForceName.insert((std::string)item.second);
     }
 
 }
