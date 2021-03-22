@@ -3,6 +3,8 @@ I've decided to make this repository public so that more developers can help me 
 For now it had implemented all features that FA2Ext has and extended more logics than it.
 The codes might be a messy, so I'd appreciate it if someone could help me to make them better arranged.
 
+To clone the submodules, just run update_codes.bat.
+
 SDK: Visual Studio 2017 - Windows XP (v141_xp)
 C++ Standard: C++14 (Higher standard conflicts with INIClass right now)
 
@@ -10,7 +12,11 @@ C++ Standard: C++14 (Higher standard conflicts with INIClass right now)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-======================= Changes (2021-03-XX) ==============================================================================================
+======================= Changes (2021-03-22) ==============================================================================================
+*) Now you can force to use Name first instead of UIName in the ObjectBrowserControl under [ForceName] just like [IgnoreRA2]
+*) More accelerators and fixes from E1Elite
+
+======================= Changes (2021-03-05) ==============================================================================================
 *) Now the game directory FA2 reads would use the path in FinalAlert.ini instead of the one in registry
 *) Coordinates are now shown as X / Y - H
 *) Undo/Redo extended to 127 steps (was 15 steps)
@@ -22,7 +28,7 @@ C++ Standard: C++14 (Higher standard conflicts with INIClass right now)
 *) Teamtypes and Scripttypes are now able to use Clone just as Triggers
 *) House colors will be correctly drawn instead of using a hardcoded set of colors (for most, yellow)
 *) For most dialogs, the content will only be updated while lose focus. (Used to be content changed, and lead to famous stupid lag teamtype) 
-*) Dialogs UI Redrawn
+*) Several dialogs UI Redrawn
 +) Support Ares' += and #include functions (not recommended to use, still has several bugs)
 +) Support Ares' stringtableXX.csf
 +) ScriptTypes now use a different set of params and can be extended
@@ -65,6 +71,13 @@ For now, I cannot ensure the stability of it, so save your maps frequently befor
             \\\ 2=Yuri
             \\\ 3=Neutral
             \\\ 4=Special
+            \\\
+        +) [ForceName]
+            (xxx = Objecttype)
+            {Contains a list of objecttypes forced to use Name instead of UIName}
+            \\\ e.g.
+            \\\ [ForceName]
+            \\\ 0=E1
             \\\
         +) [ForceSides]
             (Technotype = SideIndex)
