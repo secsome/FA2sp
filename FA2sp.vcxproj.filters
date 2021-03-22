@@ -493,5 +493,8 @@
     <ResourceCompile Include="FA2sp\UI\CScriptTypes.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+    <ResourceCompile Include="FA2sp\UI\CMenu.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

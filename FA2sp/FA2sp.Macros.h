@@ -8,7 +8,7 @@
 constexpr int PRODUCT_MAJOR = 0;
 constexpr int PRODUCT_MINOR = 10;
 constexpr int PRODUCT_REVISION = 0;
-constexpr char* PRODUCT_STR = "0.3";
+constexpr char* PRODUCT_STR = "0.4";
 constexpr char* DISPLAY_STR = PRODUCT_STR;
 
 constexpr char* PRODUCT_NAME = "FA2sp";
