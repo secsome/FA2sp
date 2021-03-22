@@ -8,8 +8,9 @@
 
 #include <GlobalVars.h>
 
-std::unordered_map<int, HTREEITEM> ObjectBrowserControlExt::ExtNodes;
+std::array<HTREEITEM, ObjectBrowserControlExt::Root_Count> ObjectBrowserControlExt::ExtNodes;
 std::unordered_set<std::string> ObjectBrowserControlExt::IgnoreSet;
+std::unordered_set<std::string> ObjectBrowserControlExt::ForceName;
 std::unordered_set<std::string> ObjectBrowserControlExt::ExtSets[Set_Count];
 std::unordered_map<std::string, int> ObjectBrowserControlExt::KnownItem;
 std::unordered_map<std::string, int> ObjectBrowserControlExt::Owners;
@@ -26,6 +27,20 @@ HTREEITEM ObjectBrowserControlExt::InsertTranslatedString(const char* pOriginStr
     CString buffer;
     bool result = Translations::GetTranslationItem(pOriginString, buffer);
     return InsertString(result ? buffer : pOriginString, dwItemData, hParent, hInsertAfter);
+}
+
+const char* ObjectBrowserControlExt::QueryUIName(const char* pRegName)
+{
+    static MultimapHelper mmh
+    {
+        &GlobalVars::INIFiles::Rules(),
+        &GlobalVars::INIFiles::CurrentDocument()
+    };
+
+    if (ForceName.find(pRegName) != ForceName.end())
+        return CSFQuery::GetUIName(pRegName);
+    else
+        return mmh.GetString(pRegName, "Name", pRegName);
 }
 
 void ObjectBrowserControlExt::Redraw()
@@ -45,14 +60,17 @@ void ObjectBrowserControlExt::Redraw()
     Redraw_Celltag();
     Redraw_Basenode();
     Redraw_Tunnel();
-    Redraw_PlayerLocation();
+    // Redraw_PlayerLocation();
+    // player location is just waypoints!
 }
 
 void ObjectBrowserControlExt::Redraw_Initialize()
 {
-    ExtNodes.clear();
+    for (auto root : ExtNodes)
+        root = NULL;
     KnownItem.clear();
     IgnoreSet.clear();
+    ForceName.clear();
     Owners.clear();
     this->DeleteAllItems();
 
@@ -106,7 +124,13 @@ void ObjectBrowserControlExt::Redraw_Initialize()
             IgnoreSet.insert((std::string)item.second);
     }
 
-    
+    if (fadata.SectionExists("ForceName"))
+    {
+        auto& ignores = fadata.GetSection("IgnoreRA2").EntitiesDictionary;
+        for (auto& item : ignores)
+            IgnoreSet.insert((std::string)item.second);
+    }
+
 }
 
 void ObjectBrowserControlExt::Redraw_MainList()
@@ -125,7 +149,7 @@ void ObjectBrowserControlExt::Redraw_MainList()
     ExtNodes[Root_Celltag] = this->InsertTranslatedString("CelltagsObList", 7);
     ExtNodes[Root_Basenode] = this->InsertTranslatedString("BaseNodesObList", 8);
     ExtNodes[Root_Tunnel] = this->InsertTranslatedString("TunnelObList", 9);
-    ExtNodes[Root_PlayerLocation] = this->InsertTranslatedString("StartpointsObList", 12);
+    //ExtNodes[Root_PlayerLocation] = this->InsertTranslatedString("StartpointsObList", 12);
     ExtNodes[Root_Delete] = this->InsertTranslatedString("DelObjObList", 10);
 }
 
@@ -226,7 +250,7 @@ void ObjectBrowserControlExt::Redraw_Infantry()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            CSFQuery::GetUIName(inf.second),
+            QueryUIName(inf.second),
             Const_Infantry + index,
             subNodes[side]
         );
@@ -282,7 +306,7 @@ void ObjectBrowserControlExt::Redraw_Vehicle()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            CSFQuery::GetUIName(veh.second),
+            QueryUIName(veh.second),
             Const_Vehicle + index,
             subNodes[side]
         );
@@ -339,7 +363,7 @@ void ObjectBrowserControlExt::Redraw_Aircraft()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            CSFQuery::GetUIName(air.second),
+            QueryUIName(air.second),
             Const_Aircraft + index,
             subNodes[side]
         );
@@ -396,7 +420,7 @@ void ObjectBrowserControlExt::Redraw_Building()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            CSFQuery::GetUIName(bud.second),
+            QueryUIName(bud.second),
             Const_Building + index,
             subNodes[side]
         );
@@ -426,7 +450,7 @@ void ObjectBrowserControlExt::Redraw_Terrain()
     for (size_t i = 0, sz = terrains.size(); i < sz; ++i)
     {
         CString buffer;
-        buffer = CSFQuery::GetUIName(terrains[i]);
+        buffer = QueryUIName(terrains[i]);
         if (IgnoreSet.find((std::string)terrains[i]) == IgnoreSet.end())
             this->InsertString(buffer, Const_Terrain + i, hTerrain);
     }
@@ -491,10 +515,10 @@ void ObjectBrowserControlExt::Redraw_Overlay()
     for (size_t i = 0, sz = std::min<unsigned int>(overlays.size(), 255); i < sz; ++i)
     {
         CString buffer;
-        buffer = CSFQuery::GetUIName(overlays[i]);
+        buffer = QueryUIName(overlays[i]);
         if (rules.GetBool(overlays[i], "Wall"))
             this->InsertString(
-                CSFQuery::GetUIName(overlays[i]),
+                QueryUIName(overlays[i]),
                 Const_Overlay + i,
                 hWalls
             );

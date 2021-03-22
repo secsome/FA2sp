@@ -1,0 +1,108 @@
+#include <Windows.h>
+
+129 MENU
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+{
+POPUP "File"
+{
+	MENUITEM "New\tCtrl+N",  57600
+	MENUITEM SEPARATOR
+	MENUITEM "Open\tCtrl+O",  40001
+	MENUITEM SEPARATOR
+	MENUITEM "Save\tCtrl+S",  57603
+	MENUITEM "Save as\tCtrl+Shift+S",  40002
+	MENUITEM SEPARATOR
+	MENUITEM "Check map\tF12",  40025
+	MENUITEM SEPARATOR
+	MENUITEM "Run Tiberian Sun",  40017
+	MENUITEM SEPARATOR
+	MENUITEM SEPARATOR
+	MENUITEM "Quit",  40003
+}
+POPUP "Edit"
+{
+	MENUITEM "Undo\tCtrl+Z",  57643
+	MENUITEM "Redo\tCtrl+Y",  57644
+	MENUITEM SEPARATOR
+	MENUITEM "Copy\tCtrl+C",  57634
+	MENUITEM "Copy whole map",  40109
+	MENUITEM "Paste\tCtrl+V",  57637
+	MENUITEM "Paste centered",  40110
+	MENUITEM SEPARATOR
+	MENUITEM "Map\tCtrl+M",  40040
+	MENUITEM "Basic\tCtrl+B",  40036
+	MENUITEM "Special flags\tCtrl+P",  40038
+	MENUITEM "Lighting\tCtrl+U",  40043
+	MENUITEM SEPARATOR
+	MENUITEM "Houses\tCtrl+H",  40039
+	MENUITEM SEPARATOR
+	MENUITEM "Trigger editor\tCtrl+R",  40076
+	MENUITEM "Tag editor\tCtrl+G",  40042
+	MENUITEM SEPARATOR
+	MENUITEM "Taskforces\tCtrl+T",  40046
+	MENUITEM "Scripts\tCtrl+Shift+C",  40044
+	MENUITEM "Teams\tCtrl+E",  40045
+	MENUITEM SEPARATOR
+	MENUITEM "AI Triggers\tCtrl+J",  40047
+	MENUITEM "AI Trigger enabling\tCtrl+K",  40048
+	MENUITEM SEPARATOR
+	MENUITEM "Local variables\tCtrl+Q",  40082
+	MENUITEM SEPARATOR
+	MENUITEM "Singleplayer settings\tCtrl+Shift+M",  40037
+	MENUITEM SEPARATOR
+	MENUITEM "INI editing\tCtrl+I",  40049
+}
+POPUP "Terrain"
+{
+	MENUITEM "Raise ground\tF5",  40053
+	MENUITEM "Lower ground\tF6",  40054
+	MENUITEM "Flatten ground\tF7",  40064
+	MENUITEM SEPARATOR
+	MENUITEM "Hide tileset\tF8",  40065
+	MENUITEM "Show every tileset\tF9",  40066
+	MENUITEM "Hide single field\tF10",  40072
+	MENUITEM "Show all fields\tF11",  40071
+	MENUITEM SEPARATOR
+	MENUITEM "Raise single tile (Be careful!)",  40062
+	MENUITEM "Lower single tile (Be careful!)",  40063
+}
+POPUP "Map tools"
+{
+	MENUITEM "Change map height",  40077
+	MENUITEM SEPARATOR
+	MENUITEM "Autocreate shores",  40096
+	MENUITEM "Auto level using cliffs",  40085
+	MENUITEM SEPARATOR
+	MENUITEM "Paint cliff front\tF3",  40092
+	MENUITEM "Paint cliff back\tF4",  40093
+	MENUITEM SEPARATOR
+	MENUITEM "Search Waypoint\tCtrl+W",  40133
+	MENUITEM SEPARATOR
+	MENUITEM "Tool Scripts",  40135
+}
+POPUP "Online"
+{
+	MENUITEM "Westwood.com",  40078
+	MENUITEM "FinalAlert 2(tm) Fansite link",  40081
+	MENUITEM "FinalAlert 2(tm) Forum",  40119
+}
+POPUP "Options"
+{
+	MENUITEM "Settings",  40004
+	MENUITEM "Show minimap\tF2",  40024
+	MENUITEM "Easy mode",  40023
+	MENUITEM "Sounds",  40118
+	MENUITEM "Show Building Outline",  40123
+	MENUITEM "Disable AutoShore\tCtrl+A",  40104
+	MENUITEM "Disable AutoLat\tCtrl+L",  40105
+	MENUITEM "Disable Slope Correction",  40120
+}
+POPUP "Help"
+{
+	MENUITEM "Manual\tF1",  57670
+	MENUITEM SEPARATOR
+	MENUITEM "Info",  40006
+	MENUITEM "Credits",  40075
+	MENUITEM "Tip of the day",  40022
+}
+}

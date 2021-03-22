@@ -3,7 +3,7 @@
 #include <FA2PP.h>
 
 static size_t ParseList(const char* pValue, const char** outValue, size_t Count = 1) {
-	char buffer[0x80];
+	char buffer[0x400];
 	for (size_t i = 0; i < Count; ++i) {
 		// skip the leading spaces
 		while (isspace(static_cast<unsigned char>(*pValue))) {

@@ -11,6 +11,12 @@
 
 #include <set>
 
+MultimapHelper::MultimapHelper(std::initializer_list<INIClass*> list)
+{
+    for (auto pINI : list)
+        data.push_back(pINI);
+}
+
 void MultimapHelper::AddINI(INIClass* pINI)
 {
     data.push_back(pINI);

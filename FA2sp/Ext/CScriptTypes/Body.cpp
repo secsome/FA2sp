@@ -49,7 +49,7 @@ void CScriptTypesExt::UpdateParams(int actionIndex)
 {
 	auto& action = ExtActions[actionIndex];
 	auto& param = ExtParams[action.ParamCode_];
-	if (param.Param_ == ExtParamID)
+	if (param.Param_ == ExtParamID) // tiny optimize
 		return;
 	switch (param.Param_)
 	{
@@ -301,6 +301,7 @@ void CScriptTypesExt::OnLBScriptActionsSelectChanged()
 
 		actionIndex = atoi(buffer.Mid(0, actionIndex));
 		
+		// Well, unnecessary but I want to do it.
 		// As we know, the data sequence is ¡ü
 		// So divide it!
 		L = 0;

@@ -9,6 +9,7 @@ class MultimapHelper
 {
 public:
     MultimapHelper() = default;
+    MultimapHelper(std::initializer_list<INIClass*> list);
 
     void AddINI(INIClass* pINI);
 

@@ -3,6 +3,7 @@
 #include "../FA2Expand.h"
 #include <CFinalSunDlg.h>
 
+#include <array>
 #include <unordered_set>
 #include <unordered_map>
 
@@ -20,7 +21,7 @@ class ObjectBrowserControlExt : public ObjectBrowserControl
         Root_Nothing = 0, Root_Ground, Root_Owner, Root_Infantry, Root_Vehicle,
         Root_Aircraft, Root_Building, Root_Terrain, Root_Smudge, Root_Overlay,
         Root_Waypoint, Root_Celltag, Root_Basenode, Root_Tunnel, Root_PlayerLocation,
-        Root_Delete
+        Root_Delete, Root_Count
     };
 
     enum {
@@ -34,8 +35,9 @@ class ObjectBrowserControlExt : public ObjectBrowserControl
         Const_House = 70000, Const_Smudge = 80000
     };
 
-    static std::unordered_map<int, HTREEITEM> ExtNodes;
+    static std::array<HTREEITEM, Root_Count> ExtNodes;
     static std::unordered_set<std::string> IgnoreSet;
+    static std::unordered_set<std::string> ForceName;
     static std::unordered_set<std::string> ExtSets[Set_Count];
     static std::unordered_map<std::string, int> KnownItem;
     static std::unordered_map<std::string, int> Owners;
@@ -63,6 +65,7 @@ public:
     void Redraw();
     int UpdateEngine(int nData);
 
+    const char* QueryUIName(const char* pRegName);
 
 public:
     /// <summary>

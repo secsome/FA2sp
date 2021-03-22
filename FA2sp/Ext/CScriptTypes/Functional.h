@@ -137,7 +137,7 @@ static void CScriptTypes_LoadParams_ScriptTypes(CComboBox& comboBox)
     auto& doc = GlobalVars::INIFiles::CurrentDocument();
     if (doc.SectionExists("ScriptTypes"))
     {
-        CString text;
+        CString text, finaltext = "";
         auto& entries = doc.GetSection("ScriptTypes");
         for (auto& ent : entries.EntitiesDictionary)
         {
@@ -145,8 +145,8 @@ static void CScriptTypes_LoadParams_ScriptTypes(CComboBox& comboBox)
             {
                 int id = atoi(ent.first);
                 text = doc.GetString(ent.second, "Name");
-                text.Format("%d - %s - %s", id, ent.second, text);
-                comboBox.SetItemData(comboBox.AddString(text), id);
+                finaltext.Format("%d - %s - %s", id, ent.second, text);
+                comboBox.SetItemData(comboBox.AddString(finaltext), id);
             }
         }
     }
@@ -161,7 +161,7 @@ static void CScriptTypes_LoadParams_TeamTypes(CComboBox& comboBox)
     auto& doc = GlobalVars::INIFiles::CurrentDocument();
     if (doc.SectionExists("TeamTypes"))
     {
-        CString text;
+        CString text, finaltext = "";
         auto& entries = doc.GetSection("TeamTypes");
         for (auto& ent : entries.EntitiesDictionary)
         {
@@ -169,8 +169,8 @@ static void CScriptTypes_LoadParams_TeamTypes(CComboBox& comboBox)
             {
                 int id = atoi(ent.first);
                 text = doc.GetString(ent.second, "Name");
-                text.Format("%d - %s - %s", id, ent.second, text);
-                comboBox.SetItemData(comboBox.AddString(text), id);
+                finaltext.Format("%d - %s - %s", id, ent.second, text);
+                comboBox.SetItemData(comboBox.AddString(finaltext), id);
             }
         }
     }
@@ -303,14 +303,14 @@ static void CScriptTypes_LoadParams_Facing(CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
-    comboBox.SetItemData(comboBox.AddString("0 - North"), 0);
-    comboBox.SetItemData(comboBox.AddString("1 - North East"), 1);
-    comboBox.SetItemData(comboBox.AddString("2 - East"), 2);
-    comboBox.SetItemData(comboBox.AddString("3 - South East"), 3);
-    comboBox.SetItemData(comboBox.AddString("4 - South"), 4);
-    comboBox.SetItemData(comboBox.AddString("5 - South West"), 5);
-    comboBox.SetItemData(comboBox.AddString("6 - West"), 6);
-    comboBox.SetItemData(comboBox.AddString("7 - North West"), 7);
+    comboBox.SetItemData(comboBox.AddString("0 - NE"), 0);
+    comboBox.SetItemData(comboBox.AddString("1 - E"), 1);
+    comboBox.SetItemData(comboBox.AddString("2 - SE"), 2);
+    comboBox.SetItemData(comboBox.AddString("3 - S"), 3);
+    comboBox.SetItemData(comboBox.AddString("4 - SW"), 4);
+    comboBox.SetItemData(comboBox.AddString("5 - W"), 5);
+    comboBox.SetItemData(comboBox.AddString("6 - NW"), 6);
+    comboBox.SetItemData(comboBox.AddString("7 - N"), 7);
 }
 
 // 16
