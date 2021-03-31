@@ -106,7 +106,7 @@ void __stdcall FA2Expand::ExeRun()
     //CMMXExt::ProgramStartupInit();
     //
     //CDialog289Ext::ProgramStartupInit();
-    //CFinalSunDlgExt::ProgramStartupInit();
+    CFinalSunDlgExt::ProgramStartupInit();
     //CIsoViewExt::ProgramStartupInit();
 
     /*auto ReplaceOnInitDialog = [](auto pOnInitDialogExt, DWORD dwOrigin) {

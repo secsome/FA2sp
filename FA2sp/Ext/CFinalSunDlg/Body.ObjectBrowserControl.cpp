@@ -105,10 +105,9 @@ void ObjectBrowserControlExt::Redraw_Initialize()
     };
     loadOwner();
 
-    if (fadata.SectionExists("ForceSides"))
+    if (auto knownSection = fadata.GetSection("ForceSides"))
     {
-        auto& knownSection = fadata.GetSection("ForceSides").EntitiesDictionary;
-        for (auto& item : knownSection)
+        for (auto& item : knownSection->EntitiesDictionary)
         {
             int sideIndex = STDHelpers::ParseToInt(item.second, -1);
             if (sideIndex >= rules.GetKeyCount("Sides"))
@@ -119,19 +118,13 @@ void ObjectBrowserControlExt::Redraw_Initialize()
         }
     }
 
-    if (fadata.SectionExists("IgnoreRA2"))
-    {
-        auto& ignores = fadata.GetSection("IgnoreRA2").EntitiesDictionary;
-        for (auto& item : ignores)
+    if (auto ignores = fadata.GetSection("IgnoreRA2"))
+        for (auto& item : ignores->EntitiesDictionary)
             IgnoreSet.insert((std::string)item.second);
-    }
 
-    if (fadata.SectionExists("ForceName"))
-    {
-        auto& ignores = fadata.GetSection("ForceName").EntitiesDictionary;
-        for (auto& item : ignores)
+    if (auto forcenames = fadata.GetSection("ForceName"))
+        for (auto& item : forcenames->EntitiesDictionary)
             ForceName.insert((std::string)item.second);
-    }
 
 }
 
@@ -223,17 +216,14 @@ void ObjectBrowserControlExt::Redraw_Infantry()
     auto& fadata = GlobalVars::INIFiles::FAData();
 
     int i = 0;
-    if (!fadata.SectionExists("Sides"))
+    if (auto sides = fadata.GetSection("Sides"))
+        for (auto& itr : sides->EntitiesDictionary)
+            subNodes[i++] = this->InsertString(itr.second, -1, hInfantry);
+    else
     {
         subNodes[i++] = this->InsertString("Allied", -1, hInfantry);
         subNodes[i++] = this->InsertString("Soviet", -1, hInfantry);
         subNodes[i++] = this->InsertString("Yuri", -1, hInfantry);
-    }
-    else
-    {
-        auto& sides = fadata.GetSection("Sides").EntitiesDictionary;
-        for (auto& itr : sides)
-            subNodes[i++] = this->InsertString(itr.second, -1, hInfantry);
     }
     subNodes[-1] = this->InsertString("Others", -1, hInfantry);
 
@@ -279,17 +269,14 @@ void ObjectBrowserControlExt::Redraw_Vehicle()
     auto& fadata = GlobalVars::INIFiles::FAData();
 
     int i = 0;
-    if (!fadata.SectionExists("Sides"))
+    if (auto sides = fadata.GetSection("Sides"))
+        for (auto& itr : sides->EntitiesDictionary)
+            subNodes[i++] = this->InsertString(itr.second, -1, hVehicle);
+    else
     {
         subNodes[i++] = this->InsertString("Allied", -1, hVehicle);
         subNodes[i++] = this->InsertString("Soviet", -1, hVehicle);
         subNodes[i++] = this->InsertString("Yuri", -1, hVehicle);
-    }
-    else
-    {
-        auto& sides = fadata.GetSection("Sides").EntitiesDictionary;
-        for (auto& itr : sides)
-            subNodes[i++] = this->InsertString(itr.second, -1, hVehicle);
     }
     subNodes[-1] = this->InsertString("Others", -1, hVehicle);
 
@@ -336,17 +323,14 @@ void ObjectBrowserControlExt::Redraw_Aircraft()
     auto& fadata = GlobalVars::INIFiles::FAData();
 
     int i = 0;
-    if (!fadata.SectionExists("Sides"))
+    if (auto sides = fadata.GetSection("Sides"))
+        for (auto& itr : sides->EntitiesDictionary)
+            subNodes[i++] = this->InsertString(itr.second, -1, hAircraft);
+    else
     {
         subNodes[i++] = this->InsertString("Allied", -1, hAircraft);
         subNodes[i++] = this->InsertString("Soviet", -1, hAircraft);
         subNodes[i++] = this->InsertString("Yuri", -1, hAircraft);
-    }
-    else
-    {
-        auto& sides = fadata.GetSection("Sides").EntitiesDictionary;
-        for (auto& itr : sides)
-            subNodes[i++] = this->InsertString(itr.second, -1, hAircraft);
     }
     subNodes[-1] = this->InsertString("Others", -1, hAircraft);
 
@@ -393,17 +377,14 @@ void ObjectBrowserControlExt::Redraw_Building()
     auto& fadata = GlobalVars::INIFiles::FAData();
 
     int i = 0;
-    if (!fadata.SectionExists("Sides"))
+    if (auto sides = fadata.GetSection("Sides"))
+        for (auto& itr : sides->EntitiesDictionary)
+            subNodes[i++] = this->InsertString(itr.second, -1, hBuilding);
+    else
     {
         subNodes[i++] = this->InsertString("Allied", -1, hBuilding);
         subNodes[i++] = this->InsertString("Soviet", -1, hBuilding);
         subNodes[i++] = this->InsertString("Yuri", -1, hBuilding);
-    }
-    else
-    {
-        auto& sides = fadata.GetSection("Sides").EntitiesDictionary;
-        for (auto& itr : sides)
-            subNodes[i++] = this->InsertString(itr.second, -1, hBuilding);
     }
     subNodes[-1] = this->InsertString("Others", -1, hBuilding);
 

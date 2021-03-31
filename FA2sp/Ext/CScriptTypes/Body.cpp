@@ -198,11 +198,10 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 
 	auto& fadata = GlobalVars::INIFiles::FAData();
 
-	if (fadata.SectionExists("ScriptParams"))
+	if (auto entities = fadata.GetSection("ScriptParams"))
 	{
-		auto& entities = fadata.GetSection("ScriptParams");
 		char* pParseBuffer[2];
-		for (auto& pair : entities.EntitiesDictionary)
+		for (auto& pair : entities->EntitiesDictionary)
 		{
 			int id = atoi(pair.first);
 			if (id < 0) continue;
@@ -223,10 +222,10 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 		SAFE_RELEASE(pParseBuffer[1]);
 	}
 
-	if (fadata.SectionExists("ScriptsRA2")) {
-		auto& entities = fadata.GetSection("ScriptsRA2");
+	if (auto entities = fadata.GetSection("ScriptsRA2"))
+	{
 		char* pParseBuffer[5];
-		for (auto& pair : entities.EntitiesDictionary)
+		for (auto& pair : entities->EntitiesDictionary)
 		{
 			int id = atoi(pair.first);
 			if (id < 0) continue;
@@ -462,36 +461,10 @@ void CScriptTypesExt::OnBNAddScriptClickedExt()
 {
 	// TODO : Jump to the script we have just inserted!
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //
 //void CScriptTypesExt::OnBNDeleteScriptClicked()
 //{
 //}
-
 void CScriptTypesExt::OnBNCloneScriptClicked()
 {
 	auto& doc = GlobalVars::INIFiles::CurrentDocument();
@@ -502,7 +475,7 @@ void CScriptTypesExt::OnBNCloneScriptClicked()
 		CString label;
 		this->CCBCurrentScript.GetLBText(nCurSel, label);
 		STDHelpers::TrimIndex(label);
-		INISection copied(doc.GetSection(label));
+		INISection copied(*doc.GetSection(label));
 		ppmfc::CString name;
 		name = copied.EntitiesDictionary["Name"];
 		name += " Clone";
@@ -529,8 +502,8 @@ void CScriptTypesExt::OnBNCloneScriptClicked()
 		auto& scripts = this->CCBCurrentScript;
 		while (this->CCBCurrentScript.DeleteString(0) != CB_ERR)
 			;
-		auto& scripttypes = doc.GetSection("ScriptTypes");
-		for (auto& x : scripttypes.EntitiesDictionary)
+		auto scripttypes = doc.GetSection("ScriptTypes");
+		for (auto& x : scripttypes->EntitiesDictionary)
 			this->CCBCurrentScript.AddString((CString)x.second + " (" + doc.GetString(x.second, "Name") + ")");
 		int idx = scripts.FindString(0, id);
 		scripts.SetCurSel(idx);
@@ -538,9 +511,7 @@ void CScriptTypesExt::OnBNCloneScriptClicked()
 	}
 	return;
 }
-
 void CScriptTypesExt::OnBNCloneItemClicked()
 {
-	::MessageBox(NULL, "¿¡µ√–¥¡À", "πæπæπæ", MB_OK);
-	::MessageBox(NULL, "Implement Needed!", "TODO", MB_OK);
+	::MessageBox(NULL, "Haven't Implement!", "TODO", MB_OK);
 }

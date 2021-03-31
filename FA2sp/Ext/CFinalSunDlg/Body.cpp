@@ -2,8 +2,6 @@
 
 #include "../../FA2sp.h"
 
-#include <Uxtheme.h>
-
 void CFinalSunDlgExt::ProgramStartupInit()
 {
 	auto addr = &CFinalSunDlgExt::PreTranslateMessageExt;

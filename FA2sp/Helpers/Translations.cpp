@@ -38,45 +38,22 @@ char Translations::pLanguage[4][0x400];
 bool Translations::GetTranslationItem(const char* pLabelName, CString& ret)
 {
     auto& falanguage = GlobalVars::INIFiles::FALanguage();
-    if (falanguage.SectionExists(pLanguage[0]))
-    {
-        auto& section = falanguage.GetSection(pLanguage[0]);
-        auto itr = section.EntitiesDictionary.find(pLabelName);
-        if (itr != section.EntitiesDictionary.end())
-        {
-            ret = itr->second;
-            return true;
-        }
+#define TRANSLATE_FILE(language) \
+    if (auto section = falanguage.GetSection(language)) \
+    { \
+        auto itr = section->EntitiesDictionary.find(pLabelName); \
+        if (itr != section->EntitiesDictionary.end()) \
+        { \
+            ret = itr->second; \
+            return true; \
+        } \
     }
-    if (falanguage.SectionExists(pLanguage[1]))
-    {
-        auto& section = falanguage.GetSection(pLanguage[1]);
-        auto itr = section.EntitiesDictionary.find(pLabelName);
-        if (itr != section.EntitiesDictionary.end())
-        {
-            ret = itr->second;
-            return true;
-        }
-    }
-    if (falanguage.SectionExists(pLanguage[2]))
-    {
-        auto& section = falanguage.GetSection(pLanguage[2]);
-        auto itr = section.EntitiesDictionary.find(pLabelName);
-        if (itr != section.EntitiesDictionary.end())
-        {
-            ret = itr->second;
-            return true;
-        }
-    }
-    if (falanguage.SectionExists(pLanguage[3]))
-    {
-        auto& section = falanguage.GetSection(pLanguage[3]);
-        auto itr = section.EntitiesDictionary.find(pLabelName);
-        if (itr != section.EntitiesDictionary.end())
-        {
-            ret = itr->second;
-            return true;
-        }
-    }
+
+    TRANSLATE_FILE(pLanguage[0]);
+    TRANSLATE_FILE(pLanguage[1]);
+    TRANSLATE_FILE(pLanguage[2]);
+    TRANSLATE_FILE(pLanguage[3]);
+
+#undef TRANSLATE_FILE
     return false;
 }

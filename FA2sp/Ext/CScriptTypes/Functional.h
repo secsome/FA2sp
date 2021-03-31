@@ -39,19 +39,14 @@ static void CScriptTypes_LoadParams_Waypoint(CComboBox& comboBox)
     auto& doc = GlobalVars::INIFiles::CurrentDocument();
     int waypoints[702];
     memset(waypoints, -1, sizeof waypoints);
-    if (doc.SectionExists("Waypoints"))
-    {
-        auto& entries = doc.GetSection("Waypoints");
-        for (auto& x : entries.EntitiesDictionary)
-        {
+    if (auto entries = doc.GetSection("Waypoints"))
+        for (auto& x : entries->EntitiesDictionary)
             if (x.first != "Name" && !STDHelpers::IsNullOrEmpty(x.second))
             {
                 int l = atoi(x.first);
                 if (l <= 701 && l >= 0)
                     waypoints[l] = atoi(x.second);
             }
-        }
-    }
     char buffer[0x20];
     for (int i = 0; i < 702; ++i)
     {
@@ -113,11 +108,10 @@ static void CScriptTypes_LoadParams_GlobalVariables(CComboBox& comboBox)
     while (comboBox.DeleteString(0) != -1);
 
     auto& rules = GlobalVars::INIFiles::Rules();
-    if (rules.SectionExists("VariableNames"))
+    if (auto entities = rules.GetSection("VariableNames"))
     {
-        auto& entities = rules.GetSection("VariableNames");
         CString text;
-        for (auto& x : entities.EntitiesDictionary)
+        for (auto& x : entities->EntitiesDictionary)
         {
             if (x.first != "Name" && !STDHelpers::IsNullOrEmpty(x.first))
             {
@@ -135,11 +129,10 @@ static void CScriptTypes_LoadParams_ScriptTypes(CComboBox& comboBox)
     while (comboBox.DeleteString(0) != -1);
 
     auto& doc = GlobalVars::INIFiles::CurrentDocument();
-    if (doc.SectionExists("ScriptTypes"))
+    if (auto entities = doc.GetSection("ScriptTypes"))
     {
         CString text, finaltext = "";
-        auto& entries = doc.GetSection("ScriptTypes");
-        for (auto& ent : entries.EntitiesDictionary)
+        for (auto& ent : entities->EntitiesDictionary)
         {
             if (doc.SectionExists(ent.second) && !STDHelpers::IsNullOrEmpty(ent.second))
             {
@@ -159,11 +152,10 @@ static void CScriptTypes_LoadParams_TeamTypes(CComboBox& comboBox)
     while (comboBox.DeleteString(0) != -1);
 
     auto& doc = GlobalVars::INIFiles::CurrentDocument();
-    if (doc.SectionExists("TeamTypes"))
+    if (auto entities = doc.GetSection("TeamTypes"))
     {
         CString text, finaltext = "";
-        auto& entries = doc.GetSection("TeamTypes");
-        for (auto& ent : entries.EntitiesDictionary)
+        for (auto& ent : entities->EntitiesDictionary)
         {
             if (doc.SectionExists(ent.second) && !STDHelpers::IsNullOrEmpty(ent.second))
             {
@@ -189,11 +181,10 @@ static void CScriptTypes_LoadParams_Speechs(CComboBox& comboBox)
     while (comboBox.DeleteString(0) != -1);
 
     auto& eva = GlobalVars::INIFiles::Eva();
-    if (eva.SectionExists("DialogList"))
+    if (auto entities = eva.GetSection("DialogList"))
     {
         CString text;
-        auto& entries = eva.GetSection("DialogList");
-        for (auto& ent : entries.EntitiesDictionary)
+        for (auto& ent : entities->EntitiesDictionary)
         {
             if (eva.SectionExists(ent.second))
             {
@@ -203,6 +194,7 @@ static void CScriptTypes_LoadParams_Speechs(CComboBox& comboBox)
             }
         }
     }
+
 }
 
 // 10
@@ -211,11 +203,10 @@ static void CScriptTypes_LoadParams_Sounds(CComboBox& comboBox)
     while (comboBox.DeleteString(0) != -1);
 
     auto& sound = GlobalVars::INIFiles::Sound();
-    if (sound.SectionExists("SoundList"))
+    if (auto entities = sound.GetSection("SoundList"))
     {
         CString text;
-        auto& entries = sound.GetSection("SoundList");
-        for (auto& ent : entries.EntitiesDictionary)
+        for (auto& ent : entities->EntitiesDictionary)
         {
             if (sound.SectionExists(ent.second) && !STDHelpers::IsNullOrEmpty(ent.second))
             {
@@ -233,11 +224,10 @@ static void CScriptTypes_LoadParams_Movies(CComboBox& comboBox)
     while (comboBox.DeleteString(0) != -1);
 
     auto& art = GlobalVars::INIFiles::Art();
-    if (art.SectionExists("Movies"))
+    if (auto entities = art.GetSection("Movies"))
     {
         CString text;
-        auto& entries = art.GetSection("Movies");
-        for (auto& ent : entries.EntitiesDictionary)
+        for (auto& ent : entities->EntitiesDictionary)
         {
             if (ent.first != "Name")
             {
@@ -255,11 +245,10 @@ static void CScriptTypes_LoadParams_Themes(CComboBox& comboBox)
     while (comboBox.DeleteString(0) != -1);
 
     auto& theme = GlobalVars::INIFiles::Theme();
-    if (theme.SectionExists("Themes"))
+    if (auto entities = theme.GetSection("Themes"))
     {
         CString text;
-        auto& entries = theme.GetSection("Themes");
-        for (auto& ent : entries.EntitiesDictionary)
+        for (auto& ent : entities->EntitiesDictionary)
         {
             if (theme.SectionExists(ent.second) && !STDHelpers::IsNullOrEmpty(ent.second))
             {
@@ -283,11 +272,10 @@ static void CScriptTypes_LoadParams_LocalVariables(CComboBox& comboBox)
     while (comboBox.DeleteString(0) != -1);
 
     auto& doc = GlobalVars::INIFiles::CurrentDocument();
-    if (doc.SectionExists("VariableNames"))
+    if (auto entities = doc.GetSection("VariableNames"))
     {
-        auto& entities = doc.GetSection("VariableNames");
         CString text;
-        for (auto& x : entities.EntitiesDictionary)
+        for (auto& x : entities->EntitiesDictionary)
         {
             if (STDHelpers::IsNullOrEmpty(x.first) || x.first == "Name")
                 continue;

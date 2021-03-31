@@ -4,6 +4,9 @@
 * hard to understand. Not only to other users, but for me
 * as well, so why not just use it as it's easy to call 
 * rather than understand how it works, isn't it?
+* 
+* UPDATE ON 3/31/2021
+* "I cannot understand this one either now." - secsome
 */
 
 #include "MultimapHelper.h"
@@ -91,8 +94,9 @@ std::map<CString, CString, INISectionEntriesComparator> MultimapHelper::GetSecti
     CString tmp;
     for (auto& pINI : data)
         if (pINI)
-            if (pINI->SectionExists(pSection))
-                for (auto& pair : pINI->GetSection(pSection).EntitiesDictionary)
+            if (auto section = pINI->GetSection(pSection))
+            {
+                for (auto& pair : section->EntitiesDictionary)
                 {
                     if (STDHelpers::IsNullOrEmpty(pair.first) ||
                         STDHelpers::IsNullOrEmpty(pair.second) ||
@@ -104,5 +108,6 @@ std::map<CString, CString, INISectionEntriesComparator> MultimapHelper::GetSecti
                     tmp.Format("%d", index++);
                     ret[tmp] = pair.second;
                 }
+            }         
     return ret;
 }
