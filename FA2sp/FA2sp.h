@@ -32,5 +32,6 @@ public:
     static bool Stringtables;
     static bool TutorialTexts_Hide;
     static bool TutorialTexts_Fix;
+    static bool SortByTriggerName;
 };
 

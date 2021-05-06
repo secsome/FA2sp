@@ -1,58 +1,78 @@
-//#include <GlobalVars.h>
-//
-//#include <set>
-//
-//
-//using string_type = ppmfc::CString;
-//
-//class PerformanceFixes
+#include <Helpers/Macro.h>
+
+#include "../../Logger.h"
+
+struct ShapeHeaderStruct
+{
+    __int16 Type;
+    __int16 Width;
+    __int16 Height;
+    __int16 FrameCount;
+};
+
+struct RGB
+{
+    unsigned char R;
+    unsigned char G;
+    unsigned char B;
+};
+
+struct ShapeFrameHeader
+{
+    __int16 X;
+    __int16 Y;
+    __int16 Width;
+    __int16 Height;
+    __int16 Flags;
+    RGB RadarColor;
+    char padding[5];
+    int DataOffset;
+};
+
+struct ShapeFileStruct
+{
+    ShapeHeaderStruct Header;
+    ShapeFrameHeader* FrameHeaders;
+};
+
+//DEFINE_HOOK(525A60, sub_525A60_Debug, 7)
 //{
-//private:
-//    static std::set<string_type, INISectionEntriesComparator> idCollector;
-//
-//private:
-//    static void initializeIdCollector();
-//
-//public:
-//    static void GetAvailableIndex(string_type* pString);
-//};
-//std::set<string_type, INISectionEntriesComparator> PerformanceFixes::idCollector;
-//
-//void PerformanceFixes::initializeIdCollector()
-//{
-//    auto parseKeys = [](const char* pSectionName)
-//    {
-//        auto& ini = GlobalVars::INIFiles::CurrentDocument();
-//        if (auto section = ini.GetSection(pSectionName))
-//            for (auto pair : section->EntitiesDictionary)
-//                PerformanceFixes::idCollector.insert(pair.first);
-//    };
-//    parseKeys("Taskforces");
-//    parseKeys("Teamtypes");
-//    parseKeys("Triggers");
-//    parseKeys("Tags");
-//    parseKeys("Events");
-//    parseKeys("Actions");
-//    parseKeys("AITriggerTypes");
-//    parseKeys("ScriptTypes");
+//    GET_STACK(DWORD, dwCallerAddress, 0x0);
+//    GET_STACK(int, nFrame, 0x4);
+//    GET_STACK(ShapeFrameHeader*, pFrameHeader, 0x8);
+//    Logger::Debug("Caller = %p, nFrame = %d\n", dwCallerAddress, nFrame);
+//    Logger::Debug("pFrameHeader Info : \n");
+//    Logger::Debug("X = %d, Y = %d, Width = %d, Height = %d, Flags = %d, [R G B] = [%d %d %d], offset = %d\n",
+//        pFrameHeader->X, pFrameHeader->Y, pFrameHeader->Width, pFrameHeader->Height, pFrameHeader->Flags,
+//        pFrameHeader->RadarColor.R, pFrameHeader->RadarColor.G, pFrameHeader->RadarColor.B, pFrameHeader->DataOffset);
+//    return 0;
 //}
-//
-//void PerformanceFixes::GetAvailableIndex(string_type* pString)
+
+DEFINE_HOOK(480966, sub_480963_Debugger, 9)
+{
+    Logger::Debug("%c\n", R->BL());
+    return 0;
+}
+
+//DEFINE_HOOK(525A9A, sub_525A60_Optimize, 8)
 //{
-//    if (PerformanceFixes::idCollector.size() == 0)
-//        PerformanceFixes::initializeIdCollector();
-//    auto pid = *PerformanceFixes::idCollector.end();
-//    int id;
-//    if (sscanf_s(pid, "%d", &id))
-//    {
+//    /*GET_STACK(int, nFrame, STACK_OFFS(0x24, -0x4));
+//    GET_STACK(ShapeFrameHeader*, pFrameHeader, STACK_OFFS(0x24, -0x8));
+//    
+//    Logger::Debug("nFrame = %d, pFrame [W,H] = [%d,%d]\n", nFrame, pFrameHeader->Width, pFrameHeader->Height);
 //
-//    }
-//}
 //
-//DEFINE_HOOK(446520, Miscs_GetAvailableIndex, 7)
-//{
-//    GET_STACK(string_type*, pRet, -0x4);
-//    PerformanceFixes::GetAvailableIndex(pRet);
-//    R->EAX(pRet);
-//    return 0x446FB3;
+//    return 0;*/
+//    //__asm
+//    //{
+//    //    lea     eax, [eax + eax * 2]
+//    //    push    edi
+//    //    lea     edi, pFrameHeader
+//    //    lea     esi, [ecx + eax * 8 + 8]
+//    //    mov     ecx, 6
+//    //    mov     eax, 1 // return true
+//    //    rep movsd
+//    //    pop     edi
+//    //}
+//    //return 0x525AC0;
 //}

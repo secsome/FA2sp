@@ -1,6 +1,10 @@
 #include <Helpers/Macro.h>
+#include <CINI.h>
+
+#include <map>
 
 #include "../../FA2sp.h"
+#include "../../Helpers/STDHelpers.h"
 
 // TODO
 //DEFINE_HOOK(43CE8D, Miscs_LoadParamToCombobox, 9)
@@ -20,7 +24,7 @@
 
 DEFINE_HOOK(441910, Miscs_LoadParams_TutorialTexts, 7)
 {
-    GET(CComboBox*, pComboBox, ESI);
+    GET_STACK(CComboBox*, pComboBox, 0x4);
     if (ExtConfigs::TutorialTexts_Hide)
     {
         while (pComboBox->DeleteString(0) != CB_ERR);
@@ -33,6 +37,44 @@ DEFINE_HOOK(441910, Miscs_LoadParams_TutorialTexts, 7)
             pComboBox->AddString((x.first + " : " + x.second).c_str());
         Logger::Debug("%d csf entities added.\n", FA2sp::TutorialTextsMap.size());
         return 0x441A34;
+    }
+    return 0;
+}
+
+DEFINE_HOOK(441A40, Miscs_LoadParams_Triggers, 6)
+{
+    GET_STACK(CComboBox*, pComboBox, 0x4);
+    if (ExtConfigs::SortByTriggerName)
+    {
+        // Param value combobox
+        if (pComboBox->GetDlgCtrlID() == 1402/* && pComboBox->GetParent()->GetDlgCtrlID() == 252*/)
+        {
+            while (pComboBox->DeleteString(0) != CB_ERR);
+
+            std::map<ppmfc::CString, ppmfc::CString> collector;
+
+            auto const pINI = INIClass::GetMapDocument(true);
+            if (auto const pSection = pINI->GetSection("Triggers"))
+            {
+                for (auto pair : pSection->EntitiesDictionary)
+                {
+                    ppmfc::CString key(STDHelpers::SplitString(pair.second)[2].c_str());
+                    ppmfc::CString buffer(pair.first);
+                    buffer += " (";
+                    buffer += key;
+                    buffer += ")";
+                    
+                    collector.insert(std::make_pair(key, buffer));
+                }
+            }
+
+            for (auto pair : collector)
+                pComboBox->AddString(pair.second);
+
+            collector.clear();
+
+            return 0x441DF6;
+        }
     }
     return 0;
 }

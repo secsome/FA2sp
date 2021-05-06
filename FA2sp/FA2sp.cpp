@@ -19,6 +19,7 @@ bool ExtConfigs::AllowPlusEqual;
 bool ExtConfigs::Stringtables;
 bool ExtConfigs::TutorialTexts_Hide;
 bool ExtConfigs::TutorialTexts_Fix;
+bool ExtConfigs::SortByTriggerName;
 
 //DEFINE_HOOK(527592, DEBUGASFHIAKSN, 5)
 //{
@@ -44,6 +45,7 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::Stringtables = pFAData->GetBool("ExtConfigs", "Stringtables");
 	ExtConfigs::TutorialTexts_Hide = pFAData->GetBool("ExtConfigs", "TutorialTexts.Hide");
 	ExtConfigs::TutorialTexts_Fix = pFAData->GetBool("ExtConfigs", "TutorialTexts.Fix");
+	ExtConfigs::SortByTriggerName = pFAData->GetBool("ExtConfigs", "SortByTriggerName");
 }
 
 // DllMain
