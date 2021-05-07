@@ -22,6 +22,21 @@
 //    return 0;
 //}
 
+DEFINE_HOOK(43D037, Miscs_LoadParams_AdjustComboboxDropdownWidth, C)
+{
+    if (ExtConfigs::AdjustDropdownWidth)
+    {
+        GET_STACK(CComboBox*, pComboBox, STACK_OFFS(0x18, -0x4));
+
+        int nMaxWidth = 120;
+        for (int i = 0; i < pComboBox->GetCount(); ++i)
+            nMaxWidth = std::max(nMaxWidth, pComboBox->GetLBTextLen(i) * ExtConfigs::AdjustDropdownWidth_Factor);
+        pComboBox->SetDroppedWidth(nMaxWidth);
+    }
+
+    return 0;
+}
+
 DEFINE_HOOK(441910, Miscs_LoadParams_TutorialTexts, 7)
 {
     GET_STACK(CComboBox*, pComboBox, 0x4);
