@@ -14,6 +14,9 @@ C++ Standard: C++14 (Higher standard conflicts with INIClass right now)
 
 ======================= Changes (2021-05-07) ==============================================================================================
 +) New ExtConfig: SortByTriggerName = BOOLEAN, enable it so FA2 will sort the triggers dropdown and sort them by their name instead of ID
++) New ExtConfig: AdjustDropdownWidth = BOOLEAN, enable it so FA2 will adjust the param dropdown width automatically
+    +) New ExtConfig: AdjustDropdownWidth.Factor = INTERGER, determines how long is a single char takes, defaults to 8
+    +) New ExtConfig: AdjustDropdownWidth.Max = INTERGER, determins the max length of the combobox, defaults to 360
 
 ======================= Changes (2021-03-22) ==============================================================================================
 *) Now you can force to use Name first instead of UIName in the ObjectBrowserControl under [ForceName] just like [IgnoreRA2]
