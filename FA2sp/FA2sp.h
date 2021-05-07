@@ -35,5 +35,6 @@ public:
     static bool SortByTriggerName;
     static bool AdjustDropdownWidth;
     static int AdjustDropdownWidth_Factor;
+    static int AdjustDropdownWidth_Max;
 };
 

@@ -22,6 +22,7 @@ bool ExtConfigs::TutorialTexts_Fix;
 bool ExtConfigs::SortByTriggerName;
 bool ExtConfigs::AdjustDropdownWidth;
 int ExtConfigs::AdjustDropdownWidth_Factor;
+int ExtConfigs::AdjustDropdownWidth_Max;
 
 //DEFINE_HOOK(527592, DEBUGASFHIAKSN, 5)
 //{
@@ -50,6 +51,7 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::SortByTriggerName = pFAData->GetBool("ExtConfigs", "SortByTriggerName");
 	ExtConfigs::AdjustDropdownWidth = pFAData->GetBool("ExtConfigs", "AdjustDropdownWidth");
 	ExtConfigs::AdjustDropdownWidth_Factor = pFAData->GetInteger("ExtConfigs", "AdjustDropdownWidth.Factor", 8);
+	ExtConfigs::AdjustDropdownWidth_Max = pFAData->GetInteger("ExtConfigs", "AdjustDropdownWidth.Max", 360);
 }
 
 // DllMain
