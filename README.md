@@ -12,6 +12,9 @@ C++ Standard: C++14 (Higher standard conflicts with INIClass right now)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-05-07) ==============================================================================================
++) New ExtConfig: SortByTriggerName = BOOLEAN, enable it so FA2 will sort the triggers dropdown and sort them by their name instead of ID
+
 ======================= Changes (2021-03-22) ==============================================================================================
 *) Now you can force to use Name first instead of UIName in the ObjectBrowserControl under [ForceName] just like [IgnoreRA2]
 *) More accelerators and fixes from E1Elite
@@ -61,7 +64,8 @@ For now, I cannot ensure the stability of it, so save your maps frequently befor
             +) AllowPlusEqual=BOOLEAN ; Read += (NOT RECOMMENDED)
             +) Stringtables=BOOLEAN ; Read stringtableXX.csf
             +) TutorialTexts.Fix=BOOLEAN ; Replace original process while loading texts to comboboxes
-            +) TutorialTexts.Hide=BOOLEAN ; reduce lags, for texts in combobox might be useless
+            +) TutorialTexts.Hide=BOOLEAN ; Reduce lags, for texts in combobox might be useless
+            +) SortByTriggerName=BOOLEAN ; Enable this feature so we can sort the triggers by their names
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.
