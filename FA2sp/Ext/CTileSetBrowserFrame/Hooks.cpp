@@ -9,8 +9,7 @@ DEFINE_HOOK(4F1670, CTileSetBrowserFrame_ReloadComboboxes_OverlayFilter, 6)
     GET_STACK(int, overlayIdx, 0x24);
     GET(CComboBox*, pComboBox, EDI);
     GET(CString, name, ECX);
-    if (overlayIdx <= 254 && ExtConfigs::OverlayFilter) // overlay >= 255 crashes FA2, so keep it safe.
-                                                        // This config might be removed in later versions
+    if (overlayIdx <= 254) // overlay >= 255 crashes FA2, so keep it safe.
     {
         name.Format("%04d (%s)", overlayIdx, name);
         int idx = pComboBox->AddString(name);

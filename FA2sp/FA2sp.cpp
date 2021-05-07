@@ -13,7 +13,6 @@ std::map<std::string, std::string> FA2sp::TutorialTextsMap;
 bool ExtConfigs::BrowserRedraw;
 int	 ExtConfigs::BrowserRedraw_GuessMode;
 bool ExtConfigs::BrowserRedraw_CleanUp;
-bool ExtConfigs::OverlayFilter;
 bool ExtConfigs::AllowIncludes;
 bool ExtConfigs::AllowPlusEqual;
 bool ExtConfigs::Stringtables;
@@ -42,7 +41,6 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::BrowserRedraw = pFAData->GetBool("ExtConfigs", "BrowserRedraw");
 	ExtConfigs::BrowserRedraw_GuessMode = pFAData->GetInteger("ExtConfigs", "BrowserRedraw.GuessMode", 0);
 	ExtConfigs::BrowserRedraw_CleanUp = pFAData->GetBool("ExtConfigs", "BrowserRedraw.CleanUp");
-	ExtConfigs::OverlayFilter = pFAData->GetBool("ExtConfigs", "OverlayFilter");
 	ExtConfigs::AllowIncludes = pFAData->GetBool("ExtConfigs", "AllowIncludes");
 	ExtConfigs::AllowPlusEqual = pFAData->GetBool("ExtConfigs", "AllowPlusEqual");
 	ExtConfigs::Stringtables = pFAData->GetBool("ExtConfigs", "Stringtables");
