@@ -32,7 +32,7 @@ DEFINE_HOOK(43D037, Miscs_LoadParams_AdjustComboboxDropdownWidth, C)
         for (int i = 0; i < pComboBox->GetCount(); ++i)
             nWidth = std::max(nWidth, pComboBox->GetLBTextLen(i) * ExtConfigs::AdjustDropdownWidth_Factor);
 
-        std::min(nWidth, ExtConfigs::AdjustDropdownWidth_Max);
+        nWidth = std::min(nWidth, ExtConfigs::AdjustDropdownWidth_Max);
         pComboBox->SetDroppedWidth(nWidth);
     }
 
