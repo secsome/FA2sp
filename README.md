@@ -60,15 +60,18 @@ For now, I cannot ensure the stability of it, so save your maps frequently befor
     - FAData.ini
         +) [ExtConfigs] (All switches defaults to false)
             +) BrowserRedraw=BOOLEAN ; Enable refactored ObjectBrowserView
-            +) BrowserRedraw.GuessMode=0/1 ; Determines how FA2sp guess Technos' side, 0(Default) to Prerequisite, 1 to use first Owner 
-            +) BrowserRedraw.CleanUp=BOOLEAN ; Sides classification will clear empty items
+                +) BrowserRedraw.GuessMode=0/1 ; Determines how FA2sp guess Technos' side, 0(Default) to Prerequisite, 1 to use first Owner 
+                +) BrowserRedraw.CleanUp=BOOLEAN ; Sides classification will clear empty items
             +) OverlayFilter=BOOLEAN ; Filt dangerous overlays (index larger than 255)
             +) AllowIncludes=BOOLEAN ; Read #include section for other ini (NOT RECOMMENDED) 
             +) AllowPlusEqual=BOOLEAN ; Read += (NOT RECOMMENDED)
             +) Stringtables=BOOLEAN ; Read stringtableXX.csf
-            +) TutorialTexts.Fix=BOOLEAN ; Replace original process while loading texts to comboboxes
+                +) TutorialTexts.Fix=BOOLEAN ; Replace original process while loading texts to comboboxes
             +) TutorialTexts.Hide=BOOLEAN ; Reduce lags, for texts in combobox might be useless
             +) SortByTriggerName=BOOLEAN ; Enable this feature so we can sort the triggers by their names
+            +) AdjustDropdownWidth = BOOLEAN ; Enable it so FA2 will adjust the param dropdown width automatically
+                +) AdjustDropdownWidth.Factor = INTERGER ; Determines how long is a single char takes, defaults to 8
+                +) AdjustDropdownWidth.Max = INTERGER ; Determins the max length of the combobox, defaults to 360
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.
