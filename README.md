@@ -17,6 +17,7 @@ C++ Standard: C++14 (Higher standard conflicts with INIClass right now)
 +) New ExtConfig: AdjustDropdownWidth = BOOLEAN, enable it so FA2 will adjust the param dropdown width automatically
     +) New ExtConfig: AdjustDropdownWidth.Factor = INTERGER, determines how long is a single char takes, defaults to 8
     +) New ExtConfig: AdjustDropdownWidth.Max = INTERGER, determins the max length of the combobox, defaults to 360
+-) Remove ExtConfig: OverlayFilter, enable it always.
 
 ======================= Changes (2021-03-22) ==============================================================================================
 *) Now you can force to use Name first instead of UIName in the ObjectBrowserControl under [ForceName] just like [IgnoreRA2]
@@ -62,7 +63,6 @@ For now, I cannot ensure the stability of it, so save your maps frequently befor
             +) BrowserRedraw=BOOLEAN ; Enable refactored ObjectBrowserView
                 +) BrowserRedraw.GuessMode=0/1 ; Determines how FA2sp guess Technos' side, 0(Default) to Prerequisite, 1 to use first Owner 
                 +) BrowserRedraw.CleanUp=BOOLEAN ; Sides classification will clear empty items
-            +) OverlayFilter=BOOLEAN ; Filt dangerous overlays (index larger than 255)
             +) AllowIncludes=BOOLEAN ; Read #include section for other ini (NOT RECOMMENDED) 
             +) AllowPlusEqual=BOOLEAN ; Read += (NOT RECOMMENDED)
             +) Stringtables=BOOLEAN ; Read stringtableXX.csf
