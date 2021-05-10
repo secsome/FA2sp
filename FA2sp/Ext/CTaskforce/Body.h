@@ -12,7 +12,7 @@ public:
 	//
 	// Ext Functions
 	//
-
+	BOOL PreTranslateMessageExt(MSG* pMsg);
 
 	CTaskForceExt() {};
 	~CTaskForceExt() {};

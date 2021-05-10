@@ -15,6 +15,13 @@ public:
 
 	using ptr_type = unsigned long;
 	static void ResetMemoryContentAt(ptr_type addr, const void* content, size_t size, size_t offset = 0);
+	
+	template<typename Func>
+	static inline void ResetMemoryContentAt(DWORD addr, Func func)
+	{
+		RunTime::ResetMemoryContentAt(addr, &func, sizeof(Func));
+	}
+
 	RunTime();
 	~RunTime();
 
