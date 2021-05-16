@@ -48,11 +48,11 @@ struct ShapeFileStruct
 //    return 0;
 //}
 
-DEFINE_HOOK(480966, sub_480963_Debugger, 9)
-{
-    Logger::Debug("%c\n", R->BL());
-    return 0;
-}
+//DEFINE_HOOK(480966, sub_480963_Debugger, 9)
+//{
+//    Logger::Debug("%c\n", R->BL());
+//    return 0;
+//}
 
 //DEFINE_HOOK(525A9A, sub_525A60_Optimize, 8)
 //{

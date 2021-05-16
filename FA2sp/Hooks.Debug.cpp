@@ -2,6 +2,17 @@
 
 #include <CINI.h>
 
+//DEFINE_HOOK(526020, ShapeFileClass_Draw, 8)
+//{
+//    GET_STACK(int, nFrame, 0x4);
+//    GET_STACK(UINT, nFlags, 0x8);
+//    GET_STACK(int, what, 0xC);
+//
+//    Logger::Debug(__FUNCTION__" nFrame = %d, nFlag = %d, what = %08X\n", nFrame, nFlags, what);
+//
+//    return 0;
+//}
+
 //DEFINE_HOOK(4B5D98, Debug_4AE910_Begin, 5)
 //{
 //    GET(const char*, pRegName, EAX);
