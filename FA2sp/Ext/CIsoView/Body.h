@@ -2,13 +2,8 @@
 
 #include <FA2PP.h>
 
+#include <CIsoView.h>
 #include "../FA2Expand.h"
-
-class CIsoView : public FA2CView
-{
-public:
-
-};
 
 class NOVTABLE CIsoViewExt : public CIsoView
 {

@@ -2,6 +2,27 @@
 
 #include <CINI.h>
 
+//
+//DEFINE_HOOK(4943BE, Hook_494350, 5)
+//{
+//    struct CSFThingA
+//    {
+//        CString Source;
+//        wchar_t* WideString;
+//        int Unknown;
+//        int Length;
+//    };
+//
+//
+//    GET(CSFThingA*, pThis, ESI);
+//    GET_STACK(char*, lpString, STACK_OFFS(0x1C, -0x4));
+//
+//    Logger::Debug("%s\n", lpString);
+//    
+//
+//    return 0;
+//}
+
 //DEFINE_HOOK(526020, ShapeFileClass_Draw, 8)
 //{
 //    GET_STACK(int, nFrame, 0x4);
