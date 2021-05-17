@@ -15,10 +15,10 @@ DEFINE_HOOK(537129, Translations_Initialzation, 9)
     strcpy_s(Translations::pLanguage[1], FinalAlertConfig::pLastRead);
     strcpy_s(Translations::pLanguage[2], FinalAlertConfig::pLastRead);
     strcpy_s(Translations::pLanguage[3], FinalAlertConfig::pLastRead);
-    strcat_s(Translations::pLanguage[0], "-Strings");
-    strcat_s(Translations::pLanguage[1], "-StringsRA2");
-    strcat_s(Translations::pLanguage[2], "-Translations");
-    strcat_s(Translations::pLanguage[3], "-TranslationsRA2");
+    strcat_s(Translations::pLanguage[0], "-StringsRA2");
+    strcat_s(Translations::pLanguage[1], "-TranslationsRA2");
+    strcat_s(Translations::pLanguage[2], "-Strings");
+    strcat_s(Translations::pLanguage[3], "-Translations");
     return 0;
 }
 
