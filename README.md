@@ -374,6 +374,8 @@ essential suggestions put forward.
 Caco did quite much test works for this project, also bringing out many problems I haven't 
 noticed before.
 
+tomsons26 has made great assistance on disassembing it(REALLY HELPFUL).
+
 (btw the code of FinalAlert 2 is really in a MESSY! Full of unnecessary constructors. I HATE IT!)
 
 - CONTACT ME
