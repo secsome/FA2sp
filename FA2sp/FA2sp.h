@@ -35,5 +35,8 @@ public:
     static bool AdjustDropdownWidth;
     static int AdjustDropdownWidth_Factor;
     static int AdjustDropdownWidth_Max;
+    static int CopySelectionBound_Color;
+    static int CursorSelectionBound_Color;
+    static int CursorSelectionBound_HeightColor;
 };
 

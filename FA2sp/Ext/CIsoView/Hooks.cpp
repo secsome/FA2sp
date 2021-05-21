@@ -1,4 +1,5 @@
 #include "Body.h"
+#include "../../FA2sp.h"
 
 #include <GlobalVars.h>
 
@@ -84,6 +85,24 @@ DEFINE_HOOK(469A69, CIsoView_UpdateOverlay_AutoConnect_2, 8)
 			return 0x469A71;
 	}
 	return 0x469B07;
+}
+
+DEFINE_HOOK(459F4F, CIsoView_Draw_CopySelectionBoundColor, 6)
+{
+	R->Stack<COLORREF>(0x0, ExtConfigs::CopySelectionBound_Color);
+	return 0;
+}
+
+DEFINE_HOOK(45AD81, CIsoView_Draw_CursorSelectionBoundColor, 5)
+{
+	R->Stack<COLORREF>(0x0, ExtConfigs::CursorSelectionBound_Color);
+	return 0;
+}
+
+DEFINE_HOOK(45ADD0, CIsoView_Draw_CursorSelectionBoundHeightColor, 6)
+{
+	R->Stack<COLORREF>(0x8, ExtConfigs::CursorSelectionBound_HeightColor);
+	return 0;
 }
 
 //DEFINE_HOOK(474F36, CIsoView_OnPaint_WaypointColor, 5)

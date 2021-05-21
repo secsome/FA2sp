@@ -22,12 +22,10 @@ bool ExtConfigs::SortByTriggerName;
 bool ExtConfigs::AdjustDropdownWidth;
 int ExtConfigs::AdjustDropdownWidth_Factor;
 int ExtConfigs::AdjustDropdownWidth_Max;
+int ExtConfigs::CopySelectionBound_Color;
+int ExtConfigs::CursorSelectionBound_Color;
+int ExtConfigs::CursorSelectionBound_HeightColor;
 
-//DEFINE_HOOK(527592, DEBUGASFHIAKSN, 5)
-//{
-//	Logger::Debug("%d %s\n", *reinterpret_cast<DWORD*>(0x884034), R->Stack<const char*>(0x15C));
-//	return 0;
-//}
 
 DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
 {
@@ -37,19 +35,31 @@ DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
 
 void FA2sp::ExtConfigsInitialize()
 {
-	auto pFAData = &GlobalVars::INIFiles::FAData();
-	ExtConfigs::BrowserRedraw = pFAData->GetBool("ExtConfigs", "BrowserRedraw");
-	ExtConfigs::BrowserRedraw_GuessMode = pFAData->GetInteger("ExtConfigs", "BrowserRedraw.GuessMode", 0);
-	ExtConfigs::BrowserRedraw_CleanUp = pFAData->GetBool("ExtConfigs", "BrowserRedraw.CleanUp");
-	ExtConfigs::AllowIncludes = pFAData->GetBool("ExtConfigs", "AllowIncludes");
-	ExtConfigs::AllowPlusEqual = pFAData->GetBool("ExtConfigs", "AllowPlusEqual");
-	ExtConfigs::Stringtables = pFAData->GetBool("ExtConfigs", "Stringtables");
-	ExtConfigs::TutorialTexts_Hide = pFAData->GetBool("ExtConfigs", "TutorialTexts.Hide");
-	ExtConfigs::TutorialTexts_Fix = pFAData->GetBool("ExtConfigs", "TutorialTexts.Fix");
-	ExtConfigs::SortByTriggerName = pFAData->GetBool("ExtConfigs", "SortByTriggerName");
-	ExtConfigs::AdjustDropdownWidth = pFAData->GetBool("ExtConfigs", "AdjustDropdownWidth");
-	ExtConfigs::AdjustDropdownWidth_Factor = pFAData->GetInteger("ExtConfigs", "AdjustDropdownWidth.Factor", 8);
-	ExtConfigs::AdjustDropdownWidth_Max = pFAData->GetInteger("ExtConfigs", "AdjustDropdownWidth.Max", 360);
+	auto& fadata = GlobalVars::INIFiles::FAData();
+	
+	ExtConfigs::BrowserRedraw = fadata.GetBool("ExtConfigs", "BrowserRedraw");
+	ExtConfigs::BrowserRedraw_GuessMode = fadata.GetInteger("ExtConfigs", "BrowserRedraw.GuessMode", 0);
+	ExtConfigs::BrowserRedraw_CleanUp = fadata.GetBool("ExtConfigs", "BrowserRedraw.CleanUp");
+	
+	ExtConfigs::AllowIncludes = fadata.GetBool("ExtConfigs", "AllowIncludes");
+	ExtConfigs::AllowPlusEqual = fadata.GetBool("ExtConfigs", "AllowPlusEqual");
+	
+	ExtConfigs::Stringtables = fadata.GetBool("ExtConfigs", "Stringtables");
+	ExtConfigs::TutorialTexts_Hide = fadata.GetBool("ExtConfigs", "TutorialTexts.Hide");
+	ExtConfigs::TutorialTexts_Fix = fadata.GetBool("ExtConfigs", "TutorialTexts.Fix");
+	
+	ExtConfigs::SortByTriggerName = fadata.GetBool("ExtConfigs", "SortByTriggerName");
+	
+	ExtConfigs::AdjustDropdownWidth = fadata.GetBool("ExtConfigs", "AdjustDropdownWidth");
+	ExtConfigs::AdjustDropdownWidth_Factor = fadata.GetInteger("ExtConfigs", "AdjustDropdownWidth.Factor", 8);
+	ExtConfigs::AdjustDropdownWidth_Max = fadata.GetInteger("ExtConfigs", "AdjustDropdownWidth.Max", 360);
+
+	ExtConfigs::CopySelectionBound_Color = 
+		fadata.GetInteger("ExtConfigs", "CopySelectionBound.Color", 0x0000FF);
+	ExtConfigs::CursorSelectionBound_Color =
+		fadata.GetInteger("ExtConfigs", "CursorSelectionBound.Color", 0x3CA03C);
+	ExtConfigs::CursorSelectionBound_HeightColor = 
+		fadata.GetInteger("ExtConfigs", "CursorSelectionBound.HeightIndicatorColor", 0x3C3C3C);
 }
 
 // DllMain
