@@ -13,9 +13,9 @@ C++ Standard: C++14 (Higher standard conflicts with INIClass right now)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ======================= Changes (2021-xx-xx) ==============================================================================================
-+) New ExtConfig: CopySelectionBound.Color = COLORREF, custom the copy selection bound color, defaults to 255(0x0000FF)
-+) New ExtConfig: CursorSelectionBound.Color = COLORREF, same as the above one, defaults to 3973180(0x3CA03C)
-+) New ExtConfig: CursorSelectionBound.HeightIndicatorColor = COLORREF, same as the above one, defaults to 3947580(0x3C3C3C)
++) New ExtConfig: CopySelectionBound.Color = COLORREF, custom the copy selection bound color, defaults to 255,0,0
++) New ExtConfig: CursorSelectionBound.Color = COLORREF, same as the above one, defaults to 60,160,60
++) New ExtConfig: CursorSelectionBound.HeightIndicatorColor = COLORREF, same as the above one, defaults to 60,60,60
 
 ======================= Changes (2021-05-07) ==============================================================================================
 +) New ExtConfig: SortByTriggerName = BOOLEAN, enable it so FA2 will sort the triggers dropdown and sort them by their name instead of ID
@@ -62,6 +62,11 @@ Before you launch it for the first time, write the ini files below properly, esp
 If you still have any problem about it or something wrong occured while using it, please contact me directly or mail me at 3179369262@qq.com
 For now, I cannot ensure the stability of it, so save your maps frequently before heavy loss! XD
 
+- BASIC TYPES
+INTERGER - [-2147483648,2147483647]
+BOOLEAN - Yes/No True/False 1/0
+COLORREF - R,G,B each of them is in [0,255]
+
 - BEFORE LAUNCHING IT
     - FAData.ini
         +) [ExtConfigs] (All switches defaults to false)
@@ -77,9 +82,9 @@ For now, I cannot ensure the stability of it, so save your maps frequently befor
             +) AdjustDropdownWidth = BOOLEAN ; Enable it so FA2 will adjust the param dropdown width automatically
                 +) AdjustDropdownWidth.Factor = INTERGER ; Determines how long is a single char takes, defaults to 8
                 +) AdjustDropdownWidth.Max = INTERGER ; Determines the max length of the combobox, defaults to 360
-            +) CopySelectionBound.Color = COLORREF ; Determines the color of the selection boundary while copying, defaults to 255
-            +) CursorSelectionBound.Color = COLORREF ; Determines the color of the boundary for current cell, defaults to 3973180
-            +) HeightIndicatorColor.Color = COLORREF ; Determines the color of the height indicator for current cell, defaults to 3947580
+            +) CopySelectionBound.Color = COLORREF ; Determines the color of the selection boundary while copying, defaults to 255,0,0
+            +) CursorSelectionBound.Color = COLORREF ; Determines the color of the boundary for current cell, defaults to 60,160,60
+            +) HeightIndicatorColor.Color = COLORREF ; Determines the color of the height indicator for current cell, defaults to 60,60,60
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.

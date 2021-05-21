@@ -55,11 +55,11 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::AdjustDropdownWidth_Max = fadata.GetInteger("ExtConfigs", "AdjustDropdownWidth.Max", 360);
 
 	ExtConfigs::CopySelectionBound_Color = 
-		fadata.GetInteger("ExtConfigs", "CopySelectionBound.Color", 0x0000FF);
+		fadata.GetColor("ExtConfigs", "CopySelectionBound.Color", 0x0000FF);
 	ExtConfigs::CursorSelectionBound_Color =
-		fadata.GetInteger("ExtConfigs", "CursorSelectionBound.Color", 0x3CA03C);
+		fadata.GetColor("ExtConfigs", "CursorSelectionBound.Color", 0x3CA03C);
 	ExtConfigs::CursorSelectionBound_HeightColor = 
-		fadata.GetInteger("ExtConfigs", "CursorSelectionBound.HeightIndicatorColor", 0x3C3C3C);
+		fadata.GetColor("ExtConfigs", "CursorSelectionBound.HeightIndicatorColor", 0x3C3C3C);
 }
 
 // DllMain
