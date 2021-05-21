@@ -12,6 +12,11 @@ C++ Standard: C++14 (Higher standard conflicts with INIClass right now)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-xx-xx) ==============================================================================================
++) New ExtConfig: CopySelectionBound.Color = COLORREF, custom the copy selection bound color, defaults to 255(0x0000FF)
++) New ExtConfig: CursorSelectionBound.Color = COLORREF, same as the above one, defaults to 3973180(0x3CA03C)
++) New ExtConfig: CursorSelectionBound.HeightIndicatorColor = COLORREF, same as the above one, defaults to 3947580(0x3C3C3C)
+
 ======================= Changes (2021-05-07) ==============================================================================================
 +) New ExtConfig: SortByTriggerName = BOOLEAN, enable it so FA2 will sort the triggers dropdown and sort them by their name instead of ID
 +) New ExtConfig: AdjustDropdownWidth = BOOLEAN, enable it so FA2 will adjust the param dropdown width automatically
@@ -71,7 +76,10 @@ For now, I cannot ensure the stability of it, so save your maps frequently befor
             +) SortByTriggerName=BOOLEAN ; Enable this feature so we can sort the triggers by their names
             +) AdjustDropdownWidth = BOOLEAN ; Enable it so FA2 will adjust the param dropdown width automatically
                 +) AdjustDropdownWidth.Factor = INTERGER ; Determines how long is a single char takes, defaults to 8
-                +) AdjustDropdownWidth.Max = INTERGER ; Determins the max length of the combobox, defaults to 360
+                +) AdjustDropdownWidth.Max = INTERGER ; Determines the max length of the combobox, defaults to 360
+            +) CopySelectionBound.Color = COLORREF ; Determines the color of the selection boundary while copying, defaults to 255
+            +) CursorSelectionBound.Color = COLORREF ; Determines the color of the boundary for current cell, defaults to 3973180
+            +) HeightIndicatorColor.Color = COLORREF ; Determines the color of the height indicator for current cell, defaults to 3947580
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.
