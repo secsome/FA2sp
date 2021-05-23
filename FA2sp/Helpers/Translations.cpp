@@ -5,8 +5,8 @@
 CString FinalAlertConfig::lpPath;
 char FinalAlertConfig::pLastRead[0x400];
 
-// Same as ExeRun
-DEFINE_HOOK(537129, Translations_Initialzation, 9)
+// Load after ExePath is initialized
+DEFINE_HOOK(41F7F5, Translations_Initialzation, 9)
 {
     FinalAlertConfig::lpPath = GlobalVars::ExePath();
     FinalAlertConfig::lpPath += "FinalAlert.ini";
