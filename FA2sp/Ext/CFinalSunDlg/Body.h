@@ -67,7 +67,7 @@ public:
     void Redraw();
     int UpdateEngine(int nData);
 
-    CString QueryUIName(CString pRegName);
+    CString QueryUIName(const char* pRegName);
 
 public:
     /// <summary>

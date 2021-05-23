@@ -29,9 +29,9 @@ HTREEITEM ObjectBrowserControlExt::InsertTranslatedString(const char* pOriginStr
     return InsertString(result ? buffer : pOriginString, dwItemData, hParent, hInsertAfter);
 }
 
-CString ObjectBrowserControlExt::QueryUIName(CString pRegName)
+CString ObjectBrowserControlExt::QueryUIName(const char* pRegName)
 {
-    if (ForceName.find(pRegName.operator LPCTSTR()) != ForceName.end())
+    if (ForceName.find(pRegName) != ForceName.end())
         return mmh.GetString(pRegName, "Name", pRegName);
     else
         return CSFQuery::GetUIName(pRegName); 
@@ -54,8 +54,7 @@ void ObjectBrowserControlExt::Redraw()
     Redraw_Celltag();
     Redraw_Basenode();
     Redraw_Tunnel();
-    // Redraw_PlayerLocation();
-    // player location is just waypoints!
+    // Redraw_PlayerLocation(); // player location is just waypoints!
 }
 
 void ObjectBrowserControlExt::Redraw_Initialize()
@@ -597,11 +596,7 @@ int ObjectBrowserControlExt::GuessBuildingSide(const char* pRegName)
 
 int ObjectBrowserControlExt::GuessGenericSide(const char* pRegName, int nType)
 {
-    MultimapHelper mmh;
-    mmh.AddINI(&GlobalVars::INIFiles::Rules());
-    mmh.AddINI(&GlobalVars::INIFiles::CurrentDocument());
-
-    auto& set = ExtSets[nType];
+    const auto& set = ExtSets[nType];
 
     if (set.find(pRegName) == set.end())
         return -1;
