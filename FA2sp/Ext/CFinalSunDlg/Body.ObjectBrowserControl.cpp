@@ -2,12 +2,12 @@
 
 #include "../../Helpers/Translations.h"
 #include "../../Helpers/STDHelpers.h"
-#include "../../Helpers/MultimapHelper.h"
 
 #include "../../FA2sp.h"
 
 #include <GlobalVars.h>
 
+MultimapHelper ObjectBrowserControlExt::mmh { &GlobalVars::INIFiles::Rules(), &GlobalVars::INIFiles::CurrentDocument() };
 std::array<HTREEITEM, ObjectBrowserControlExt::Root_Count> ObjectBrowserControlExt::ExtNodes;
 std::unordered_set<std::string> ObjectBrowserControlExt::IgnoreSet;
 std::unordered_set<std::string> ObjectBrowserControlExt::ForceName;
@@ -31,14 +31,6 @@ HTREEITEM ObjectBrowserControlExt::InsertTranslatedString(const char* pOriginStr
 
 CString ObjectBrowserControlExt::QueryUIName(CString pRegName)
 {
-    static MultimapHelper mmh
-    {
-        &GlobalVars::INIFiles::Rules(),
-        &GlobalVars::INIFiles::CurrentDocument()
-    };
-
-    // Logger::Debug("QueryUIName runs, pRegName = %s, queryCSF = %s, name = %s\n", pRegName, CSFQuery::GetUIName(pRegName), mmh.GetString(pRegName, "Name", pRegName));
-
     if (ForceName.find(pRegName.operator LPCTSTR()) != ForceName.end())
         return mmh.GetString(pRegName, "Name", pRegName);
     else
@@ -79,11 +71,8 @@ void ObjectBrowserControlExt::Redraw_Initialize()
     auto& rules = GlobalVars::INIFiles::Rules();
     auto& fadata = GlobalVars::INIFiles::FAData();
     auto& doc = GlobalVars::INIFiles::CurrentDocument();
-    MultimapHelper mmh;
-    mmh.AddINI(&rules);
-    mmh.AddINI(&doc);
 
-    auto loadSet = [&mmh](const char* pTypeName, int nType)
+    auto loadSet = [](const char* pTypeName, int nType)
     {
         ExtSets[nType].clear();
         auto& section = mmh.GetSection(pTypeName);
@@ -96,7 +85,7 @@ void ObjectBrowserControlExt::Redraw_Initialize()
     loadSet("VehicleTypes", Set_Vehicle);
     loadSet("AircraftTypes", Set_Aircraft);
 
-    auto loadOwner = [&mmh]()
+    auto loadOwner = []()
     {
         auto& sides = mmh.ParseIndicies("Sides", true);
         for (size_t i = 0, sz = sides.size(); i < sz; ++i)
@@ -110,7 +99,7 @@ void ObjectBrowserControlExt::Redraw_Initialize()
         for (auto& item : knownSection->EntitiesDictionary)
         {
             int sideIndex = STDHelpers::ParseToInt(item.second, -1);
-            if (sideIndex >= rules.GetKeyCount("Sides"))
+            if (sideIndex >= knownSection->EntitiesDictionary.size())
                 continue;
             if (sideIndex < -1)
                 sideIndex = -1;
@@ -180,9 +169,6 @@ void ObjectBrowserControlExt::Redraw_Owner()
 
     auto& doc = GlobalVars::INIFiles::CurrentDocument();
 
-    MultimapHelper mmh;
-    mmh.AddINI(&doc);
-
     bool bMultiplayer = doc.GetBool("Basic", "MultiplayerOnly"); 
     auto& section = mmh.ParseIndicies("Houses", true);
 
@@ -226,10 +212,6 @@ void ObjectBrowserControlExt::Redraw_Infantry()
         subNodes[i++] = this->InsertString("Yuri", -1, hInfantry);
     }
     subNodes[-1] = this->InsertString("Others", -1, hInfantry);
-
-    MultimapHelper mmh;
-    mmh.AddINI(&GlobalVars::INIFiles::Rules());
-    mmh.AddINI(&GlobalVars::INIFiles::CurrentDocument());
 
     auto& infantries = mmh.GetSection("InfantryTypes");
     for (auto& inf : infantries)
@@ -279,10 +261,6 @@ void ObjectBrowserControlExt::Redraw_Vehicle()
         subNodes[i++] = this->InsertString("Yuri", -1, hVehicle);
     }
     subNodes[-1] = this->InsertString("Others", -1, hVehicle);
-
-    MultimapHelper mmh;
-    mmh.AddINI(&GlobalVars::INIFiles::Rules());
-    mmh.AddINI(&GlobalVars::INIFiles::CurrentDocument());
 
     auto& vehicles = mmh.GetSection("VehicleTypes");
     for (auto& veh : vehicles)
@@ -334,10 +312,6 @@ void ObjectBrowserControlExt::Redraw_Aircraft()
     }
     subNodes[-1] = this->InsertString("Others", -1, hAircraft);
 
-    MultimapHelper mmh;
-    mmh.AddINI(&GlobalVars::INIFiles::Rules());
-    mmh.AddINI(&GlobalVars::INIFiles::CurrentDocument());
-
     auto& aircrafts = mmh.GetSection("AircraftTypes");
     for (auto& air : aircrafts)
     {
@@ -388,10 +362,6 @@ void ObjectBrowserControlExt::Redraw_Building()
     }
     subNodes[-1] = this->InsertString("Others", -1, hBuilding);
 
-    MultimapHelper mmh;
-    mmh.AddINI(&GlobalVars::INIFiles::Rules());
-    mmh.AddINI(&GlobalVars::INIFiles::CurrentDocument());
-
     auto& buildings = mmh.GetSection("BuildingTypes");
     for (auto& bud : buildings)
     {
@@ -427,8 +397,6 @@ void ObjectBrowserControlExt::Redraw_Terrain()
 
     this->InsertTranslatedString("RndTreeObList", 50999, hTerrain);
 
-    MultimapHelper mmh;
-    mmh.AddINI(&GlobalVars::INIFiles::Rules());
     auto& terrains = mmh.ParseIndicies("TerrainTypes", true);
     for (size_t i = 0, sz = terrains.size(); i < sz; ++i)
     {
@@ -444,8 +412,6 @@ void ObjectBrowserControlExt::Redraw_Smudge()
     HTREEITEM& hSmudge = ExtNodes[Root_Smudge];
     if (hSmudge == NULL)   return;
 
-    MultimapHelper mmh;
-    mmh.AddINI(&GlobalVars::INIFiles::Rules());
     auto& smudges = mmh.ParseIndicies("SmudgeTypes", true);
     for (size_t i = 0, sz = smudges.size(); i < sz; ++i)
     {

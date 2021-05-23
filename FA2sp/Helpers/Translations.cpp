@@ -38,22 +38,17 @@ char Translations::pLanguage[4][0x400];
 bool Translations::GetTranslationItem(const char* pLabelName, CString& ret)
 {
     auto& falanguage = GlobalVars::INIFiles::FALanguage();
-#define TRANSLATE_FILE(language) \
-    if (auto section = falanguage.GetSection(language)) \
-    { \
-        auto itr = section->EntitiesDictionary.find(pLabelName); \
-        if (itr != section->EntitiesDictionary.end()) \
-        { \
-            ret = itr->second; \
-            return true; \
-        } \
-    }
 
-    TRANSLATE_FILE(pLanguage[0]);
-    TRANSLATE_FILE(pLanguage[1]);
-    TRANSLATE_FILE(pLanguage[2]);
-    TRANSLATE_FILE(pLanguage[3]);
+    for(const auto& language : Translations::pLanguage)
+        if (auto section = falanguage.GetSection(language))
+        {
+            auto itr = section->EntitiesDictionary.find(pLabelName);
+            if (itr != section->EntitiesDictionary.end())
+            {
+                ret = itr->second;
+                return true;
+            }
+        }
 
-#undef TRANSLATE_FILE
-    return false;
+        return false;
 }
