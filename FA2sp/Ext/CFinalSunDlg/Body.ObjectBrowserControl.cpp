@@ -85,22 +85,24 @@ void ObjectBrowserControlExt::Redraw_Initialize()
     loadSet("VehicleTypes", Set_Vehicle);
     loadSet("AircraftTypes", Set_Aircraft);
 
-    auto loadOwner = []()
+    if (ExtConfigs::BrowserRedraw_GuessMode == 1)
     {
-        auto& sides = mmh.ParseIndicies("Sides", true);
-        for (size_t i = 0, sz = sides.size(); i < sz; ++i)
-            for (auto& owner : STDHelpers::SplitString(sides[i]))
-                Owners[(std::string)owner] = i;
-    };
-    loadOwner();
+        auto loadOwner = []()
+        {
+            auto& sides = mmh.ParseIndicies("Sides", true);
+            for (size_t i = 0, sz = sides.size(); i < sz; ++i)
+                for (auto& owner : STDHelpers::SplitString(sides[i]))
+                    Owners[(std::string)owner] = i;
+        };
+        loadOwner();
+    }
 
     if (auto knownSection = fadata.GetSection("ForceSides"))
     {
-        const auto sidesCount = std::max(knownSection->EntitiesDictionary.size(), 3u);
         for (auto& item : knownSection->EntitiesDictionary)
         {
             int sideIndex = STDHelpers::ParseToInt(item.second, -1);
-            if (sideIndex >= sidesCount)
+            if (sideIndex >= fadata.GetKeyCount("Sides"))
                 continue;
             if (sideIndex < -1)
                 sideIndex = -1;
