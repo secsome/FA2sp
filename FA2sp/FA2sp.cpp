@@ -1,5 +1,5 @@
 #include "FA2sp.h"
-#include "FA2sp.Macros.h"
+#include "FA2sp.Constants.h"
 
 #include "Helpers/MutexHelper.h"
 
