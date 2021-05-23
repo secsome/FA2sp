@@ -307,7 +307,7 @@
     <ClInclude Include="FA2sp\Ext\CTriggerOption\Body.h" />
     <ClInclude Include="FA2sp\Ext\CUpdateProgress\Body.h" />
     <ClInclude Include="FA2sp\FA2sp.h" />
-    <ClInclude Include="FA2sp\FA2sp.Macros.h" />
+    <ClInclude Include="FA2sp\FA2sp.Constants.h" />
     <ClInclude Include="FA2sp\Helpers\ControlHelpers.h" />
     <ClInclude Include="FA2sp\Helpers\Helper.h" />
     <ClInclude Include="FA2sp\Helpers\INIParser.h" />
