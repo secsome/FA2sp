@@ -96,10 +96,11 @@ void ObjectBrowserControlExt::Redraw_Initialize()
 
     if (auto knownSection = fadata.GetSection("ForceSides"))
     {
+        const auto sidesCount = std::max(knownSection->EntitiesDictionary.size(), 3u);
         for (auto& item : knownSection->EntitiesDictionary)
         {
             int sideIndex = STDHelpers::ParseToInt(item.second, -1);
-            if (sideIndex >= knownSection->EntitiesDictionary.size())
+            if (sideIndex >= sidesCount)
                 continue;
             if (sideIndex < -1)
                 sideIndex = -1;
@@ -402,6 +403,7 @@ void ObjectBrowserControlExt::Redraw_Terrain()
     {
         CString buffer;
         buffer = QueryUIName(terrains[i]);
+        buffer += "(" + terrains[i] + ")";
         if (IgnoreSet.find((std::string)terrains[i]) == IgnoreSet.end())
             this->InsertString(buffer, Const_Terrain + i, hTerrain);
     }
@@ -465,6 +467,7 @@ void ObjectBrowserControlExt::Redraw_Overlay()
     {
         CString buffer;
         buffer = QueryUIName(overlays[i]);
+        buffer += "(" + overlays[i] + ")";
         if (rules.GetBool(overlays[i], "Wall"))
             this->InsertString(
                 QueryUIName(overlays[i]),
