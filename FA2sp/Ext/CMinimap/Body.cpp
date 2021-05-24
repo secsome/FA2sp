@@ -1,7 +1,5 @@
 #include "Body.h"
 
-CMinimap* CMinimapExt::Instance = nullptr;
-
 void CMinimapExt::ProgramStartupInit()
 {
 	Logger::Debug(__FUNCTION__"\n");
