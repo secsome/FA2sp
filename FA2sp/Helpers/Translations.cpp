@@ -1,6 +1,8 @@
 #include "Translations.h"
 
+#include <Helpers/Macro.h>
 #include <GlobalVars.h>
+#include <CINI.h>
 
 CString FinalAlertConfig::lpPath;
 char FinalAlertConfig::pLastRead[0x400];

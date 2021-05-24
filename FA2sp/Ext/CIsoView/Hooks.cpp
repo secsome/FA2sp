@@ -2,6 +2,7 @@
 #include "../../FA2sp.h"
 
 #include <GlobalVars.h>
+#include <CINI.h>
 
 #include <Windows.h>
 
