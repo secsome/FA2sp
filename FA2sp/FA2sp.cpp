@@ -4,6 +4,8 @@
 #include "Helpers/MutexHelper.h"
 
 #include <GlobalVars.h>
+#include <CINI.h>
+
 #include <clocale>
 
 HANDLE FA2sp::hInstance;

@@ -1,5 +1,5 @@
 #include "Replacement.h"
-#include "../FA2sp.Macros.h"
+#include "../FA2sp.Constants.h"
 
 // should be fixed by hooks but using this to just make it works for now.
 void Replacement::HexFixes() {

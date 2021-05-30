@@ -1,5 +1,5 @@
 #include <Helpers/Macro.h>
-#include <CINI.h>
+#include <CMapData.h>
 
 #include <map>
 
@@ -70,7 +70,7 @@ DEFINE_HOOK(441A40, Miscs_LoadParams_Triggers, 6)
 
             std::map<ppmfc::CString, ppmfc::CString> collector;
 
-            auto const pINI = INIClass::GetMapDocument(true);
+            auto const pINI = CMapData::GetMapDocument(true);
             if (auto const pSection = pINI->GetSection("Triggers"))
             {
                 for (auto pair : pSection->EntitiesDictionary)

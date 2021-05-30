@@ -1,4 +1,5 @@
 #include <Helpers/Macro.h>
+#include <CINI.h>
 #include <GlobalVars.h>
 
 #include <MFC/ppmfc_include.h>

@@ -219,6 +219,9 @@
     <ClInclude Include="FA2sp\StaticPatcher.Macro.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2pp\CMapData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">

@@ -2,6 +2,7 @@
 #include "Functional.h"
 
 #include <GlobalVars.h>
+#include <CMapData.h>
 #include <CFinalSunDlg.h>
 
 #include "../../Logger.h"
@@ -333,7 +334,7 @@ void CScriptTypesExt::OnLBScriptActionsSelectChanged()
 //
 void CScriptTypesExt::OnCBCurrentActionEditChanged()
 {
-	auto& doc = *INIMapFieldUpdate::UpdateMapFieldData(1);
+	auto& doc = *GlobalVars::CMapData()->UpdateCurrentDocument();
 	CString scriptId, buffer, listStr, tmp;
 	int scriptIndex, listIndex, actionIndex, actionData;
 

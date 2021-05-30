@@ -1,5 +1,7 @@
 #include <CMixFile.h>
+#include <CLoading.h>
 #include <GlobalVars.h>
+#include <FAMemory.h>
 
 #include "../../FA2sp.h"
 
@@ -8,9 +10,9 @@
 class StringtableLoader
 {
 public:
-    static void LoadCSFFiles(DWORD pThisAddr);
-    static void LoadCSFFile(const char* tmpFilePath, const char* pName, DWORD& pThisAddr);
-    static bool ParseCSFFile(char* buffer, DWORD& size);
+    static void LoadCSFFiles();
+    static void LoadCSFFile(const char* tmpFilePath, const char* pName);
+    static bool ParseCSFFile(char* buffer, DWORD size);
     static void WriteCSFFile();
     static bool LoadToBuffer();
 
@@ -27,7 +29,7 @@ DEFINE_HOOK(492D10, CSFFiles_Stringtables_Support_1, 5)
 {
     if (ExtConfigs::Stringtables)
     {
-        StringtableLoader::LoadCSFFiles(R->Stack32(0x2C0 - 0x268));
+        StringtableLoader::LoadCSFFiles(/*R->Stack32(0x2C0 - 0x268)*/);
         StringtableLoader::bLoadRes = StringtableLoader::LoadToBuffer();
         if (StringtableLoader::bLoadRes)
         {
@@ -57,7 +59,7 @@ DEFINE_HOOK(49433B, CSFFiles_Stringtables_Support_2, 6)
     return 0;
 }
 
-void StringtableLoader::LoadCSFFiles(DWORD pThisAddr)
+void StringtableLoader::LoadCSFFiles()
 {
     char tmpCsfFile[0x400];
     strcpy_s(tmpCsfFile, GlobalVars::ExePath());
@@ -68,17 +70,17 @@ void StringtableLoader::LoadCSFFiles(DWORD pThisAddr)
         strcpy_s(nameBuffer, "RA2MD.CSF");
     else
         strcpy_s(nameBuffer, "RA2.CSF");
-    LoadCSFFile(tmpCsfFile, nameBuffer, pThisAddr);
+    LoadCSFFile(tmpCsfFile, nameBuffer);
     char stringtable[20];
     for (int i = 1; i <= 99; ++i)
     {
         sprintf_s(stringtable, "stringtable%02d.csf", i);
-        LoadCSFFile(tmpCsfFile, stringtable, pThisAddr);
+        LoadCSFFile(tmpCsfFile, stringtable);
     }
     WriteCSFFile();
 }
 
-void StringtableLoader::LoadCSFFile(const char* tmpFilePath, const char* pName, DWORD& pThisAddr)
+void StringtableLoader::LoadCSFFile(const char* tmpFilePath, const char* pName)
 {
     bool flag = true;
     HANDLE hFile = INVALID_HANDLE_VALUE;
@@ -90,7 +92,8 @@ void StringtableLoader::LoadCSFFile(const char* tmpFilePath, const char* pName, 
         OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
     if (hFile == INVALID_HANDLE_VALUE)
     {
-        if (CMixFile::FindAndCopyTo(pName, tmpFilePath, pThisAddr))
+        const auto pMix = GlobalVars::Dialogs::CLoading()->SearchFile(pName);
+        if (CMixFile::ExtractFile(pName, tmpFilePath, pMix))
         {
             hFile = CreateFile(tmpFilePath, GENERIC_READ, FILE_SHARE_READ, nullptr,
                 OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
@@ -118,7 +121,7 @@ void StringtableLoader::LoadCSFFile(const char* tmpFilePath, const char* pName, 
     return;
 }
 
-bool StringtableLoader::ParseCSFFile(char* buffer, DWORD& size)
+bool StringtableLoader::ParseCSFFile(char* buffer, DWORD size)
 {
     char* pos = buffer;
 

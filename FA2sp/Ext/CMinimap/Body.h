@@ -1,14 +1,12 @@
 #pragma once
 
-#include <CMinimap.h>
+#include <CWndView.h>
 #include "../FA2Expand.h"
 
-class NOVTABLE CMinimapExt : public CMinimap
+class NOVTABLE CMinimapExt : public CWndView
 {
 public:
 	typedef BOOL(*FuncT_PTM)(MSG* pMsg);
-
-	static CMinimap* Instance;
 
 	//hook function to replace in virtual function map
 	BOOL PreTranslateMessageExt(MSG* pMsg);
