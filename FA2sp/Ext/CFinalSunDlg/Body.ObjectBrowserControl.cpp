@@ -6,6 +6,7 @@
 #include "../../FA2sp.h"
 
 #include <GlobalVars.h>
+#include <CINI.h>
 
 MultimapHelper ObjectBrowserControlExt::mmh { &GlobalVars::INIFiles::Rules(), &GlobalVars::INIFiles::CurrentDocument() };
 std::array<HTREEITEM, ObjectBrowserControlExt::Root_Count> ObjectBrowserControlExt::ExtNodes;

@@ -1,7 +1,7 @@
 #include <CINI.h>
 #include <vector>
 #include <map>
-#include <CMixFile.h>
+#include <GlobalVars.h>
 #include <CLoading.h>
 
 #include "../../Helpers/STDHelpers.h"
@@ -17,14 +17,12 @@ public:
     static vector<INIClass*> LoadedINIs;
     static vector<char*> LoadedINIFiles;
     static map<std::string, unsigned int> CurrentINIIdxHelper;
-    static CLoading* LoadingPtr;
 };
 
 int INIIncludes::LastReadIndex = -1;
 vector<INIClass*> INIIncludes::LoadedINIs;
 vector<char*> INIIncludes::LoadedINIFiles;
 map<std::string, unsigned int> INIIncludes::CurrentINIIdxHelper;
-CLoading* INIIncludes::LoadingPtr = nullptr;
 
 DEFINE_HOOK(4530F7, CLoading_ParseINI_PlusSupport, 8)
 {
@@ -60,7 +58,6 @@ DEFINE_HOOK(47FFB0, CLoading_LoadTSINI_IncludeSupport_1, 7)
     //return 0;
     if (ExtConfigs::AllowIncludes)
     {
-        INIIncludes::LoadingPtr = R->ECX<CLoading*>();
         GET_STACK(const char*, pFile, 0x4);
         GET_STACK(INIClass*, pINI, 0x8);
 
@@ -102,7 +99,7 @@ DEFINE_HOOK(480880, INIClass_LoadTSINI_IncludeSupport_2, 5)
 
                 if (canLoad) {
                     Logger::Debug("Include Ext Loaded File: %s\n", buffer);
-                    INIIncludes::LoadingPtr->LoadTSINI(
+                    GlobalVars::Dialogs::CLoading()->LoadTSINI(
                         buffer, xINI, TRUE
                     );
                 }

@@ -1,7 +1,7 @@
 #include <CMixFile.h>
 #include <CLoading.h>
-#include <FAMemory.h>
 #include <GlobalVars.h>
+#include <FAMemory.h>
 
 #include "../../FA2sp.h"
 
