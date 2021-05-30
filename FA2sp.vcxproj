@@ -256,7 +256,6 @@
     <ClCompile Include="FA2sp\StaticPatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FA2pp\CMapData.h" />
     <ClInclude Include="FA2sp\Ext\CFinalSunDlg\Body.h" />
     <ClInclude Include="FA2sp\Ext\CIsoView\Body.h" />
     <ClInclude Include="FA2sp\Ext\CScriptTypes\Functional.h" />
