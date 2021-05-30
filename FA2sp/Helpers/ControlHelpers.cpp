@@ -4,6 +4,7 @@
 #include "MultimapHelper.h"
 
 #include <GlobalVars.h>
+#include <CMapData.h>
 
 namespace ControlHelpers
 {
@@ -99,9 +100,9 @@ namespace ControlHelpers
         for (size_t i = 0, sz = entries.size(); i < sz; ++i)
         {
             if (bShowIndex)
-                buffer.Format("%u - %s", i, CSFQuery::GetUIName(entries[i]));
+                buffer.Format("%u - %s", i, CMapData::GetUIName(entries[i]));
             else
-                buffer = CSFQuery::GetUIName(entries[i]);
+                buffer = CMapData::GetUIName(entries[i]);
             if (bShowRegName)
                 buffer += (" - " + entries[i]);
             combobox.SetItemData(combobox.AddString(buffer), i);

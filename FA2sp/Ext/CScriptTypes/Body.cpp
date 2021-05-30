@@ -26,7 +26,7 @@ BOOL CScriptTypesExt::PreTranslateMessageExt(MSG* pMsg)
 		elif (pMsg->hwnd == this->GetDlgItem(1173)->GetSafeHwnd())
 		{
 			this->OnBNAddActionClickedExt();
-			return FALSE;
+			return TRUE;
 		}
 			
 	}
@@ -334,7 +334,7 @@ void CScriptTypesExt::OnLBScriptActionsSelectChanged()
 //
 void CScriptTypesExt::OnCBCurrentActionEditChanged()
 {
-	auto& doc = *GlobalVars::CMapData()->UpdateCurrentDocument();
+	auto& doc = *GlobalVars::CMapData().UpdateCurrentDocument();
 	ppmfc::CString scriptId, buffer, listStr, tmp;
 	int scriptIndex, listIndex, actionIndex, actionData;
 

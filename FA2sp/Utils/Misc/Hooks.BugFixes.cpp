@@ -1,6 +1,8 @@
 #include <Helpers/Macro.h>
 #include <GlobalVars.h>
 
+#include <MFC/ppmfc_cstring.h>
+
 #include "../../Logger.h"
 
 // FA2 will no longer automatically change the extension of map

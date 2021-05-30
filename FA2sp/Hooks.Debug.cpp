@@ -4,10 +4,32 @@
 
 #include <GlobalVars.h>
 
+#include <CMapData.h>
 #include <CMixFile.h>
 #include <CLoading.h>
 #include <Palette.h>
 #include <unordered_map>
+//
+//DEFINE_HOOK(4B2610, CMapData_QueryUIName_Debug, 7)
+//{
+//    /*GET_STACK(const char*, pRegName, 0x4);
+//    Logger::Debug(__FUNCTION__" pRegName = %s\n", pRegName);
+//    return 0;*/
+//
+//    static bool asd = true;
+//    if (asd)
+//    {
+//        auto& ini = GlobalVars::INIFiles::CurrentDocument();
+//        for (auto& x : ini.Dict)
+//        {
+//            if (auto name = ini.TryGetString(x.first, "Name"))
+//                Logger::Debug("%s %s\n", x.first, name);
+//        }
+//        asd = false;
+//    }
+//
+//    return 0;
+//}
 
 //DEFINE_HOOK(4808A0, CLoading_CreateImage, 5)
 //{
@@ -21,54 +43,54 @@
 //    JMP_STD(0x5273A0);
 //}
 //
-DEFINE_HOOK(483D7A, CLoading_CreateImage_Palette, 5)
-{
-
-
-    //static std::unordered_map<std::string, Palette*> pals;
-
-    ////GET_STACK(CString, pRegName, STACK_OFFS(0x868, -0x4));
-    //GET(CLoading*, pThis, EDI);
-    //GET_STACK(CString, pSection, STACK_OFFS(0x868, 0x20));
-    //GET_STACK(Palette*, pPalette, STACK_OFFS(0x868, 0x50));
-    ////Logger::Debug(__FUNCTION__ " pRegName = %s\n", pSection);
-    //
-    //auto& art = GlobalVars::INIFiles::Art();
-    //CString palname = art.GetString(pSection, "Palette");
-    //
-    //bool hasext = false;
-    //if (palname.IsEmpty())
-    //{
-    //    palname = art.GetString(pSection, "CustomPalette");
-    //    if (palname.IsEmpty())
-    //        return 0x483DCE;
-    //    hasext = true;
-    //}
-
-    //if (!hasext)
-    //    palname += ".pal";
-
-    //if (pals.find(palname.operator LPCTSTR()) == pals.end())
-    //{
-    //    CString path;
-    //    path = GlobalVars::ExePath();
-    //    path += palname;
-    //    auto const pMix = GlobalVars::Dialogs::CLoading()->SearchFile(palname);
-    //    if (!CMixFile::ExtractFile(palname, path, pMix))
-    //        return 0x483DCE;
-    //    auto pPal = LoadPalette(path, 0);
-    //    DeleteFile(path);
-    //    pals[palname.operator LPCTSTR()] = pPal;
-    //}
-
-    //pPalette = pals[palname.operator LPCTSTR()];
-
-    CString path = GlobalVars::ExePath();
-    path += "\\TmpPalette.pal";
-    CMixFile::ExtractFile("_ID2124019542", "", GlobalVars::Dialogs::CLoading()->MIX_CACHE);
-
-    return 0x483DCE;
-}
+//DEFINE_HOOK(483D7A, CLoading_CreateImage_Palette, 5)
+//{
+//
+//
+//    //static std::unordered_map<std::string, Palette*> pals;
+//
+//    ////GET_STACK(CString, pRegName, STACK_OFFS(0x868, -0x4));
+//    //GET(CLoading*, pThis, EDI);
+//    //GET_STACK(CString, pSection, STACK_OFFS(0x868, 0x20));
+//    //GET_STACK(Palette*, pPalette, STACK_OFFS(0x868, 0x50));
+//    ////Logger::Debug(__FUNCTION__ " pRegName = %s\n", pSection);
+//    //
+//    //auto& art = GlobalVars::INIFiles::Art();
+//    //CString palname = art.GetString(pSection, "Palette");
+//    //
+//    //bool hasext = false;
+//    //if (palname.IsEmpty())
+//    //{
+//    //    palname = art.GetString(pSection, "CustomPalette");
+//    //    if (palname.IsEmpty())
+//    //        return 0x483DCE;
+//    //    hasext = true;
+//    //}
+//
+//    //if (!hasext)
+//    //    palname += ".pal";
+//
+//    //if (pals.find(palname.operator LPCTSTR()) == pals.end())
+//    //{
+//    //    CString path;
+//    //    path = GlobalVars::ExePath();
+//    //    path += palname;
+//    //    auto const pMix = GlobalVars::Dialogs::CLoading()->SearchFile(palname);
+//    //    if (!CMixFile::ExtractFile(palname, path, pMix))
+//    //        return 0x483DCE;
+//    //    auto pPal = LoadPalette(path, 0);
+//    //    DeleteFile(path);
+//    //    pals[palname.operator LPCTSTR()] = pPal;
+//    //}
+//
+//    //pPalette = pals[palname.operator LPCTSTR()];
+//
+//    CString path = GlobalVars::ExePath();
+//    path += "\\TmpPalette.pal";
+//    CMixFile::ExtractFile("_ID2124019542", "", GlobalVars::Dialogs::CLoading()->MIX_CACHE);
+//
+//    return 0x483DCE;
+//}
 
 //
 //DEFINE_HOOK(4943BE, Hook_494350, 5)

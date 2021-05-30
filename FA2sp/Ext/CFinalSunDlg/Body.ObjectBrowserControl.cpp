@@ -7,6 +7,7 @@
 
 #include <GlobalVars.h>
 #include <CINI.h>
+#include <CMapData.h>
 
 MultimapHelper ObjectBrowserControlExt::mmh { &GlobalVars::INIFiles::Rules(), &GlobalVars::INIFiles::CurrentDocument() };
 std::array<HTREEITEM, ObjectBrowserControlExt::Root_Count> ObjectBrowserControlExt::ExtNodes;
@@ -35,7 +36,7 @@ ppmfc::CString ObjectBrowserControlExt::QueryUIName(const char* pRegName)
     if (ForceName.find(pRegName) != ForceName.end())
         return mmh.GetString(pRegName, "Name", pRegName);
     else
-        return CSFQuery::GetUIName(pRegName); 
+        return GlobalVars::CMapData().GetUIName(pRegName);
 }
 
 void ObjectBrowserControlExt::Redraw()
