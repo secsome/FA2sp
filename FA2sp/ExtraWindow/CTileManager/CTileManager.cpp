@@ -248,7 +248,7 @@ void CTileManager::UpdateDetails(HWND hWnd, int kNode)
             Logger::Warn("No map was loaded or theater is invalid, [Map] Theater = %s\n.", theater);
             return;
         }
-        CString text, buffer;
+        ppmfc::CString text, buffer;
         for (auto& x : CTileManager::Datas[kNode])
         {
             int data = SendMessage(hTileComboBox, CB_GETITEMDATA, x, NULL);

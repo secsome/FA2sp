@@ -15,10 +15,10 @@ public:
 
     INIClass* GetINIAt(int idx);
 
-    CString GetString(const char* pSection, const char* pKey, const char* pDefault = "");
+    ppmfc::CString GetString(const char* pSection, const char* pKey, const char* pDefault = "");
 
-    std::vector<CString> ParseIndicies(const char* pSection, bool bParseIntoValue = false);
-    std::map<CString, CString, INISectionEntriesComparator> GetSection(const char* pSection);
+    std::vector<ppmfc::CString> ParseIndicies(const char* pSection, bool bParseIntoValue = false);
+    std::map<ppmfc::CString, ppmfc::CString, INISectionEntriesComparator> GetSection(const char* pSection);
 
 private:
     std::vector<INIClass*> data;

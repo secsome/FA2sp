@@ -30,7 +30,7 @@ INIClass* MultimapHelper::GetINIAt(int idx)
     return data.at(idx);
 }
 
-CString MultimapHelper::GetString(const char* pSection, const char* pKey, const char* pDefault)
+ppmfc::CString MultimapHelper::GetString(const char* pSection, const char* pKey, const char* pDefault)
 {
     for (auto& ini : data)
     {
@@ -41,12 +41,12 @@ CString MultimapHelper::GetString(const char* pSection, const char* pKey, const 
     return pDefault;
 }
 
-std::vector<CString> MultimapHelper::ParseIndicies(const char* pSection, bool bParseIntoValue)
+std::vector<ppmfc::CString> MultimapHelper::ParseIndicies(const char* pSection, bool bParseIntoValue)
 {
-    std::vector<CString> ret;
-    std::map<unsigned int, CString> tmp;
-    std::map<CString, unsigned int> tmp2;
-    std::map<CString, CString> tmp3; // Value - Key
+    std::vector<ppmfc::CString> ret;
+    std::map<unsigned int, ppmfc::CString> tmp;
+    std::map<ppmfc::CString, unsigned int> tmp2;
+    std::map<ppmfc::CString, ppmfc::CString> tmp3; // Value - Key
     std::map<unsigned int, INIClass*> belonging;
 
     for (auto& pINI : data)
@@ -56,7 +56,7 @@ std::vector<CString> MultimapHelper::ParseIndicies(const char* pSection, bool bP
             auto& cur = pINI->ParseIndiciesData(pSection);
             for (auto& pair : cur)
             {
-                CString value = pINI->GetString(pSection, pair.second, pair.second);
+                ppmfc::CString value = pINI->GetString(pSection, pair.second, pair.second);
                 auto& unitr = tmp2.find(value);
                 if (unitr == tmp2.end())
                 {
@@ -87,11 +87,11 @@ std::vector<CString> MultimapHelper::ParseIndicies(const char* pSection, bool bP
     return ret;
 }
 
-std::map<CString, CString, INISectionEntriesComparator> MultimapHelper::GetSection(const char* pSection)
+std::map<ppmfc::CString, ppmfc::CString, INISectionEntriesComparator> MultimapHelper::GetSection(const char* pSection)
 {
-    std::map<CString, CString, INISectionEntriesComparator> ret;
+    std::map<ppmfc::CString, ppmfc::CString, INISectionEntriesComparator> ret;
     int index = 0;
-    CString tmp;
+    ppmfc::CString tmp;
     for (auto& pINI : data)
         if (pINI)
             if (auto section = pINI->GetSection(pSection))

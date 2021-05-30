@@ -67,7 +67,7 @@ public:
     void Redraw();
     int UpdateEngine(int nData);
 
-    CString QueryUIName(const char* pRegName);
+    ppmfc::CString QueryUIName(const char* pRegName);
 
 public:
     /// <summary>

@@ -14,7 +14,7 @@ class CScriptTypesFunctions
 public:
 
 // 1
-static void CScriptTypes_LoadParams_Target(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Target(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -32,7 +32,7 @@ static void CScriptTypes_LoadParams_Target(CComboBox& comboBox)
 }
 
 // 2
-static void CScriptTypes_LoadParams_Waypoint(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Waypoint(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -61,7 +61,7 @@ static void CScriptTypes_LoadParams_Waypoint(CComboBox& comboBox)
 }
 
 // 3
-static void CScriptTypes_LoadParams_ScriptLine(CComboBox& comboBox, CComboBox& currentScript, CListBox& listBox)
+static void CScriptTypes_LoadParams_ScriptLine(ppmfc::CComboBox& comboBox, ppmfc::CComboBox& currentScript, CListBox& listBox)
 {
     int cnt = listBox.GetCount();
     // up to 50
@@ -72,7 +72,7 @@ static void CScriptTypes_LoadParams_ScriptLine(CComboBox& comboBox, CComboBox& c
 
     auto& doc = GlobalVars::INIFiles::CurrentDocument();
 
-    CString buffer, scriptName, parambuf;
+    ppmfc::CString buffer, scriptName, parambuf;
     currentScript.GetLBText(currentScript.GetCurSel(), scriptName);
     STDHelpers::TrimIndex(scriptName);
 
@@ -92,7 +92,7 @@ static void CScriptTypes_LoadParams_ScriptLine(CComboBox& comboBox, CComboBox& c
 }
 
 // 4
-static void CScriptTypes_LoadParams_SplitGroup(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_SplitGroup(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
     
@@ -103,7 +103,7 @@ static void CScriptTypes_LoadParams_SplitGroup(CComboBox& comboBox)
 }
 
 // 5
-static void CScriptTypes_LoadParams_GlobalVariables(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_GlobalVariables(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -124,7 +124,7 @@ static void CScriptTypes_LoadParams_GlobalVariables(CComboBox& comboBox)
 }
 
 // 6
-static void CScriptTypes_LoadParams_ScriptTypes(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_ScriptTypes(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -147,7 +147,7 @@ static void CScriptTypes_LoadParams_ScriptTypes(CComboBox& comboBox)
 }
 
 // 7
-static void CScriptTypes_LoadParams_TeamTypes(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_TeamTypes(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -170,13 +170,13 @@ static void CScriptTypes_LoadParams_TeamTypes(CComboBox& comboBox)
 }
 
 // 8
-static void CScriptTypes_LoadParams_Houses(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Houses(ppmfc::CComboBox& comboBox)
 {
     ControlHelpers::ComboBox::LoadHouses(comboBox, true);
 }
 
 // 9
-static void CScriptTypes_LoadParams_Speechs(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Speechs(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -198,7 +198,7 @@ static void CScriptTypes_LoadParams_Speechs(CComboBox& comboBox)
 }
 
 // 10
-static void CScriptTypes_LoadParams_Sounds(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Sounds(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -219,7 +219,7 @@ static void CScriptTypes_LoadParams_Sounds(CComboBox& comboBox)
 }
 
 // 11
-static void CScriptTypes_LoadParams_Movies(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Movies(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -240,7 +240,7 @@ static void CScriptTypes_LoadParams_Movies(CComboBox& comboBox)
 }
 
 // 12
-static void CScriptTypes_LoadParams_Themes(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Themes(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -261,13 +261,13 @@ static void CScriptTypes_LoadParams_Themes(CComboBox& comboBox)
 }
 
 // 13
-static void CScriptTypes_LoadParams_Countries(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Countries(ppmfc::CComboBox& comboBox)
 {
     ControlHelpers::ComboBox::LoadCountries(comboBox, true);
 }
 
 // 14
-static void CScriptTypes_LoadParams_LocalVariables(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_LocalVariables(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -287,7 +287,7 @@ static void CScriptTypes_LoadParams_LocalVariables(CComboBox& comboBox)
 }
 
 // 15
-static void CScriptTypes_LoadParams_Facing(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Facing(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -302,19 +302,19 @@ static void CScriptTypes_LoadParams_Facing(CComboBox& comboBox)
 }
 
 // 16
-static void CScriptTypes_LoadParams_BuildingTypes(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_BuildingTypes(ppmfc::CComboBox& comboBox)
 {
     ControlHelpers::ComboBox::LoadGenericList(comboBox, "BuildingTypes", true, true);
 }
 
 // 17
-static void CScriptTypes_LoadParams_Animations(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Animations(ppmfc::CComboBox& comboBox)
 {
     ControlHelpers::ComboBox::LoadGenericList(comboBox, "Animations", true, true);
 }
 
 // 18
-static void CScriptTypes_LoadParams_TalkBubble(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_TalkBubble(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -325,7 +325,7 @@ static void CScriptTypes_LoadParams_TalkBubble(CComboBox& comboBox)
 }
 
 // 19
-static void CScriptTypes_LoadParams_Status(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Status(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
@@ -376,7 +376,7 @@ static void CScriptTypes_LoadParams_Status(CComboBox& comboBox)
 }
 
 // 20
-static void CScriptTypes_LoadParams_Boolean(CComboBox& comboBox)
+static void CScriptTypes_LoadParams_Boolean(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 

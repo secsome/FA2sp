@@ -25,12 +25,12 @@ HTREEITEM ObjectBrowserControlExt::InsertString(const char* pString, DWORD dwIte
 HTREEITEM ObjectBrowserControlExt::InsertTranslatedString(const char* pOriginString, DWORD dwItemData,
     HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
-    CString buffer;
+    ppmfc::CString buffer;
     bool result = Translations::GetTranslationItem(pOriginString, buffer);
     return InsertString(result ? buffer : pOriginString, dwItemData, hParent, hInsertAfter);
 }
 
-CString ObjectBrowserControlExt::QueryUIName(const char* pRegName)
+ppmfc::CString ObjectBrowserControlExt::QueryUIName(const char* pRegName)
 {
     if (ForceName.find(pRegName) != ForceName.end())
         return mmh.GetString(pRegName, "Name", pRegName);

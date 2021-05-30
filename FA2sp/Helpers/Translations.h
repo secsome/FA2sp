@@ -15,7 +15,7 @@ public:
 class Translations
 {
 public:
-    static bool GetTranslationItem(const char* pLabelName, CString& ret);
+    static bool GetTranslationItem(const char* pLabelName, ppmfc::CString& ret);
     static char pLanguage[4][0x400];
 };
 

@@ -47,13 +47,13 @@ public:
             strcmp(pSource, "<none>") != 0;
     }
 
-    static void TrimString(CString& str)
+    static void TrimString(ppmfc::CString& str)
     {
         str.TrimLeft();
         str.TrimRight();
     }
 
-    static void TrimIndex(CString& str)
+    static void TrimIndex(ppmfc::CString& str)
     {
         TrimString(str);
         int spaceIndex = str.Find(' ');

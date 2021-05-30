@@ -46,14 +46,14 @@ BOOL CTeamTypesExt::OnInitDialogExt()
 
 	auto TranslateDlgItem = [this](int nID, const char* lpKey)
 	{
-		CString buffer;
+		ppmfc::CString buffer;
 		if (Translations::GetTranslationItem(lpKey, buffer))
 			this->SetDlgItemText(nID, buffer);
 	};
 
 	auto TranslateCItem = [](CWnd* pWnd, const char* lpKey)
 	{
-		CString buffer;
+		ppmfc::CString buffer;
 		if (Translations::GetTranslationItem(lpKey, buffer))
 			pWnd->SetWindowText(buffer);
 	};

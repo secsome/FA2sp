@@ -1,7 +1,7 @@
 #include "MutexHelper.h"
 
 namespace MutexHelper {
-	bool Attach(CString MutexVal) {
+	bool Attach(ppmfc::CString MutexVal) {
 		_Mutex = CreateMutex(NULL, TRUE, MutexVal);
 		DWORD dwError = GetLastError();
 		if (_Mutex && dwError != ERROR_ALREADY_EXISTS)

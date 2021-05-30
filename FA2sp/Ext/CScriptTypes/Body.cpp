@@ -144,14 +144,14 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 
 	auto TranslateDlgItem = [this](int nID, const char* lpKey)
 	{
-		CString buffer;
+		ppmfc::CString buffer;
 		if (Translations::GetTranslationItem(lpKey, buffer))
 			this->SetDlgItemText(nID, buffer);
 	};
 
 	auto TranslateCItem = [](CWnd* pWnd, const char* lpKey)
 	{
-		CString buffer;
+		ppmfc::CString buffer;
 		if (Translations::GetTranslationItem(lpKey, buffer))
 			pWnd->SetWindowText(buffer);
 	};
@@ -278,7 +278,7 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 void CScriptTypesExt::OnLBScriptActionsSelectChanged()
 {
 	auto& doc = GlobalVars::INIFiles::CurrentDocument();
-	CString scriptId ,buffer, tmp;
+	ppmfc::CString scriptId ,buffer, tmp;
 	int scriptIndex, listIndex, actionIndex, selectIndex, L, R, M;
 
 	scriptIndex = this->CCBCurrentScript.GetCurSel();
@@ -335,7 +335,7 @@ void CScriptTypesExt::OnLBScriptActionsSelectChanged()
 void CScriptTypesExt::OnCBCurrentActionEditChanged()
 {
 	auto& doc = *GlobalVars::CMapData()->UpdateCurrentDocument();
-	CString scriptId, buffer, listStr, tmp;
+	ppmfc::CString scriptId, buffer, listStr, tmp;
 	int scriptIndex, listIndex, actionIndex, actionData;
 
 	scriptIndex = this->CCBCurrentScript.GetCurSel();
@@ -374,7 +374,7 @@ void CScriptTypesExt::OnCBCurrentActionEditChanged()
 void CScriptTypesExt::OnCBScriptParameterEditChanged()
 {
 	auto& doc = GlobalVars::INIFiles::CurrentDocument();
-	CString scriptId, buffer, listStr, paramStr, tmp;
+	ppmfc::CString scriptId, buffer, listStr, paramStr, tmp;
 	int scriptIndex, listIndex, actionIndex;
 
 	scriptIndex = this->CCBCurrentScript.GetCurSel();
@@ -473,7 +473,7 @@ void CScriptTypesExt::OnBNCloneScriptClicked()
 	int nCurSel = this->CCBCurrentScript.GetCurSel();
 	if (nCurSel >= 0)
 	{
-		CString label;
+		ppmfc::CString label;
 		this->CCBCurrentScript.GetLBText(nCurSel, label);
 		STDHelpers::TrimIndex(label);
 		INISection copied(*doc.GetSection(label));
@@ -505,7 +505,7 @@ void CScriptTypesExt::OnBNCloneScriptClicked()
 			;
 		auto scripttypes = doc.GetSection("ScriptTypes");
 		for (auto& x : scripttypes->EntitiesDictionary)
-			this->CCBCurrentScript.AddString((CString)x.second + " (" + doc.GetString(x.second, "Name") + ")");
+			this->CCBCurrentScript.AddString((ppmfc::CString)x.second + " (" + doc.GetString(x.second, "Name") + ")");
 		int idx = scripts.FindString(0, id);
 		scripts.SetCurSel(idx);
 		this->SetDlgItemText(1010, name);

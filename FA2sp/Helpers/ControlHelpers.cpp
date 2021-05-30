@@ -7,12 +7,12 @@
 
 namespace ControlHelpers
 {
-    void ComboBox::Clear(CComboBox& combobox)
+    void ComboBox::Clear(ppmfc::CComboBox& combobox)
     {
         while (combobox.DeleteString(0) != -1);
     }
 
-    void ComboBox::LoadHouses(CComboBox& combobox, bool bShowIndex)
+    void ComboBox::LoadHouses(ppmfc::CComboBox& combobox, bool bShowIndex)
     {
         ComboBox::Clear(combobox);
 
@@ -59,7 +59,7 @@ namespace ControlHelpers
         }
     }
 
-    void ComboBox::LoadCountries(CComboBox& combobox, bool bShowIndex)
+    void ComboBox::LoadCountries(ppmfc::CComboBox& combobox, bool bShowIndex)
     {
         ComboBox::Clear(combobox);
         auto& doc = GlobalVars::INIFiles::CurrentDocument();
@@ -86,7 +86,7 @@ namespace ControlHelpers
         }
     }
 
-    void ComboBox::LoadGenericList(CComboBox& combobox, const char* pSection, bool bShowRegName, bool bShowIndex)
+    void ComboBox::LoadGenericList(ppmfc::CComboBox& combobox, const char* pSection, bool bShowRegName, bool bShowIndex)
     {
         ComboBox::Clear(combobox);
 

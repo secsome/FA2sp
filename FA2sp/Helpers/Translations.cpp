@@ -37,7 +37,7 @@ void FinalAlertConfig::WriteString(const char* pSection, const char* pKey, const
 };
 
 char Translations::pLanguage[4][0x400];
-bool Translations::GetTranslationItem(const char* pLabelName, CString& ret)
+bool Translations::GetTranslationItem(const char* pLabelName, ppmfc::CString& ret)
 {
     auto& falanguage = GlobalVars::INIFiles::FALanguage();
 
