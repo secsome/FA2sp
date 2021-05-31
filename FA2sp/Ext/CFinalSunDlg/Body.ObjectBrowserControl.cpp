@@ -36,7 +36,7 @@ ppmfc::CString ObjectBrowserControlExt::QueryUIName(const char* pRegName)
     if (ForceName.find(pRegName) != ForceName.end())
         return mmh.GetString(pRegName, "Name", pRegName);
     else
-        return GlobalVars::CMapData().GetUIName(pRegName);
+        return CMapData::GetUIName(pRegName);
 }
 
 void ObjectBrowserControlExt::Redraw()
