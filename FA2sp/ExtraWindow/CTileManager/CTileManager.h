@@ -30,8 +30,8 @@ public:
     static void UpdateDetails(HWND hWnd, int kNode = Nodes_RemoveFlag);
 
 protected:
-    static void Initialize(HWND& hWnd);
-    static void Close(HWND& hWnd);
+    static void Initialize(HWND hWnd);
+    static void Close(HWND hWnd);
 
     static BOOL CALLBACK DlgProc(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 

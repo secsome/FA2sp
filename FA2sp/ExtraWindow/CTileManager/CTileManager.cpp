@@ -30,14 +30,14 @@ CTileManager::data_type CTileManager::Datas;
 void CTileManager::Create(CTileSetBrowserFrame* pWnd)
 {
     m_parent = pWnd;
-    m_hwnd = CreateDialog(
+    m_hwnd = ::CreateDialog(
         static_cast<HINSTANCE>(FA2sp::hInstance),
         MAKEINTRESOURCE(301),
         pWnd->DialogBar.GetSafeHwnd(),
         CTileManager::DlgProc
     );
     if (m_hwnd)
-        ShowWindow(m_hwnd, SW_SHOW);
+        ::ShowWindow(m_hwnd, SW_SHOW);
     else
     {
         Logger::Error("Failed to create CTileManager.\n");
@@ -46,19 +46,19 @@ void CTileManager::Create(CTileSetBrowserFrame* pWnd)
         
 }
 
-void CTileManager::Initialize(HWND& hWnd)
+void CTileManager::Initialize(HWND hWnd)
 {
     HWND hTileTypes = GetDlgItem(hWnd, 6100); 
 
     for (auto& x : CTileManager::Nodes)
-        SendMessage(hTileTypes, LB_ADDSTRING, NULL, (LPARAM)x);
+        ::SendMessage(hTileTypes, LB_ADDSTRING, NULL, (LPARAM)x);
 
     UpdateTypes(hWnd);
 }
 
-void CTileManager::Close(HWND& hWnd)
+void CTileManager::Close(HWND hWnd)
 {
-    EndDialog(hWnd, NULL);
+    ::EndDialog(hWnd, NULL);
     CTileManager::m_hwnd = NULL;
     CTileManager::m_parent = NULL;
     for (auto& vec : CTileManager::Datas)
@@ -106,13 +106,13 @@ BOOL CALLBACK CTileManager::DlgProc(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM l
 void CTileManager::TypesProc(HWND hWnd, WORD nCode, LPARAM lParam)
 {
     HWND hListBox = reinterpret_cast<HWND>(lParam);
-    if (SendMessage(hListBox, LB_GETCOUNT, NULL, NULL) <= 0)
+    if (::SendMessage(hListBox, LB_GETCOUNT, NULL, NULL) <= 0)
         return;
     switch (nCode)
     {
     case LBN_SELCHANGE:
     case LBN_DBLCLK:
-        UpdateDetails(hWnd, SendMessage(hListBox, LB_GETCURSEL, NULL, NULL));
+        UpdateDetails(hWnd, ::SendMessage(hListBox, LB_GETCURSEL, NULL, NULL));
         break;
     default:
         break;
@@ -126,25 +126,24 @@ void CTileManager::DetailsProc(HWND hWnd, WORD nCode, LPARAM lParam)
         return;
 
     HWND hParent = m_parent->DialogBar.GetSafeHwnd();
-    HWND hTileComboBox = GetDlgItem(hParent, 1366);
+    HWND hTileComboBox = ::GetDlgItem(hParent, 1366);
 
     switch (nCode)
     {
     case LBN_SELCHANGE:
     case LBN_DBLCLK:
-        SendMessage(
+        ::SendMessage(
             hTileComboBox,
             CB_SETCURSEL,
-
-            SendMessage(
+            ::SendMessage(
                 hListBox,
                 LB_GETITEMDATA,
-                SendMessage(hListBox, LB_GETCURSEL, NULL, NULL),
+                ::SendMessage(hListBox, LB_GETCURSEL, NULL, NULL),
                 NULL
             ),
             NULL
         );
-        SendMessage(hParent, WM_COMMAND, MAKEWPARAM(1366, CBN_SELCHANGE), (LPARAM)hTileComboBox);
+        ::SendMessage(hParent, WM_COMMAND, MAKEWPARAM(1366, CBN_SELCHANGE), (LPARAM)hTileComboBox);
         break;
     default:
         break;
@@ -154,8 +153,8 @@ void CTileManager::DetailsProc(HWND hWnd, WORD nCode, LPARAM lParam)
 void CTileManager::UpdateTypes(HWND hWnd)
 {
     HWND hParent = m_parent->DialogBar.GetSafeHwnd();
-    HWND hTileComboBox = GetDlgItem(hParent, 1366);
-    int nTileCount = SendMessage(hTileComboBox, CB_GETCOUNT, NULL, NULL);
+    HWND hTileComboBox = ::GetDlgItem(hParent, 1366);
+    int nTileCount = ::SendMessage(hTileComboBox, CB_GETCOUNT, NULL, NULL);
     if (nTileCount <= 0)
         return;
 
@@ -183,7 +182,7 @@ void CTileManager::UpdateTypes(HWND hWnd)
     CString tile;
     for (int idx = 0; idx < nTileCount; ++idx)
     {
-        int nTile = SendMessage(hTileComboBox, CB_GETITEMDATA, idx, NULL);
+        int nTile = ::SendMessage(hTileComboBox, CB_GETITEMDATA, idx, NULL);
         tile.Format("TileSet%04d", nTile);
         tile = pTheaterINI->GetString(tile, "SetName", "NO NAME");
         bool other = true;
@@ -221,9 +220,9 @@ void CTileManager::UpdateTypes(HWND hWnd)
 void CTileManager::UpdateDetails(HWND hWnd, int kNode)
 {
     HWND hParent = m_parent->DialogBar.GetSafeHwnd();
-    HWND hTileComboBox = GetDlgItem(hParent, 1366);
-    HWND hTileDetails = GetDlgItem(hWnd, 6101);
-    while (SendMessage(hTileDetails, LB_DELETESTRING, 0, NULL) != LB_ERR);
+    HWND hTileComboBox = ::GetDlgItem(hParent, 1366);
+    HWND hTileDetails = ::GetDlgItem(hWnd, 6101);
+    while (::SendMessage(hTileDetails, LB_DELETESTRING, 0, NULL) != LB_ERR);
     if (kNode == Nodes_RemoveFlag)
         return;
     else
@@ -251,15 +250,15 @@ void CTileManager::UpdateDetails(HWND hWnd, int kNode)
         ppmfc::CString text, buffer;
         for (auto& x : CTileManager::Datas[kNode])
         {
-            int data = SendMessage(hTileComboBox, CB_GETITEMDATA, x, NULL);
+            int data = ::SendMessage(hTileComboBox, CB_GETITEMDATA, x, NULL);
             text.Format("TileSet%04d", data);
             text = pTheaterINI->GetString(text, "SetName", "NO NAME");
             Translations::GetTranslationItem(text, text);
             buffer.Format("(%04d) %s", data, text);
-            SendMessage(
+            ::SendMessage(
                 hTileDetails, 
                 LB_SETITEMDATA, 
-                SendMessage(hTileDetails, LB_ADDSTRING, NULL, (LPARAM)(LPCSTR)buffer), 
+                ::SendMessage(hTileDetails, LB_ADDSTRING, NULL, (LPARAM)(LPCSTR)buffer), 
                 x
             );
         }

@@ -27,7 +27,7 @@ int ExtConfigs::AdjustDropdownWidth_Max;
 int ExtConfigs::CopySelectionBound_Color;
 int ExtConfigs::CursorSelectionBound_Color;
 int ExtConfigs::CursorSelectionBound_HeightColor;
-
+bool ExtConfigs::EnableSearch;
 
 DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
 {
@@ -62,6 +62,8 @@ void FA2sp::ExtConfigsInitialize()
 		fadata.GetColor("ExtConfigs", "CursorSelectionBound.Color", 0x3CA03C);
 	ExtConfigs::CursorSelectionBound_HeightColor = 
 		fadata.GetColor("ExtConfigs", "CursorSelectionBound.HeightIndicatorColor", 0x3C3C3C);
+
+	ExtConfigs::EnableSearch = fadata.GetBool("ExtConfigs", "EnableSearch");
 }
 
 // DllMain

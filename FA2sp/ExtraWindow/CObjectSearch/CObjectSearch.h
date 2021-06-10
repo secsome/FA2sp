@@ -11,8 +11,13 @@ public:
         { return CObjectSearch::m_hwnd; }
     static void Create(CFinalSunDlg* pParent);
 
-    // TODO
-    static BOOL JumpToCoord(CWnd* pWnd, int X, int Y);
+    static void MoveToCoord(CIsoView* pWnd, int X, int Y);
+
+protected:
+    static void Initialize(HWND hWnd);
+    static void Close(HWND hWnd);
+
+    static BOOL CALLBACK DlgProc(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 
 private:
     static HWND m_hwnd;

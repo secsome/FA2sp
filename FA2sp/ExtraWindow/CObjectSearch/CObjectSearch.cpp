@@ -8,51 +8,70 @@
 HWND CObjectSearch::m_hwnd;
 CFinalSunDlg* CObjectSearch::m_parent;
 
-BOOL CObjectSearch::JumpToCoord(CWnd* pWnd, int X, int Y)
+void CObjectSearch::Create(CFinalSunDlg* pParent)
 {
-    struct HelperView : public CView
+    m_parent = pParent;
+    m_hwnd = CreateDialog(
+        static_cast<HINSTANCE>(FA2sp::hInstance),
+        MAKEINTRESOURCE(302),
+        *pParent,
+        CObjectSearch::DlgProc
+    );
+    if (m_hwnd)
+        ::ShowWindow(m_hwnd, SW_SHOW);
+    else
     {
-    public:
-        int sub_4763D0(int a2, int a3)
-            { JMP_THIS(0x4763D0); }
-    };
-
-    if (pWnd)
-    {
-        //HelperView* pIsoView = reinterpret_cast<HelperView*>(m_parent + 0x2158);
-        HelperView* pIsoView = reinterpret_cast<HelperView*>(pWnd);
-        int nHW = GlobalVars::CurrentMapWidthPlusHeight();
-        int nParam = X + Y * nHW;
-        RECT rect;
-        ::GetWindowRect(pIsoView->GetSafeHwnd(), &rect);
-        int v6 = (60 * (nParam % nHW)) / 4
-            + (30 * (nParam / nHW)) / 2
-            - 30
-            * *(unsigned __int8*)(((nParam % nHW
-                + nParam / nHW * nHW) << 6)
-                + *reinterpret_cast<DWORD*>(0x7ACDB8)
-                + 51)
-            / 2;
-        pIsoView->sub_4763D0(
-            30 * (nHW + (nParam / nHW)) - (rect.right - rect.left) / 2 - (30 * (nParam % nHW)) - rect.left,
-            v6 - (rect.bottom - rect.top) / 2 - rect.top
-        );
-        return ::RedrawWindow(pIsoView->GetSafeHwnd(), 0, 0, 0x101);
+        Logger::Error("Failed to create CObjectSearch.\n");
+        m_parent = NULL;
     }
-    return FALSE;
 }
 
-//DEFINE_HOOK(4766A0, sub_4766A0, 6)
-//{
-//    GET(CWnd*, pWnd, ECX);
-//    GET(int, nWP, EAX);
-//    auto& doc = GlobalVars::INIFiles::CurrentDocument();
-//    CString lpWaypoint;
-//    lpWaypoint.Format("%d", nWP);
-//    int nCoord = doc.GetInteger("Waypoints", lpWaypoint, -1);
-//    if (lpWaypoint == -1)
-//        return 0;
-//    R->EAX(CObjectSearch::JumpToCoord(pWnd, GET_COORD_X(nCoord), GET_COORD_Y(nCoord)));
-//
-//    return 0x4767A2;
-//}
+void CObjectSearch::MoveToCoord(CIsoView* pWnd, int X, int Y)
+{
+    if (pWnd)
+        pWnd->MoveToCoord(X, Y);
+}
+
+void CObjectSearch::Initialize(HWND hWnd)
+{
+
+}
+
+void CObjectSearch::Close(HWND hWnd)
+{
+    ::EndDialog(hWnd, NULL);
+    CObjectSearch::m_hwnd = NULL;
+    CObjectSearch::m_parent = NULL;
+}
+
+BOOL CObjectSearch::DlgProc(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+{
+    switch (Msg)
+    {
+    case WM_INITDIALOG:
+    {
+        CObjectSearch::Initialize(hwnd);
+        return TRUE;
+    }
+    case WM_COMMAND:
+    {
+        WORD ID = LOWORD(wParam);
+        WORD CODE = HIWORD(wParam);
+        switch (ID)
+        {
+        default:
+            break;
+        }
+        break;
+    }
+    case WM_CLOSE:
+    {
+        CObjectSearch::Close(hwnd);
+        return TRUE;
+    }
+
+    }
+
+    // Process this message through default handler
+    return FALSE;
+}
