@@ -48,9 +48,7 @@ DEFINE_HOOK(4E5F90, Waypoint_To_String, 7)
 		}
 		
 		// Call the CTOR
-		struct strHelper { void CTOR(LPCSTR lpsz) { JMP_THIS(0x555F7D); } };
-		reinterpret_cast<strHelper*>(pString)->CTOR(buffer.c_str());
-		
+		new(pString) ppmfc::CString(buffer.c_str());
 	}
 
 	R->EAX(pString);
