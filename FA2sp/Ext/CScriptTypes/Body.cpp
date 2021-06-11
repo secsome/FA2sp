@@ -23,11 +23,11 @@ BOOL CScriptTypesExt::PreTranslateMessageExt(MSG* pMsg)
 			bool bInsertMode = ::SendMessage(::GetDlgItem(*this, 6302), BM_GETCHECK, 0, 0) == BST_CHECKED;
 			::SendMessage(::GetDlgItem(*this, 6302), BM_SETCHECK, bInsertMode ? BST_UNCHECKED : BST_CHECKED, 0);
 		}
-		elif (pMsg->hwnd == this->GetDlgItem(1173)->GetSafeHwnd())
+		/*elif (pMsg->hwnd == this->GetDlgItem(1173)->GetSafeHwnd())
 		{
 			this->OnBNAddActionClickedExt();
 			return TRUE;
-		}
+		}*/
 			
 	}
 
