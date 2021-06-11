@@ -12,7 +12,7 @@ C++ Standard: C++20
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-======================= Changes (2021-xx-xx) ==============================================================================================
+======================= Changes (2021-06-11) ==============================================================================================
 +) New ExtConfig: ExtWaypoints = BOOLEAN, enable it to support no limitation of waypoints, defaults to false (Phobos required)
 +) New ExtConfig: Waypoint.Background = BOOLEAN, enable it to draw a background rectangle for waypoints, defaults to false
     +) New ExtConfig: Waypoint.Background.Color = COLORREF, custom the waypoint background color
