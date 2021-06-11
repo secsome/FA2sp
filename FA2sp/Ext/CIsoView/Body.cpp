@@ -4,8 +4,7 @@
 
 void CIsoViewExt::ProgramStartupInit()
 {
-    auto addr = &CIsoViewExt::PreTranslateMessageExt;
-    RunTime::ResetMemoryContentAt(0x594518, &addr, 4);
+    // RunTime::ResetMemoryContentAt(0x594518, CIsoViewExt::PreTranslateMessageExt);
 }
 
 BOOL CIsoViewExt::PreTranslateMessageExt(MSG* pMsg)

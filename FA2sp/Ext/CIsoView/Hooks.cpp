@@ -106,27 +106,14 @@ DEFINE_HOOK(45ADD0, CIsoView_Draw_CursorSelectionBoundHeightColor, 6)
 	return 0;
 }
 
-//DEFINE_HOOK(474F36, CIsoView_OnPaint_WaypointColor, 5)
-//{
-//	CreatePen(0, 4, RGB(255, 255, 0));
-//	return 0x474F45;
-//}
+DEFINE_HOOK(474A49, CIsoView_Draw_WaypointColor, 5)
+{
+	GET(CIsoView*, pThis, EBP);
+	GET(int, X, ESI);
+	GET(int, Y, EDI);
+	GET_STACK(CString, s, STACK_OFFS(0xD18, 0xCE4));
 
+	pThis->DrawText(X + 15, Y + 7, s, ExtConfigs::WaypointColor);
 
-//DEFINE_HOOK(4704B0, CIsoView_OnPaint_DrawWaypoint, 5)
-//{
-//	Logger::Debug(__FUNCTION__" %s\n", R->EDX());
-//	return 0;
-//}
-
-//DEFINE_HOOK(5337DA, CDC_TextOutA, 6)
-//{
-//	Logger::Debug("Caller = %p, lpString = %s, color = %X\n", R->Stack<DWORD>(0), R->Stack<char*>(0xC), R->Stack<DWORD>(0x10));
-//	return 0;
-//}
-
-//DEFINE_HOOK(475093, CIsoView_OnPaint_Debug, 5)
-//{
-//	Logger::Debug("%s\n", R->EAX());
-//	return 0;
-//}
+	return 0x474A67;
+}

@@ -38,6 +38,7 @@ public:
     static int CopySelectionBound_Color;
     static int CursorSelectionBound_Color;
     static int CursorSelectionBound_HeightColor;
+    static int WaypointColor;
     static bool ExtWaypoints;
 };
 
