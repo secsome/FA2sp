@@ -1,6 +1,9 @@
 #include "../../FA2sp.h"
 
 #include <MFC/ppmfc_cstring.h>
+#include <GlobalVars.h>
+#include <CINI.h>
+#include <CTeamTypes.h>
 
 #include <string>
 
@@ -54,4 +57,26 @@ DEFINE_HOOK(4E5F90, Waypoint_To_String, 7)
 	R->EAX(pString);
 
 	return 0x4E60FA;
+}
+
+DEFINE_HOOK(4E97F4, CTeamTypes_OnCBCurrentTeamSelectChanged_String_To_Waypoint, 5)
+{
+	if (!ExtConfigs::ExtWaypoints)
+		return 0;
+
+	GET(CTeamTypes*, pThis, EBP);
+	REF_STACK(ppmfc::CString, lpWaypoint, STACK_OFFS(0x178, 0x160));
+
+	int n = 0;
+	int len = strlen(lpWaypoint);
+	for (int i = len - 1, j = 1; i >= 0; i--, j *= 26)
+	{
+		int c = toupper(lpWaypoint[i]);
+		if (c < 'A' || c > 'Z') return 0;
+		n += ((int)c - 64) * j;
+	}
+
+	pThis->CString_Waypoint.Format("%d", n - 1);
+
+	return 0x4E9890;
 }
