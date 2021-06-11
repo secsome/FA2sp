@@ -6,13 +6,14 @@ The codes might be a messy, so I'd appreciate it if someone could help me to mak
 To clone the submodules, just run update_codes.bat.
 
 SDK: Visual Studio 2017 - Windows XP (v141_xp)
-C++ Standard: C++14 (Higher standard conflicts with INIClass right now)
+C++ Standard: C++20
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ======================= Changes (2021-xx-xx) ==============================================================================================
++) New ExtConfig: ExtWaypoints = BOOLEAN, enable it to support no limitation of waypoints, defaults to false (Phobos required)
 +) New ExtConfig: CopySelectionBound.Color = COLORREF, custom the copy selection bound color, defaults to 255,0,0
 +) New ExtConfig: CursorSelectionBound.Color = COLORREF, same as the above one, defaults to 60,160,60
 +) New ExtConfig: CursorSelectionBound.HeightIndicatorColor = COLORREF, same as the above one, defaults to 60,60,60
@@ -64,7 +65,7 @@ For now, I cannot ensure the stability of it, so save your maps frequently befor
 
 - BASIC TYPES
 INTERGER - [-2147483648,2147483647]
-BOOLEAN - Yes/No True/False 1/0
+BOOLEAN - Yes/No ; True/False ; 1/0
 COLORREF - R,G,B each of them is in [0,255]
 
 - BEFORE LAUNCHING IT
@@ -85,6 +86,7 @@ COLORREF - R,G,B each of them is in [0,255]
             +) CopySelectionBound.Color = COLORREF ; Determines the color of the selection boundary while copying, defaults to 255,0,0
             +) CursorSelectionBound.Color = COLORREF ; Determines the color of the boundary for current cell, defaults to 60,160,60
             +) HeightIndicatorColor.Color = COLORREF ; Determines the color of the height indicator for current cell, defaults to 60,60,60
+            +) ExtWaypoints = BOOLEAN ; Determins if FA2sp supports unlimited count of waypoints, defaults to false (Phobos required)
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.
