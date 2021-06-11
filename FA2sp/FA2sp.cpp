@@ -27,7 +27,9 @@ int ExtConfigs::AdjustDropdownWidth_Max;
 int ExtConfigs::CopySelectionBound_Color;
 int ExtConfigs::CursorSelectionBound_Color;
 int ExtConfigs::CursorSelectionBound_HeightColor;
-int ExtConfigs::WaypointColor;
+int ExtConfigs::Waypoint_Color;
+bool ExtConfigs::Waypoint_Background;
+int ExtConfigs::Waypoint_Background_Color;
 bool ExtConfigs::ExtWaypoints;
 
 
@@ -64,8 +66,10 @@ void FA2sp::ExtConfigsInitialize()
 		fadata.GetColor("ExtConfigs", "CursorSelectionBound.Color", 0x3CA03C);
 	ExtConfigs::CursorSelectionBound_HeightColor = 
 		fadata.GetColor("ExtConfigs", "CursorSelectionBound.HeightIndicatorColor", 0x3C3C3C);
-	ExtConfigs::WaypointColor =
-		fadata.GetColor("ExtConfigs", "WaypointColor", 0xFF0000);
+
+	ExtConfigs::Waypoint_Color = fadata.GetColor("ExtConfigs", "Waypoint.Color", 0xFF0000);
+	ExtConfigs::Waypoint_Background = fadata.GetBool("ExtConfigs", "Waypoint.Background");
+	ExtConfigs::Waypoint_Background_Color = fadata.GetColor("ExtConfigs", "Waypoint.Background.Color", 0xFFFFFF);
 
 	ExtConfigs::ExtWaypoints = fadata.GetBool("ExtConfigs", "ExtWaypoints");
 }

@@ -113,7 +113,21 @@ DEFINE_HOOK(474A49, CIsoView_Draw_WaypointColor, 5)
 	GET(int, Y, EDI);
 	GET_STACK(CString, s, STACK_OFFS(0xD18, 0xCE4));
 
-	pThis->DrawText(X + 15, Y + 7, s, ExtConfigs::WaypointColor);
+	pThis->DrawText(X + 15, Y + 7, s, ExtConfigs::Waypoint_Color);
 
 	return 0x474A67;
+}
+
+DEFINE_HOOK(4685EA, CIsoView_DrawText, 9)
+{
+	if (ExtConfigs::Waypoint_Background)
+	{
+		GET(HDC, hdc, EDX);
+
+		SetBkColor(hdc, ExtConfigs::Waypoint_Background_Color);
+		SetBkMode(hdc, OPAQUE);
+
+		return 0x4685F3;
+	}
+	return 0;
 }

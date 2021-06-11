@@ -14,6 +14,7 @@ C++ Standard: C++20
 
 ======================= Changes (2021-xx-xx) ==============================================================================================
 +) New ExtConfig: ExtWaypoints = BOOLEAN, enable it to support no limitation of waypoints, defaults to false (Phobos required)
++) New ExtConfig: WaypointColor = COLORREF, custom the waypoint text color
 +) New ExtConfig: CopySelectionBound.Color = COLORREF, custom the copy selection bound color, defaults to 255,0,0
 +) New ExtConfig: CursorSelectionBound.Color = COLORREF, same as the above one, defaults to 60,160,60
 +) New ExtConfig: CursorSelectionBound.HeightIndicatorColor = COLORREF, same as the above one, defaults to 60,60,60
@@ -86,6 +87,7 @@ COLORREF - R,G,B each of them is in [0,255]
             +) CopySelectionBound.Color = COLORREF ; Determines the color of the selection boundary while copying, defaults to 255,0,0
             +) CursorSelectionBound.Color = COLORREF ; Determines the color of the boundary for current cell, defaults to 60,160,60
             +) HeightIndicatorColor.Color = COLORREF ; Determines the color of the height indicator for current cell, defaults to 60,60,60
+            +) WaypointColor = COLORREF ; Determines the color of waypoint texts, default to 0,0,255
             +) ExtWaypoints = BOOLEAN ; Determins if FA2sp supports unlimited count of waypoints, defaults to false (Phobos required)
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
