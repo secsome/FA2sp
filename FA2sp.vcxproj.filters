@@ -461,6 +461,9 @@
     <ClCompile Include="FA2sp\StaticPatcher.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FA2sp\Utils\Misc\Hooks.ExtWaypoints.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FA2sp\FA2sp.rc">

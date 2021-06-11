@@ -8,6 +8,7 @@
 
 #include "../../Helpers/STDHelpers.h"
 #include "../../Helpers/ControlHelpers.h"
+#include "../../FA2sp.h"
 
 class CScriptTypesFunctions
 {
@@ -37,27 +38,52 @@ static void CScriptTypes_LoadParams_Waypoint(ppmfc::CComboBox& comboBox)
     while (comboBox.DeleteString(0) != -1);
 
     auto& doc = GlobalVars::INIFiles::CurrentDocument();
-    int waypoints[702];
-    memset(waypoints, -1, sizeof waypoints);
-    if (auto entries = doc.GetSection("Waypoints"))
-        for (auto& x : entries->EntitiesDictionary)
-            if (x.first != "Name" && !STDHelpers::IsNullOrEmpty(x.second))
-            {
-                int l = atoi(x.first);
-                if (l <= 701 && l >= 0)
-                    waypoints[l] = atoi(x.second);
-            }
-    char buffer[0x20];
-    for (int i = 0; i < 702; ++i)
+    
+    if (!ExtConfigs::ExtWaypoints)
     {
-        if (waypoints[i] >= 0)
+        int waypoints[702];
+        memset(waypoints, -1, sizeof waypoints);
+        if (auto entries = doc.GetSection("Waypoints"))
+            for (auto& x : entries->EntitiesDictionary)
+                if (x.first != "Name" && !STDHelpers::IsNullOrEmpty(x.second))
+                {
+                    int l = atoi(x.first);
+                    if (l <= 701 && l >= 0)
+                        waypoints[l] = atoi(x.second);
+                }
+        char buffer[0x20];
+        for (int i = 0; i < 702; ++i)
         {
-            sprintf_s(buffer, "%u - (%u, %u)", 
-                i, waypoints[i] % 1000, waypoints[i] / 1000);
-            int idx = comboBox.AddString(buffer);
-            comboBox.SetItemData(idx, i);
+            if (waypoints[i] >= 0)
+            {
+                sprintf_s(buffer, "%u - (%u, %u)", i, waypoints[i] % 1000, waypoints[i] / 1000);
+                int idx = comboBox.AddString(buffer);
+                comboBox.SetItemData(idx, i);
+            }
         }
     }
+    else
+    {
+        std::map<int, int> waypoints;
+        if (auto entries = doc.GetSection("Waypoints"))
+            for (auto& x : entries->EntitiesDictionary)
+                if (x.first != "Name" && !STDHelpers::IsNullOrEmpty(x.second))
+                {
+                    int l = atoi(x.first);
+                    if (l >= 0)
+                        waypoints[l] = atoi(x.second);
+                }
+        ppmfc::CString buffer;
+        for (auto& pair : waypoints)
+        {
+            if (pair.second >= 0)
+            {
+                buffer.Format("%u - (%u, %u)", pair.first, pair.second % 1000, pair.second / 1000);
+                comboBox.SetItemData(comboBox.AddString(buffer), pair.first);
+            }
+        }
+    }
+    
 }
 
 // 3
