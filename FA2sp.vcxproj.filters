@@ -210,12 +210,6 @@
     <ClInclude Include="FA2sp\Helpers\Templates.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="FA2sp\StaticPatcher.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="FA2sp\StaticPatcher.Macro.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">
@@ -450,9 +444,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Utils\Hooks\Hooks.Performance.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="FA2sp\StaticPatcher.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Utils\Hooks\Hooks.ExtWaypoints.cpp">

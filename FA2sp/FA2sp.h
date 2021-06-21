@@ -47,4 +47,3 @@ namespace Constants
 {
     static constexpr int UndoRedoStep{ INT_MAX };
 };
-

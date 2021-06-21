@@ -253,7 +253,6 @@
     <ClCompile Include="FA2sp\Helpers\MutexHelper.cpp" />
     <ClCompile Include="FA2sp\Helpers\Translations.cpp" />
     <ClCompile Include="FA2sp\ExtraWindow\CTileManager\CTileManager.cpp" />
-    <ClCompile Include="FA2sp\StaticPatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FA2sp\Ext\CFinalSunDlg\Body.h" />
@@ -317,12 +316,10 @@
     <ClInclude Include="FA2sp\Helpers\Templates.hpp" />
     <ClInclude Include="FA2sp\Logger.h" />
     <ClInclude Include="FA2sp\RunTime.h" />
-    <ClInclude Include="FA2sp\StaticPatcher.Macro.h" />
     <ClInclude Include="FA2sp\UI\UIColor.h" />
     <ClInclude Include="FA2sp\Helpers\MutexHelper.h" />
     <ClInclude Include="FA2sp\Helpers\Translations.h" />
     <ClInclude Include="FA2sp\ExtraWindow\CTileManager\CTileManager.h" />
-    <ClInclude Include="FA2sp\StaticPatcher.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FA2sp\UI\CMenu.rc" />

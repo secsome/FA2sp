@@ -12,6 +12,9 @@ C++ Standard: C++20
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-??-??) ==============================================================================================
+*) Undo/Redo extended to 2147483647 steps, be careful about your memory.
+
 ======================= Changes (2021-06-11) ==============================================================================================
 +) New ExtConfig: ExtWaypoints = BOOLEAN, enable it to support no limitation of waypoints, defaults to false (Phobos required)
 +) New ExtConfig: Waypoint.Background = BOOLEAN, enable it to draw a background rectangle for waypoints, defaults to false
