@@ -30,17 +30,17 @@ DEFINE_HOOK(4BBAB8, CMapData_sub_4BB990, 6)
 {
 	GET(CMapData*, pThis, EBX);
 
-	++pThis->unknown_800D0;
-	++pThis->unknown_800CC;
+	++pThis->unknown_801D0;
+	++pThis->unknown_801CC;
 
-	R->ESI(pThis->unknown_800CC);
+	R->ESI(pThis->unknown_801CC);
 
-	if (pThis->unknown_800CC <= Constants::UndoRedoStep)	
+	if (pThis->unknown_801CC <= Constants::UndoRedoStep)	
 		return 0x4BBBB7;
 
 	R->EDX(pThis->UndoRedoData);
-	pThis->unknown_800CC = Constants::UndoRedoStep;
-	pThis->unknown_800D0 = Constants::UndoRedoStep - 1;
+	pThis->unknown_801CC = Constants::UndoRedoStep;
+	pThis->unknown_801D0 = Constants::UndoRedoStep - 1;
 	return 0x4BBAF7;
 }
 
