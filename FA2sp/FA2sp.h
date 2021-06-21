@@ -2,7 +2,6 @@
 
 #include "Logger.h"
 #include "Ext/FA2Expand.h"
-#include "Utils/Replacement.h"
 
 #include <Helpers\Macro.h>
 
@@ -42,5 +41,10 @@ public:
     static bool Waypoint_Background;
     static int Waypoint_Background_Color;
     static bool ExtWaypoints;
+};
+
+namespace Constants
+{
+    static constexpr int UndoRedoStep{ INT_MAX };
 };
 

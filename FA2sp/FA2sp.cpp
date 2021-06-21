@@ -125,7 +125,6 @@ DEFINE_HOOK(537129, ExeRun, 9)
 	Logger::Initialize();
 	Logger::Info(APPLY_INFO);
 	Logger::Wrap(1);
-	Replacement::HexFixes();
 	FA2Expand::ExeRun();
 	return 0;
 }
