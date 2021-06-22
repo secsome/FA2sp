@@ -24,8 +24,7 @@ DEFINE_HOOK(41FDDB, CFinalSunDlg_GetFilePath_2, 6)
 	return 0x41FDE9;
 }
 
-
-// Extend Undo/Redo limit to 128
+// Extend Undo/Redo limit to INT_MAX
 DEFINE_HOOK(4BBAB8, CMapData_sub_4BB990, 6)
 {
 	GET(CMapData*, pThis, EBX);

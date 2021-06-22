@@ -78,7 +78,7 @@ DEFINE_HOOK(469A69, CIsoView_UpdateOverlay_AutoConnect_2, 8)
 	if (nOverlayIndex >= 0 && nOverlayIndex <= 255)
 	{
 		auto& rules = GlobalVars::INIFiles::Rules();
-		CString key;
+		ppmfc::CString key;
 		key.Format("%d", nOverlayIndex);
 		auto pRegName = rules.GetString("OverlayTypes", key, "");
 		bool bWall = rules.GetBool(pRegName, "Wall", false);
