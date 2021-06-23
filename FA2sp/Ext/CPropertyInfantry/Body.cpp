@@ -4,10 +4,7 @@ CPropertyInfantry* CPropertyInfantryExt::Instance = nullptr;
 
 void CPropertyInfantryExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CPropertyInfantryExt::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x592388, &PreTranslateAddr, sizeof(PreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x592388, &CPropertyInfantryExt::PreTranslateMessageExt);
 }
 
 BOOL CPropertyInfantryExt::PreTranslateMessageExt(MSG* pMsg)

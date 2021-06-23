@@ -7,8 +7,7 @@
 
 void CTriggerFrameExt::ProgramStartupInit()
 {
-	auto addr2 = &CTriggerFrameExt::OnInitDialogExt;
-	RunTime::ResetMemoryContentAt(0x597BC4, &addr2, 4);
+	RunTime::ResetMemoryContentAt(0x597BC4, &CTriggerFrameExt::OnInitDialogExt);
 }
 
 BOOL CTriggerFrameExt::OnInitDialogExt()

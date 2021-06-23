@@ -7,8 +7,7 @@
 
 void CTriggerEventExt::ProgramStartupInit()
 {
-	auto addr2 = &CTriggerEventExt::OnInitDialogExt;
-	RunTime::ResetMemoryContentAt(0x597D44, &addr2, 4);
+	RunTime::ResetMemoryContentAt(0x597D44, &CTriggerEventExt::OnInitDialogExt);
 }
 
 BOOL CTriggerEventExt::OnInitDialogExt()

@@ -4,8 +4,7 @@
 
 void CTileSetBrowserFrameExt::ProgramStartupInit()
 {
-	auto addr = &CTileSetBrowserFrameExt::PreTranslateMessageExt;
-	RunTime::ResetMemoryContentAt(0x597458, &addr, 4);
+	RunTime::ResetMemoryContentAt(0x597458, &CTileSetBrowserFrameExt::PreTranslateMessageExt);
 }
 
 

@@ -4,10 +4,7 @@ CMapD* CMapDExt::Instance = nullptr;
 
 void CMapDExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto mapdPreTranslateAddr = &CMapDExt::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x594A40, &mapdPreTranslateAddr, sizeof(mapdPreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x594A40, &CMapDExt::PreTranslateMessageExt);
 }
 
 BOOL CMapDExt::PreTranslateMessageExt(MSG* pMsg)

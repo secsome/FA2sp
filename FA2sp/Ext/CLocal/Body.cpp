@@ -4,10 +4,7 @@ CLocal* CLocalExt::Instance = nullptr;
 
 void CLocalExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto localPreTranslateAddr = &CLocalExt::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x593B18, &localPreTranslateAddr, sizeof(localPreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x593B18, &CLocalExt::PreTranslateMessageExt);
 }
 
 BOOL CLocalExt::PreTranslateMessageExt(MSG* pMsg)

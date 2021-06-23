@@ -21,10 +21,8 @@ void CTeamTypesExt::ProgramStartupInit()
 	RunTime::ResetMemoryContentAt(0x5970F0 + 0x4, &RunTime::Messages::COMBOBOX_KILLFOCUS, 4); // transport waypoint update
 	RunTime::ResetMemoryContentAt(0x597120 + 0x4, &RunTime::Messages::COMBOBOX_KILLFOCUS, 4); // mind control decision update
 
-	auto addr = &CTeamTypesExt::PreTranslateMessageExt;
-	RunTime::ResetMemoryContentAt(0x5971F8, &addr, 4);
-	auto addr2 = &CTeamTypesExt::OnInitDialogExt;
-	RunTime::ResetMemoryContentAt(0x597224, &addr2, 4);
+	RunTime::ResetMemoryContentAt(0x5971F8, &CTeamTypesExt::PreTranslateMessageExt);
+	RunTime::ResetMemoryContentAt(0x597224, &CTeamTypesExt::OnInitDialogExt);
 }
 
 BOOL CTeamTypesExt::PreTranslateMessageExt(MSG* pMsg)

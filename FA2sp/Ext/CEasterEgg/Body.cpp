@@ -4,10 +4,7 @@ CEasterEgg* CEasterEggExt::Instance = nullptr;
 
 void CEasterEggExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto easterEggPreTranslateAddr = &CEasterEggExt::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x592A18, &easterEggPreTranslateAddr, sizeof(easterEggPreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x592A18, &CEasterEggExt::PreTranslateMessageExt);
 }
 
 BOOL CEasterEggExt::PreTranslateMessageExt(MSG* pMsg)

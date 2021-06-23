@@ -4,10 +4,7 @@ CCreateMap2* CCreateMap2Ext::Instance = nullptr;
 
 void CCreateMap2Ext::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CCreateMap2Ext::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x595470, &PreTranslateAddr, sizeof(PreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x595470, &CCreateMap2Ext::PreTranslateMessageExt);
 }
 
 BOOL CCreateMap2Ext::PreTranslateMessageExt(MSG* pMsg)

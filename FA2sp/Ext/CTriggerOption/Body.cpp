@@ -7,10 +7,7 @@
 
 void CTriggerOptionExt::ProgramStartupInit()
 {
-	/*auto addr = &CTeamTypesExt::PreTranslateMessageExt;
-	RunTime::ResetMemoryContentAt(0x5971F8, &addr, 4);*/
-	auto addr2 = &CTriggerOptionExt::OnInitDialogExt;
-	RunTime::ResetMemoryContentAt(0x597F24, &addr2, 4);
+	RunTime::ResetMemoryContentAt(0x597F24, &CTriggerOptionExt::OnInitDialogExt);
 }
 
 BOOL CTriggerOptionExt::OnInitDialogExt()

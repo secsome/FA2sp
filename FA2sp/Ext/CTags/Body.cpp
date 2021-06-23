@@ -4,10 +4,7 @@ CTags* CTagsExt::Instance = nullptr;
 
 void CTagsExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto tagsPreTranslateAddr = &CTagsExt::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x596A60, &tagsPreTranslateAddr, sizeof(tagsPreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x596A60, &CTagsExt::PreTranslateMessageExt);
 }
 
 BOOL CTagsExt::PreTranslateMessageExt(MSG* pMsg)

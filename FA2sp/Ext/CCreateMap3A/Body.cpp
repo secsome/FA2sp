@@ -4,10 +4,8 @@ CCreateMap3A* CCreateMap3AExt::Instance = nullptr;
 
 void CCreateMap3AExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CCreateMap3AExt::PreTranslateMessageExt;
 
-	RunTime::ResetMemoryContentAt(0x595560, &PreTranslateAddr, sizeof(PreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x595560, &CCreateMap3AExt::PreTranslateMessageExt);
 }
 
 BOOL CCreateMap3AExt::PreTranslateMessageExt(MSG* pMsg)

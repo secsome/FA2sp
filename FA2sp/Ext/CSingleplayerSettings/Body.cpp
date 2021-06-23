@@ -4,10 +4,7 @@ CSingleplayerSettings* CSingleplayerSettingsExt::Instance = nullptr;
 
 void CSingleplayerSettingsExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CSingleplayerSettingsExt::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x596538, &PreTranslateAddr, sizeof(PreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x596538, &CSingleplayerSettingsExt::PreTranslateMessageExt);
 }
 
 BOOL CSingleplayerSettingsExt::PreTranslateMessageExt(MSG* pMsg)

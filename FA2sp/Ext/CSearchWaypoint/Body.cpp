@@ -4,10 +4,7 @@ CSearchWaypoint* CSearchWaypointExt::Instance = nullptr;
 
 void CSearchWaypointExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CSearchWaypointExt::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x596238, &PreTranslateAddr, sizeof(PreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x596238, &CSearchWaypointExt::PreTranslateMessageExt);
 }
 
 BOOL CSearchWaypointExt::PreTranslateMessageExt(MSG* pMsg)

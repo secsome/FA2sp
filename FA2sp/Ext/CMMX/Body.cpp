@@ -4,10 +4,7 @@ CMMX* CMMXExt::Instance = nullptr;
 
 void CMMXExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CMMXExt::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x595008, &PreTranslateAddr, sizeof(PreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x595008, &CMMXExt::PreTranslateMessageExt);
 }
 
 BOOL CMMXExt::PreTranslateMessageExt(MSG* pMsg)

@@ -4,10 +4,7 @@ CNewHouse* CNewHouseExt::Instance = nullptr;
 
 void CNewHouseExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CNewHouseExt::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x595950, &PreTranslateAddr, sizeof(PreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x595950, &CNewHouseExt::PreTranslateMessageExt);
 }
 
 BOOL CNewHouseExt::PreTranslateMessageExt(MSG* pMsg)

@@ -4,10 +4,7 @@ CChangeMapSize* CChangeMapSizeExt::Instance = nullptr;
 
 void CChangeMapSizeExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto changeMapSizePreTranslateAddr = &CChangeMapSizeExt::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x592598, &changeMapSizePreTranslateAddr, sizeof(changeMapSizePreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x592598, &CChangeMapSizeExt::PreTranslateMessageExt);
 }
 
 BOOL CChangeMapSizeExt::PreTranslateMessageExt(MSG* pMsg)

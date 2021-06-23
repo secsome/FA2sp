@@ -4,10 +4,7 @@ CBasic* CBasicExt::Instance = nullptr;
 
 void CBasicExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto basicPreTranslateAddr = &CBasicExt::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x592288, &basicPreTranslateAddr, sizeof(basicPreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x592288, &CBasicExt::PreTranslateMessageExt);
 }
 
 BOOL CBasicExt::PreTranslateMessageExt(MSG* pMsg)

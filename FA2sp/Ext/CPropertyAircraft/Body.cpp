@@ -1,16 +1,13 @@
 #include "Body.h"
 
-CPropertyAircraft* CPropertyAircraftExt::Instance = nullptr;
+CAircraftProperty* CAircraftPropertyExt::Instance = nullptr;
 
-void CPropertyAircraftExt::ProgramStartupInit()
+void CAircraftPropertyExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto propertyAircraftPreTranslateAddr = &CPropertyAircraftExt::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x591698, &propertyAircraftPreTranslateAddr, sizeof(propertyAircraftPreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x591698, &CAircraftPropertyExt::PreTranslateMessageExt);
 }
 
-BOOL CPropertyAircraftExt::PreTranslateMessageExt(MSG* pMsg)
+BOOL CAircraftPropertyExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
 
