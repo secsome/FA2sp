@@ -7,7 +7,7 @@
 
 void CTriggerActionExt::ProgramStartupInit()
 {
-	RunTime::ResetMemoryContentAt(0x597A2C, &CTriggerActionExt::OnInitDialogExt, 4);
+	RunTime::ResetMemoryContentAt(0x597A2C, &CTriggerActionExt::OnInitDialogExt);
 }
 
 BOOL CTriggerActionExt::OnInitDialogExt()

@@ -178,6 +178,8 @@
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Hooks.ObjectBrowserControl.cpp" />
     <ClCompile Include="FA2sp\Ext\CIsoView\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Hooks.cpp" />
+    <ClCompile Include="FA2sp\Ext\CTeamTypes\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CTeamTypes\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTileSetBrowserFrame\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerAction\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerEvent\Body.cpp" />
@@ -213,6 +215,7 @@
   <ItemGroup>
     <ClInclude Include="FA2sp\Ext\CFinalSunDlg\Body.h" />
     <ClInclude Include="FA2sp\Ext\CScriptTypes\Functional.h" />
+    <ClInclude Include="FA2sp\Ext\CTeamTypes\Body.h" />
     <ClInclude Include="FA2sp\Ext\CTriggerAction\Body.h" />
     <ClInclude Include="FA2sp\Ext\CTriggerEvent\Body.h" />
     <ClInclude Include="FA2sp\Ext\FA2Expand.h" />
