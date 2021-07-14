@@ -11,4 +11,6 @@ public:
     static void ProgramStartupInit();
 
     BOOL PreTranslateMessageExt(MSG* pMsg);
+
+    BOOL OnMouseWheelExt(UINT Flags, short zDelta, CPoint pt);
 };
