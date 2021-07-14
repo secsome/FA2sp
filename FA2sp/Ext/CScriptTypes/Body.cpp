@@ -142,50 +142,29 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 	if (!ret)
 		return FALSE;
 
-	auto TranslateDlgItem = [this](int nID, const char* lpKey)
-	{
-		ppmfc::CString buffer;
-		if (Translations::GetTranslationItem(lpKey, buffer))
-			this->SetDlgItemText(nID, buffer);
-	};
+	Translations::TranslateItem(this, "ScriptTypesTitle");
 
-	auto TranslateCItem = [](CWnd* pWnd, const char* lpKey)
-	{
-		ppmfc::CString buffer;
-		if (Translations::GetTranslationItem(lpKey, buffer))
-			pWnd->SetWindowText(buffer);
-	};
+	Translations::TranslateItem(this, 50700, "ScriptTypesDesc");
+	Translations::TranslateItem(this, 50701, "ScriptTypesSelectedScript");
+	Translations::TranslateItem(this, 50702, "ScriptTypesName");
+	Translations::TranslateItem(this, 50703, "ScriptTypesActions");
+	Translations::TranslateItem(this, 50704, "ScriptTypesActionType");
+	Translations::TranslateItem(this, 50705, "ScriptTypesActionDesc");
 
-	TranslateCItem(this, "ScriptTypesTitle");
-
-	TranslateDlgItem(50700, "ScriptTypesDesc");
-	TranslateDlgItem(50701, "ScriptTypesSelectedScript");
-	TranslateDlgItem(50702, "ScriptTypesName");
-	TranslateDlgItem(50703, "ScriptTypesActions");
-	TranslateDlgItem(50704, "ScriptTypesActionType");
-	TranslateDlgItem(1198, "ScriptTypesActionParam");//sbFA2
-	TranslateDlgItem(50705, "ScriptTypesActionDesc");
-
-	TranslateDlgItem(1154, "ScriptTypesAddScript");
-	TranslateDlgItem(1066, "ScriptTypesDelScript");
-	TranslateDlgItem(6300, "ScriptTypesCloScript");
-	TranslateDlgItem(1173, "ScriptTypesAddAction");
-	TranslateDlgItem(1174, "ScriptTypesDelAction");
-	TranslateDlgItem(6301, "ScriptTypesCloAction");
-	TranslateDlgItem(6302, "ScriptTypesInsertMode");
+	Translations::TranslateItem(this, 1154, "ScriptTypesAddScript");
+	Translations::TranslateItem(this, 1066, "ScriptTypesDelScript");
+	Translations::TranslateItem(this, 6300, "ScriptTypesCloScript");
+	Translations::TranslateItem(this, 1173, "ScriptTypesAddAction");
+	Translations::TranslateItem(this, 1174, "ScriptTypesDelAction");
+	Translations::TranslateItem(this, 1198, "ScriptTypesActionParam");
+	Translations::TranslateItem(this, 6301, "ScriptTypesCloAction");
+	Translations::TranslateItem(this, 6302, "ScriptTypesInsertMode");
 
 	while (CCBCurrentAction.DeleteString(0) != -1);
 
 	// Initialize defaults
 	const char** pNames = reinterpret_cast<const char**>(0x5D035C);
 	const char** pDescriptions = reinterpret_cast<const char**>(0x5D0448);
-	
-	/*auto& errAct = ExtActions[-1];
-	errAct.Description_ = "FA2sp Error Action Holder";
-	errAct.Editable_ = false;
-	errAct.Hide_ = true;
-	errAct.Name_ = "INVALID SCRIPT ACTION";
-	errAct.ParamCode_ = 0;*/
 
 	for (int i = 0; i < 59; ++i)
 	{
@@ -265,7 +244,6 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 			CCBCurrentAction.SetItemData(data, counter);
 		}
 		++counter;
-
 	}
 	return TRUE;
 }

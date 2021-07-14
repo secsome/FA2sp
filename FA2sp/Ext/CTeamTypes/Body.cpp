@@ -42,66 +42,51 @@ BOOL CTeamTypesExt::OnInitDialogExt()
 	if (!ret)
 		return FALSE;
 
-	auto TranslateDlgItem = [this](int nID, const char* lpKey)
-	{
-		ppmfc::CString buffer;
-		if (Translations::GetTranslationItem(lpKey, buffer))
-			this->SetDlgItemText(nID, buffer);
-	};
+	Translations::TranslateItem(this, "TeamTypesTitle");
 
-	auto TranslateCItem = [](CWnd* pWnd, const char* lpKey)
-	{
-		ppmfc::CString buffer;
-		if (Translations::GetTranslationItem(lpKey, buffer))
-			pWnd->SetWindowText(buffer);
-	};
-	TranslateCItem(this, "TeamTypesTitle");
+	Translations::TranslateItem(this, 1110, "TeamTypesNewTeam");
+	Translations::TranslateItem(this, 1111, "TeamTypesDelTeam");
+	Translations::TranslateItem(this, 6001, "TeamTypesCloTeam");
 
-	TranslateDlgItem(1110, "TeamTypesNewTeam");
-	TranslateDlgItem(1111, "TeamTypesDelTeam");
-	TranslateDlgItem(6001, "TeamTypesCloTeam");
+	Translations::TranslateItem(this, 50200, "TeamTypesMainDesc");
+	Translations::TranslateItem(this, 50201, "TeamTypesCurrentTeamLabel");
+	Translations::TranslateItem(this, 50202, "TeamTypesSelectedTeam");
 
-	TranslateDlgItem(50200, "TeamTypesMainDesc");
-	TranslateDlgItem(50201, "TeamTypesCurrentTeamLabel");
-	TranslateDlgItem(50202, "TeamTypesSelectedTeam");
+	Translations::TranslateItem(this, 50203, "TeamTypesLabelName");
+	Translations::TranslateItem(this, 50204, "TeamTypesLabelHouse");
+	Translations::TranslateItem(this, 50205, "TeamTypesLabelTaskforce");
+	Translations::TranslateItem(this, 50206, "TeamTypesLabelScript");
+	Translations::TranslateItem(this, 50207, "TeamTypesLabelTag");
+	Translations::TranslateItem(this, 50208, "TeamTypesLabelVeteranLevel");
+	Translations::TranslateItem(this, 50209, "TeamTypesLabelPriority");
+	Translations::TranslateItem(this, 50210, "TeamTypesLabelMax");
+	Translations::TranslateItem(this, 50211, "TeamTypesLabelTechlevel");
+	Translations::TranslateItem(this, 1413 , "TeamTypesLabelTransportWaypoint");
+	Translations::TranslateItem(this, 50212, "TeamTypesLabelGroup");
+	Translations::TranslateItem(this, 50213, "TeamTypesLabelWaypoint");
 
-	TranslateDlgItem(50203, "TeamTypesLabelName");
-	TranslateDlgItem(50204, "TeamTypesLabelHouse");
-	TranslateDlgItem(50205, "TeamTypesLabelTaskforce");
-	TranslateDlgItem(50206, "TeamTypesLabelScript");
-	TranslateDlgItem(50207, "TeamTypesLabelTag");
-	TranslateDlgItem(50208, "TeamTypesLabelVeteranLevel");
-	TranslateDlgItem(50209, "TeamTypesLabelPriority");
-	TranslateDlgItem(50210, "TeamTypesLabelMax");
-	TranslateDlgItem(50211, "TeamTypesLabelTechlevel");
-	TranslateDlgItem(1413 , "TeamTypesLabelTransportWaypoint");
-	TranslateDlgItem(50212, "TeamTypesLabelGroup");
-	TranslateDlgItem(50213, "TeamTypesLabelWaypoint");
-
-	TranslateCItem(&this->CSTMindControlDecision, "TeamTypesLabelMindControlDecision");
+	Translations::TranslateItem(&this->CSTMindControlDecision, "TeamTypesLabelMindControlDecision");
 	
-	TranslateDlgItem(1113, "TeamTypesCheckBoxLoadable");
-	TranslateDlgItem(1114, "TeamTypesCheckBoxFull");
-	TranslateDlgItem(1115, "TeamTypesCheckBoxAnnoyance");
-	TranslateDlgItem(1116, "TeamTypesCheckBoxGuardSlower");
-	TranslateDlgItem(1117, "TeamTypesCheckBoxRecruiter");
-	TranslateDlgItem(1119, "TeamTypesCheckBoxAutoCreate");
-	TranslateDlgItem(1120, "TeamTypesCheckBoxPrebuild");
-	TranslateDlgItem(1127, "TeamTypesCheckBoxReinforce");
-	TranslateDlgItem(1128, "TeamTypesCheckBoxCargoPlane");
-	TranslateDlgItem(1129, "TeamTypesCheckBoxWhiner");
-	TranslateDlgItem(1130, "TeamTypesCheckBoxLooseRecruit");
-	TranslateDlgItem(1131, "TeamTypesCheckBoxAggressive");
-	TranslateDlgItem(1132, "TeamTypesCheckBoxSuicide");
-	TranslateDlgItem(1133, "TeamTypesCheckBoxOnTransOnly");
-	TranslateDlgItem(1134, "TeamTypesCheckBoxAvoidThreats");
-	TranslateDlgItem(1135, "TeamTypesCheckBoxIonImmune");
-	TranslateDlgItem(1136, "TeamTypesCheckBoxTransportsReturnOnUnload");
-	TranslateDlgItem(1137, "TeamTypesCheckBoxAreTeamMembersRecruitable");
-	TranslateDlgItem(1138, "TeamTypesCheckBoxIsBaseDefense");
-	TranslateDlgItem(1139, "TeamTypesCheckBoxOnlyTargetHouseEnemy"); 
-	
-	
+	Translations::TranslateItem(this, 1113, "TeamTypesCheckBoxLoadable");
+	Translations::TranslateItem(this, 1114, "TeamTypesCheckBoxFull");
+	Translations::TranslateItem(this, 1115, "TeamTypesCheckBoxAnnoyance");
+	Translations::TranslateItem(this, 1116, "TeamTypesCheckBoxGuardSlower");
+	Translations::TranslateItem(this, 1117, "TeamTypesCheckBoxRecruiter");
+	Translations::TranslateItem(this, 1119, "TeamTypesCheckBoxAutoCreate");
+	Translations::TranslateItem(this, 1120, "TeamTypesCheckBoxPrebuild");
+	Translations::TranslateItem(this, 1127, "TeamTypesCheckBoxReinforce");
+	Translations::TranslateItem(this, 1128, "TeamTypesCheckBoxCargoPlane");
+	Translations::TranslateItem(this, 1129, "TeamTypesCheckBoxWhiner");
+	Translations::TranslateItem(this, 1130, "TeamTypesCheckBoxLooseRecruit");
+	Translations::TranslateItem(this, 1131, "TeamTypesCheckBoxAggressive");
+	Translations::TranslateItem(this, 1132, "TeamTypesCheckBoxSuicide");
+	Translations::TranslateItem(this, 1133, "TeamTypesCheckBoxOnTransOnly");
+	Translations::TranslateItem(this, 1134, "TeamTypesCheckBoxAvoidThreats");
+	Translations::TranslateItem(this, 1135, "TeamTypesCheckBoxIonImmune");
+	Translations::TranslateItem(this, 1136, "TeamTypesCheckBoxTransportsReturnOnUnload");
+	Translations::TranslateItem(this, 1137, "TeamTypesCheckBoxAreTeamMembersRecruitable");
+	Translations::TranslateItem(this, 1138, "TeamTypesCheckBoxIsBaseDefense");
+	Translations::TranslateItem(this, 1139, "TeamTypesCheckBoxOnlyTargetHouseEnemy"); 
 
 	return TRUE;
 }

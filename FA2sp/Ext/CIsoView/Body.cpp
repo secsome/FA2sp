@@ -6,7 +6,7 @@
 
 void CIsoViewExt::ProgramStartupInit()
 {
-    RunTime::ResetMemoryContentAt(0x594518, CIsoViewExt::PreTranslateMessageExt);
+    // RunTime::ResetMemoryContentAt(0x594518, CIsoViewExt::PreTranslateMessageExt);
 }
 
 BOOL CIsoViewExt::PreTranslateMessageExt(MSG* pMsg)
