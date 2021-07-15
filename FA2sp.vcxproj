@@ -255,6 +255,9 @@
     <ResourceCompile Include="FA2sp\UI\CTeamTypes.rc" />
     <ResourceCompile Include="FA2sp\UI\CTileBrowserFrame.DialogBar.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="FA2sp\Ext\CScriptTypes\Body.CurrentScript.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

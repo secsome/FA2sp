@@ -48,8 +48,8 @@ void CScriptTypesExt::ProgramStartupInit()
 int CScriptTypesExt::ExtParamID = -1;
 void CScriptTypesExt::UpdateParams(int actionIndex)
 {
-	auto& action = ExtActions[actionIndex];
-	auto& param = ExtParams[action.ParamCode_];
+	auto& action = CScriptTypeAction::ExtActions[actionIndex];
+	auto& param = CScriptTypeParam::ExtParams[action.ParamCode_];
 	if (param.Param_ == ExtParamID) // tiny optimize
 		return;
 	switch (param.Param_)
@@ -134,8 +134,8 @@ void CScriptTypesExt::UpdateParams(int actionIndex)
 // Ext Functions
 //
 
-std::map<int, CScriptTypeAction> CScriptTypesExt::ExtActions;
-std::map<int, CScriptTypeParam> CScriptTypesExt::ExtParams;
+std::map<int, CScriptTypeAction> CScriptTypeAction::ExtActions;
+std::map<int, CScriptTypeParam> CScriptTypeParam::ExtParams;
 BOOL CScriptTypesExt::OnInitDialogExt()
 {
 	BOOL ret = FA2CDialog::OnInitDialog();
@@ -168,7 +168,7 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 
 	for (int i = 0; i < 59; ++i)
 	{
-		auto& curAction = ExtActions[i];
+		auto& curAction = CScriptTypeAction::ExtActions[i];
 		curAction.Name_ = _strdup(pNames[i]);
 		curAction.Description_ = _strdup(pDescriptions[i]);
 		curAction.Editable_ = true;
@@ -191,9 +191,9 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 			{
 			default:
 			case 2:
-				ExtParams[id].Param_ = atoi((const char*)pParseBuffer[1]);
+				CScriptTypeParam::ExtParams[id].Param_ = atoi((const char*)pParseBuffer[1]);
 			case 1:
-				ExtParams[id].Label_ = _strdup((const char*)pParseBuffer[0]);
+				CScriptTypeParam::ExtParams[id].Label_ = _strdup((const char*)pParseBuffer[0]);
 			case 0:
 				continue;
 			}
@@ -215,15 +215,15 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 			{
 			case 5:
 			default:
-				ExtActions[id].Description_ = _strdup((const char*)pParseBuffer[4]);
+				CScriptTypeAction::ExtActions[id].Description_ = _strdup((const char*)pParseBuffer[4]);
 			case 4:
-				ExtActions[id].Editable_ = ParseBool((const char*)pParseBuffer[3]);
+				CScriptTypeAction::ExtActions[id].Editable_ = ParseBool((const char*)pParseBuffer[3]);
 			case 3:
-				ExtActions[id].Hide_ = ParseBool((const char*)pParseBuffer[2]);
+				CScriptTypeAction::ExtActions[id].Hide_ = ParseBool((const char*)pParseBuffer[2]);
 			case 2:
-				ExtActions[id].ParamCode_ = atoi((const char*)pParseBuffer[1]);
+				CScriptTypeAction::ExtActions[id].ParamCode_ = atoi((const char*)pParseBuffer[1]);
 			case 1:
-				ExtActions[id].Name_ = _strdup((const char*)pParseBuffer[0]);
+				CScriptTypeAction::ExtActions[id].Name_ = _strdup((const char*)pParseBuffer[0]);
 			case 0:
 				continue;
 			}
@@ -236,7 +236,7 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 	}
 
 	int counter = 0;
-	for (auto& ent : ExtActions)
+	for (auto& ent : CScriptTypeAction::ExtActions)
 	{
 		if (!ent.second.Hide_)
 		{

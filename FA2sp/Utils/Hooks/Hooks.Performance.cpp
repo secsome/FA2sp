@@ -1,78 +1,88 @@
 #include <Helpers/Macro.h>
 
-#include "../../Logger.h"
+#include <MFC/ppmfc_cstring.h>
+#include <GlobalVars.h>
+#include <CINI.h>
 
-struct ShapeHeaderStruct
+#include <set>
+
+#include "../../FA2sp.h"
+
+class Performance
 {
-    __int16 Type;
-    __int16 Width;
-    __int16 Height;
-    __int16 FrameCount;
+public:
+    static void UpdateDict();
+    static ppmfc::CString GetAvailableIndex();
+    static bool NeedsReload;
+private:
+    static std::set<ppmfc::CString> IndexDict;
 };
 
-struct RGB
+bool Performance::NeedsReload = true;
+std::set<ppmfc::CString> Performance::IndexDict{};
+
+ppmfc::CString Performance::GetAvailableIndex()
 {
-    unsigned char R;
-    unsigned char G;
-    unsigned char B;
-};
+    ppmfc::CString buffer;
+    for (int i = 1000000;; ++i)
+    {
+        buffer.Format("%08d", i);
+        auto itr = Performance::IndexDict.find(buffer); // optimize, not find twice
+        if (itr == Performance::IndexDict.end())
+        {
+            Performance::IndexDict.insert(itr, buffer);
+            return buffer;
+        }
+    }
+}
 
-struct ShapeFrameHeader
+void Performance::UpdateDict()
 {
-    __int16 X;
-    __int16 Y;
-    __int16 Width;
-    __int16 Height;
-    __int16 Flags;
-    RGB RadarColor;
-    char padding[5];
-    int DataOffset;
-};
+    Performance::IndexDict.clear();
 
-struct ShapeFileStruct
+    auto& ini = GlobalVars::INIFiles::CurrentDocument();
+    auto LoadTypesValue = [&ini](ppmfc::CString section)
+    {
+        if (auto pSection = ini.GetSection(section))
+            for (auto& pair : pSection->EntitiesDictionary)
+                Performance::IndexDict.insert(pair.second);
+    };
+    auto LoadTypesKey = [&ini](ppmfc::CString section)
+    {
+        if (auto pSection = ini.GetSection(section))
+            for (auto& pair : pSection->EntitiesDictionary)
+                Performance::IndexDict.insert(pair.first);
+    };
+    LoadTypesValue("ScriptTypes");
+    LoadTypesValue("Taskforces");
+    LoadTypesValue("TeamTypes");
+    LoadTypesKey("Triggers");
+    LoadTypesKey("Events");
+    LoadTypesKey("Tags");
+    LoadTypesKey("Actions");
+    LoadTypesKey("AITriggerTypes");
+
+    Performance::NeedsReload = false;
+}
+
+DEFINE_HOOK(49EDD3, CMapData_LoadMap_UpdateDict, 6)
 {
-    ShapeHeaderStruct Header;
-    ShapeFrameHeader* FrameHeaders;
-};
+    Performance::NeedsReload = true;
+    return 0;
+}
 
-//DEFINE_HOOK(525A60, sub_525A60_Debug, 7)
-//{
-//    GET_STACK(DWORD, dwCallerAddress, 0x0);
-//    GET_STACK(int, nFrame, 0x4);
-//    GET_STACK(ShapeFrameHeader*, pFrameHeader, 0x8);
-//    Logger::Debug("Caller = %p, nFrame = %d\n", dwCallerAddress, nFrame);
-//    Logger::Debug("pFrameHeader Info : \n");
-//    Logger::Debug("X = %d, Y = %d, Width = %d, Height = %d, Flags = %d, [R G B] = [%d %d %d], offset = %d\n",
-//        pFrameHeader->X, pFrameHeader->Y, pFrameHeader->Width, pFrameHeader->Height, pFrameHeader->Flags,
-//        pFrameHeader->RadarColor.R, pFrameHeader->RadarColor.G, pFrameHeader->RadarColor.B, pFrameHeader->DataOffset);
-//    return 0;
-//}
+DEFINE_HOOK(446520, Miscs_GetAvailableIndex, 7)
+{
+    if (ExtConfigs::FastAvailableIndex)
+    {
+        GET_STACK(ppmfc::CString*, pString, 0x4);
 
-//DEFINE_HOOK(480966, sub_480963_Debugger, 9)
-//{
-//    Logger::Debug("%c\n", R->BL());
-//    return 0;
-//}
+        if (Performance::NeedsReload)
+            Performance::UpdateDict();
 
-//DEFINE_HOOK(525A9A, sub_525A60_Optimize, 8)
-//{
-//    /*GET_STACK(int, nFrame, STACK_OFFS(0x24, -0x4));
-//    GET_STACK(ShapeFrameHeader*, pFrameHeader, STACK_OFFS(0x24, -0x8));
-//    
-//    Logger::Debug("nFrame = %d, pFrame [W,H] = [%d,%d]\n", nFrame, pFrameHeader->Width, pFrameHeader->Height);
-//
-//
-//    return 0;*/
-//    //__asm
-//    //{
-//    //    lea     eax, [eax + eax * 2]
-//    //    push    edi
-//    //    lea     edi, pFrameHeader
-//    //    lea     esi, [ecx + eax * 8 + 8]
-//    //    mov     ecx, 6
-//    //    mov     eax, 1 // return true
-//    //    rep movsd
-//    //    pop     edi
-//    //}
-//    //return 0x525AC0;
-//}
+        new(pString) ppmfc::CString(Performance::GetAvailableIndex());
+
+        return 0x446FB3;
+    }
+    return 0;
+}

@@ -8,16 +8,14 @@
 // Cleanning up
 DEFINE_HOOK(4D5B20, CScriptTypes_DTOR, 7)
 {
-    auto& dict_1 = CScriptTypesExt::ExtActions;
-    for (auto& x : dict_1)
+    for (auto& x : CScriptTypeAction::ExtActions)
     {
         delete[] x.second.Description_;
         delete[] x.second.Name_;
     }
-    dict_1.clear();
+    CScriptTypeAction::ExtActions.clear();
 
-    auto& dict_2 = CScriptTypesExt::ExtParams;
-    for (auto& x : dict_2)
+    for (auto& x : CScriptTypeParam::ExtParams)
         delete[] x.second.Label_;
 
     return 0;
@@ -44,7 +42,7 @@ DEFINE_HOOK(4D75D0, CScriptTypes_OnCBCurrentActionSelectChanged, 7)
     if (curActionIdx >= 0)
     {
         int curActionData = pThis->CCBCurrentAction.GetItemData(curActionIdx);
-        auto& dict = CScriptTypesExt::ExtActions;
+        auto& dict = CScriptTypeAction::ExtActions;
         auto itr = dict.find(curActionData);
         if (itr != dict.end())
         {

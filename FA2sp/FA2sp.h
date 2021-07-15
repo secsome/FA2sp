@@ -41,6 +41,7 @@ public:
     static bool Waypoint_Background;
     static int Waypoint_Background_Color;
     static bool ExtWaypoints;
+    static bool FastAvailableIndex;
 };
 
 namespace Constants
