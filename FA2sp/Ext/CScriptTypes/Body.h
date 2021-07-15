@@ -58,25 +58,23 @@ public:
 	void OnBNCloneScriptClicked();
 	void OnBNCloneItemClicked();
 
-
-	static int ExtParamID;
 	static CurrentScript ExtCurrentScript;
 };
 
 struct CScriptTypeAction {
 	static std::map<int, CScriptTypeAction> ExtActions;
 
-	const char* Name_;
+	ppmfc::CString Name_;
 	int ParamCode_;
 	bool Hide_;
 	bool Editable_;
-	const char* Description_;
+	ppmfc::CString Description_;
 };
 
 struct CScriptTypeParam {
 	static std::map<int, CScriptTypeParam> ExtParams;
 
-	const char* Label_;
+	ppmfc::CString Label_;
 	int Param_;
 };
 
