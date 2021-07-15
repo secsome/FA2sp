@@ -17,6 +17,16 @@ DEFINE_HOOK(51CD20, ObjectBrowserControl_Redraw, 7)
     return 0;
 }
 
+// Add a house won't update indices, so there might be hidden risks if not reloading the map.
+// That's why these hooks are not used.
+//DEFINE_HOOK_AGAIN(40A5CB, CINIEditor_Update, 6)
+//DEFINE_HOOK_AGAIN(44EB1C, CHouses_ONBNDeleteHouseClicked_UpdateTreeview, 7)
+//DEFINE_HOOK(44E320, CHouses_ONBNAddHouseClicked_UpdateTreeview, 7)
+//{
+//    GlobalVars::Dialogs::CFinalSunDlg->MyViewFrame.pObjectBrowserControl->Update();
+//    return 0;
+//}
+
 //DEFINE_HOOK(51AFB8, ObjectBrowserControl_OnSelectedChanged, 6)
 //{
 //    GET_STACK(ObjectBrowserControlExt*, pThis, 0x10);
