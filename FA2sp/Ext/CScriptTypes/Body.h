@@ -26,30 +26,26 @@ public:
 
 	/*static void* GetMessageMap();*/
 
-	BOOL OnInitDialogExt();
+	BOOL OnInitDialog();
+
+	void UpdateDialog();
 
 	void OnCBCurrentActionEditChanged();
 	void OnCBScriptParameterEditChanged();
 	void OnLBScriptActionsSelectChanged();
 
-	/*void DoDataExchange(CDataExchange* pDX);
+	// void DoDataExchange(CDataExchange* pDX);
 
 	void OnCBCurrentScriptSelectChanged();
 	void OnETScriptNameChanged();
 	
 	void OnCBCurrentActionSelectChanged();
 	void OnCBScriptParameterSelectChanged();
-	*/
+	
 	void OnBNAddActionClickedExt();
-	/*
 	void OnBNDeleteActionClicked();
 	void OnBNAddScriptClicked();
-	void OnBNDeleteScriptClicked();*/
-	
-	//void OnBNDeleteActionClicked();
-	void OnBNAddScriptClickedExt();
-	//void OnBNDeleteScriptClicked();
-
+	void OnBNDeleteScriptClicked();
 
 	CScriptTypesExt() {};
 	~CScriptTypesExt() {};
@@ -57,6 +53,10 @@ public:
 	// Functional Functions
 	void OnBNCloneScriptClicked();
 	void OnBNCloneItemClicked();
+	void OnBNMoveUpClicked();
+	void OnBNMoveDownClicked();
+	void OnCBExtraParamEditChanged();
+	void OnCBExtraParamSelectChanged();
 
 	static CurrentScript ExtCurrentScript;
 };
