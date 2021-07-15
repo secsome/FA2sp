@@ -5,7 +5,7 @@
 
 ppmfc::CString CurrentScript::ToString()
 {
-	return this->ID + " " + this->Name;
+	return this->ID + " (" + this->Name + ")";
 }
 
 ppmfc::CString CurrentScript::GetActionString(int index)

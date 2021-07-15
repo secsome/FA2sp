@@ -23,11 +23,7 @@ BOOL CScriptTypesExt::PreTranslateMessageExt(MSG* pMsg)
 			bool bInsertMode = ::SendMessage(::GetDlgItem(*this, 6302), BM_GETCHECK, 0, 0) == BST_CHECKED;
 			::SendMessage(::GetDlgItem(*this, 6302), BM_SETCHECK, bInsertMode ? BST_UNCHECKED : BST_CHECKED, 0);
 		}
-		/*elif (pMsg->hwnd == this->GetDlgItem(1173)->GetSafeHwnd())
-		{
-			this->OnBNAddActionClickedExt();
-			return TRUE;
-		}*/
+
 			
 	}
 
@@ -39,19 +35,14 @@ void CScriptTypesExt::ProgramStartupInit()
 	RunTime::ResetMemoryContentAt(0x595FC8 + 0x4, &RunTime::Messages::EDIT_KILLFOCUS, 4); // name update
 	RunTime::ResetMemoryContentAt(0x596010 + 0x4, &RunTime::Messages::COMBOBOX_KILLFOCUS, 4); // param update
 
-	auto addr = &CScriptTypesExt::PreTranslateMessageExt;
-	RunTime::ResetMemoryContentAt(0x596148, &addr, 4);
-	auto addr2 = &CScriptTypesExt::OnInitDialogExt;
-	RunTime::ResetMemoryContentAt(0x596174, &addr2, 4);
+	RunTime::ResetMemoryContentAt(0x596148, CScriptTypesExt::PreTranslateMessageExt);
+	RunTime::ResetMemoryContentAt(0x596174, CScriptTypesExt::OnInitDialogExt);
 }
 
-int CScriptTypesExt::ExtParamID = -1;
 void CScriptTypesExt::UpdateParams(int actionIndex)
 {
 	auto& action = CScriptTypeAction::ExtActions[actionIndex];
 	auto& param = CScriptTypeParam::ExtParams[action.ParamCode_];
-	if (param.Param_ == ExtParamID) // tiny optimize
-		return;
 	switch (param.Param_)
 	{
 	default:
@@ -127,7 +118,20 @@ void CScriptTypesExt::UpdateParams(int actionIndex)
 	this->CSTParameterOfSection.EnableWindow(action.Editable_);
 	this->CCBScriptParameter.EnableWindow(action.Editable_);
 	this->CETDescription.SetWindowText(action.Description_);
-	ExtParamID = param.Param_;
+
+	if (actionIndex == 46 || actionIndex == 47 || actionIndex == 56 || actionIndex == 58)
+	{
+		auto pCBExtra = (ppmfc::CComboBox*)this->GetDlgItem(6304);
+		pCBExtra->EnableWindow();
+		pCBExtra->SetCurSel(0);
+	}
+	else
+	{
+		auto pCBExtra = (ppmfc::CComboBox*)this->GetDlgItem(6304);
+		pCBExtra->EnableWindow(false);
+		pCBExtra->SetCurSel(-1);
+		pCBExtra->SetWindowText("");
+	}
 }
 
 //
@@ -159,22 +163,25 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 	Translations::TranslateItem(this, 1198, "ScriptTypesActionParam");
 	Translations::TranslateItem(this, 6301, "ScriptTypesCloAction");
 	Translations::TranslateItem(this, 6302, "ScriptTypesInsertMode");
+	Translations::TranslateItem(this, 6303, "ScriptTypesExtraParam");
+	Translations::TranslateItem(this, 6305, "ScriptTypesMoveUp");
+	Translations::TranslateItem(this, 6306, "ScriptTypesMoveDown");
 
 	while (CCBCurrentAction.DeleteString(0) != -1);
 
 	// Initialize defaults
-	const char** pNames = reinterpret_cast<const char**>(0x5D035C);
+	/*const char** pNames = reinterpret_cast<const char**>(0x5D035C);
 	const char** pDescriptions = reinterpret_cast<const char**>(0x5D0448);
 
 	for (int i = 0; i < 59; ++i)
 	{
 		auto& curAction = CScriptTypeAction::ExtActions[i];
-		curAction.Name_ = _strdup(pNames[i]);
-		curAction.Description_ = _strdup(pDescriptions[i]);
+		curAction.Name_ = pNames[i];
+		curAction.Description_ = pDescriptions[i];
 		curAction.Editable_ = true;
 		curAction.Hide_ = false;
 		curAction.ParamCode_ = 0;
-	}
+	}*/
 
 	auto& fadata = GlobalVars::INIFiles::FAData();
 
@@ -193,7 +200,7 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 			case 2:
 				CScriptTypeParam::ExtParams[id].Param_ = atoi((const char*)pParseBuffer[1]);
 			case 1:
-				CScriptTypeParam::ExtParams[id].Label_ = _strdup((const char*)pParseBuffer[0]);
+				CScriptTypeParam::ExtParams[id].Label_ = pParseBuffer[0];
 			case 0:
 				continue;
 			}
@@ -215,7 +222,7 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 			{
 			case 5:
 			default:
-				CScriptTypeAction::ExtActions[id].Description_ = _strdup((const char*)pParseBuffer[4]);
+				CScriptTypeAction::ExtActions[id].Description_ = pParseBuffer[4];
 			case 4:
 				CScriptTypeAction::ExtActions[id].Editable_ = ParseBool((const char*)pParseBuffer[3]);
 			case 3:
@@ -223,7 +230,7 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 			case 2:
 				CScriptTypeAction::ExtActions[id].ParamCode_ = atoi((const char*)pParseBuffer[1]);
 			case 1:
-				CScriptTypeAction::ExtActions[id].Name_ = _strdup((const char*)pParseBuffer[0]);
+				CScriptTypeAction::ExtActions[id].Name_ = pParseBuffer[0];
 			case 0:
 				continue;
 			}
@@ -245,6 +252,14 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 		}
 		++counter;
 	}
+
+	auto pCBExtra = (ppmfc::CComboBox*)this->GetDlgItem(6304);
+	while (pCBExtra->DeleteString(0) != CB_ERR);
+	pCBExtra->SetItemData(pCBExtra->AddString("0 - Min Threat"), 0);
+	pCBExtra->SetItemData(pCBExtra->AddString("1 - Max Threat"), 1);
+	pCBExtra->SetItemData(pCBExtra->AddString("2 - Nearest"), 2);
+	pCBExtra->SetItemData(pCBExtra->AddString("3 - Farest"), 3);
+
 	return TRUE;
 }
 

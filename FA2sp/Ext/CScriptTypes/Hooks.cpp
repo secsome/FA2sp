@@ -8,16 +8,8 @@
 // Cleanning up
 DEFINE_HOOK(4D5B20, CScriptTypes_DTOR, 7)
 {
-    for (auto& x : CScriptTypeAction::ExtActions)
-    {
-        delete[] x.second.Description_;
-        delete[] x.second.Name_;
-    }
     CScriptTypeAction::ExtActions.clear();
-
-    for (auto& x : CScriptTypeParam::ExtParams)
-        delete[] x.second.Label_;
-
+    CScriptTypeParam::ExtParams.clear();
     return 0;
 }
 
