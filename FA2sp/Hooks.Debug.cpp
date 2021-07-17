@@ -1,5 +1,7 @@
 #include "FA2sp.h"
 
+#include <ddraw.h>
+
 #include <CINI.h>
 
 #include <GlobalVars.h>
@@ -8,7 +10,243 @@
 #include <CMixFile.h>
 #include <CLoading.h>
 #include <Palette.h>
+#include <CIsoView.h>
+#include <CFinalSunDlg.h>
+
 #include <unordered_map>
+
+#include "Helpers/Bitmap.h"
+#include "Helpers/Screenshot.h"
+
+enum class DrawDataFlag : unsigned int
+{
+    SurfaceData = 0,
+    SHP = 1,
+    VXL = 2
+};
+
+struct DrawDataStruct
+{
+    union
+    {
+        unsigned char* pImageBuffer; // draw from here, size = FullWidth*FullHeight
+        LPDIRECTDRAWSURFACE7 lpSurface; // Only available for flag = 0, if this is used, only ValidWidth and ValidHeight are set
+    };
+    
+    std::pair<short, short>* pValidBuffer; // size = FullHeight, stores the valid pixel from where to begin and end for each row
+                                           // If it's an invalid row, then first = FullWidth - 1, second = 0 
+    Palette* pPalette;
+    short ValidX; // negative value for vxl, dunno why
+    short ValidY; // negative value for vxl, dunno why
+    short ValidWidth; // same as full for vxl, dunno why
+    short ValidHeight; // same as full for vxl, dunno why
+    short FullWidth;
+    short FullHeight;
+    DrawDataFlag Flag;
+    bool IsOverlay; // Only OVRLXX_XX will set this true
+};
+
+using DrawDataMap = FAMap<ppmfc::CString, DrawDataStruct, 0x5E7C18, 0>; // DrawDataMap& tmp = *reinterpret_cast<DrawDataMap*>(0x72CBC8);
+using SomeDataMap = FAMap<ppmfc::CString, bool, 0x5D8CD0, 0>;
+
+struct SHPImageHeader
+{
+    short X;
+    short Y;
+    short Width;
+    short Height;
+    int compression;
+    int unknown;
+    int zero;
+    int offset;
+};
+
+struct ShapeHeaderStruct
+{
+    short Type;
+    short Width;
+    short Height;
+    short FrameCount;
+};
+
+//DEFINE_HOOK(485BE3, ssks, 6)
+//{
+//    GET(int, v557, ESI);
+//    GET(unsigned char**, shapes, EDI);
+//
+//    REF_STACK(ShapeHeaderStruct, header, STACK_OFFS(0x868, 0x60));
+//    Palette* pPal = (Palette*)0x72B4C4;
+//
+//    for (int k = 0; k < 8; ++k)
+//    {
+//        bitmap_image bmp;
+//        bmp.setwidth_height(header.Width, header.Height, true);
+//
+//        int count = 0;
+//        for (int j = 0; j < bmp.height(); ++j)
+//        {
+//            for (int i = 0; i < bmp.width(); ++i)
+//            {
+//                bmp.set_pixel(i, j, pPal->GetByteColor(shapes[k][count]));
+//                ++count;
+//            }
+//        }
+//
+//        bmp.save_image("test.bmp");
+//    }
+//    return 0;
+//}
+
+//DEFINE_HOOK(483FB7, UseFacing_483FB7, 5)
+//{
+//    GET_STACK(int, facing, STACK_OFFS(0x874, 0x4C));
+//
+//    R->Stack(0x0, 4 * facing);
+//    Logger::Debug("facing = %d\n", facing);
+//
+//    return 0;
+//}
+
+//DEFINE_HOOK(485D8B, Debug_485DA0, 6)
+//{
+//    GET(ppmfc::CString*, ppName, EAX);
+//    LEA_STACK(DrawDataStruct*, pDrawData, STACK_OFFS(0x868, 0xF8));
+//
+//    if (pDrawData->FullHeight == 0 || pDrawData->FullWidth == 0)
+//        return 0;
+//
+//    bitmap_image bmp;
+//    bmp.setwidth_height(pDrawData->FullWidth, pDrawData->FullHeight, true);
+//
+//    int count = 0;
+//    for (int j = 0; j < bmp.height(); ++j)
+//    {
+//        for (int i = 0; i < bmp.width(); ++i)
+//        {
+//            bmp.set_pixel(i, j, pDrawData->pPalette->GetByteColor(pDrawData->pImageBuffer[count]));
+//            ++count;
+//        }
+//    }
+//
+//    bmp.save_image("test.bmp");
+//
+//    Logger::Debug("pName = %s\n", *ppName);
+//
+//    return 0;
+//}
+
+//
+//DEFINE_HOOK(438DB0, MakeScreenShot, 6)
+//{
+//    Screenshot("Screenshot.bmp", GlobalVars::Dialogs::CFinalSunDlg->MyViewFrame.pIsoView->lpDDTempBufferSurface);
+//
+//    return 0x438E4E;
+//}
+
+// Replaces search waypoint tool
+//DEFINE_HOOK(438DB0, DebugDrawDataMap, 6)
+//{
+//    SomeDataMap& tmp = *reinterpret_cast<SomeDataMap*>(0x72A870);
+//
+//    for (auto& x : tmp)
+//    {
+//        Logger::Debug("%s %d\n", x.first, x.second);
+//    }
+//
+//    return 0x438E4E;
+//}
+
+// Replaces search waypoint tool
+DEFINE_HOOK(438DB0, DebugDrawDataMap, 6)
+{
+    DrawDataMap& tmp = *reinterpret_cast<DrawDataMap*>(0x72CBC8);
+
+    for (auto& pair : tmp)
+    {
+        DrawDataStruct& value = pair.second;
+
+        if (pair.first.IsEmpty())
+            continue;
+
+        if (value.Flag == DrawDataFlag::SurfaceData)
+        {
+            if (value.lpSurface)
+            {
+                Screenshot("Exports\\" + pair.first + ".bmp", value.lpSurface);
+            }
+
+        }
+        else
+        {
+            if (pair.second.FullHeight == 0 || pair.second.FullWidth == 0)
+                continue;
+
+            bitmap_image bmp;
+            bmp.setwidth_height(value.FullWidth, value.FullHeight, true);
+
+            int count = 0;
+            for (int j = 0; j < bmp.height(); ++j)
+            {
+                for (int i = 0; i < bmp.width(); ++i)
+                {
+                    bmp.set_pixel(i, j, value.pPalette->GetByteColor(value.pImageBuffer[count]));
+                    ++count;
+                }
+            }
+
+            bmp.save_image((const char*)("Exports\\" + pair.first + ".bmp"));
+        }
+    }
+
+    return 0x438E4E;
+}
+
+
+
+//
+//struct PalFile
+//{
+//    struct Color
+//    {
+//        unsigned char red, green, blue;
+//    } Data[256];
+//};
+
+//DEFINE_HOOK(5260E0, SHPClass_LoadFrame, 5)
+//{
+//    GET_STACK(unsigned char*, pData, STACK_OFFS(0x38, -0x4));
+//    REF_STACK(SHPImageHeader, header, STACK_OFFS(0x38, 0x18));
+//
+//    bitmap_image bmp;
+//    bmp.setwidth_height(header._cx, header._cy, true);
+//    const char* PalName = "unittem.pal";
+//    const auto pMix = GlobalVars::Dialogs::CLoading()->SearchFile(PalName);
+//    CMixFile::ExtractFile(PalName, PalName, pMix);
+//    std::ifstream fin(PalName, std::ios::binary);
+//    PalFile pal;
+//    fin.read((char*)&pal, sizeof(PalFile));
+//    for (auto& entry : pal.Data)
+//    {
+//        entry.red <<= 2;
+//        entry.green <<= 2;
+//        entry.blue <<= 2;
+//    }
+//    fin.close();
+//
+//    int count = 0;
+//    for (int j = 0; j < header._cy; ++j)
+//    {
+//        for (int i = 0; i < header._cx; ++i)
+//        {
+//            bmp.set_pixel(i, j, pal.Data[pData[count]]);
+//            ++count;
+//        }
+//    }
+//
+//    bmp.save_image("test.bmp");
+//
+//    return 0;
+//}
 //
 //DEFINE_HOOK(4B2610, CMapData_QueryUIName_Debug, 7)
 //{
