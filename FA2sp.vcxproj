@@ -208,6 +208,7 @@
     <ClCompile Include="FA2sp\Utils\Hooks\Hooks.LoadParamToCombobox.cpp" />
     <ClCompile Include="FA2sp\Utils\Hooks\Hooks.Mix.cpp" />
     <ClCompile Include="FA2sp\Utils\Hooks\Hooks.Performance.cpp" />
+    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.RemapColor.cpp" />
     <ClCompile Include="FA2sp\Utils\Hooks\Hooks.RGBColors.cpp" />
     <ClCompile Include="FA2sp\Utils\Hooks\Hooks.Stringtables.cpp" />
     <ClCompile Include="FA2sp\Helpers\MutexHelper.cpp" />
@@ -215,6 +216,7 @@
     <ClCompile Include="FA2sp\ExtraWindow\CTileManager\CTileManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FA2pp\Drawing.h" />
     <ClInclude Include="FA2sp\Ext\CFinalSunDlg\Body.h" />
     <ClInclude Include="FA2sp\Ext\CIsoView\Body.h" />
     <ClInclude Include="FA2sp\Ext\CScriptTypes\Functional.h" />

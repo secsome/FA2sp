@@ -102,6 +102,9 @@
     <ClInclude Include="FA2sp\Helpers\Screenshot.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2pp\Drawing.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">
@@ -219,6 +222,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Body.CurrentScript.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.RemapColor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

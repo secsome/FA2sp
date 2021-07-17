@@ -9,6 +9,7 @@
 #include <CMapData.h>
 #include <CMixFile.h>
 #include <CLoading.h>
+#include <Drawing.h>
 #include <Palette.h>
 #include <CIsoView.h>
 #include <CFinalSunDlg.h>
@@ -17,40 +18,6 @@
 
 #include "Helpers/Bitmap.h"
 #include "Helpers/Screenshot.h"
-
-enum class DrawDataFlag : unsigned int
-{
-    SurfaceData = 0,
-    SHP = 1,
-    VXL = 2
-};
-
-struct DrawDataStruct
-{
-    union
-    {
-        unsigned char* pImageBuffer; // draw from here, size = FullWidth*FullHeight
-        LPDIRECTDRAWSURFACE7 lpSurface; // Only available for flag = 0, if this is used, only ValidWidth and ValidHeight are set
-    };
-    
-    struct
-    {
-        short First;
-        short Last;
-    } *pPixelValidRanges;
-    // size = FullHeight, stores the valid pixel from where to begin and end for each row
-    // If it's an invalid row, then first = FullWidth - 1, second = 0 
-    
-    Palette* pPalette;
-    short ValidX; // negative value for vxl, dunno why
-    short ValidY; // negative value for vxl, dunno why
-    short ValidWidth; // same as full for vxl, dunno why
-    short ValidHeight; // same as full for vxl, dunno why
-    short FullWidth;
-    short FullHeight;
-    DrawDataFlag Flag;
-    bool IsOverlay; // Only OVRLXX_XX will set this true
-};
 
 using DrawDataMap = FAMap<ppmfc::CString, DrawDataStruct, 0x5E7C18, 0>; // DrawDataMap& tmp = *reinterpret_cast<DrawDataMap*>(0x72CBC8);
 using SomeDataMap = FAMap<ppmfc::CString, bool, 0x5D8CD0, 0>;
