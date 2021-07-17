@@ -33,8 +33,14 @@ struct DrawDataStruct
         LPDIRECTDRAWSURFACE7 lpSurface; // Only available for flag = 0, if this is used, only ValidWidth and ValidHeight are set
     };
     
-    std::pair<short, short>* pValidBuffer; // size = FullHeight, stores the valid pixel from where to begin and end for each row
-                                           // If it's an invalid row, then first = FullWidth - 1, second = 0 
+    struct
+    {
+        short First;
+        short Last;
+    } *pPixelValidRanges;
+    // size = FullHeight, stores the valid pixel from where to begin and end for each row
+    // If it's an invalid row, then first = FullWidth - 1, second = 0 
+    
     Palette* pPalette;
     short ValidX; // negative value for vxl, dunno why
     short ValidY; // negative value for vxl, dunno why
@@ -157,49 +163,49 @@ struct ShapeHeaderStruct
 //}
 
 // Replaces search waypoint tool
-DEFINE_HOOK(438DB0, DebugDrawDataMap, 6)
-{
-    DrawDataMap& tmp = *reinterpret_cast<DrawDataMap*>(0x72CBC8);
-
-    for (auto& pair : tmp)
-    {
-        DrawDataStruct& value = pair.second;
-
-        if (pair.first.IsEmpty())
-            continue;
-
-        if (value.Flag == DrawDataFlag::SurfaceData)
-        {
-            if (value.lpSurface)
-            {
-                Screenshot("Exports\\" + pair.first + ".bmp", value.lpSurface);
-            }
-
-        }
-        else
-        {
-            if (pair.second.FullHeight == 0 || pair.second.FullWidth == 0)
-                continue;
-
-            bitmap_image bmp;
-            bmp.setwidth_height(value.FullWidth, value.FullHeight, true);
-
-            int count = 0;
-            for (int j = 0; j < bmp.height(); ++j)
-            {
-                for (int i = 0; i < bmp.width(); ++i)
-                {
-                    bmp.set_pixel(i, j, value.pPalette->GetByteColor(value.pImageBuffer[count]));
-                    ++count;
-                }
-            }
-
-            bmp.save_image((const char*)("Exports\\" + pair.first + ".bmp"));
-        }
-    }
-
-    return 0x438E4E;
-}
+//DEFINE_HOOK(438DB0, DebugDrawDataMap, 6)
+//{
+//    DrawDataMap& tmp = *reinterpret_cast<DrawDataMap*>(0x72CBC8);
+//
+//    for (auto& pair : tmp)
+//    {
+//        DrawDataStruct& value = pair.second;
+//
+//        if (pair.first.IsEmpty())
+//            continue;
+//
+//        if (value.Flag == DrawDataFlag::SurfaceData)
+//        {
+//            if (value.lpSurface)
+//            {
+//                Screenshot("Exports\\" + pair.first + ".bmp", value.lpSurface);
+//            }
+//
+//        }
+//        else
+//        {
+//            if (pair.second.FullHeight == 0 || pair.second.FullWidth == 0)
+//                continue;
+//
+//            bitmap_image bmp;
+//            bmp.setwidth_height(value.FullWidth, value.FullHeight, true);
+//
+//            int count = 0;
+//            for (int j = 0; j < bmp.height(); ++j)
+//            {
+//                for (int i = 0; i < bmp.width(); ++i)
+//                {
+//                    bmp.set_pixel(i, j, value.pPalette->GetByteColor(value.pImageBuffer[count]));
+//                    ++count;
+//                }
+//            }
+//
+//            bmp.save_image((const char*)("Exports\\" + pair.first + ".bmp"));
+//        }
+//    }
+//
+//    return 0x438E4E;
+//}
 
 
 
