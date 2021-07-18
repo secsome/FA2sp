@@ -53,7 +53,9 @@ bool CurrentScript::AddActionAt(ScriptNode& node, int index)
 	if (this->Count < 50 && index < 50)
 	{
 		for (int i = index + 1; i < this->Count; ++i)
+		{
 			this->Actions[i] = this->Actions[i - 1];
+		}
 
 		this->Actions[index] = node;
 		++this->Count;
@@ -119,10 +121,23 @@ void CurrentScript::Set(ppmfc::CString id)
 	}
 }
 
+void CurrentScript::Unset()
+{
+	this->Count = -1;
+	this->Name = "";
+	this->ID = "";
+}
+
+bool CurrentScript::IsAvailable()
+{
+	return this->Count != -1;
+}
+
 void CurrentScript::Write(ppmfc::CString id, ppmfc::CString name)
 {
 	auto& ini = GlobalVars::INIFiles::CurrentDocument();
-
+	
+	ini.DeleteSection(id);
 	ini.WriteString(id, "Name", name);
 	ppmfc::CString buffer;
 	for (int i = 0; i < this->Count; ++i)
@@ -135,4 +150,28 @@ void CurrentScript::Write(ppmfc::CString id, ppmfc::CString name)
 void CurrentScript::Write()
 {
 	this->Write(this->ID, this->Name);
+}
+
+void CurrentScript::WriteLine(ppmfc::CString id, int line)
+{
+	auto& ini = GlobalVars::INIFiles::CurrentDocument();
+
+	ppmfc::CString buffer;
+	buffer.Format("%d", line);
+	ini.WriteString(id, buffer, this->GetActionString(line));
+}
+
+void CurrentScript::WriteLine(int line)
+{
+	this->WriteLine(this->ID, line);
+}
+
+bool CurrentScript::IsExtraParamEnabled(int actionIndex)
+{
+	return actionIndex == 46 || actionIndex == 47 || actionIndex == 56 || actionIndex == 58;
+}
+
+bool CurrentScript::IsExtraParamEnabledAtLine(int line)
+{
+	return this->IsExtraParamEnabled(this->Actions[line].Type);
 }

@@ -13,6 +13,7 @@ class CurrentScript;
 class NOVTABLE CScriptTypesExt : public CScriptTypes
 {
 public:
+	BOOL OnCommandExt(WPARAM wParam, LPARAM lParam);
 	BOOL PreTranslateMessageExt(MSG* pMsg);
 
 	static void ProgramStartupInit();
@@ -59,6 +60,7 @@ public:
 	void OnCBExtraParamSelectChanged();
 
 	static CurrentScript ExtCurrentScript;
+	static std::map<int, int> RealScriptID; // PosInComboBox - RealScriptID
 };
 
 struct CScriptTypeAction {
@@ -69,6 +71,7 @@ struct CScriptTypeAction {
 	bool Hide_;
 	bool Editable_;
 	ppmfc::CString Description_;
+	int PosInComboBox;
 };
 
 struct CScriptTypeParam {
@@ -89,8 +92,8 @@ public:
 		union {
 			int Param;
 			struct {
-				short ParamExt;
 				short ParamNormal;
+				short ParamExt;
 			};
 		};
 	};
@@ -111,6 +114,12 @@ public:
 	int GetActionCount();
 	ScriptNode& RemoveActionAt(int index);
 	void Set(ppmfc::CString id);
+	void Unset();
+	bool IsAvailable();
 	void Write(ppmfc::CString id, ppmfc::CString name);
 	void Write();
+	void WriteLine(ppmfc::CString id, int line);
+	void WriteLine(int line);
+	bool IsExtraParamEnabled(int actionIndex);
+	bool IsExtraParamEnabledAtLine(int line);
 };

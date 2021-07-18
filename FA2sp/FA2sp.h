@@ -4,6 +4,7 @@
 #include "Ext/FA2Expand.h"
 
 #include <Helpers\Macro.h>
+#include <MFC/ppmfc_cstring.h>
 
 #include <string>
 #include <map>
@@ -14,9 +15,10 @@ class FA2sp
 {
 public:
     static HANDLE hInstance;
-    static void ExtConfigsInitialize();
-
+    static ppmfc::CString Buffer;
     static std::map<std::string, std::string> TutorialTextsMap;
+
+    static void ExtConfigsInitialize();
 };
 
 class ExtConfigs
