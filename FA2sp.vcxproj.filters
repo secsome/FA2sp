@@ -102,7 +102,7 @@
     <ClInclude Include="FA2sp\Helpers\Screenshot.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="FA2pp\Drawing.h">
+    <ClInclude Include="FA2sp\Helpers\VectoredMap.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

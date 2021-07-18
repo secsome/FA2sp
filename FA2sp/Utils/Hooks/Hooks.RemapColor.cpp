@@ -3,78 +3,90 @@
 #include <Palette.h>
 
 #include "../../FA2sp.h"
+#include <map>
 
-#define INVALID_COLOR_VALUE 0xFFFFFFFFu
 #define GLOBAL_REMAP_START 16
 #define GLOBAL_REMAP_END 31
-
-// [16, 31]
-//struct RemapColors
-//{
-//    ColorStruct Data[16];
-//
-//    /// <param name="index">From 16 to 31</param>
-//	ColorStruct GetColorFromPalIndex(int index) { return Data[index - 16]; }
-//};
 
 class RemapColorHelper
 {
 public:
-	static BGRStruct GetRemapColor(Palette* pal, BGRStruct RemapColor, short i)
-	{
-		BGRStruct ret;
-		
-		ret.R = pal->Data[i].R / RemapColor.R * 255;
-		ret.G = pal->Data[i].G / RemapColor.G * 255;
-		ret.B = pal->Data[i].B / RemapColor.B * 255;
 
-		return ret;
+	static void RemapPalette(Palette* pPal, BGRStruct RemapColor, Palette* pReload = nullptr)
+	{
+		if (pReload)
+			memcpy_s(pPal->Data, sizeof Palette, pReload->Data, sizeof Palette);
+
+		for (int i = GLOBAL_REMAP_START; i <= GLOBAL_REMAP_END; i++)
+		{
+			pPal->Data[i].R = RemapColor.R * (GLOBAL_REMAP_END + 1 - i) / (GLOBAL_REMAP_END + 1 - GLOBAL_REMAP_START);
+			pPal->Data[i].G = RemapColor.G * (GLOBAL_REMAP_END + 1 - i) / (GLOBAL_REMAP_END + 1 - GLOBAL_REMAP_START);
+			pPal->Data[i].B = RemapColor.B * (GLOBAL_REMAP_END + 1 - i) / (GLOBAL_REMAP_END + 1 - GLOBAL_REMAP_START);
+		}
 	}
 
-  //  static RemapColors GetRemapColor(Palette& pal, COLORREF dwBaseColor)
-  //  {
-		//RemapColors ret;
+	static Palette* GetRemappedPalette(BGRStruct RemapColor)
+	{
+		auto itr = RemappedPalettes.find(RemapColor);
+		if (itr != RemappedPalettes.end())
+			return &itr->second;
+		else
+		{
+			auto& tmp = RemappedPalettes.insert(std::make_pair(RemapColor, Palette())).first;
+			RemapPalette(&tmp->second, RemapColor, Palette::PALETTE_UNIT);
+			return &tmp->second;
+		}
+	}
 
-		//if (dwBaseColor == INVALID_COLOR_VALUE)
-		//	return ret;
+	static void Clear()
+	{
+		RemappedPalettes.clear();
+	}
+private:
+	static std::map<BGRStruct, Palette> RemappedPalettes;
 
-		//ColorStruct RemapColor;
-
-		//RemapColor.red = dwBaseColor & 0x000000FF;
-		//RemapColor.green = (dwBaseColor & 0x0000FF00) >> 8;
-		//RemapColor.blue = (dwBaseColor & 0x00FF0000) >> 16;
-
-		//for (int i = 0; i <= 15; ++i)
-		//{
-		//	BYTE R, G, B;
-		//	R = RemapColor.red * (16 - i) / 16;
-		//	G = RemapColor.green * (16 - i) / 16;
-		//	B = RemapColor.blue * (16 - i) / 16;
-		//	ret.Data[i] = { R,G,B };
-		//}
-
-		//return ret;
-  //  }
 };
 
-DEFINE_HOOK(474126, CIsoView_Draw_RemapColor_Infantry, 6)
+std::map<BGRStruct, Palette> RemapColorHelper::RemappedPalettes;
+
+DEFINE_HOOK(49D2C0, LoadMap_ClearUp, 5)
 {
-	GET_STACK(BGRStruct*, pColor, STACK_OFFS(0xD18, 0xD04));
-	REF_STACK(DrawDataStruct, data, STACK_OFFS(0xD18, 0x9B0));
-	GET(int, index, EAX);
-	unsigned char i = LOBYTE(index);
-	GET(int, tester, ECX);
-
-	auto remapped = RemapColorHelper::GetRemapColor(data.pPalette, *pColor, i);
-
-	Logger::Raw("\nECX = %d\n", tester);
-	Logger::Raw("Color before remapped = %d %d %d\n", pColor->R, pColor->G, pColor->B);
-	Logger::Raw("Color after remapped = %d %d %d\n", remapped.R, remapped.G, remapped.B);
-	Logger::Raw("Index = %d, palcolor = %d %d %d\n\n", i, data.pPalette->Data[i].R, data.pPalette->Data[i].G, data.pPalette->Data[i].B);
-
-	pColor->R = remapped.R;
-	pColor->G = remapped.G;
-	pColor->B = remapped.B;
+	RemapColorHelper::Clear();
 
 	return 0;
 }
+
+#define REMAP_FIX_PALETTE_SET(hook_addr, hook_name, data_off, color_off) \
+DEFINE_HOOK(hook_addr,hook_name,7) \
+{ \
+REF_STACK(DrawDataStruct, data, STACK_OFFS(0xD18, data_off)); \
+GET_STACK(BGRStruct*, pColor, STACK_OFFS(0xD18, color_off)); \
+if(data.pPalette == Palette::PALETTE_UNIT) \
+	data.pPalette = RemapColorHelper::GetRemappedPalette(*pColor); \
+return 0; \
+}
+
+#define REMAP_FIX_JMP(hook_addr,hook_name,ret_addr) \
+DEFINE_HOOK(hook_addr,hook_name,6) \
+{ \
+return ret_addr; \
+}
+
+#define REMAP_FIX_HOOK(set_addr, hook_name,data_off,color_off, jump_addr,jump_to)\
+REMAP_FIX_PALETTE_SET(set_addr,hook_name ## _SetPalette ,0x ## data_off,0x ## color_off); \
+REMAP_FIX_JMP(jump_addr,hook_name ## _JumpAway,0x ## jump_to);
+
+REMAP_FIX_HOOK(470D34, CIsoView_Draw_RemapColor_Building, AFC, CF0, 470DC0, 470DEC);
+REMAP_FIX_HOOK(471555, CIsoView_Draw_RemapColor_PowerUp1, 96C, CF4, 4715DF, 471604);
+REMAP_FIX_HOOK(471CF0, CIsoView_Draw_RemapColor_PowerUp2, 94C, CF4, 471D7A, 471D9F);
+REMAP_FIX_HOOK(472444, CIsoView_Draw_RemapColor_PowerUp3, 98C, CF4, 4724CD, 4724F2);
+REMAP_FIX_HOOK(472DCD, CIsoView_Draw_RemapColor_Basenode, 9DC, CF4, 472E73, 472E96);
+REMAP_FIX_HOOK(47337C, CIsoView_Draw_RemapColor_UnitsSHP, B7C, D04, 4733FC, 47342A);
+REMAP_FIX_HOOK(4735CE, CIsoView_Draw_RemapColor_UnitsVXL, B7C, D04, 47364E, 47367C);
+REMAP_FIX_HOOK(4739FF, CIsoView_Draw_RemapColor_AircraftsSHP, BE4, D04, 473A7F, 473AAD);
+REMAP_FIX_HOOK(473C51, CIsoView_Draw_RemapColor_AircraftsVXL, BE4, D04, 473A7F, 473CFF);
+REMAP_FIX_HOOK(474087, CIsoView_Draw_RemapColor_Infantry, 9B0, D04, 474109, 474135);
+
+#undef REMAP_FIX_PALETTE_SET
+#undef REMAP_FIX_JMP
+#undef REMAP_FIX_HOOK

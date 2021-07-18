@@ -92,7 +92,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalOptions>-DISOLATION_AWARE_ENABLED %(AdditionalOptions)</AdditionalOptions>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <EnableModules>false</EnableModules>
       <Optimization>MaxSpeed</Optimization>
       <DebugInformationFormat>None</DebugInformationFormat>
@@ -113,7 +113,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_SILENCE_CXX17_OLD_ALLOCATOR_MEMBERS_DEPRECATION_WARNING;WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <ExceptionHandling>false</ExceptionHandling>
       <BufferSecurityCheck>true</BufferSecurityCheck>
@@ -126,7 +126,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalOptions>-DISOLATION_AWARE_ENABLED %(AdditionalOptions)</AdditionalOptions>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <EnableModules>false</EnableModules>
       <Optimization>Disabled</Optimization>
     </ClCompile>
@@ -146,7 +146,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_SILENCE_CXX17_OLD_ALLOCATOR_MEMBERS_DEPRECATION_WARNING;WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <ExceptionHandling>false</ExceptionHandling>
       <BufferSecurityCheck>true</BufferSecurityCheck>
@@ -216,7 +216,6 @@
     <ClCompile Include="FA2sp\ExtraWindow\CTileManager\CTileManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FA2pp\Drawing.h" />
     <ClInclude Include="FA2sp\Ext\CFinalSunDlg\Body.h" />
     <ClInclude Include="FA2sp\Ext\CIsoView\Body.h" />
     <ClInclude Include="FA2sp\Ext\CScriptTypes\Functional.h" />
@@ -240,6 +239,7 @@
     <ClInclude Include="FA2sp\Helpers\Screenshot.h" />
     <ClInclude Include="FA2sp\Helpers\STDHelpers.h" />
     <ClInclude Include="FA2sp\Helpers\Templates.hpp" />
+    <ClInclude Include="FA2sp\Helpers\VectoredMap.h" />
     <ClInclude Include="FA2sp\Logger.h" />
     <ClInclude Include="FA2sp\RunTime.h" />
     <ClInclude Include="FA2sp\UI\UIColor.h" />

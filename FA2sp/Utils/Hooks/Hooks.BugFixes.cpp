@@ -74,5 +74,5 @@ DEFINE_HOOK(483F9D, CLoading_LoadObjects_SHPTurretFix_2, 5)
     if (GlobalVars::INIFiles::Rules->GetBool(pRegName, "Turret") && bIsBuilding)
         return 0x483FA4;
     else
-        return 0x483FC2;
+        return 0;
 }

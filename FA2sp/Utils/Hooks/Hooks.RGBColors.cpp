@@ -4,59 +4,77 @@
 
 #include <MFC/ppmfc_include.h>
 
-struct ColorTuple
+#include <map>
+
+class RGBClass
 {
-	unsigned char a, b, c;
+public:
+	unsigned char R, G, B;
+
+	operator int()
+	{
+		return RGB(R, G, B);
+	}
 };
 
-constexpr ColorTuple HsvToRgb(ColorTuple const hsv) noexcept {
-	if (hsv.b == 0u) {
-		return { hsv.c, hsv.c, hsv.c };
-	}
-
-	unsigned char region = hsv.a / 43;
-	unsigned char remainder = (hsv.a - (region * 43)) * 6;
-
-	unsigned char p = (hsv.c * (255 - hsv.b)) >> 8;
-	unsigned char q = (hsv.c * (255 - ((hsv.b * remainder) >> 8))) >> 8;
-	unsigned char t = (hsv.c * (255 - ((hsv.b * (255 - remainder)) >> 8))) >> 8;
-
-	switch (region) {
-	case 0:
-		return { hsv.c, t, p };
-	case 1:
-		return { q, hsv.c, p };
-	case 2:
-		return { p, hsv.c, t };
-	case 3:
-		return { p, q, hsv.c };
-	case 4:
-		return { t, p, hsv.c };
-	default:
-		return { hsv.c, p, q };
-	}
-}
-
-DEFINE_HOOK(468B44, sub_468760_RGBColor, 5)
+class HSVClass
 {
-	REF_STACK(ppmfc::CString, name, STACK_OFFS(0xA4, 0x94));
+public:
+	unsigned char H, S, V;
 
-	INIClass& rules = GlobalVars::INIFiles::Rules;
+	operator RGBClass() const
+	{
+		if (S == 0u)
+			return { V, V, V };
 
-	if (strlen(name) > 0) {
-		auto const pValue = rules.GetString("Colors", name);
-		ColorTuple hsv{};
-		if (sscanf_s(
-			pValue,
-			"%hhu,%hhu,%hhu",
-			&hsv.a, &hsv.b, &hsv.c) == 3
-			)
-		{
-			auto const rgb = HsvToRgb(hsv);
-			name.~CString();
-			R->EAX<unsigned int>(rgb.a | rgb.b << 8u | rgb.c << 16u);
-			return 0x468ED3;
+		unsigned char region = H / 43;
+		unsigned char remainder = (H - (region * 43)) * 6;
+
+		unsigned char p = (V * (255 - S)) >> 8;
+		unsigned char q = (V * (255 - ((S * remainder) >> 8))) >> 8;
+		unsigned char t = (V * (255 - ((S * (255 - remainder)) >> 8))) >> 8;
+
+		switch (region) {
+		case 0:
+			return { V, t, p };
+		case 1:
+			return { q, V, p };
+		case 2:
+			return { p, V, t };
+		case 3:
+			return { p, q, V };
+		case 4:
+			return { t, p, V };
+		default:
+			return { V, p, q };
 		}
 	}
-	return 0;
+};
+
+DEFINE_HOOK(468760, Miscs_GetColor, 7)
+{
+	GET_STACK(const char*, pHouse, 0x4);
+	GET_STACK(const char*, pColor, 0x8);
+
+	ppmfc::CString color = "";
+	if (pHouse)
+		if (auto pStr = GlobalVars::INIFiles::CurrentDocument->TryGetString(pHouse, "Color"))
+			color = *pStr;
+
+	if (pColor)
+		color = pColor;
+
+	HSVClass hsv{ 0,0,0 };
+	if (!color.IsEmpty())
+	{
+		auto const ppValue = GlobalVars::INIFiles::Rules->TryGetString("Colors", color);
+		if (ppValue)
+			sscanf_s(*ppValue, "%hhu,%hhu,%hhu", &hsv.H, &hsv.S, &hsv.V);
+	}
+
+	RGBClass rgb = hsv;
+	R->EAX<int>(rgb);
+
+	return 0x468EEB;
+	
 }
