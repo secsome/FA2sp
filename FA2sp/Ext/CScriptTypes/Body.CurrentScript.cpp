@@ -3,6 +3,7 @@
 #include <GlobalVars.h>
 #include <CINI.h>
 
+CurrentScript CScriptTypesExt::ExtCurrentScript;
 ppmfc::CString CurrentScript::ToString()
 {
 	return this->ID + " (" + this->Name + ")";
@@ -112,7 +113,9 @@ void CurrentScript::Set(ppmfc::CString id)
 					++count;
 			}
 		}
-		this->Count = count + 1;
+		this->Count = count;
+		this->Name = ini.GetString(id, "Name", "No name");
+		this->ID = id;
 	}
 }
 

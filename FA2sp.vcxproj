@@ -179,6 +179,7 @@
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Hooks.ObjectBrowserControl.cpp" />
     <ClCompile Include="FA2sp\Ext\CIsoView\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CIsoView\Hooks.cpp" />
+    <ClCompile Include="FA2sp\Ext\CScriptTypes\Body.CurrentScript.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTeamTypes\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CTeamTypes\Hooks.cpp" />
@@ -255,9 +256,6 @@
     <ResourceCompile Include="FA2sp\UI\CHouses.rc" />
     <ResourceCompile Include="FA2sp\UI\CTeamTypes.rc" />
     <ResourceCompile Include="FA2sp\UI\CTileBrowserFrame.DialogBar.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FA2sp\Ext\CScriptTypes\Body.CurrentScript.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

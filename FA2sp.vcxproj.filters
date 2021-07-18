@@ -209,6 +209,9 @@
     <ClCompile Include="FA2sp\Ext\CIsoView\Body.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CScriptTypes\Body.CurrentScript.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="FA2sp\Utils\Hooks\Hooks.RemapColor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -250,8 +253,5 @@
     <ResourceCompile Include="FA2sp\UI\CMenu.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FA2sp\Ext\CScriptTypes\Body.CurrentScript.cpp" />
   </ItemGroup>
 </Project>

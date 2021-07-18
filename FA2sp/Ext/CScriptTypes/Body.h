@@ -26,7 +26,7 @@ public:
 
 	/*static void* GetMessageMap();*/
 
-	BOOL OnInitDialog();
+	BOOL OnInitDialogExt();
 
 	void UpdateDialog();
 
