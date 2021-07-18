@@ -389,13 +389,13 @@ void CScriptTypesExt::OnCBCurrentActionEditChanged()
 
 		FA2sp::Buffer.Format("%d", currentAction.ParamNormal);
 		this->CCBScriptParameter.SetWindowText(FA2sp::Buffer);
-		this->OnCBExtraParamSelectChanged();
+		this->CScriptTypesExt::OnCBExtraParamSelectChanged();
 	}
 	else
 	{
 		FA2sp::Buffer.Format("%d", currentAction.Param);
 		this->CCBScriptParameter.SetWindowText(FA2sp::Buffer);
-		this->OnCBScriptParameterSelectChanged();
+		this->CScriptTypesExt::OnCBScriptParameterSelectChanged();
 	}
 }
 
@@ -431,8 +431,24 @@ void CScriptTypesExt::OnCBScriptParameterSelectChanged()
 	this->CScriptTypesExt::OnCBScriptParameterEditChanged();
 }
 
-void CScriptTypesExt::OnBNAddActionClickedExt()
+void CScriptTypesExt::OnBNAddActionClicked()
 {
+	if (!ExtCurrentScript.IsAvailable())
+		return;
+
+	int nActionIndex = this->CLBScriptActions.GetCurSel();
+
+	bool bInsertMode = ::SendMessage(::GetDlgItem(*this, 6302), BM_GETCHECK, 0, 0) == BST_CHECKED;
+	if (nActionIndex == LB_ERR && bInsertMode)
+		return;
+
+	int nAddIndex = bInsertMode ? nActionIndex : ExtCurrentScript.Count;
+	ExtCurrentScript.AddActionAt(0, 0, nAddIndex);
+	ExtCurrentScript.Write();
+
+	this->CScriptTypesExt::OnCBCurrentScriptSelectChanged();
+	this->CLBScriptActions.SetCurSel(nAddIndex);
+	this->CScriptTypesExt::OnLBScriptActionsSelectChanged();
 }
 
 void CScriptTypesExt::OnBNDeleteActionClicked()
@@ -455,6 +471,15 @@ void CScriptTypesExt::OnBNDeleteActionClicked()
 
 void CScriptTypesExt::OnBNAddScriptClicked()
 {
+	INIClass::GetAvailableIndex(&FA2sp::Buffer);
+	auto& ini = GlobalVars::INIFiles::CurrentDocument();
+	ini.WriteString(FA2sp::Buffer, "Name", "New script");
+	ExtCurrentScript.Set(FA2sp::Buffer);
+	int index = this->CCBCurrentScript.AddString(FA2sp::Buffer + (" New script"));
+	INIClass::GetAvailableKey(&FA2sp::Buffer, "ScriptTypes");
+	ini.WriteString("ScriptTypes", FA2sp::Buffer, ExtCurrentScript.ID);
+	this->CCBCurrentScript.SetCurSel(index);
+	this->OnCBCurrentScriptSelectChanged();
 }
 
 void CScriptTypesExt::OnBNDeleteScriptClicked()
@@ -478,18 +503,77 @@ void CScriptTypesExt::OnBNDeleteScriptClicked()
 
 void CScriptTypesExt::OnBNCloneScriptClicked()
 {
+	if (!ExtCurrentScript.IsAvailable())
+		return;
+
+	ExtCurrentScript.Write(*INIClass::GetAvailableIndex(&FA2sp::Buffer), ExtCurrentScript.Name + " Clone");
+	ExtCurrentScript.Set(FA2sp::Buffer);
+	int index = this->CCBCurrentScript.AddString(FA2sp::Buffer + " (" + ExtCurrentScript.Name + " Clone)");
+	INIClass::GetAvailableKey(&FA2sp::Buffer, "ScriptTypes");
+	GlobalVars::INIFiles::CurrentDocument->WriteString("ScriptTypes", FA2sp::Buffer, ExtCurrentScript.ID);
+	this->CCBCurrentScript.SetCurSel(index);
+	this->OnCBCurrentScriptSelectChanged();
+
 }
 
 void CScriptTypesExt::OnBNCloneItemClicked()
 {
+	if (!ExtCurrentScript.IsAvailable())
+		return;
+
+	int nActionIndex = this->CLBScriptActions.GetCurSel();
+	if (nActionIndex == LB_ERR)
+		return;
+
+	bool bInsertMode = ::SendMessage(::GetDlgItem(*this, 6302), BM_GETCHECK, 0, 0) == BST_CHECKED;
+
+	int nAddIndex = bInsertMode ? nActionIndex : ExtCurrentScript.Count;
+	ExtCurrentScript.AddActionAt(ExtCurrentScript.Actions[nActionIndex], nAddIndex);
+	ExtCurrentScript.Write();
+
+	this->CScriptTypesExt::OnCBCurrentScriptSelectChanged();
+	this->CLBScriptActions.SetCurSel(nAddIndex);
+	this->CScriptTypesExt::OnLBScriptActionsSelectChanged();
 }
 
 void CScriptTypesExt::OnBNMoveUpClicked()
 {
+	if (!ExtCurrentScript.IsAvailable())
+		return;
+
+	int nActionIndex = this->CLBScriptActions.GetCurSel();
+	if (nActionIndex == LB_ERR || nActionIndex == 0) // already at the top
+		return;
+
+	std::swap(ExtCurrentScript.Actions[nActionIndex], ExtCurrentScript.Actions[nActionIndex - 1]);
+	ExtCurrentScript.WriteLine(nActionIndex);
+	ExtCurrentScript.WriteLine(nActionIndex - 1);
+
+	this->CLBScriptActions.LockWindowUpdate();
+	this->CScriptTypesExt::OnCBCurrentScriptSelectChanged();
+	this->CLBScriptActions.SetCurSel(nActionIndex - 1);
+	this->CScriptTypesExt::OnLBScriptActionsSelectChanged();
+	this->CLBScriptActions.UnlockWindowUpdate();
 }
 
 void CScriptTypesExt::OnBNMoveDownClicked()
 {
+	if (!ExtCurrentScript.IsAvailable())
+		return;
+
+	int nActionIndex = this->CLBScriptActions.GetCurSel();
+	if (nActionIndex == LB_ERR || nActionIndex == ExtCurrentScript.Count - 1) // already at the bottom
+		return;
+
+	std::swap(ExtCurrentScript.Actions[nActionIndex], ExtCurrentScript.Actions[nActionIndex + 1]);
+	ExtCurrentScript.WriteLine(nActionIndex);
+	ExtCurrentScript.WriteLine(nActionIndex + 1);
+
+	this->CLBScriptActions.LockWindowUpdate();
+	this->CScriptTypesExt::OnCBCurrentScriptSelectChanged();
+	this->CLBScriptActions.SetCurSel(nActionIndex + 1);
+	this->CScriptTypesExt::OnLBScriptActionsSelectChanged();
+	this->CLBScriptActions.UnlockWindowUpdate();
 }
 
 void CScriptTypesExt::OnCBExtraParamEditChanged()

@@ -53,9 +53,7 @@ bool CurrentScript::AddActionAt(ScriptNode& node, int index)
 	if (this->Count < 50 && index < 50)
 	{
 		for (int i = index + 1; i < this->Count; ++i)
-		{
 			this->Actions[i] = this->Actions[i - 1];
-		}
 
 		this->Actions[index] = node;
 		++this->Count;

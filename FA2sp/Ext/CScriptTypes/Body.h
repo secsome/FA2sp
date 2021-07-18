@@ -43,7 +43,7 @@ public:
 	void OnCBCurrentActionSelectChanged();
 	void OnCBScriptParameterSelectChanged();
 	
-	void OnBNAddActionClickedExt();
+	void OnBNAddActionClicked();
 	void OnBNDeleteActionClicked();
 	void OnBNAddScriptClicked();
 	void OnBNDeleteScriptClicked();
