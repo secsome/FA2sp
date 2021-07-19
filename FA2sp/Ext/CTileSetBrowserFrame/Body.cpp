@@ -1,5 +1,6 @@
 #include "Body.h"
 
+#include <GlobalVars.h>
 #include "../../ExtraWindow/CTileManager/CTileManager.h"
 
 void CTileSetBrowserFrameExt::ProgramStartupInit()
@@ -10,10 +11,13 @@ void CTileSetBrowserFrameExt::ProgramStartupInit()
 
 void CTileSetBrowserFrameExt::OnBNTileManagerClicked()
 {
-	if (CTileManager::GetHandle() == NULL)
-		CTileManager::Create(this);
-	else
-		::ShowWindow(CTileManager::GetHandle(), SW_SHOW);
+	if (GlobalVars::CurrentMapWidthPlusHeight())
+	{
+		if (CTileManager::GetHandle() == NULL)
+			CTileManager::Create(this);
+		else
+			::ShowWindow(CTileManager::GetHandle(), SW_SHOW);
+	}
 }
 
 BOOL CTileSetBrowserFrameExt::PreTranslateMessageExt(MSG* pMsg)

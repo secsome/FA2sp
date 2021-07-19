@@ -509,12 +509,11 @@ void CScriptTypesExt::OnBNCloneScriptClicked()
 
 	ExtCurrentScript.Write(*INIClass::GetAvailableIndex(&FA2sp::Buffer), ExtCurrentScript.Name + " Clone");
 	ExtCurrentScript.Set(FA2sp::Buffer);
-	int index = this->CCBCurrentScript.AddString(FA2sp::Buffer + " (" + ExtCurrentScript.Name + " Clone)");
+	int index = this->CCBCurrentScript.AddString(FA2sp::Buffer + " (" + ExtCurrentScript.Name + ")");
 	INIClass::GetAvailableKey(&FA2sp::Buffer, "ScriptTypes");
 	GlobalVars::INIFiles::CurrentDocument->WriteString("ScriptTypes", FA2sp::Buffer, ExtCurrentScript.ID);
 	this->CCBCurrentScript.SetCurSel(index);
 	this->OnCBCurrentScriptSelectChanged();
-
 }
 
 void CScriptTypesExt::OnBNCloneItemClicked()
