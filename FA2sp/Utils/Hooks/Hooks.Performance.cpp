@@ -65,24 +65,24 @@ void Performance::UpdateDict()
     Performance::NeedsReload = false;
 }
 
-DEFINE_HOOK(49EDD3, CMapData_LoadMap_UpdateDict, 6)
-{
-    Performance::NeedsReload = true;
-    return 0;
-}
-
-DEFINE_HOOK(446520, Miscs_GetAvailableIndex, 7)
-{
-    if (ExtConfigs::FastAvailableIndex)
-    {
-        GET_STACK(ppmfc::CString*, pString, 0x4);
-
-        if (Performance::NeedsReload)
-            Performance::UpdateDict();
-
-        new(pString) ppmfc::CString(Performance::GetAvailableIndex());
-
-        return 0x446FB3;
-    }
-    return 0;
-}
+//DEFINE_HOOK(49EDD3, CMapData_LoadMap_UpdateDict, 6)
+//{
+//    Performance::NeedsReload = true;
+//    return 0;
+//}
+//
+//DEFINE_HOOK(446520, Miscs_GetAvailableIndex, 7)
+//{
+//    if (ExtConfigs::FastAvailableIndex)
+//    {
+//        GET_STACK(ppmfc::CString*, pString, 0x4);
+//
+//        if (Performance::NeedsReload)
+//            Performance::UpdateDict();
+//
+//        new(pString) ppmfc::CString(Performance::GetAvailableIndex());
+//
+//        return 0x446FB3;
+//    }
+//    return 0;
+//}
