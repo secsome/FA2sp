@@ -4,10 +4,7 @@ CCredits* CCreditsExt::Instance = nullptr;
 
 void CCreditsExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto creditsPreTranslateAddr = &CCreditsExt::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x592810, &creditsPreTranslateAddr, sizeof(creditsPreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x592810, &CCreditsExt::PreTranslateMessageExt);
 }
 
 BOOL CCreditsExt::PreTranslateMessageExt(MSG* pMsg)

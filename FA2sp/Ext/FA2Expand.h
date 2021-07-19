@@ -4,7 +4,6 @@
 #include "../RunTime.h"
 
 #include <Helpers/Macro.h>
-#include "../StaticPatcher.Macro.h"
 
 class FA2Expand
 {

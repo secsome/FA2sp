@@ -72,14 +72,4 @@ public:
         }
         return s.find(q) != std::string::npos;
     }
-
-    // TODO : LCA to optimize the efficiency
-    static ppmfc::CString GetAvailableIndex(INIClass& ini)
-    {
-        CString buffer;
-        
-
-        ppmfc::CString ret(buffer);
-        return ret;
-    }
 };

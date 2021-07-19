@@ -2,9 +2,9 @@
 
 #include "Logger.h"
 #include "Ext/FA2Expand.h"
-#include "Utils/Replacement.h"
 
 #include <Helpers\Macro.h>
+#include <MFC/ppmfc_cstring.h>
 
 #include <string>
 #include <map>
@@ -15,9 +15,10 @@ class FA2sp
 {
 public:
     static HANDLE hInstance;
-    static void ExtConfigsInitialize();
-
+    static ppmfc::CString Buffer;
     static std::map<std::string, std::string> TutorialTextsMap;
+
+    static void ExtConfigsInitialize();
 };
 
 class ExtConfigs
@@ -42,5 +43,10 @@ public:
     static bool Waypoint_Background;
     static int Waypoint_Background_Color;
     static bool ExtWaypoints;
+    static bool FastAvailableIndex;
 };
 
+namespace Constants
+{
+    static constexpr int UndoRedoStep{ INT_MAX };
+};

@@ -7,10 +7,7 @@
 
 void CTriggerOptionExt::ProgramStartupInit()
 {
-	/*auto addr = &CTeamTypesExt::PreTranslateMessageExt;
-	RunTime::ResetMemoryContentAt(0x5971F8, &addr, 4);*/
-	auto addr2 = &CTriggerOptionExt::OnInitDialogExt;
-	RunTime::ResetMemoryContentAt(0x597F24, &addr2, 4);
+	RunTime::ResetMemoryContentAt(0x597F24, &CTriggerOptionExt::OnInitDialogExt);
 }
 
 BOOL CTriggerOptionExt::OnInitDialogExt()
@@ -19,30 +16,16 @@ BOOL CTriggerOptionExt::OnInitDialogExt()
 	if (!ret)
 		return FALSE;
 
-	auto TranslateDlgItem = [this](int nID, const char* lpKey)
-	{
-		ppmfc::CString buffer;
-		if (Translations::GetTranslationItem(lpKey, buffer))
-			this->SetDlgItemText(nID, buffer);
-	};
-
-	auto TranslateCItem = [](CWnd* pWnd, const char* lpKey)
-	{
-		ppmfc::CString buffer;
-		if (Translations::GetTranslationItem(lpKey, buffer))
-			pWnd->SetWindowText(buffer);
-	};
-
-	TranslateDlgItem(50400, "TriggerOptionType");
-	TranslateDlgItem(50401, "TriggerOptionName");
-	TranslateDlgItem(50402, "TriggerOptionHouse");
-	TranslateDlgItem(50403, "TriggerOptionAttached");
-	TranslateDlgItem(50404, "TriggerOptionDisabledDesc");
-
-	TranslateDlgItem(1412, "TriggerOptionDisabled");
-	TranslateDlgItem(1424, "TriggerOptionEasy");
-	TranslateDlgItem(1425, "TriggerOptionMedium");
-	TranslateDlgItem(1426, "TriggerOptionHard");
+	Translations::TranslateItem(this, 50400, "TriggerOptionType");
+	Translations::TranslateItem(this, 50401, "TriggerOptionName");
+	Translations::TranslateItem(this, 50402, "TriggerOptionHouse");
+	Translations::TranslateItem(this, 50403, "TriggerOptionAttached");
+	Translations::TranslateItem(this, 50404, "TriggerOptionDisabledDesc");
+	
+	Translations::TranslateItem(this, 1412, "TriggerOptionDisabled");
+	Translations::TranslateItem(this, 1424, "TriggerOptionEasy");
+	Translations::TranslateItem(this, 1425, "TriggerOptionMedium");
+	Translations::TranslateItem(this, 1426, "TriggerOptionHard");
 
 	return TRUE;
 }

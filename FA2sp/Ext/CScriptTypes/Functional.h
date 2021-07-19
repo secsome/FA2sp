@@ -111,7 +111,7 @@ static void CScriptTypes_LoadParams_ScriptLine(ppmfc::CComboBox& comboBox, ppmfc
             actionIndex = -1;
         else
             actionIndex = atoi(buffer.Mid(0, actionIndex));
-        buffer.Format("%d - %s", i + 1, CScriptTypesExt::ExtActions[actionIndex].Name_);
+        buffer.Format("%d - %s", i + 1, CScriptTypeAction::ExtActions[actionIndex].Name_);
         int idx = comboBox.AddString(buffer);
         comboBox.SetItemData(idx, i);
     }

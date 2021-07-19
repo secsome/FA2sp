@@ -4,8 +4,7 @@
 
 void CFinalSunDlgExt::ProgramStartupInit()
 {
-	auto addr = &CFinalSunDlgExt::PreTranslateMessageExt;
-	RunTime::ResetMemoryContentAt(0x5937E8, &addr, 4);
+	RunTime::ResetMemoryContentAt(0x5937E8, &CFinalSunDlgExt::PreTranslateMessageExt);
 
 }
 

@@ -1,20 +1,23 @@
 #include "Body.h"
 
+#include <GlobalVars.h>
 #include "../../ExtraWindow/CTileManager/CTileManager.h"
 
 void CTileSetBrowserFrameExt::ProgramStartupInit()
 {
-	auto addr = &CTileSetBrowserFrameExt::PreTranslateMessageExt;
-	RunTime::ResetMemoryContentAt(0x597458, &addr, 4);
+	RunTime::ResetMemoryContentAt(0x597458, &CTileSetBrowserFrameExt::PreTranslateMessageExt);
 }
 
 
 void CTileSetBrowserFrameExt::OnBNTileManagerClicked()
 {
-	if (CTileManager::GetHandle() == NULL)
-		CTileManager::Create(this);
-	else
-		::ShowWindow(CTileManager::GetHandle(), SW_SHOW);
+	if (GlobalVars::CurrentMapWidthPlusHeight())
+	{
+		if (CTileManager::GetHandle() == NULL)
+			CTileManager::Create(this);
+		else
+			::ShowWindow(CTileManager::GetHandle(), SW_SHOW);
+	}
 }
 
 BOOL CTileSetBrowserFrameExt::PreTranslateMessageExt(MSG* pMsg)

@@ -2,6 +2,8 @@
 
 #include "../../FA2sp.h"
 
+#include <WindowsX.h>
+
 void CIsoViewExt::ProgramStartupInit()
 {
     // RunTime::ResetMemoryContentAt(0x594518, CIsoViewExt::PreTranslateMessageExt);
@@ -11,22 +13,24 @@ BOOL CIsoViewExt::PreTranslateMessageExt(MSG* pMsg)
 {
     switch (pMsg->message)
     {
-    case WM_PAINT:
-        if (pMsg->hwnd == *this)
-        {
-            PAINTSTRUCT ps;
-            HDC hDC = ::BeginPaint(*this, &ps);
-            RECT rect;
-            ::GetClientRect(*this, &rect);
-            HBITMAP hBitmap = LoadBitmap(reinterpret_cast<HINSTANCE>(FA2sp::hInstance), MAKEINTRESOURCE(23333));
-            HDC  mDc = ::CreateCompatibleDC(hDC);
-            HBITMAP hOldBitmap = (HBITMAP)::SelectObject(mDc, hBitmap);
-            ::StretchBlt(hDC, 0, 0, rect.right - rect.left, rect.bottom - rect.top, mDc, 0, 0, 1920, 1080, SRCCOPY);
-            ::SelectObject(mDc, hOldBitmap);
-            ::DeleteObject(hBitmap);
-            ::DeleteDC(mDc);
-            ::EndPaint(*this, &ps);
-        }
+    case WM_MOUSEWHEEL:
+        return this->OnMouseWheel(
+            GET_KEYSTATE_WPARAM(pMsg->wParam),
+            GET_WHEEL_DELTA_WPARAM(pMsg->wParam),
+            { GET_X_LPARAM(pMsg->lParam) ,GET_Y_LPARAM(pMsg->lParam) });
     }
     return CIsoView::PreTranslateMessage(pMsg);
+}
+
+BOOL CIsoViewExt::OnMouseWheelExt(UINT Flags, short zDelta, CPoint point)
+{
+    int nRealStep = zDelta / WHEEL_DELTA;
+    if (nRealStep == 0) return FALSE;
+    
+    if (nRealStep > 0) //GoUp
+    {
+
+    }
+    
+    return TRUE;
 }

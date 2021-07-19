@@ -54,3 +54,17 @@ bool Translations::GetTranslationItem(const char* pLabelName, ppmfc::CString& re
 
         return false;
 }
+
+void Translations::TranslateItem(CWnd* pWnd, int nSubID, const char* lpKey)
+{
+    ppmfc::CString buffer;
+    if (Translations::GetTranslationItem(lpKey, buffer))
+        pWnd->SetDlgItemText(nSubID, buffer);
+}
+
+void Translations::TranslateItem(CWnd* pWnd, const char* lpKey)
+{
+    ppmfc::CString buffer;
+    if (Translations::GetTranslationItem(lpKey, buffer))
+        pWnd->SetWindowText(buffer);
+}

@@ -8,10 +8,12 @@
 // Forward Declartion
 struct CScriptTypeAction;
 struct CScriptTypeParam;
+class CurrentScript;
 
 class NOVTABLE CScriptTypesExt : public CScriptTypes
 {
 public:
+	BOOL OnCommandExt(WPARAM wParam, LPARAM lParam);
 	BOOL PreTranslateMessageExt(MSG* pMsg);
 
 	static void ProgramStartupInit();
@@ -27,28 +29,24 @@ public:
 
 	BOOL OnInitDialogExt();
 
+	void UpdateDialog();
+
 	void OnCBCurrentActionEditChanged();
 	void OnCBScriptParameterEditChanged();
 	void OnLBScriptActionsSelectChanged();
 
-	/*void DoDataExchange(CDataExchange* pDX);
+	// void DoDataExchange(CDataExchange* pDX);
 
 	void OnCBCurrentScriptSelectChanged();
 	void OnETScriptNameChanged();
 	
 	void OnCBCurrentActionSelectChanged();
 	void OnCBScriptParameterSelectChanged();
-	*/
-	void OnBNAddActionClickedExt();
-	/*
+	
+	void OnBNAddActionClicked();
 	void OnBNDeleteActionClicked();
 	void OnBNAddScriptClicked();
-	void OnBNDeleteScriptClicked();*/
-	
-	//void OnBNDeleteActionClicked();
-	void OnBNAddScriptClickedExt();
-	//void OnBNDeleteScriptClicked();
-
+	void OnBNDeleteScriptClicked();
 
 	CScriptTypesExt() {};
 	~CScriptTypesExt() {};
@@ -56,21 +54,72 @@ public:
 	// Functional Functions
 	void OnBNCloneScriptClicked();
 	void OnBNCloneItemClicked();
+	void OnBNMoveUpClicked();
+	void OnBNMoveDownClicked();
+	void OnCBExtraParamEditChanged();
+	void OnCBExtraParamSelectChanged();
 
-	static int ExtParamID;
-	static std::map<int, CScriptTypeAction> ExtActions;
-	static std::map<int, CScriptTypeParam> ExtParams;
+	static CurrentScript ExtCurrentScript;
+	static std::map<int, int> RealScriptID; // PosInComboBox - RealScriptID
 };
 
 struct CScriptTypeAction {
-	const char* Name_;
+	static std::map<int, CScriptTypeAction> ExtActions;
+
+	ppmfc::CString Name_;
 	int ParamCode_;
 	bool Hide_;
 	bool Editable_;
-	const char* Description_;
+	ppmfc::CString Description_;
+	int PosInComboBox;
 };
 
 struct CScriptTypeParam {
-	const char* Label_;
+	static std::map<int, CScriptTypeParam> ExtParams;
+
+	ppmfc::CString Label_;
 	int Param_;
+};
+
+class CurrentScript {
+public:
+	struct ScriptNode {
+		ScriptNode() : Type{ -1 }, Param{ -1 }{}
+		bool IsEmpty() { return Type == -1 && Param == -1; }
+		void MakeEmpty() { Type = -1; Param = -1; }
+
+		int Type;
+		union {
+			int Param;
+			struct {
+				short ParamNormal;
+				short ParamExt;
+			};
+		};
+	};
+
+	ppmfc::CString ID;
+	ppmfc::CString Name;
+	ScriptNode Actions[50];
+	int Count;
+
+	ppmfc::CString ToString();
+	ppmfc::CString GetActionString(int index);
+	int AddAction(ScriptNode& node);
+	int AddAction(int type, int param);
+	int AddAction(int type, short param, short ext);
+	bool AddActionAt(ScriptNode& node, int index);
+	bool AddActionAt(int type, int param, int index);
+	bool AddActionAt(int type, short param, short ext, int index);
+	int GetActionCount();
+	ScriptNode& RemoveActionAt(int index);
+	void Set(ppmfc::CString id);
+	void Unset();
+	bool IsAvailable();
+	void Write(ppmfc::CString id, ppmfc::CString name);
+	void Write();
+	void WriteLine(ppmfc::CString id, int line);
+	void WriteLine(int line);
+	bool IsExtraParamEnabled(int actionIndex);
+	bool IsExtraParamEnabledAtLine(int line);
 };

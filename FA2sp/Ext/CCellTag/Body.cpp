@@ -4,10 +4,7 @@ CCellTag* CCellTagExt::Instance = nullptr;
 
 void CCellTagExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto iniEditorPreTranslateAddr = &CCellTagExt::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x592478, &iniEditorPreTranslateAddr, sizeof(iniEditorPreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x592478, &CCellTagExt::PreTranslateMessageExt);
 }
 
 BOOL CCellTagExt::PreTranslateMessageExt(MSG* pMsg)

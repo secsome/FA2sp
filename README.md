@@ -12,6 +12,12 @@ C++ Standard: C++20
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-07-19) ==============================================================================================
+*) Undo/Redo extended to 2147483647 steps, be careful about your memory.
+*) Fixed wrongly painted Remap color for technos using UNITXXX.PAL
+*) Fixed buildings with shp turret can only been painted to NORTH
+*) Refactored ScriptTypes window, now you can use MoveUp, MoveDown, InsertMode and Clones
+
 ======================= Changes (2021-06-11) ==============================================================================================
 +) New ExtConfig: ExtWaypoints = BOOLEAN, enable it to support no limitation of waypoints, defaults to false (Phobos required)
 +) New ExtConfig: Waypoint.Background = BOOLEAN, enable it to draw a background rectangle for waypoints, defaults to false
@@ -368,8 +374,7 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) TriggerActionDesc = TEXT
 
 - WORK IN PROGRESS
-    - Support for cloning scripts & taskforces & ai triggers
-    - SHP turret rotation (currently doesn't change and always points to the north)
+    - Support for taskforces & ai triggers
     - Custom palettes
     - ...
 

@@ -10,6 +10,19 @@
 #include "../../Helpers/STDHelpers.h"
 #include "../../Helpers/Translations.h"
 
+// WM_COMMAND
+BOOL CScriptTypesExt::OnCommandExt(WPARAM wParam, LPARAM lParam)
+{
+	WORD wmID = LOWORD(wParam);
+	WORD wmMsg = HIWORD(wParam);
+	if (wmID == 6304)
+		if (wmMsg == CBN_KILLFOCUS)
+			this->OnCBExtraParamSelectChanged();
+	
+
+	return this->FA2CDialog::OnCommand(wParam, lParam);
+}
+
 BOOL CScriptTypesExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	if (pMsg->message == WM_LBUTTONUP)
@@ -23,12 +36,10 @@ BOOL CScriptTypesExt::PreTranslateMessageExt(MSG* pMsg)
 			bool bInsertMode = ::SendMessage(::GetDlgItem(*this, 6302), BM_GETCHECK, 0, 0) == BST_CHECKED;
 			::SendMessage(::GetDlgItem(*this, 6302), BM_SETCHECK, bInsertMode ? BST_UNCHECKED : BST_CHECKED, 0);
 		}
-		/*elif (pMsg->hwnd == this->GetDlgItem(1173)->GetSafeHwnd())
-		{
-			this->OnBNAddActionClickedExt();
-			return TRUE;
-		}*/
-			
+		elif (pMsg->hwnd == this->GetDlgItem(6305)->GetSafeHwnd())
+			this->OnBNMoveUpClicked();
+		elif (pMsg->hwnd == this->GetDlgItem(6306)->GetSafeHwnd())
+			this->OnBNMoveDownClicked();
 	}
 
 	return this->FA2CDialog::PreTranslateMessage(pMsg);
@@ -39,19 +50,15 @@ void CScriptTypesExt::ProgramStartupInit()
 	RunTime::ResetMemoryContentAt(0x595FC8 + 0x4, &RunTime::Messages::EDIT_KILLFOCUS, 4); // name update
 	RunTime::ResetMemoryContentAt(0x596010 + 0x4, &RunTime::Messages::COMBOBOX_KILLFOCUS, 4); // param update
 
-	auto addr = &CScriptTypesExt::PreTranslateMessageExt;
-	RunTime::ResetMemoryContentAt(0x596148, &addr, 4);
-	auto addr2 = &CScriptTypesExt::OnInitDialogExt;
-	RunTime::ResetMemoryContentAt(0x596174, &addr2, 4);
+	RunTime::ResetMemoryContentAt(0x596130, &CScriptTypesExt::OnCommandExt);
+	RunTime::ResetMemoryContentAt(0x596148, &CScriptTypesExt::PreTranslateMessageExt);
+	RunTime::ResetMemoryContentAt(0x596174, &CScriptTypesExt::OnInitDialogExt);
 }
 
-int CScriptTypesExt::ExtParamID = -1;
 void CScriptTypesExt::UpdateParams(int actionIndex)
 {
-	auto& action = ExtActions[actionIndex];
-	auto& param = ExtParams[action.ParamCode_];
-	if (param.Param_ == ExtParamID) // tiny optimize
-		return;
+	auto& action = CScriptTypeAction::ExtActions[actionIndex];
+	auto& param = CScriptTypeParam::ExtParams[action.ParamCode_];
 	switch (param.Param_)
 	{
 	default:
@@ -127,75 +134,67 @@ void CScriptTypesExt::UpdateParams(int actionIndex)
 	this->CSTParameterOfSection.EnableWindow(action.Editable_);
 	this->CCBScriptParameter.EnableWindow(action.Editable_);
 	this->CETDescription.SetWindowText(action.Description_);
-	ExtParamID = param.Param_;
+
+	if (ExtCurrentScript.IsExtraParamEnabled(actionIndex))
+	{
+		auto pCBExtra = (ppmfc::CComboBox*)this->GetDlgItem(6304);
+		pCBExtra->EnableWindow(true);
+		pCBExtra->SetCurSel(0);
+	}
+	else
+	{
+		auto pCBExtra = (ppmfc::CComboBox*)this->GetDlgItem(6304);
+		pCBExtra->EnableWindow(false);
+		pCBExtra->SetCurSel(-1);
+		pCBExtra->SetWindowText("");
+	}
 }
 
-//
-// Ext Functions
-//
-
-std::map<int, CScriptTypeAction> CScriptTypesExt::ExtActions;
-std::map<int, CScriptTypeParam> CScriptTypesExt::ExtParams;
+std::map<int, CScriptTypeAction> CScriptTypeAction::ExtActions;
+std::map<int, CScriptTypeParam> CScriptTypeParam::ExtParams;
+std::map<int, int> CScriptTypesExt::RealScriptID;
 BOOL CScriptTypesExt::OnInitDialogExt()
 {
 	BOOL ret = FA2CDialog::OnInitDialog();
 	if (!ret)
 		return FALSE;
 
-	auto TranslateDlgItem = [this](int nID, const char* lpKey)
-	{
-		ppmfc::CString buffer;
-		if (Translations::GetTranslationItem(lpKey, buffer))
-			this->SetDlgItemText(nID, buffer);
-	};
+	Translations::TranslateItem(this, "ScriptTypesTitle");
 
-	auto TranslateCItem = [](CWnd* pWnd, const char* lpKey)
-	{
-		ppmfc::CString buffer;
-		if (Translations::GetTranslationItem(lpKey, buffer))
-			pWnd->SetWindowText(buffer);
-	};
+	Translations::TranslateItem(this, 50700, "ScriptTypesDesc");
+	Translations::TranslateItem(this, 50701, "ScriptTypesSelectedScript");
+	Translations::TranslateItem(this, 50702, "ScriptTypesName");
+	Translations::TranslateItem(this, 50703, "ScriptTypesActions");
+	Translations::TranslateItem(this, 50704, "ScriptTypesActionType");
+	Translations::TranslateItem(this, 50705, "ScriptTypesActionDesc");
 
-	TranslateCItem(this, "ScriptTypesTitle");
-
-	TranslateDlgItem(50700, "ScriptTypesDesc");
-	TranslateDlgItem(50701, "ScriptTypesSelectedScript");
-	TranslateDlgItem(50702, "ScriptTypesName");
-	TranslateDlgItem(50703, "ScriptTypesActions");
-	TranslateDlgItem(50704, "ScriptTypesActionType");
-	TranslateDlgItem(1198, "ScriptTypesActionParam");//sbFA2
-	TranslateDlgItem(50705, "ScriptTypesActionDesc");
-
-	TranslateDlgItem(1154, "ScriptTypesAddScript");
-	TranslateDlgItem(1066, "ScriptTypesDelScript");
-	TranslateDlgItem(6300, "ScriptTypesCloScript");
-	TranslateDlgItem(1173, "ScriptTypesAddAction");
-	TranslateDlgItem(1174, "ScriptTypesDelAction");
-	TranslateDlgItem(6301, "ScriptTypesCloAction");
-	TranslateDlgItem(6302, "ScriptTypesInsertMode");
+	Translations::TranslateItem(this, 1154, "ScriptTypesAddScript");
+	Translations::TranslateItem(this, 1066, "ScriptTypesDelScript");
+	Translations::TranslateItem(this, 6300, "ScriptTypesCloScript");
+	Translations::TranslateItem(this, 1173, "ScriptTypesAddAction");
+	Translations::TranslateItem(this, 1174, "ScriptTypesDelAction");
+	Translations::TranslateItem(this, 1198, "ScriptTypesActionParam");
+	Translations::TranslateItem(this, 6301, "ScriptTypesCloAction");
+	Translations::TranslateItem(this, 6302, "ScriptTypesInsertMode");
+	Translations::TranslateItem(this, 6303, "ScriptTypesExtraParam");
+	Translations::TranslateItem(this, 6305, "ScriptTypesMoveUp");
+	Translations::TranslateItem(this, 6306, "ScriptTypesMoveDown");
 
 	while (CCBCurrentAction.DeleteString(0) != -1);
 
 	// Initialize defaults
-	const char** pNames = reinterpret_cast<const char**>(0x5D035C);
+	/*const char** pNames = reinterpret_cast<const char**>(0x5D035C);
 	const char** pDescriptions = reinterpret_cast<const char**>(0x5D0448);
-	
-	/*auto& errAct = ExtActions[-1];
-	errAct.Description_ = "FA2sp Error Action Holder";
-	errAct.Editable_ = false;
-	errAct.Hide_ = true;
-	errAct.Name_ = "INVALID SCRIPT ACTION";
-	errAct.ParamCode_ = 0;*/
 
 	for (int i = 0; i < 59; ++i)
 	{
-		auto& curAction = ExtActions[i];
-		curAction.Name_ = _strdup(pNames[i]);
-		curAction.Description_ = _strdup(pDescriptions[i]);
+		auto& curAction = CScriptTypeAction::ExtActions[i];
+		curAction.Name_ = pNames[i];
+		curAction.Description_ = pDescriptions[i];
 		curAction.Editable_ = true;
 		curAction.Hide_ = false;
 		curAction.ParamCode_ = 0;
-	}
+	}*/
 
 	auto& fadata = GlobalVars::INIFiles::FAData();
 
@@ -212,9 +211,9 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 			{
 			default:
 			case 2:
-				ExtParams[id].Param_ = atoi((const char*)pParseBuffer[1]);
+				CScriptTypeParam::ExtParams[id].Param_ = atoi((const char*)pParseBuffer[1]);
 			case 1:
-				ExtParams[id].Label_ = _strdup((const char*)pParseBuffer[0]);
+				CScriptTypeParam::ExtParams[id].Label_ = pParseBuffer[0];
 			case 0:
 				continue;
 			}
@@ -236,15 +235,15 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 			{
 			case 5:
 			default:
-				ExtActions[id].Description_ = _strdup((const char*)pParseBuffer[4]);
+				CScriptTypeAction::ExtActions[id].Description_ = pParseBuffer[4];
 			case 4:
-				ExtActions[id].Editable_ = ParseBool((const char*)pParseBuffer[3]);
+				CScriptTypeAction::ExtActions[id].Editable_ = ParseBool((const char*)pParseBuffer[3]);
 			case 3:
-				ExtActions[id].Hide_ = ParseBool((const char*)pParseBuffer[2]);
+				CScriptTypeAction::ExtActions[id].Hide_ = ParseBool((const char*)pParseBuffer[2]);
 			case 2:
-				ExtActions[id].ParamCode_ = atoi((const char*)pParseBuffer[1]);
+				CScriptTypeAction::ExtActions[id].ParamCode_ = atoi((const char*)pParseBuffer[1]);
 			case 1:
-				ExtActions[id].Name_ = _strdup((const char*)pParseBuffer[0]);
+				CScriptTypeAction::ExtActions[id].Name_ = pParseBuffer[0];
 			case 0:
 				continue;
 			}
@@ -257,262 +256,342 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 	}
 
 	int counter = 0;
-	for (auto& ent : ExtActions)
+	for (auto& ent : CScriptTypeAction::ExtActions)
 	{
 		if (!ent.second.Hide_)
 		{
 			int data = CCBCurrentAction.AddString(ent.second.Name_);
-			CCBCurrentAction.SetItemData(data, counter);
+			ent.second.PosInComboBox = data;
+			RealScriptID[data] = counter;
 		}
 		++counter;
-
 	}
+
+	auto pCBExtra = (ppmfc::CComboBox*)this->GetDlgItem(6304);
+	while (pCBExtra->DeleteString(0) != CB_ERR);
+	pCBExtra->SetItemData(pCBExtra->AddString("0 - Min Threat"), 0);
+	pCBExtra->SetItemData(pCBExtra->AddString("1 - Max Threat"), 1);
+	pCBExtra->SetItemData(pCBExtra->AddString("2 - Nearest"), 2);
+	pCBExtra->SetItemData(pCBExtra->AddString("3 - Farest"), 3);
+
 	return TRUE;
 }
 
-//
-//void CScriptTypesExt::OnCBCurrentScriptSelectChanged()
-//{
-//}
-//
+void CScriptTypesExt::UpdateDialog()
+{
+	ppmfc::CString currentID;
+	this->CCBCurrentScript.GetWindowText(currentID);
+	STDHelpers::TrimIndex(currentID);
+
+	while (this->CCBCurrentScript.DeleteString(0) != CB_ERR);
+
+	auto& ini = GlobalVars::INIFiles::CurrentDocument();
+
+	if (auto pSection = ini.GetSection("ScriptTypes"))
+		for (auto& pair : pSection->EntitiesDictionary)
+			if (auto pName = ini.TryGetString(pair.second, "Name"))
+			{
+				FA2sp::Buffer.Format("%s (%s)", pair.second, *pName);
+				this->CCBCurrentScript.AddString(FA2sp::Buffer);
+			}
+
+	auto nIndex = this->CCBCurrentScript.FindString(0, currentID);
+	this->CCBCurrentScript.SetCurSel(nIndex);
+
+	this->CScriptTypesExt::OnCBCurrentScriptSelectChanged();
+}
+
+void CScriptTypesExt::OnCBCurrentScriptSelectChanged()
+{
+	while (this->CLBScriptActions.DeleteString(0) != LB_ERR);
+	
+	int index = this->CCBCurrentScript.GetCurSel();
+	if (index == CB_ERR)
+		return;
+
+	ppmfc::CString currentID;
+	this->CCBCurrentScript.GetWindowText(currentID);
+	STDHelpers::TrimIndex(currentID);
+
+	ExtCurrentScript.Set(currentID);
+	for (int i = 0; i < ExtCurrentScript.Count; ++i)
+	{
+		FA2sp::Buffer.Format("[%d] : %d - %d", i, ExtCurrentScript.Actions[i].Type, ExtCurrentScript.Actions[i].Param);
+		this->CLBScriptActions.AddString(FA2sp::Buffer);
+	}
+
+	this->GetDlgItem(1010)->SetWindowText(ExtCurrentScript.Name);
+	this->CLBScriptActions.SetCurSel(LB_ERR);
+	this->CScriptTypesExt::OnLBScriptActionsSelectChanged();
+}
+
 void CScriptTypesExt::OnLBScriptActionsSelectChanged()
 {
-	auto& doc = GlobalVars::INIFiles::CurrentDocument();
-	ppmfc::CString scriptId ,buffer, tmp;
-	int scriptIndex, listIndex, actionIndex, selectIndex, L, R, M;
-
-	scriptIndex = this->CCBCurrentScript.GetCurSel();
-	listIndex = this->CLBScriptActions.GetCurSel();
-	if (scriptIndex >= 0 && listIndex >= 0)
+	int index = this->CLBScriptActions.GetCurSel();
+	if (this->CCBCurrentScript.GetCurSel() == CB_ERR)
 	{
-		this->CCBCurrentScript.GetLBText(scriptIndex, scriptId);
-		STDHelpers::TrimIndex(scriptId);
-		buffer.Format("%d", listIndex);
-		buffer = doc.GetString(scriptId, buffer, "0,0");
-		actionIndex = buffer.Find(',');
-		if (actionIndex == CB_ERR)
-		{
-			buffer += ",0";
-			actionIndex = buffer.GetLength() - 2;
-		}
-		tmp = buffer.Mid(actionIndex + 1);
-		STDHelpers::TrimIndex(tmp);
-		this->CCBScriptParameter.SetWindowText(tmp);
-
-		actionIndex = atoi(buffer.Mid(0, actionIndex));
-		
-		// Well, unnecessary but I want to do it.
-		// As we know, the data sequence is ¡ü
-		// So divide it!
-		L = 0;
-		R = this->CCBCurrentAction.GetCount() - 1;
-		M = (L + R) >> 1;
-		while (R > L)
-		{
-			const int MData = this->CCBCurrentAction.GetItemData(M);
-			if (MData == actionIndex)
-				break;
-			if (MData > actionIndex)
-				R = M;
-			else
-				L = M;
-			M = (L + R) >> 1;
-		}
-		if (R > L)
-			selectIndex = M;
-		else
-			selectIndex = 0;
-		
-		this->CCBCurrentAction.SetCurSel(selectIndex);
-		this->UpdateParams(actionIndex);
+		ExtCurrentScript.Unset();
+		return;
 	}
+	if (index == LB_ERR)
+		return;
+
+	auto& ini = GlobalVars::INIFiles::CurrentDocument();
+	
+	ppmfc::CString currentID;
+	this->CCBCurrentScript.GetWindowText(currentID);
+	STDHelpers::TrimIndex(currentID);
+
+	auto& currentAction = ExtCurrentScript.Actions[index];
+	this->CCBCurrentAction.SetCurSel(CScriptTypeAction::ExtActions[currentAction.Type].PosInComboBox);
+
+	this->CScriptTypesExt::OnCBCurrentActionSelectChanged();
 }
-//
-//void CScriptTypesExt::OnETScriptNameChanged()
-//{
-//}
-//
+
+void CScriptTypesExt::OnETScriptNameChanged()
+{
+	reinterpret_cast<ppmfc::CWnd*>(this->GetDlgItem(1010))->GetWindowText(FA2sp::Buffer);
+	
+	int nCurSelIndex = this->CCBCurrentScript.GetCurSel();
+	if (nCurSelIndex == CB_ERR)
+		return;
+
+	ppmfc::CString currentID;
+	this->CCBCurrentScript.GetWindowText(currentID);
+	STDHelpers::TrimIndex(currentID);
+
+	auto& ini = GlobalVars::INIFiles::CurrentDocument();
+	ini.WriteString(currentID, "Name", FA2sp::Buffer);
+	ExtCurrentScript.Name = FA2sp::Buffer;
+
+	this->CCBCurrentScript.DeleteString(nCurSelIndex);
+	this->CCBCurrentScript.InsertString(nCurSelIndex, ExtCurrentScript.ToString());
+	this->CCBCurrentScript.SetCurSel(nCurSelIndex);
+}
+
 void CScriptTypesExt::OnCBCurrentActionEditChanged()
 {
-	auto& doc = *GlobalVars::CMapData().UpdateCurrentDocument();
-	ppmfc::CString scriptId, buffer, listStr, tmp;
-	int scriptIndex, listIndex, actionIndex, actionData;
+	int nTypeIndex = this->CCBCurrentAction.GetCurSel();
+	if (nTypeIndex == CB_ERR)
+		return;
 
-	scriptIndex = this->CCBCurrentScript.GetCurSel();
-	listIndex = this->CLBScriptActions.GetCurSel();
-	if (scriptIndex >= 0 && listIndex >= 0)
+	int nActionIndex = this->CLBScriptActions.GetCurSel();
+	if (nActionIndex == CB_ERR)
+		return;
+
+	auto& currentAction = ExtCurrentScript.Actions[nActionIndex];
+	currentAction.Type = this->RealScriptID[nTypeIndex];
+	this->UpdateParams(currentAction.Type);
+	if (ExtCurrentScript.IsExtraParamEnabled(currentAction.Type))
 	{
-		this->CCBCurrentScript.GetLBText(scriptIndex, scriptId);
-		STDHelpers::TrimIndex(scriptId);
-		buffer.Format("%d", listIndex);
-		buffer = doc.GetString(scriptId, buffer, "0,0");
-		actionIndex = buffer.Find(',');
-		if (actionIndex == CB_ERR)
-			buffer = "0";
-		else
-			buffer = buffer.Mid(actionIndex + 1);
+		auto pCBExtra = (ppmfc::CComboBox*)this->GetDlgItem(6304);
+		pCBExtra->SetCurSel(currentAction.ParamExt);
 
-		actionIndex = this->CCBCurrentAction.GetCurSel();
-		if (actionIndex >= 0)
-		{
-			actionData = this->CCBCurrentAction.GetItemData(actionIndex);
-			this->UpdateParams(actionData);
-			actionIndex = this->CCBScriptParameter.FindString(0, buffer);
-			if (actionIndex != CB_ERR)
-				this->CCBScriptParameter.SetCurSel(actionIndex);
-			tmp.Format("%d,%s", actionData, buffer);
-			listStr.Format("%d", listIndex);
-			doc.WriteString(scriptId, listStr, tmp);
-		}
+		FA2sp::Buffer.Format("%d", currentAction.ParamNormal);
+		this->CCBScriptParameter.SetWindowText(FA2sp::Buffer);
+		this->CScriptTypesExt::OnCBExtraParamSelectChanged();
+	}
+	else
+	{
+		FA2sp::Buffer.Format("%d", currentAction.Param);
+		this->CCBScriptParameter.SetWindowText(FA2sp::Buffer);
+		this->CScriptTypesExt::OnCBScriptParameterSelectChanged();
 	}
 }
-//
-//void CScriptTypesExt::OnCBCurrentActionSelectChanged()
-//{
-//}
-//
+
+void CScriptTypesExt::OnCBCurrentActionSelectChanged()
+{
+	this->CScriptTypesExt::OnCBCurrentActionEditChanged();
+}
+
 void CScriptTypesExt::OnCBScriptParameterEditChanged()
 {
-	auto& doc = GlobalVars::INIFiles::CurrentDocument();
-	ppmfc::CString scriptId, buffer, listStr, paramStr, tmp;
-	int scriptIndex, listIndex, actionIndex;
+	int index = this->CLBScriptActions.GetCurSel();
+	if (this->CCBCurrentScript.GetCurSel() == CB_ERR || index == LB_ERR)
+		return;
 
-	scriptIndex = this->CCBCurrentScript.GetCurSel();
-	listIndex = this->CLBScriptActions.GetCurSel();
-	if (scriptIndex >= 0 && listIndex >= 0)
+	int param;
+	this->CCBScriptParameter.GetWindowText(FA2sp::Buffer);
+	// STDHelpers::TrimIndex(FA2sp::Buffer); // not quite needed
+	if (sscanf_s(FA2sp::Buffer, "%d", &param) == 1)
+		if (ExtCurrentScript.IsExtraParamEnabledAtLine(index))
+			ExtCurrentScript.Actions[index].ParamNormal = param;
+		else
+			ExtCurrentScript.Actions[index].Param = param;
+
+	ExtCurrentScript.WriteLine(index);
+
+	this->CLBScriptActions.DeleteString(index);
+	FA2sp::Buffer.Format("[%d] : %d - %d", index, ExtCurrentScript.Actions[index].Type, ExtCurrentScript.Actions[index].Param);
+	this->CLBScriptActions.InsertString(index, FA2sp::Buffer);
+	this->CLBScriptActions.SetCurSel(index);
+}
+
+void CScriptTypesExt::OnCBScriptParameterSelectChanged()
+{
+	this->CScriptTypesExt::OnCBScriptParameterEditChanged();
+}
+
+void CScriptTypesExt::OnBNAddActionClicked()
+{
+	if (!ExtCurrentScript.IsAvailable())
+		return;
+
+	int nActionIndex = this->CLBScriptActions.GetCurSel();
+
+	bool bInsertMode = ::SendMessage(::GetDlgItem(*this, 6302), BM_GETCHECK, 0, 0) == BST_CHECKED;
+	if (nActionIndex == LB_ERR && bInsertMode)
+		return;
+
+	int nAddIndex = bInsertMode ? nActionIndex : ExtCurrentScript.Count;
+	ExtCurrentScript.AddActionAt(0, 0, nAddIndex);
+	ExtCurrentScript.Write();
+
+	this->CScriptTypesExt::OnCBCurrentScriptSelectChanged();
+	this->CLBScriptActions.SetCurSel(nAddIndex);
+	this->CScriptTypesExt::OnLBScriptActionsSelectChanged();
+}
+
+void CScriptTypesExt::OnBNDeleteActionClicked()
+{
+	if (!ExtCurrentScript.IsAvailable())
+		return;
+
+	int index = this->CLBScriptActions.GetCurSel();
+	if (this->CCBCurrentScript.GetCurSel() == CB_ERR || index == LB_ERR)
+		return;
+
+	if (MessageBox("Are you sure to delete this action?", "FA2sp", MB_YESNO) == IDYES)
 	{
-		this->CCBCurrentScript.GetLBText(scriptIndex, scriptId);
-		STDHelpers::TrimIndex(scriptId);
-		buffer.Format("%d", listIndex);
-		buffer = doc.GetString(scriptId, buffer, "0,0");
-		actionIndex = buffer.Find(',');
-		if (actionIndex == CB_ERR)
-			actionIndex = buffer.GetLength();
-		buffer = buffer.Mid(0, actionIndex);
-		this->CCBScriptParameter.GetWindowText(paramStr);
-		STDHelpers::TrimIndex(paramStr);
-		tmp.Format("%s,%s", buffer, paramStr);
-		listStr.Format("%d", listIndex);
-		doc.WriteString(scriptId, listStr, tmp);
+		ExtCurrentScript.RemoveActionAt(index);
+		ExtCurrentScript.Write();
+		this->OnCBCurrentScriptSelectChanged();
+		this->CLBScriptActions.SetCurSel(index - 1);
 	}
 }
-//
-//void CScriptTypesExt::OnCBScriptParameterSelectChanged()
-//{
-//}
-//
-void CScriptTypesExt::OnBNAddActionClickedExt()
+
+void CScriptTypesExt::OnBNAddScriptClicked()
 {
-	/*if (this->CCBCurrentScript.GetCount() <= 0 && this->CCBCurrentScript.GetCurSel() < 0)
+	INIClass::GetAvailableIndex(&FA2sp::Buffer);
+	auto& ini = GlobalVars::INIFiles::CurrentDocument();
+	ini.WriteString(FA2sp::Buffer, "Name", "New script");
+	ExtCurrentScript.Set(FA2sp::Buffer);
+	int index = this->CCBCurrentScript.AddString(FA2sp::Buffer + " (New script)");
+	INIClass::GetAvailableKey(&FA2sp::Buffer, "ScriptTypes");
+	ini.WriteString("ScriptTypes", FA2sp::Buffer, ExtCurrentScript.ID);
+	this->CCBCurrentScript.SetCurSel(index);
+	this->OnCBCurrentScriptSelectChanged();
+}
+
+void CScriptTypesExt::OnBNDeleteScriptClicked()
+{
+	if (!ExtCurrentScript.IsAvailable())
+		return;
+
+	int index = this->CCBCurrentScript.GetCurSel();
+	if (index == CB_ERR)
+		return;
+
+	if (MessageBox("Are you sure to delete this script?", "FA2sp", MB_YESNO) == IDYES)
+	{
+		GlobalVars::INIFiles::CurrentDocument->DeleteSection(this->ExtCurrentScript.ID);
+		this->ExtCurrentScript.Unset();
+		this->CCBCurrentScript.DeleteString(index);
+		this->CCBCurrentScript.SetCurSel(index - 1);
+		this->OnCBCurrentScriptSelectChanged();
+	}
+}
+
+void CScriptTypesExt::OnBNCloneScriptClicked()
+{
+	if (!ExtCurrentScript.IsAvailable())
+		return;
+
+	ExtCurrentScript.Write(*INIClass::GetAvailableIndex(&FA2sp::Buffer), ExtCurrentScript.Name + " Clone");
+	ExtCurrentScript.Set(FA2sp::Buffer);
+	int index = this->CCBCurrentScript.AddString(FA2sp::Buffer + " (" + ExtCurrentScript.Name + ")");
+	INIClass::GetAvailableKey(&FA2sp::Buffer, "ScriptTypes");
+	GlobalVars::INIFiles::CurrentDocument->WriteString("ScriptTypes", FA2sp::Buffer, ExtCurrentScript.ID);
+	this->CCBCurrentScript.SetCurSel(index);
+	this->OnCBCurrentScriptSelectChanged();
+}
+
+void CScriptTypesExt::OnBNCloneItemClicked()
+{
+	if (!ExtCurrentScript.IsAvailable())
+		return;
+
+	int nActionIndex = this->CLBScriptActions.GetCurSel();
+	if (nActionIndex == LB_ERR)
 		return;
 
 	bool bInsertMode = ::SendMessage(::GetDlgItem(*this, 6302), BM_GETCHECK, 0, 0) == BST_CHECKED;
-	if (!bInsertMode)
-	{
-		this->OnBNAddActionClicked();
+
+	int nAddIndex = bInsertMode ? nActionIndex : ExtCurrentScript.Count;
+	ExtCurrentScript.AddActionAt(ExtCurrentScript.Actions[nActionIndex], nAddIndex);
+	ExtCurrentScript.Write();
+
+	this->CScriptTypesExt::OnCBCurrentScriptSelectChanged();
+	this->CLBScriptActions.SetCurSel(nAddIndex);
+	this->CScriptTypesExt::OnLBScriptActionsSelectChanged();
+}
+
+void CScriptTypesExt::OnBNMoveUpClicked()
+{
+	if (!ExtCurrentScript.IsAvailable())
 		return;
-	}*/
 
-	// insert mode ON
-	/*CString scriptID;
-	this->CCBCurrentScript.GetWindowText(scriptID);
-	STDHelpers::TrimIndex(scriptID);
+	int nActionIndex = this->CLBScriptActions.GetCurSel();
+	if (nActionIndex == LB_ERR || nActionIndex == 0) // already at the top
+		return;
 
-	auto& doc = GlobalVars::INIFiles::CurrentDocument();
-	if (doc.SectionExists(scriptID))
-	{
-		int curIndex = this->CLBScriptActions.GetCurSel();
-		int actionCount = this->CLBScriptActions.GetCount();
-		this->OnBNAddActionClicked();
+	std::swap(ExtCurrentScript.Actions[nActionIndex], ExtCurrentScript.Actions[nActionIndex - 1]);
+	ExtCurrentScript.WriteLine(nActionIndex);
+	ExtCurrentScript.WriteLine(nActionIndex - 1);
 
-		if (actionCount <= 0)
-			return;
-
-		if (curIndex == CB_ERR)
-			curIndex = 0;
-		
-		CString srcKey, destKey;
-
-		for (int i = actionCount - 1; i >= curIndex; --i)
-		{
-			srcKey.Format("%d", i);
-			destKey.Format("%d", i + 1);
-			CString temp = doc.GetString(scriptID, srcKey, "0,0");
-			Logger::Debug("%s %s %s %s\n", scriptID, srcKey, destKey, temp);
-			doc.WriteString(scriptID, destKey, temp);
-		}
-
-		srcKey.Format("%d", curIndex);
-		Logger::Debug("%s %s %s\n", scriptID, srcKey, "0,0");
-		doc.WriteString(scriptID, srcKey, "0,0");
-		this->OnCBCurrentScriptSelectChanged();
-	}*/
-
-	return;
+	this->CLBScriptActions.LockWindowUpdate();
+	this->CScriptTypesExt::OnCBCurrentScriptSelectChanged();
+	this->CLBScriptActions.SetCurSel(nActionIndex - 1);
+	this->CScriptTypesExt::OnLBScriptActionsSelectChanged();
+	this->CLBScriptActions.UnlockWindowUpdate();
 }
-//
-//void CScriptTypesExt::OnBNDeleteActionClicked()
-//{
-//}
-//
-//void CScriptTypesExt::OnBNAddScriptClicked()
-//{
-//}
-void CScriptTypesExt::OnBNAddScriptClickedExt()
-{
-	// TODO : Jump to the script we have just inserted!
-}
-//
-//void CScriptTypesExt::OnBNDeleteScriptClicked()
-//{
-//}
-void CScriptTypesExt::OnBNCloneScriptClicked()
-{
-	auto& doc = GlobalVars::INIFiles::CurrentDocument();
 
-	int nCurSel = this->CCBCurrentScript.GetCurSel();
-	if (nCurSel >= 0)
-	{
-		ppmfc::CString label;
-		this->CCBCurrentScript.GetLBText(nCurSel, label);
-		STDHelpers::TrimIndex(label);
-		INISection copied(*doc.GetSection(label));
-		ppmfc::CString name;
-		name = copied.EntitiesDictionary["Name"];
-		name += " Clone";
-		((ppmfc::CString*)(&copied.EntitiesDictionary["Name"]))->AssignCopy(strlen(name), name);
-		//Logger::Debug("new name = %s\n", name);
-		ppmfc::CString id;
-		id = INIClass::GetAvailableIndex();
-		//Logger::Debug("available index get, id = %s\n", id);
-		doc.InsertSection(id.operator LPCTSTR(), copied);
-		/*Logger::Debug("section inserted!\n");
-		Logger::Debug("section detail:\n");
-		for (auto& x : copied.EntitiesDictionary)
-			Logger::Debug("%s %s\n", x.first, x.second);*/
-		ppmfc::CString key;
-		key = INIClass::GetAvailableKey("ScriptTypes");
-		//Logger::Debug("available section get, key = %s\n", key);
-		doc.WriteString("ScriptTypes", key, id);
-		//Logger::Debug("key inserted!\n");
-		/*INISection& scripttypes = doc.GetSection("ScriptTypes");
-		for (auto& x : scripttypes.EntitiesDictionary)
-			Logger::Debug("%s %s\n", x.first, x.second);*/
-
-		// objective : reload combobox
-		auto& scripts = this->CCBCurrentScript;
-		while (this->CCBCurrentScript.DeleteString(0) != CB_ERR)
-			;
-		auto scripttypes = doc.GetSection("ScriptTypes");
-		for (auto& x : scripttypes->EntitiesDictionary)
-			this->CCBCurrentScript.AddString((ppmfc::CString)x.second + " (" + doc.GetString(x.second, "Name") + ")");
-		int idx = scripts.FindString(0, id);
-		scripts.SetCurSel(idx);
-		this->SetDlgItemText(1010, name);
-	}
-	return;
-}
-void CScriptTypesExt::OnBNCloneItemClicked()
+void CScriptTypesExt::OnBNMoveDownClicked()
 {
-	::MessageBox(NULL, "Haven't Implement!", "TODO", MB_OK);
+	if (!ExtCurrentScript.IsAvailable())
+		return;
+
+	int nActionIndex = this->CLBScriptActions.GetCurSel();
+	if (nActionIndex == LB_ERR || nActionIndex == ExtCurrentScript.Count - 1) // already at the bottom
+		return;
+
+	std::swap(ExtCurrentScript.Actions[nActionIndex], ExtCurrentScript.Actions[nActionIndex + 1]);
+	ExtCurrentScript.WriteLine(nActionIndex);
+	ExtCurrentScript.WriteLine(nActionIndex + 1);
+
+	this->CLBScriptActions.LockWindowUpdate();
+	this->CScriptTypesExt::OnCBCurrentScriptSelectChanged();
+	this->CLBScriptActions.SetCurSel(nActionIndex + 1);
+	this->CScriptTypesExt::OnLBScriptActionsSelectChanged();
+	this->CLBScriptActions.UnlockWindowUpdate();
+}
+
+void CScriptTypesExt::OnCBExtraParamEditChanged()
+{
+	int index = this->CLBScriptActions.GetCurSel();
+	if (this->CCBCurrentScript.GetCurSel() == CB_ERR || index == LB_ERR)
+		return;
+
+	auto pCBExtra = (ppmfc::CComboBox*)this->GetDlgItem(6304);
+	int nSel = pCBExtra->GetCurSel();
+	if (nSel == CB_ERR)
+		nSel = 0;
+	ExtCurrentScript.Actions[index].ParamExt = nSel;
+
+	this->OnCBScriptParameterSelectChanged();
+}
+
+void CScriptTypesExt::OnCBExtraParamSelectChanged()
+{
+	this->OnCBExtraParamEditChanged();
 }

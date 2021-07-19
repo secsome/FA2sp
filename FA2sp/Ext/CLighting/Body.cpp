@@ -4,10 +4,7 @@ CLighting* CLightingExt::Instance = nullptr;
 
 void CLightingExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto lightingPreTranslateAddr = &CLightingExt::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x594788, &lightingPreTranslateAddr, sizeof(lightingPreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x594788, &CLightingExt::PreTranslateMessageExt);
 }
 
 BOOL CLightingExt::PreTranslateMessageExt(MSG* pMsg)

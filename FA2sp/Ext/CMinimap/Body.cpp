@@ -2,10 +2,7 @@
 
 void CMinimapExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CMinimapExt::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x594EE0, &PreTranslateAddr, sizeof(PreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x594EE0, &CMinimapExt::PreTranslateMessageExt);
 }
 
 BOOL CMinimapExt::PreTranslateMessageExt(MSG* pMsg)

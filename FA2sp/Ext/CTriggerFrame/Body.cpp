@@ -7,8 +7,7 @@
 
 void CTriggerFrameExt::ProgramStartupInit()
 {
-	auto addr2 = &CTriggerFrameExt::OnInitDialogExt;
-	RunTime::ResetMemoryContentAt(0x597BC4, &addr2, 4);
+	RunTime::ResetMemoryContentAt(0x597BC4, &CTriggerFrameExt::OnInitDialogExt);
 }
 
 BOOL CTriggerFrameExt::OnInitDialogExt()
@@ -17,28 +16,14 @@ BOOL CTriggerFrameExt::OnInitDialogExt()
 	if (!ret)
 		return FALSE;
 
-	auto TranslateDlgItem = [this](int nID, const char* lpKey)
-	{
-		ppmfc::CString buffer;
-		if (Translations::GetTranslationItem(lpKey, buffer))
-			this->SetDlgItemText(nID, buffer);
-	};
+	Translations::TranslateItem(this, "TriggerFrameTitle");
 
-	auto TranslateCItem = [](CWnd* pWnd, const char* lpKey)
-	{
-		ppmfc::CString buffer;
-		if (Translations::GetTranslationItem(lpKey, buffer))
-			pWnd->SetWindowText(buffer);
-	};
+	Translations::TranslateItem(this, 50300, "TriggerFrameSelectedTrigger");
 
-	TranslateCItem(this, "TriggerFrameTitle");
-
-	TranslateDlgItem(50300, "TriggerFrameSelectedTrigger");
-
-	TranslateDlgItem(1383, "TriggerFrameNew");
-	TranslateDlgItem(1161, "TriggerFrameDel");
-	TranslateDlgItem(1162, "TriggerFramePlace");
-	TranslateDlgItem(1163, "TriggerFrameClone");
+	Translations::TranslateItem(this, 1383, "TriggerFrameNew");
+	Translations::TranslateItem(this, 1161, "TriggerFrameDel");
+	Translations::TranslateItem(this, 1162, "TriggerFramePlace");
+	Translations::TranslateItem(this, 1163, "TriggerFrameClone");
 
 	return TRUE;
 }

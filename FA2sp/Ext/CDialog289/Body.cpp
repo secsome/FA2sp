@@ -4,10 +4,7 @@ CDialog289* CDialog289Ext::Instance = nullptr;
 
 void CDialog289Ext::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto multiAPreTranslateAddr = &CDialog289Ext::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x5926A8, &multiAPreTranslateAddr, sizeof(multiAPreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x5926A8, &CDialog289Ext::PreTranslateMessageExt);
 }
 
 BOOL CDialog289Ext::PreTranslateMessageExt(MSG* pMsg)

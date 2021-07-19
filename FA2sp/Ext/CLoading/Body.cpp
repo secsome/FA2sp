@@ -4,10 +4,7 @@ CLoading* CLoadingExt::Instance = nullptr;
 
 void CLoadingExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CLoadingExt::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x5948A8, &PreTranslateAddr, sizeof(PreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x5948A8, &CLoadingExt::PreTranslateMessageExt);
 }
 
 BOOL CLoadingExt::PreTranslateMessageExt(MSG* pMsg)

@@ -4,10 +4,7 @@ CSpecialFlags* CSpecialFlagsExt::Instance = nullptr;
 
 void CSpecialFlagsExt::ProgramStartupInit()
 {
-	Logger::Debug(__FUNCTION__"\n");
-	auto PreTranslateAddr = &CSpecialFlagsExt::PreTranslateMessageExt;
-
-	RunTime::ResetMemoryContentAt(0x596898, &PreTranslateAddr, sizeof(PreTranslateAddr));
+	RunTime::ResetMemoryContentAt(0x596898, &CSpecialFlagsExt::PreTranslateMessageExt);
 }
 
 BOOL CSpecialFlagsExt::PreTranslateMessageExt(MSG* pMsg)

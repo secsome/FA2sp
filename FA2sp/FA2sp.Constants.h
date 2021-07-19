@@ -1,7 +1,5 @@
 #pragma once
 
-#include "StaticPatcher.Macro.h"
-
 #define wstr(x) wstr_(x)
 #define wstr_(x) L ## #x
 #define str(x) str_(x)
