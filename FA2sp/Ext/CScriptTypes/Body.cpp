@@ -412,7 +412,8 @@ void CScriptTypesExt::OnCBScriptParameterEditChanged()
 
 	int param;
 	this->CCBScriptParameter.GetWindowText(FA2sp::Buffer);
-	if (sscanf_s(FA2sp::Buffer, "%d", &param) != 1)
+	// STDHelpers::TrimIndex(FA2sp::Buffer); // not quite needed
+	if (sscanf_s(FA2sp::Buffer, "%d", &param) == 1)
 		if (ExtCurrentScript.IsExtraParamEnabledAtLine(index))
 			ExtCurrentScript.Actions[index].ParamNormal = param;
 		else
@@ -475,7 +476,7 @@ void CScriptTypesExt::OnBNAddScriptClicked()
 	auto& ini = GlobalVars::INIFiles::CurrentDocument();
 	ini.WriteString(FA2sp::Buffer, "Name", "New script");
 	ExtCurrentScript.Set(FA2sp::Buffer);
-	int index = this->CCBCurrentScript.AddString(FA2sp::Buffer + (" New script"));
+	int index = this->CCBCurrentScript.AddString(FA2sp::Buffer + " (New script)");
 	INIClass::GetAvailableKey(&FA2sp::Buffer, "ScriptTypes");
 	ini.WriteString("ScriptTypes", FA2sp::Buffer, ExtCurrentScript.ID);
 	this->CCBCurrentScript.SetCurSel(index);
