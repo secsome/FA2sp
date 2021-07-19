@@ -1,6 +1,6 @@
 #include <Helpers/Macro.h>
 #include <Drawing.h>
-#include <Palette.h>
+#include <CPalette.h>
 
 #include <map>
 

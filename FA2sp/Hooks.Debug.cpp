@@ -7,7 +7,7 @@
 #include <CMapData.h>
 #include <CMixFile.h>
 #include <CLoading.h>
-#include <Palette.h>
+#include <CPalette.h>
 #include <unordered_map>
 //
 //DEFINE_HOOK(4B2610, CMapData_QueryUIName_Debug, 7)

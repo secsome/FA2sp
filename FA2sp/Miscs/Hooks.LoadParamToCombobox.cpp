@@ -3,8 +3,8 @@
 
 #include <map>
 
-#include "../../FA2sp.h"
-#include "../../Helpers/STDHelpers.h"
+#include "../FA2sp.h"
+#include "../Helpers/STDHelpers.h"
 
 // TODO
 //DEFINE_HOOK(43CE8D, Miscs_LoadParamToCombobox, 9)

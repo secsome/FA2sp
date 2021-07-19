@@ -12,8 +12,11 @@ C++ Standard: C++20
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-XX-XX) ==============================================================================================
+*) Fixed wrongly painted infantry subcell place
+
 ======================= Changes (2021-07-19) ==============================================================================================
-*) Undo/Redo extended to 2147483647 steps, be careful about your memory.
+*) Undo/Redo extended to 2147483647 steps, be careful about your memory
 *) Fixed wrongly painted Remap color for technos using UNITXXX.PAL
 *) Fixed buildings with shp turret can only been painted to NORTH
 *) Refactored ScriptTypes window, now you can use MoveUp, MoveDown, InsertMode and Clones

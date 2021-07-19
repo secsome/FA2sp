@@ -4,8 +4,8 @@
 #include <GlobalVars.h>
 #include <CLoading.h>
 
-#include "../../Helpers/STDHelpers.h"
-#include "../../FA2sp.h"
+#include "../Helpers/STDHelpers.h"
+#include "../FA2sp.h"
 
 using std::map;
 using std::vector;

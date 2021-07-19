@@ -1,4 +1,4 @@
-#include "../../FA2sp.h"
+#include "../FA2sp.h"
 
 #include <MFC/ppmfc_cstring.h>
 #include <GlobalVars.h>
@@ -6,7 +6,6 @@
 #include <CTeamTypes.h>
 
 #include <string>
-
 class ExtWaypoint
 {
 public:

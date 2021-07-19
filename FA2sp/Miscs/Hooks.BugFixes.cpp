@@ -3,19 +3,18 @@
 #include <CINI.h>
 #include <CMapData.h>
 #include <Drawing.h>
-#include <Palette.h>
+#include <CPalette.h>
 #include <CObjectDatas.h>
 
 #include <MFC/ppmfc_cstring.h>
 
-#include "../../FA2sp.h"
+#include "../FA2sp.h"
 
 // FA2 will no longer automatically change the extension of map
 DEFINE_HOOK(42703A, CFinalSunDlg_SaveMap_Extension, 9)
 {
 	return 0x42708D;
 }
-
 
 // Make FA2 use path stored in FinalAlert.ini instead of Reg
 DEFINE_HOOK(41FD8A, CFinalSunDlg_GetFilePath_1, 6)

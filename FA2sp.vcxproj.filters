@@ -96,6 +96,9 @@
     <ClInclude Include="FA2sp\Ext\CIsoView\Body.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2sp\Miscs\Palette.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">
@@ -128,16 +131,16 @@
     <ClCompile Include="FA2sp\RunTime.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.BugFixes.cpp">
+    <ClCompile Include="FA2sp\Miscs\Hooks.BugFixes.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.Mix.cpp">
+    <ClCompile Include="FA2sp\Miscs\Hooks.Mix.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Ext\FA2Expand.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.FileNames.cpp">
+    <ClCompile Include="FA2sp\Miscs\Hooks.FileNames.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Hooks.cpp">
@@ -152,7 +155,7 @@
     <ClCompile Include="FA2sp\Ext\CIsoView\Hooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.Stringtables.cpp">
+    <ClCompile Include="FA2sp\Miscs\Hooks.Stringtables.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Hooks.ObjectBrowserControl.cpp">
@@ -179,19 +182,19 @@
     <ClCompile Include="FA2sp\Hooks.Debug.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.INI.cpp">
+    <ClCompile Include="FA2sp\Miscs\Hooks.INI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\ExtraWindow\CTileManager\CTileManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.LoadParamToCombobox.cpp">
+    <ClCompile Include="FA2sp\Miscs\Hooks.LoadParamToCombobox.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.Performance.cpp">
+    <ClCompile Include="FA2sp\Miscs\Hooks.Performance.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.ExtWaypoints.cpp">
+    <ClCompile Include="FA2sp\Miscs\Hooks.ExtWaypoints.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Ext\CTriggerEvent\Body.cpp">
@@ -212,7 +215,7 @@
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Body.CurrentScript.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.RemapColor.cpp">
+    <ClCompile Include="FA2sp\Miscs\Hooks.RemapColor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2pp\FunctionInit.cpp">

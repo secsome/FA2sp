@@ -3,7 +3,7 @@
 #include <GlobalVars.h>
 #include <FAMemory.h>
 
-#include "../../FA2sp.h"
+#include "../FA2sp.h"
 
 #include <map>
 
