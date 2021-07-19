@@ -4,6 +4,7 @@
 #include <CMapData.h>
 #include <Drawing.h>
 #include <Palette.h>
+#include <CObjectDatas.h>
 
 #include <MFC/ppmfc_cstring.h>
 
@@ -103,4 +104,33 @@ DEFINE_HOOK(468760, Miscs_GetColor, 7)
 	R->EAX<int>(rgb);
 
 	return 0x468EEB;
+}
+
+// https://modenc.renegadeprojects.com/Cell_Spots
+DEFINE_HOOK(473E66, CIsoView_Draw_InfantrySubcell, B)
+{
+	GET(int, nX, EDI);
+	GET(int, nY, ESI);
+	REF_STACK(CInfantryData, infData, STACK_OFFS(0xD18, 0x78C));
+
+	int nSubcell;
+	sscanf_s(infData.SubCell, "%d", &nSubcell);
+	switch (nSubcell)
+	{
+	case 2:
+		R->EDI(nX + 15);
+		break;
+	case 3:
+		R->EDI(nX - 15);
+		break;
+	case 4:
+		R->ESI(nY - 7);
+		break;
+	case 0:
+	case 1:
+	default:
+		break;
+	}
+
+	return 0x473E8C;
 }

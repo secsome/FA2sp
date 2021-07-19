@@ -372,6 +372,24 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) TriggerActionParameter = TEXT
                 +) TriggerActionParamValue = TEXT
                 +) TriggerActionDesc = TEXT
+                +) ScriptTypesTitle = TEXT
+                +) ScriptTypesDesc = TEXT
+                +) ScriptTypesSelectedScript = TEXT
+                +) ScriptTypesName = TEXT
+                +) ScriptTypesActions = TEXT
+                +) ScriptTypesActionType = TEXT
+                +) ScriptTypesActionDesc = TEXT
+                +) ScriptTypesAddScript = TEXT
+                +) ScriptTypesDelScript = TEXT
+                +) ScriptTypesCloScript = TEXT
+                +) ScriptTypesAddAction = TEXT
+                +) ScriptTypesDelAction = TEXT
+                +) ScriptTypesActionParam = TEXT
+                +) ScriptTypesCloAction = TEXT
+                +) ScriptTypesInsertMode = TEXT
+                +) ScriptTypesExtraParam = TEXT
+                +) ScriptTypesMoveUp = TEXT
+                +) ScriptTypesMoveDown = TEXT
 
 - WORK IN PROGRESS
     - Support for taskforces & ai triggers
