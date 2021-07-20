@@ -31,7 +31,8 @@ int ExtConfigs::Waypoint_Color;
 bool ExtConfigs::Waypoint_Background;
 int ExtConfigs::Waypoint_Background_Color;
 bool ExtConfigs::ExtWaypoints;
-bool ExtConfigs::FastAvailableIndex;
+int ExtConfigs::UndoRedoLimit;
+bool ExtConfigs::UseRGBHouseColor;
 
 DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
 {
@@ -73,7 +74,9 @@ void FA2sp::ExtConfigsInitialize()
 
 	ExtConfigs::ExtWaypoints = fadata.GetBool("ExtConfigs", "ExtWaypoints");
 
-	ExtConfigs::FastAvailableIndex = fadata.GetBool("ExtConfigs", "FastAvailableIndex");
+	ExtConfigs::UndoRedoLimit = fadata.GetInteger("ExtConfigs", "UndoRedoLimit", 16);
+
+	ExtConfigs::UseRGBHouseColor = fadata.GetBool("ExtConfigs", "UseRGBHouseColor");
 }
 
 // DllMain

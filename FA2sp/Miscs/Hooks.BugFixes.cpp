@@ -27,7 +27,7 @@ DEFINE_HOOK(41FDDB, CFinalSunDlg_GetFilePath_2, 6)
 	return 0x41FDE9;
 }
 
-// Extend Undo/Redo limit to INT_MAX
+// Extend Undo/Redo limit
 DEFINE_HOOK(4BBAB8, CMapData_sub_4BB990, 6)
 {
 	GET(CMapData*, pThis, EBX);
@@ -37,12 +37,12 @@ DEFINE_HOOK(4BBAB8, CMapData_sub_4BB990, 6)
 
 	R->ESI(pThis->unknown_801CC);
 
-	if (pThis->unknown_801CC <= Constants::UndoRedoStep)	
+	if (pThis->unknown_801CC <= ExtConfigs::UndoRedoLimit)
 		return 0x4BBBB7;
 
 	R->EDX(pThis->UndoRedoData);
-	pThis->unknown_801CC = Constants::UndoRedoStep;
-	pThis->unknown_801D0 = Constants::UndoRedoStep - 1;
+	pThis->unknown_801CC = ExtConfigs::UndoRedoLimit;
+	pThis->unknown_801D0 = ExtConfigs::UndoRedoLimit - 1;
 	return 0x4BBAF7;
 }
 
@@ -99,7 +99,12 @@ DEFINE_HOOK(468760, Miscs_GetColor, 7)
 		if (auto const ppValue = GlobalVars::INIFiles::Rules->TryGetString("Colors", color))
 			sscanf_s(*ppValue, "%hhu,%hhu,%hhu", &hsv.H, &hsv.S, &hsv.V);
 
-	RGBClass rgb = hsv;
+	RGBClass rgb;
+	if (!ExtConfigs::UseRGBHouseColor)
+		rgb = hsv;
+	else
+		rgb = { hsv.H,hsv.S,hsv.V };
+
 	R->EAX<int>(rgb);
 
 	return 0x468EEB;

@@ -14,6 +14,8 @@ C++ Standard: C++20
 
 ======================= Changes (2021-XX-XX) ==============================================================================================
 *) Fixed wrongly painted infantry subcell place
+*) Undo/Redo limit is now controlled by ExtConfig: UndoRedoLimit = INTEGER, defaults to 16
++) New ExtConfig: UseRGBHouseColor
 
 ======================= Changes (2021-07-19) ==============================================================================================
 *) Undo/Redo extended to 2147483647 steps, be careful about your memory
@@ -34,7 +36,7 @@ C++ Standard: C++20
 +) New ExtConfig: SortByTriggerName = BOOLEAN, enable it so FA2 will sort the triggers dropdown and sort them by their name instead of ID
 +) New ExtConfig: AdjustDropdownWidth = BOOLEAN, enable it so FA2 will adjust the param dropdown width automatically
     +) New ExtConfig: AdjustDropdownWidth.Factor = INTERGER, determines how long is a single char takes, defaults to 8
-    +) New ExtConfig: AdjustDropdownWidth.Max = INTERGER, determins the max length of the combobox, defaults to 360
+    +) New ExtConfig: AdjustDropdownWidth.Max = INTERGER, determines the max length of the combobox, defaults to 360
 -) Remove ExtConfig: OverlayFilter, enable it always.
 
 ======================= Changes (2021-03-22) ==============================================================================================
@@ -101,7 +103,9 @@ COLORREF - R,G,B each of them is in [0,255]
             +) Waypoint.Color = COLORREF ; Determines the color of waypoint texts, default to 0,0,255
             +) Waypoint.Background = BOOLEAN ; Determines whether draw a rectangle background for waypoints or not. defaults to false
                 +) Waypoint.Background.Color = COLORREF ; Determines the color of the waypoint background, defaults to 255,255,255
-            +) ExtWaypoints = BOOLEAN ; Determins if FA2sp supports unlimited count of waypoints, defaults to false (Phobos required)
+            +) ExtWaypoints = BOOLEAN ; Determines if FA2sp supports unlimited count of waypoints, defaults to false (Phobos required)
+            +) UndoRedoLimit = INTEGER ; Determines the maximun step of undo/redo, defaults to 16
+            +) UseRGBHouseColor = BOOLEAN ; Determines if House colors are recognized as RGB color instead of HSV, defaults to false 
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.

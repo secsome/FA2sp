@@ -185,7 +185,6 @@
     <ClInclude Include="FA2sp\Helpers\STDHelpers.h" />
     <ClInclude Include="FA2sp\Helpers\Templates.hpp" />
     <ClInclude Include="FA2sp\Logger.h" />
-    <ClInclude Include="FA2sp\Miscs\Palette.h" />
     <ClInclude Include="FA2sp\RunTime.h" />
     <ClInclude Include="FA2sp\UI\UIColor.h" />
     <ClInclude Include="FA2sp\Helpers\MutexHelper.h" />
