@@ -72,7 +72,7 @@ DEFINE_HOOK(49D2C0, LoadMap_ClearUp, 5)
 #define REMAP_FIX_PALETTE_SET(hook_addr, hook_name, data_off, color_off) \
 DEFINE_HOOK(hook_addr,hook_name,7) \
 { \
-REF_STACK(DrawDataStruct, data, STACK_OFFS(0xD18, data_off)); \
+REF_STACK(ImageDataClass, data, STACK_OFFS(0xD18, data_off)); \
 GET_STACK(BGRStruct*, pColor, STACK_OFFS(0xD18, color_off)); \
 if(data.pPalette == Palette::PALETTE_UNIT) \
 	data.pPalette = RemapColorHelper::GetRemappedPalette(*pColor); \

@@ -92,8 +92,8 @@ void StringtableLoader::LoadCSFFile(const char* tmpFilePath, const char* pName)
         OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
     if (hFile == INVALID_HANDLE_VALUE)
     {
-        const auto pMix = GlobalVars::Dialogs::CLoading()->SearchFile(pName);
-        if (CMixFile::ExtractFile(pName, tmpFilePath, pMix))
+        const auto nMix = GlobalVars::Dialogs::CLoading->SearchFile(pName);
+        if (CMixFile::ExtractFile(pName, tmpFilePath, nMix))
         {
             hFile = CreateFile(tmpFilePath, GENERIC_READ, FILE_SHARE_READ, nullptr,
                 OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
