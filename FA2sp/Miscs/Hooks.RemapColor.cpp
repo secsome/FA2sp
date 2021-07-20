@@ -74,7 +74,7 @@ DEFINE_HOOK(hook_addr,hook_name,7) \
 { \
 REF_STACK(ImageDataClass, data, STACK_OFFS(0xD18, data_off)); \
 GET_STACK(BGRStruct*, pColor, STACK_OFFS(0xD18, color_off)); \
-if(data.pPalette == Palette::PALETTE_UNIT) \
+if(data.pPalette != Palette::PALETTE_ISO && data.pPalette != Palette::PALETTE_THEATER) \
 	data.pPalette = RemapColorHelper::GetRemappedPalette(*pColor); \
 return 0; \
 }

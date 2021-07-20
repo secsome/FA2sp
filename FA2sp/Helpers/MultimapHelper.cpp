@@ -47,6 +47,23 @@ ppmfc::CString MultimapHelper::GetString(ppmfc::CString pSection, ppmfc::CString
     return pResult ? *pResult : pDefault;
 }
 
+bool MultimapHelper::GetBool(ppmfc::CString pSection, ppmfc::CString pKey, bool nDefault) {
+    ppmfc::CString& pStr = this->GetString(pSection, pKey, "");
+    switch (toupper(static_cast<unsigned char>(*pStr)))
+    {
+    case '1':
+    case 'T':
+    case 'Y':
+        return true;
+    case '0':
+    case 'F':
+    case 'N':
+        return false;
+    default:
+        return nDefault;
+    }
+}
+
 std::vector<ppmfc::CString> MultimapHelper::ParseIndicies(ppmfc::CString pSection, bool bParseIntoValue)
 {
     std::vector<ppmfc::CString> ret;

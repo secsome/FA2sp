@@ -17,6 +17,7 @@ public:
 
     ppmfc::CString* TryGetString(ppmfc::CString pSection, ppmfc::CString pKey);
     ppmfc::CString GetString(ppmfc::CString pSection, ppmfc::CString pKey, ppmfc::CString pDefault = "");
+    bool GetBool(ppmfc::CString pSection, ppmfc::CString pKey, bool nDefault = false);
 
     std::vector<ppmfc::CString> ParseIndicies(ppmfc::CString pSection, bool bParseIntoValue = false);
     std::map<ppmfc::CString, ppmfc::CString, INISectionEntriesComparator> GetSection(ppmfc::CString pSection);

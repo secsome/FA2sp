@@ -27,7 +27,7 @@ private:
 	int QueryPalettesUNIT(char identifier);
 
 	void LoadBuilding(ppmfc::CString ID);
-	void LoadInfantry(ppmfc::CString ArtID);
+	void LoadInfantry(ppmfc::CString ID);
 	void LoadASSHP(ppmfc::CString ArtID);
 	void LoadASVXL(ppmfc::CString ArtID);
 

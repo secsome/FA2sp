@@ -20,27 +20,20 @@ ppmfc::CString CLoadingExt::GetImageName(ppmfc::CString ID, int nFacing)
 	};
 	auto& art = GlobalVars::INIFiles::Art();
 
-	ppmfc::CString ArtID;
-	if (auto ppImage = rules.TryGetString(ID, "Image"))
-		ArtID = *ppImage;
-	else
-		ArtID = ID;
-
-	CLoadingExt* pLoading = (CLoadingExt*)&GlobalVars::Dialogs::CLoading();
+	CLoadingExt* pLoading = (CLoadingExt*)GlobalVars::Dialogs::CLoading();
 	switch (pLoading->GetItemType(ID))
 	{
 	case ObjectType::Infantry:
 	{
-		ppmfc::CString ImageID = art.GetString(ArtID, "Image", ArtID);
-		ImageID = pLoading->GetInfantryFileID(ArtID);
-		if (!art.SectionExists(ImageID))
-			ImageID = ArtID;
+		ppmfc::CString ImageID = pLoading->GetInfantryFileID(ID);
 		ppmfc::CString DictName;
 		DictName.Format("%s%d", ImageID, nFacing);
 		return DictName;
 	}
 	default:
-		break;
+		ppmfc::CString buffer;
+		buffer.Format("%s%d", buffer, nFacing);
+		return buffer;
 	}
 
 }
@@ -98,7 +91,7 @@ void CLoadingExt::LoadObjects(ppmfc::CString ID)
 	switch (eItemType)
 	{
 	case CLoadingExt::ObjectType::Infantry:
-		LoadInfantry(ArtID);
+		LoadInfantry(ID);
 		break;
 	case CLoadingExt::ObjectType::Terrain:
 	case CLoadingExt::ObjectType::Smudge:
@@ -170,13 +163,29 @@ ppmfc::CString CLoadingExt::GetBuildingFileID(ppmfc::CString ID)
 
 ppmfc::CString CLoadingExt::GetInfantryFileID(ppmfc::CString ID)
 {
-	ppmfc::CString ret = ID;
-	if (GlobalVars::INIFiles::Art->GetBool(ID, "AlternateTheaterArt"))
-		ret += this->TheaterIdentifier;
-	else if (GlobalVars::INIFiles::Art->GetBool(ID, "AlternateArcticArt"))
+	MultimapHelper rules
+	{
+		&GlobalVars::INIFiles::Rules(),
+		&GlobalVars::INIFiles::CurrentDocument()
+	};
+
+	ppmfc::CString ArtID;
+	if (auto ppImage = rules.TryGetString(ID, "Image"))
+		ArtID = *ppImage;
+	else
+		ArtID = ID;
+
+	ppmfc::CString ImageID = GlobalVars::INIFiles::Art->GetString(ArtID, "Image", ArtID);
+
+	if (rules.GetBool(ID, "AlternateTheaterArt"))
+		ImageID += this->TheaterIdentifier;
+	else if (rules.GetBool(ID, "AlternateArcticArt"))
 		if (this->TheaterIdentifier == 'A')
-			ret += 'A';
-	return ret;
+			ImageID += 'A';
+	if (!GlobalVars::INIFiles::Art->SectionExists(ImageID))
+		ImageID = ArtID;
+
+	return ImageID;
 }
 
 void CLoadingExt::LoadBuilding(ppmfc::CString ID)
@@ -184,15 +193,12 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 	
 }
 
-void CLoadingExt::LoadInfantry(ppmfc::CString ArtID)
-{
-	auto& art = GlobalVars::INIFiles::Art();
-	ppmfc::CString ImageID = art.GetString(ArtID, "Image", ArtID);
-	ImageID = GetInfantryFileID(ArtID);
-	if (!art.SectionExists(ImageID))
-		ImageID = ArtID;
-	ppmfc::CString sequenceName = art.GetString(ImageID, "Sequence");
-	ppmfc::CString frames = art.GetString(sequenceName, "Guard", "0,1,1");
+void CLoadingExt::LoadInfantry(ppmfc::CString ID)
+{	
+	ppmfc::CString ImageID = GetInfantryFileID(ID);
+
+	ppmfc::CString sequenceName = GlobalVars::INIFiles::Art->GetString(ImageID, "Sequence");
+	ppmfc::CString frames = GlobalVars::INIFiles::Art->GetString(sequenceName, "Guard", "0,1,1");
 	int framesToRead[8];
 	int frameStart, frameStep;
 	sscanf_s(frames, "%d,%d,%d", &frameStart, &framesToRead[0], &frameStep);
