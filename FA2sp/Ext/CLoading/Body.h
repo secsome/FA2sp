@@ -3,6 +3,7 @@
 #include <CLoading.h>
 #include "../FA2Expand.h"
 
+#include <vector>
 #include <map>
 
 class ImageDataClass;
@@ -28,11 +29,12 @@ private:
 	void LoadBuilding(ppmfc::CString ID);
 	void LoadInfantry(ppmfc::CString ID);
 	void LoadTerrainOrSmudge(ppmfc::CString ID);
-	void LoadASSHP(ppmfc::CString ArtID);
-	void LoadASVXL(ppmfc::CString ArtID);
+	void LoadVehicleOrAircraft(ppmfc::CString ID);
 
 	void SetImageData(unsigned char* pBuffer, ppmfc::CString NameInDict, int FullWidth, int FullHeight,Palette* pPal);
 	void ShrinkSHP(unsigned char* pIn, int InWidth, int InHeight, unsigned char*& pOut, int* OutWidth, int* OutHeight);
+	void UnionSHP_Add(unsigned char* pBuffer, int X, int Y, int Width, int Height);
+	void UnionSHP_GetAndClear(unsigned char*& pOutBuffer, int* OutWidth, int* OutHeight);
 	void SetValidBuffer(ImageDataClass* pData, int Width, int Height);
 
 	enum class ObjectType{
@@ -52,5 +54,14 @@ private:
 
 	void DumpFrameToFile(unsigned char* pBuffer, Palette* pPal, int Width, int Height, ppmfc::CString name);
 	
+	struct SHPUnionData
+	{
+		unsigned char* pBuffer;
+		int X;
+		int Y;
+		int Width;
+		int Height;
+	};
+	static std::vector<SHPUnionData> UnionSHP_Data;
 	static std::map<ppmfc::CString, ObjectType> ObjectTypes;
 };

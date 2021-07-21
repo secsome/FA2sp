@@ -10,6 +10,7 @@
 #include "../../Miscs/Palettes.h"
 #include "../../FA2sp.h"
 
+std::vector<CLoadingExt::SHPUnionData> CLoadingExt::UnionSHP_Data;
 std::map<ppmfc::CString, CLoadingExt::ObjectType> CLoadingExt::ObjectTypes;
 
 ppmfc::CString CLoadingExt::GetImageName(ppmfc::CString ID, int nFacing)
@@ -63,14 +64,6 @@ void CLoadingExt::LoadObjects(ppmfc::CString ID)
 {
     Logger::Debug("CLoadingExt::LoadObjects loading: %s\n", ID);
 
-	auto& art = GlobalVars::INIFiles::Art();
-
-	ppmfc::CString ArtID;
-	if (auto ppImage = Variables::Rules.TryGetString(ID, "Image"))
-		ArtID = *ppImage;
-	else
-		ArtID = ID;
-
 	auto eItemType = GetItemType(ID);
 	switch (eItemType)
 	{
@@ -83,10 +76,7 @@ void CLoadingExt::LoadObjects(ppmfc::CString ID)
 		break;
 	case CLoadingExt::ObjectType::Vehicle:
 	case CLoadingExt::ObjectType::Aircraft:
-		if (art.GetBool(ArtID, "Voxel"))
-			LoadASVXL(ArtID);
-		else
-			LoadASSHP(ArtID);
+		LoadVehicleOrAircraft(ID);
 		break;
 	case CLoadingExt::ObjectType::Building:
 		LoadBuilding(ID);
@@ -196,15 +186,7 @@ void CLoadingExt::LoadTerrainOrSmudge(ppmfc::CString ID)
 	}
 }
 
-void CLoadingExt::LoadASSHP(ppmfc::CString ArtID)
-{
-	
-
-	
-	
-}
-
-void CLoadingExt::LoadASVXL(ppmfc::CString ArtID)
+void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 {
 }
 
@@ -265,6 +247,43 @@ void CLoadingExt::ShrinkSHP(unsigned char* pIn, int InWidth, int InHeight, unsig
 		memcpy_s(&pOut[j * *OutWidth], *OutWidth, &pIn[(j + validFirstY) * InWidth + validFirstX], *OutWidth);
 
 	GameDelete(pIn);
+}
+
+void CLoadingExt::UnionSHP_Add(unsigned char* pBuffer, int X, int Y, int Width, int Height)
+{
+	UnionSHP_Data.push_back(SHPUnionData{ pBuffer,X,Y,Width,Height });
+}
+
+void CLoadingExt::UnionSHP_GetAndClear(unsigned char*& pOutBuffer, int* OutWidth, int* OutHeight)
+{
+	// never calls it when UnionSHP_Data is empty
+
+	// union rect
+	int L = INT_MAX, T = INT_MAX, R = INT_MIN, B = INT_MIN;
+	for (auto& data : UnionSHP_Data)
+	{
+		if (data.X < L) L = data.X;
+		if (data.Y < T) T = data.Y;
+		if (data.X + data.Width > R) R = data.X + data.Width;
+		if (data.Y + data.Height > B)	B = data.Y + data.Height;
+	}
+
+	*OutWidth = R - L;
+	*OutHeight = B - T;
+
+	// create buffer
+	pOutBuffer = GameCreateArray<unsigned char>(*OutWidth * *OutHeight);
+
+	// draw them one by one, the later one will override the former one
+	for (auto& data : UnionSHP_Data)
+	{
+		for (int j = data.Y - T; j < data.Height; ++j)
+			memcpy_s(&pOutBuffer[j * *OutWidth + data.X - L], data.Width, &data.pBuffer[j * data.Width], data.Width);
+		// after drawing, release the previous buffer
+		GameDelete(data.pBuffer);
+	}
+
+	UnionSHP_Data.clear();
 }
 
 void CLoadingExt::SetValidBuffer(ImageDataClass* pData, int Width, int Height)
