@@ -27,6 +27,7 @@ private:
 
 	void LoadBuilding(ppmfc::CString ID);
 	void LoadInfantry(ppmfc::CString ID);
+	void LoadTerrainOrSmudge(ppmfc::CString ID);
 	void LoadASSHP(ppmfc::CString ArtID);
 	void LoadASVXL(ppmfc::CString ArtID);
 
@@ -44,6 +45,7 @@ private:
 		Smudge = 5
 	};
 
+	ppmfc::CString GetTerrainOrSmudgeFileID(ppmfc::CString ID);
 	ppmfc::CString GetBuildingFileID(ppmfc::CString ID);
 	ppmfc::CString GetInfantryFileID(ppmfc::CString ID);
 	ObjectType GetItemType(ppmfc::CString ID);

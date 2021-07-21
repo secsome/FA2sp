@@ -79,7 +79,7 @@ void CLoadingExt::LoadObjects(ppmfc::CString ID)
 		break;
 	case CLoadingExt::ObjectType::Terrain:
 	case CLoadingExt::ObjectType::Smudge:
-		LoadASSHP(ArtID);
+		LoadTerrainOrSmudge(ID);
 		break;
 	case CLoadingExt::ObjectType::Vehicle:
 	case CLoadingExt::ObjectType::Aircraft:
@@ -95,6 +95,19 @@ void CLoadingExt::LoadObjects(ppmfc::CString ID)
 	default:
 		break;
 	}
+}
+
+ppmfc::CString CLoadingExt::GetTerrainOrSmudgeFileID(ppmfc::CString ID)
+{
+	ppmfc::CString ArtID;
+	if (auto ppImage = Variables::Rules.TryGetString(ID, "Image"))
+		ArtID = *ppImage;
+	else
+		ArtID = ID;
+
+	ppmfc::CString ImageID = GlobalVars::INIFiles::Art->GetString(ArtID, "Image", ArtID);
+
+	return ImageID;
 }
 
 ppmfc::CString CLoadingExt::GetBuildingFileID(ppmfc::CString ID)
@@ -160,6 +173,26 @@ void CLoadingExt::LoadInfantry(ppmfc::CString ID)
 			GetFullPaletteName(PaletteName);
 			SetImageData(FramesBuffers[i], DictName, header.Width, header.Height, Palettes::LoadPalette(PaletteName));
 		}
+	}
+}
+
+void CLoadingExt::LoadTerrainOrSmudge(ppmfc::CString ID)
+{
+	ppmfc::CString ImageID = GetTerrainOrSmudgeFileID(ID);
+	ppmfc::CString FileName = ImageID + this->GetFileExtension();
+	int nMix = this->SearchFile(FileName);
+	if (CMixFile::HasFile(FileName, nMix))
+	{
+		ShapeHeader header;
+		unsigned char* FramesBuffers[1];
+		CMixFile::LoadSHP(FileName, nMix);
+		CShpFile::GetSHPHeader(&header);
+		CShpFile::LoadFrame(0, 1, &FramesBuffers[0]);
+		ppmfc::CString DictName;
+		DictName.Format("%s%d", ImageID, 0);
+		ppmfc::CString PaletteName = GlobalVars::INIFiles::Art->GetString(ImageID, "Palette", "iso");
+		GetFullPaletteName(PaletteName);
+		SetImageData(FramesBuffers[0], DictName, header.Width, header.Height, Palettes::LoadPalette(PaletteName));
 	}
 }
 
