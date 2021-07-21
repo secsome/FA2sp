@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../FA2Expand.h"
-#include "../../Helpers/MultimapHelper.h"
 #include <CFinalSunDlg.h>
 
 #include <array>
@@ -36,7 +35,6 @@ class ObjectBrowserControlExt : public ObjectBrowserControl
         Const_House = 70000, Const_Smudge = 80000
     };
 
-    static MultimapHelper mmh;
     static std::array<HTREEITEM, Root_Count> ExtNodes;
     static std::unordered_set<std::string> IgnoreSet;
     static std::unordered_set<std::string> ForceName;

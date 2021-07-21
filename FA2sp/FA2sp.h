@@ -2,6 +2,7 @@
 
 #include "Logger.h"
 #include "Ext/FA2Expand.h"
+#include "Helpers/MultimapHelper.h"
 
 #include <Helpers\Macro.h>
 #include <MFC/ppmfc_cstring.h>
@@ -45,4 +46,10 @@ public:
     static bool ExtWaypoints;
     static int UndoRedoLimit;
     static bool UseRGBHouseColor;
+};
+
+class Variables
+{
+public:
+    static MultimapHelper Rules;
 };

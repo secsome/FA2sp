@@ -7,17 +7,12 @@
 #include <Drawing.h>
 #include <CPalette.h>
 
-#include "../../Helpers/MultimapHelper.h"
+#include "../../FA2sp.h"
 
 std::map<ppmfc::CString, CLoadingExt::ObjectType> CLoadingExt::ObjectTypes;
 
 ppmfc::CString CLoadingExt::GetImageName(ppmfc::CString ID, int nFacing)
 {
-	MultimapHelper rules
-	{
-		&GlobalVars::INIFiles::Rules(),
-		&GlobalVars::INIFiles::CurrentDocument()
-	};
 	auto& art = GlobalVars::INIFiles::Art();
 
 	CLoadingExt* pLoading = (CLoadingExt*)GlobalVars::Dialogs::CLoading();
@@ -42,15 +37,9 @@ CLoadingExt::ObjectType CLoadingExt::GetItemType(ppmfc::CString ID)
 {
 	if (ObjectTypes.size() == 0)
 	{
-		MultimapHelper rules
+		auto load = [](ppmfc::CString type, ObjectType e)
 		{
-			&GlobalVars::INIFiles::Rules(),
-			&GlobalVars::INIFiles::CurrentDocument()
-		};
-
-		auto load = [&rules](ppmfc::CString type, ObjectType e)
-		{
-			auto section = rules.GetSection(type);
+			auto section = Variables::Rules.GetSection(type);
 			for (auto& pair : section)
 				ObjectTypes[pair.second] = e;
 		};
@@ -73,16 +62,10 @@ void CLoadingExt::LoadObjects(ppmfc::CString ID)
 {
     Logger::Debug("CLoadingExt::LoadObjects loading: %s\n", ID);
 
-	MultimapHelper rules
-	{
-		&GlobalVars::INIFiles::Rules(),
-		&GlobalVars::INIFiles::CurrentDocument()
-	};
-
 	auto& art = GlobalVars::INIFiles::Art();
 
 	ppmfc::CString ArtID;
-	if (auto ppImage = rules.TryGetString(ID, "Image"))
+	if (auto ppImage = Variables::Rules.TryGetString(ID, "Image"))
 		ArtID = *ppImage;
 	else
 		ArtID = ID;
@@ -113,46 +96,6 @@ void CLoadingExt::LoadObjects(ppmfc::CString ID)
 	}
 }
 
-int CLoadingExt::QueryPalettesISO(char identifier)
-{
-	switch (identifier)
-	{
-	case 'A':
-		return this->PAL_ISOSNO;
-	case 'U':
-		return this->PAL_ISOURB;
-	case 'N':
-		return this->PAL_ISOUBN;
-	case 'D':
-		return this->PAL_ISODES;
-	case 'L':
-		return this->PAL_ISOLUN;
-	case 'T':
-	default:
-		return this->PAL_ISOTEM;
-	}
-}
-
-int CLoadingExt::QueryPalettesUNIT(char identifier)
-{
-	switch (identifier)
-	{
-	case 'A':
-		return this->PAL_UNITSNO;
-	case 'U':
-		return this->PAL_UNITURB;
-	case 'N':
-		return this->PAL_UNITUBN;
-	case 'D':
-		return this->PAL_UNITDES;
-	case 'L':
-		return this->PAL_UNITLUN;
-	case 'T':
-	default:
-		return this->PAL_UNITTEM;
-	}
-}
-
 ppmfc::CString CLoadingExt::GetBuildingFileID(ppmfc::CString ID)
 {
 	ppmfc::CString ret = ID;
@@ -163,23 +106,17 @@ ppmfc::CString CLoadingExt::GetBuildingFileID(ppmfc::CString ID)
 
 ppmfc::CString CLoadingExt::GetInfantryFileID(ppmfc::CString ID)
 {
-	MultimapHelper rules
-	{
-		&GlobalVars::INIFiles::Rules(),
-		&GlobalVars::INIFiles::CurrentDocument()
-	};
-
 	ppmfc::CString ArtID;
-	if (auto ppImage = rules.TryGetString(ID, "Image"))
+	if (auto ppImage = Variables::Rules.TryGetString(ID, "Image"))
 		ArtID = *ppImage;
 	else
 		ArtID = ID;
 
 	ppmfc::CString ImageID = GlobalVars::INIFiles::Art->GetString(ArtID, "Image", ArtID);
 
-	if (rules.GetBool(ID, "AlternateTheaterArt"))
+	if (Variables::Rules.GetBool(ID, "AlternateTheaterArt"))
 		ImageID += this->TheaterIdentifier;
-	else if (rules.GetBool(ID, "AlternateArcticArt"))
+	else if (Variables::Rules.GetBool(ID, "AlternateArcticArt"))
 		if (this->TheaterIdentifier == 'A')
 			ImageID += 'A';
 	if (!GlobalVars::INIFiles::Art->SectionExists(ImageID))

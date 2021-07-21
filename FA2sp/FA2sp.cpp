@@ -34,6 +34,8 @@ bool ExtConfigs::ExtWaypoints;
 int ExtConfigs::UndoRedoLimit;
 bool ExtConfigs::UseRGBHouseColor;
 
+MultimapHelper Variables::Rules = { &GlobalVars::INIFiles::Rules(), &GlobalVars::INIFiles::CurrentDocument() };
+
 DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
 {
 	FA2sp::ExtConfigsInitialize();
