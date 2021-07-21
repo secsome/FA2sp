@@ -47,6 +47,8 @@ private:
 		Smudge = 5
 	};
 
+	ppmfc::CString GetArtID(ppmfc::CString ID);
+	ppmfc::CString GetVehicleOrAircraftFileID(ppmfc::CString ID);
 	ppmfc::CString GetTerrainOrSmudgeFileID(ppmfc::CString ID);
 	ppmfc::CString GetBuildingFileID(ppmfc::CString ID);
 	ppmfc::CString GetInfantryFileID(ppmfc::CString ID);

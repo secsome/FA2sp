@@ -15,18 +15,22 @@ std::map<ppmfc::CString, CLoadingExt::ObjectType> CLoadingExt::ObjectTypes;
 
 ppmfc::CString CLoadingExt::GetImageName(ppmfc::CString ID, int nFacing)
 {
-	auto& art = GlobalVars::INIFiles::Art();
-
+	ppmfc::CString ImageID;
+	ppmfc::CString DictName;
 	CLoadingExt* pLoading = (CLoadingExt*)GlobalVars::Dialogs::CLoading();
 	switch (pLoading->GetItemType(ID))
 	{
 	case ObjectType::Infantry:
 	{
-		ppmfc::CString ImageID = pLoading->GetInfantryFileID(ID);
-		ppmfc::CString DictName;
+		ImageID = pLoading->GetInfantryFileID(ID);
 		DictName.Format("%s%d", ImageID, nFacing);
 		return DictName;
 	}
+	case ObjectType::Aircraft:
+	case ObjectType::Vehicle:
+		ImageID = pLoading->GetVehicleOrAircraftFileID(ID);
+		DictName.Format("%s%d", ImageID, nFacing);
+		return DictName;
 	default:
 		ppmfc::CString buffer;
 		buffer.Format("%s%d", buffer, nFacing);
@@ -89,7 +93,7 @@ void CLoadingExt::LoadObjects(ppmfc::CString ID)
 
 ppmfc::CString CLoadingExt::GetTerrainOrSmudgeFileID(ppmfc::CString ID)
 {
-	ppmfc::CString ArtID;
+	ppmfc::CString ArtID = GetArtID(ID);
 	if (auto ppImage = Variables::Rules.TryGetString(ID, "Image"))
 		ArtID = *ppImage;
 	else
@@ -110,11 +114,7 @@ ppmfc::CString CLoadingExt::GetBuildingFileID(ppmfc::CString ID)
 
 ppmfc::CString CLoadingExt::GetInfantryFileID(ppmfc::CString ID)
 {
-	ppmfc::CString ArtID;
-	if (auto ppImage = Variables::Rules.TryGetString(ID, "Image"))
-		ArtID = *ppImage;
-	else
-		ArtID = ID;
+	ppmfc::CString ArtID = GetArtID(ID);
 
 	ppmfc::CString ImageID = GlobalVars::INIFiles::Art->GetString(ArtID, "Image", ArtID);
 
@@ -125,6 +125,26 @@ ppmfc::CString CLoadingExt::GetInfantryFileID(ppmfc::CString ID)
 			ImageID += 'A';
 	if (!GlobalVars::INIFiles::Art->SectionExists(ImageID))
 		ImageID = ArtID;
+
+	return ImageID;
+}
+
+ppmfc::CString CLoadingExt::GetArtID(ppmfc::CString ID)
+{
+	ppmfc::CString ArtID;
+	if (auto ppImage = Variables::Rules.TryGetString(ID, "Image"))
+		ArtID = *ppImage;
+	else
+		ArtID = ID;
+
+	return ArtID;
+}
+
+ppmfc::CString CLoadingExt::GetVehicleOrAircraftFileID(ppmfc::CString ID)
+{
+	ppmfc::CString ArtID = GetArtID(ID);
+
+	ppmfc::CString ImageID = GlobalVars::INIFiles::Art->GetString(ArtID, "Image", ArtID);
 
 	return ImageID;
 }
@@ -151,17 +171,17 @@ void CLoadingExt::LoadInfantry(ppmfc::CString ID)
 	if (CMixFile::HasFile(FileName, nMix))
 	{
 		ShapeHeader header;
-		unsigned char* FramesBuffers[8];
+		unsigned char* FramesBuffers;
 		CMixFile::LoadSHP(FileName, nMix);
 		CShpFile::GetSHPHeader(&header);
 		for (int i = 0; i < 8; ++i)
 		{
-			CShpFile::LoadFrame(framesToRead[i], 1, &FramesBuffers[i]);
+			CShpFile::LoadFrame(framesToRead[i], 1, &FramesBuffers);
 			ppmfc::CString DictName;
 			DictName.Format("%s%d", ImageID, i);
 			ppmfc::CString PaletteName = GlobalVars::INIFiles::Art->GetString(ImageID, "Palette", "unit");
 			GetFullPaletteName(PaletteName);
-			SetImageData(FramesBuffers[i], DictName, header.Width, header.Height, Palettes::LoadPalette(PaletteName));
+			SetImageData(FramesBuffers, DictName, header.Width, header.Height, Palettes::LoadPalette(PaletteName));
 		}
 	}
 }
@@ -188,25 +208,107 @@ void CLoadingExt::LoadTerrainOrSmudge(ppmfc::CString ID)
 
 void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 {
+	ppmfc::CString ArtID = GetArtID(ID);
+	ppmfc::CString ImageID = GetVehicleOrAircraftFileID(ID);
+	bool bHasTurret = Variables::Rules.GetBool(ID, "Turret");
+
+	if (GlobalVars::INIFiles::Art->GetBool(ArtID, "Voxel")) // As VXL
+	{
+		ppmfc::CString FileName = ImageID + ".vxl";
+	}
+	else // As SHP
+	{
+		int framesToRead[8];
+		int nStartStandFrame = GlobalVars::INIFiles::Art->GetInteger(ArtID, "nStartStandFrame", 0);
+		int nStandingFrames = GlobalVars::INIFiles::Art->GetInteger(ArtID, "nStandingFrames", 1);
+		for (int i = 0; i < 8; ++i)
+			framesToRead[i] = nStartStandFrame + i * nStandingFrames;
+
+		ppmfc::CString FileName = ImageID + ".shp";
+		int nMix = this->SearchFile(FileName);
+		if (CMixFile::HasFile(FileName, nMix))
+		{
+			ShapeHeader header;
+			unsigned char* FramesBuffers[2];
+			CMixFile::LoadSHP(FileName, nMix);
+			CShpFile::GetSHPHeader(&header);
+			for (int i = 0; i < 8; ++i)
+			{
+				CShpFile::LoadFrame(framesToRead[i], 1, &FramesBuffers[0]);
+				ppmfc::CString DictName;
+				DictName.Format("%s%d", ImageID, i);
+				ppmfc::CString PaletteName = GlobalVars::INIFiles::Art->GetString(ImageID, "Palette", "unit");
+				GetFullPaletteName(PaletteName);
+
+				if (bHasTurret)
+				{
+					int nStartWalkFrame = GlobalVars::INIFiles::Art->GetInteger(ArtID, "StartWalkFrame", 0);
+					int nWalkFrames = GlobalVars::INIFiles::Art->GetInteger(ArtID, "WalkFrames", 1);
+					int turretFramesToRead[8];
+					turretFramesToRead[i] = nStartWalkFrame + 8 * nWalkFrames + 4 * i;
+					CShpFile::LoadFrame(turretFramesToRead[i], 1, &FramesBuffers[1]);
+					UnionSHP_Add(FramesBuffers[0], 0, 0, header.Width, header.Height);
+					UnionSHP_Add(FramesBuffers[1], 0, 0, header.Width, header.Height);
+					unsigned char* outBuffer;
+					int outW, outH;
+					UnionSHP_GetAndClear(outBuffer, &outW, &outH);
+					
+					SetImageData(outBuffer, DictName, outW, outH, Palettes::LoadPalette(PaletteName));
+				}
+				else
+					SetImageData(FramesBuffers[0], DictName, header.Width, header.Height, Palettes::LoadPalette(PaletteName));
+			}
+		}
+	}
 }
 
 void CLoadingExt::SetImageData(unsigned char* pBuffer, ppmfc::CString NameInDict, int FullWidth, int FullHeight, Palette* pPal)
 {
 	auto pData = ImageDataMapHelper::GetImageDataFromMap(NameInDict);
-	unsigned char* pCompressedBuffer = nullptr;
-	int nWidth, nHeight;
+	// unsigned char* pCompressedBuffer = nullptr;
+	// int nWidth, nHeight;
 
-	ShrinkSHP(pBuffer, FullWidth, FullHeight, pCompressedBuffer, &nWidth, &nHeight);
+	// ShrinkSHP(pBuffer, FullWidth, FullHeight, pCompressedBuffer, &nWidth, &nHeight);
 
-	pData->pImageBuffer = pCompressedBuffer;
-	SetValidBuffer(pData, nWidth, nHeight);
+	pData->pImageBuffer = pBuffer;
+	pData->FullHeight = FullHeight;
+	pData->FullWidth = FullWidth;
+	SetValidBuffer(pData, FullWidth, FullHeight);
+	
+	// Get available area
+	int counter = 0;
+	int validFirstX = FullWidth - 1;
+	int validFirstY = FullHeight - 1;
+	int validLastX = 0;
+	int validLastY = 0;
+	for (int j = 0; j < FullHeight; ++j)
+	{
+		for (int i = 0; i < FullWidth; ++i)
+		{
+			unsigned char ch = pBuffer[counter++];
+			if (ch != 0)
+			{
+				if (i < validFirstX)
+					validFirstX = i;
+				if (j < validFirstY)
+					validFirstY = j;
+				if (i > validLastX)
+					validLastX = i;
+				if (j > validLastY)
+					validLastY = j;
+			}
+		}
+	}
+	
+	pData->ValidX = validFirstX;
+	pData->ValidY = validFirstY;
+	pData->ValidWidth = validLastX - validFirstX + 1;
+	pData->ValidHeight = validLastY - validFirstY + 1;
+
 	pData->Flag = ImageDataFlag::SHP;
 	pData->IsOverlay = false;
 	pData->pPalette = pPal ? pPal : Palette::PALETTE_UNIT;
-	pData->ValidX = 0;
-	pData->ValidY = 0;
-	pData->ValidHeight = pData->FullHeight = nHeight;
-	pData->ValidWidth = pData->FullWidth = nWidth;
+
 
 	// SomeDataMapHelper::SetSomeData(NameInDict, true);
 }
@@ -278,7 +380,10 @@ void CLoadingExt::UnionSHP_GetAndClear(unsigned char*& pOutBuffer, int* OutWidth
 	for (auto& data : UnionSHP_Data)
 	{
 		for (int j = data.Y - T; j < data.Height; ++j)
-			memcpy_s(&pOutBuffer[j * *OutWidth + data.X - L], data.Width, &data.pBuffer[j * data.Width], data.Width);
+			for (int i = 0; i < data.Width; ++i)
+				if (data.pBuffer[j * data.Width + i])
+					pOutBuffer[j * *OutWidth + data.X - L + i] = data.pBuffer[j * data.Width + i];
+				// memcpy_s(&pOutBuffer[j * *OutWidth + data.X - L], data.Width, &data.pBuffer[j * data.Width], data.Width);
 		// after drawing, release the previous buffer
 		GameDelete(data.pBuffer);
 	}

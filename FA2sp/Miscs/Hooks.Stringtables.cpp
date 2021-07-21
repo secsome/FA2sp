@@ -276,9 +276,11 @@ bool StringtableLoader::LoadToBuffer()
     {
         DWORD dwFileSize = GetFileSize(hFile, nullptr);
         StringtableLoader::pEDIBuffer = GameCreateArray<char>(dwFileSize);
-        return 
-            StringtableLoader::pEDIBuffer != nullptr && 
-            ReadFile(hFile, StringtableLoader::pEDIBuffer, dwFileSize, nullptr, nullptr);
+        bool result = false;
+        if (StringtableLoader::pEDIBuffer)
+            result = ReadFile(hFile, StringtableLoader::pEDIBuffer, dwFileSize, nullptr, nullptr);
+        CloseHandle(hFile);
+        return result;
     }
     return false;
 }
