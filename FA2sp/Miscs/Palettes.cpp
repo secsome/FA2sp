@@ -91,7 +91,8 @@ Palette* Palettes::GetRemap(Palette* pal, BGRStruct color)
     }
 
     // Not found, create remap color
-    auto buffer = RemappedPalettes[pal][color];
+    auto& buffer = RemappedPalettes[pal][color];
+    memcpy_s(&buffer, 768, pal, 768);
     for (int i = 16; i <= 31; ++i)
     {
         int ii = i - 16;
