@@ -7,6 +7,7 @@
 #include <Drawing.h>
 #include <CPalette.h>
 
+#include "../../Miscs/Palettes.h"
 #include "../../FA2sp.h"
 
 std::map<ppmfc::CString, CLoadingExt::ObjectType> CLoadingExt::ObjectTypes;
@@ -155,7 +156,9 @@ void CLoadingExt::LoadInfantry(ppmfc::CString ID)
 			CShpFile::LoadFrame(framesToRead[i], 1, &FramesBuffers[i]);
 			ppmfc::CString DictName;
 			DictName.Format("%s%d", ImageID, i);
-			SetImageData(FramesBuffers[i], DictName, header.Width, header.Height);
+			ppmfc::CString PaletteName = GlobalVars::INIFiles::Art->GetString(ImageID, "Palette", "unit");
+			GetFullPaletteName(PaletteName);
+			SetImageData(FramesBuffers[i], DictName, header.Width, header.Height, Palettes::LoadPalette(PaletteName));
 		}
 	}
 }
@@ -172,7 +175,7 @@ void CLoadingExt::LoadASVXL(ppmfc::CString ArtID)
 {
 }
 
-void CLoadingExt::SetImageData(unsigned char* pBuffer, ppmfc::CString NameInDict, int FullWidth, int FullHeight)
+void CLoadingExt::SetImageData(unsigned char* pBuffer, ppmfc::CString NameInDict, int FullWidth, int FullHeight, Palette* pPal)
 {
 	auto pData = ImageDataMapHelper::GetImageDataFromMap(NameInDict);
 	unsigned char* pCompressedBuffer = nullptr;
@@ -184,7 +187,7 @@ void CLoadingExt::SetImageData(unsigned char* pBuffer, ppmfc::CString NameInDict
 	SetValidBuffer(pData, nWidth, nHeight);
 	pData->Flag = ImageDataFlag::SHP;
 	pData->IsOverlay = false;
-	pData->pPalette = Palette::PALETTE_UNIT;
+	pData->pPalette = pPal ? pPal : Palette::PALETTE_UNIT;
 	pData->ValidX = 0;
 	pData->ValidY = 0;
 	pData->ValidHeight = pData->FullHeight = nHeight;
@@ -243,8 +246,31 @@ void CLoadingExt::SetValidBuffer(ImageDataClass* pData, int Width, int Height)
 	}
 }
 
-
-
+void CLoadingExt::GetFullPaletteName(ppmfc::CString& PaletteName)
+{
+	switch (this->TheaterIdentifier)
+	{
+	case 'A':
+		PaletteName += "sno.pal";
+		return;
+	case 'U':
+		PaletteName += "urb.pal";
+		return;
+	case 'N':
+		PaletteName += "ubn.pal";
+		return;
+	case 'D':
+		PaletteName += "des.pal";
+		return;
+	case 'L':
+		PaletteName += "lun.pal";
+		return;
+	case 'T':
+	default:
+		PaletteName += "tem.pal";
+		return;
+	}
+}
 
 #include "../../Helpers/Bitmap.h"
 void CLoadingExt::DumpFrameToFile(unsigned char* pBuffer, Palette* pPal, int Width, int Height, ppmfc::CString name)

@@ -23,15 +23,14 @@ public:
 	void LoadObjects(ppmfc::CString pRegName);
 	static ppmfc::CString GetImageName(ppmfc::CString ID, int nFacing);
 private:
-	int QueryPalettesISO(char identifier);
-	int QueryPalettesUNIT(char identifier);
+	void GetFullPaletteName(ppmfc::CString& PaletteName);
 
 	void LoadBuilding(ppmfc::CString ID);
 	void LoadInfantry(ppmfc::CString ID);
 	void LoadASSHP(ppmfc::CString ArtID);
 	void LoadASVXL(ppmfc::CString ArtID);
 
-	void SetImageData(unsigned char* pBuffer, ppmfc::CString NameInDict, int FullWidth, int FullHeight);
+	void SetImageData(unsigned char* pBuffer, ppmfc::CString NameInDict, int FullWidth, int FullHeight,Palette* pPal);
 	void ShrinkSHP(unsigned char* pIn, int InWidth, int InHeight, unsigned char*& pOut, int* OutWidth, int* OutHeight);
 	void SetValidBuffer(ImageDataClass* pData, int Width, int Height);
 

@@ -102,6 +102,9 @@
     <ClInclude Include="FA2sp\Helpers\Bitmap.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2sp\Miscs\Palettes.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">
@@ -231,6 +234,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Ext\CLoading\Body.LoadObjects.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Miscs\Palettes.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

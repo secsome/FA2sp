@@ -2,6 +2,7 @@
 #include "FA2sp.Constants.h"
 
 #include "Helpers/MutexHelper.h"
+#include "Miscs/Palettes.h"
 
 #include <GlobalVars.h>
 #include <CINI.h>
