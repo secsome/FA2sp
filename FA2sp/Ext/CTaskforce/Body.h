@@ -12,10 +12,13 @@ public:
 	//
 	// Ext Functions
 	//
+	BOOL OnInitDialogExt();
 	BOOL PreTranslateMessageExt(MSG* pMsg);
 
 	CTaskForceExt() {};
 	~CTaskForceExt() {};
+
+	void OnBNCloneTaskforceClicked();
 
 private:
 

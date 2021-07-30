@@ -17,6 +17,7 @@ C++ Standard: C++20
 *) Undo/Redo limit is now controlled by ExtConfig: UndoRedoLimit = INTEGER, defaults to 16
 +) New ExtConfig: UseRGBHouseColor
 +) Now you can copy single action/event in trigger editor
++) Now you can copy taskforce and its member
 
 ======================= Changes (2021-07-19) ==============================================================================================
 *) Undo/Redo extended to 2147483647 steps, be careful about your memory
@@ -309,6 +310,20 @@ COLORREF - R,G,B each of them is in [0,255]
             [CURRENTLANGUAGE-Strings]
             [CURRENTLANGUAGE-TranslationsRA2]
             [CURRENTLANGUAGE-Translations]
+                +) TaskforceTitle = TEXT
+                +) TaskforceList = TEXT
+                +) TaskforceUnits = TEXT
+                +) TaskforceGroup = TEXT
+                +) TaskforceUnitNumber = TEXT
+                +) TaskforceUnitType = TEXT
+                +) TaskforceSelected = TEXT
+                +) TaskforceName = TEXT
+                +) TaskforceNewTask = TEXT
+                +) TaskforceDelTask = TEXT
+                +) TaskforceCloTask = TEXT
+                +) TaskforceNewUnit = TEXT
+                +) TaskforceDelUnit = TEXT
+                +) TaskforceCloUnit = TEXT
                 +) TeamTypesTitle = TEXT
                 +) TeamTypesNewTeam = TEXT
                 +) TeamTypesDelTeam = TEXT
@@ -367,7 +382,7 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) TriggerEventCurrent = TEXT
                 +) TriggerEventNew = TEXT
                 +) TriggerEventDel = TEXT
-                +) TriggerEventCopy = TEXT
+                +) TriggerEventClo = TEXT
                 +) TriggerEventOptions = TEXT
                 +) TriggerEventType = TEXT
                 +) TriggerEventParameter = TEXT
@@ -376,7 +391,7 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) TriggerActionCurrent = TEXT
                 +) TriggerActionNew = TEXT
                 +) TriggerActionDel = TEXT
-                +) TriggerActionCopy = TEXT
+                +) TriggerActionClo = TEXT
                 +) TriggerActionOptions = TEXT
                 +) TriggerActionType = TEXT
                 +) TriggerActionParameter = TEXT

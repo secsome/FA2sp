@@ -133,6 +133,7 @@
     <ClCompile Include="FA2sp\Ext\CTileSetBrowserFrame\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerAction\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerEvent\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CTriggerOption\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\FA2Expand.cpp" />
     <ClCompile Include="FA2sp\Ext\Miscs\Hooks.LoadParams.cpp" />
     <ClCompile Include="FA2sp\Helpers\ControlHelpers.cpp" />
@@ -194,6 +195,7 @@
   <ItemGroup>
     <ResourceCompile Include="FA2sp\UI\CMenu.rc" />
     <ResourceCompile Include="FA2sp\UI\CScriptTypes.rc" />
+    <ResourceCompile Include="FA2sp\UI\CTaskforce.rc" />
     <ResourceCompile Include="FA2sp\UI\CTriggerFrame.rc" />
     <ResourceCompile Include="FA2sp\UI\CTriggerOption.rc" />
     <ResourceCompile Include="FA2sp\UI\CTriggerAction.rc" />
