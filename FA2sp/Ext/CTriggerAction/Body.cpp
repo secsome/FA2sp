@@ -28,7 +28,7 @@ BOOL CTriggerActionExt::OnInitDialogExt()
 
 	Translations::TranslateItem(this, 1403, "TriggerActionNew");
 	Translations::TranslateItem(this, 1174, "TriggerActionDel");
-	Translations::TranslateItem(this, 50606, "TriggerActionCopy");
+	Translations::TranslateItem(this, 50606, "TriggerActionClo");
 
 	return TRUE;
 }

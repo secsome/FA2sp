@@ -26,7 +26,7 @@ BOOL CTriggerEventExt::OnInitDialogExt()
 
 	Translations::TranslateItem(this, 1396, "TriggerEventNew");
 	Translations::TranslateItem(this, 1169, "TriggerEventDel");
-	Translations::TranslateItem(this, 50506, "TriggerEventCopy");
+	Translations::TranslateItem(this, 50506, "TriggerEventClo");
 
 	return TRUE;
 }
