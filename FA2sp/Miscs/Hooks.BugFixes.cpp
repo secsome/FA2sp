@@ -32,17 +32,17 @@ DEFINE_HOOK(4BBAB8, CMapData_sub_4BB990, 6)
 {
 	GET(CMapData*, pThis, EBX);
 
-	++pThis->unknown_801D0;
-	++pThis->unknown_801CC;
+	++pThis->UndoRedoCurrentDataIndex;
+	++pThis->UndoRedoDataCount;
 
-	R->ESI(pThis->unknown_801CC);
+	R->ESI(pThis->UndoRedoDataCount);
 
-	if (pThis->unknown_801CC <= ExtConfigs::UndoRedoLimit)
+	if (pThis->UndoRedoDataCount <= ExtConfigs::UndoRedoLimit)
 		return 0x4BBBB7;
 
 	R->EDX(pThis->UndoRedoData);
-	pThis->unknown_801CC = ExtConfigs::UndoRedoLimit;
-	pThis->unknown_801D0 = ExtConfigs::UndoRedoLimit - 1;
+	pThis->UndoRedoDataCount = ExtConfigs::UndoRedoLimit;
+	pThis->UndoRedoCurrentDataIndex = ExtConfigs::UndoRedoLimit - 1;
 	return 0x4BBAF7;
 }
 
