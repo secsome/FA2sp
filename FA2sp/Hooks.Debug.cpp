@@ -20,3 +20,18 @@
 //
 //    return 0x438E4E;
 //}
+
+//DEFINE_HOOK(438DB0, DebugNames, 6)
+//{
+//    using CSFMap = FAMap<ppmfc::CString, const wchar_t*, 0x5D8CE4, 0>;
+//    CSFMap& data = *reinterpret_cast<CSFMap*>(0x5E7C88);
+//
+//    for (auto& pair : data)
+//    {
+//        ppmfc::CString str = CMapData::GetUIName(pair.first);
+//        // ppmfc::CString str(pair.second);
+//        Logger::Debug("[%s] %s\n", pair.first, str);
+//    }
+//
+//    return 0x438E4E;
+//}
