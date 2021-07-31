@@ -3,8 +3,8 @@
 
 #include <map>
 
-#include "../../FA2sp.h"
-#include "../../Helpers/STDHelpers.h"
+#include "../FA2sp.h"
+#include "../Helpers/STDHelpers.h"
 
 // TODO
 //DEFINE_HOOK(43CE8D, Miscs_LoadParamToCombobox, 9)
@@ -51,7 +51,7 @@ DEFINE_HOOK(441910, Miscs_LoadParams_TutorialTexts, 7)
     {   
         while (pComboBox->DeleteString(0) != CB_ERR);
         for (auto x : FA2sp::TutorialTextsMap)
-            pComboBox->AddString((x.first + " : " + x.second).c_str());
+            pComboBox->AddString(x.first + " : " + x.second);
         Logger::Debug("%d csf entities added.\n", FA2sp::TutorialTextsMap.size());
         return 0x441A34;
     }
@@ -75,7 +75,7 @@ DEFINE_HOOK(441A40, Miscs_LoadParams_Triggers, 6)
             {
                 for (auto pair : pSection->EntitiesDictionary)
                 {
-                    ppmfc::CString key(STDHelpers::SplitString(pair.second)[2].c_str());
+                    ppmfc::CString key(STDHelpers::SplitString(pair.second)[2]);
                     ppmfc::CString buffer(pair.first);
                     buffer += " (";
                     buffer += key;

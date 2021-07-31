@@ -11,11 +11,11 @@
 
 MultimapHelper ObjectBrowserControlExt::mmh { &GlobalVars::INIFiles::Rules(), &GlobalVars::INIFiles::CurrentDocument() };
 std::array<HTREEITEM, ObjectBrowserControlExt::Root_Count> ObjectBrowserControlExt::ExtNodes;
-std::unordered_set<std::string> ObjectBrowserControlExt::IgnoreSet;
-std::unordered_set<std::string> ObjectBrowserControlExt::ForceName;
-std::unordered_set<std::string> ObjectBrowserControlExt::ExtSets[Set_Count];
-std::unordered_map<std::string, int> ObjectBrowserControlExt::KnownItem;
-std::unordered_map<std::string, int> ObjectBrowserControlExt::Owners;
+std::set<ppmfc::CString> ObjectBrowserControlExt::IgnoreSet;
+std::set<ppmfc::CString> ObjectBrowserControlExt::ForceName;
+std::set<ppmfc::CString> ObjectBrowserControlExt::ExtSets[Set_Count];
+std::map<ppmfc::CString, int> ObjectBrowserControlExt::KnownItem;
+std::map<ppmfc::CString, int> ObjectBrowserControlExt::Owners;
 
 HTREEITEM ObjectBrowserControlExt::InsertString(const char* pString, DWORD dwItemData,
     HTREEITEM hParent, HTREEITEM hInsertAfter)
@@ -78,7 +78,7 @@ void ObjectBrowserControlExt::Redraw_Initialize()
         ExtSets[nType].clear();
         auto& section = mmh.GetSection(pTypeName);
         for (auto& itr : section)
-            ExtSets[nType].insert((std::string)itr.second);
+            ExtSets[nType].insert(itr.second);
     };
 
     loadSet("BuildingTypes", Set_Building);
@@ -93,7 +93,7 @@ void ObjectBrowserControlExt::Redraw_Initialize()
             auto& sides = mmh.ParseIndicies("Sides", true);
             for (size_t i = 0, sz = sides.size(); i < sz; ++i)
                 for (auto& owner : STDHelpers::SplitString(sides[i]))
-                    Owners[(std::string)owner] = i;
+                    Owners[owner] = i;
         };
         loadOwner();
     }
@@ -107,17 +107,17 @@ void ObjectBrowserControlExt::Redraw_Initialize()
                 continue;
             if (sideIndex < -1)
                 sideIndex = -1;
-            KnownItem[(std::string)item.first] = sideIndex;
+            KnownItem[item.first] = sideIndex;
         }
     }
 
     if (auto ignores = fadata.GetSection("IgnoreRA2"))
         for (auto& item : ignores->EntitiesDictionary)
-            IgnoreSet.insert((std::string)item.second);
+            IgnoreSet.insert(item.second);
 
     if (auto forcenames = fadata.GetSection("ForceName"))
         for (auto& item : forcenames->EntitiesDictionary)
-            ForceName.insert((std::string)item.second);
+            ForceName.insert(item.second);
 
 }
 
@@ -201,7 +201,7 @@ void ObjectBrowserControlExt::Redraw_Infantry()
     HTREEITEM& hInfantry = ExtNodes[Root_Infantry];
     if (hInfantry == NULL)   return;
 
-    std::unordered_map<int, HTREEITEM> subNodes;
+    std::map<int, HTREEITEM> subNodes;
 
     auto& fadata = GlobalVars::INIFiles::FAData();
 
@@ -220,7 +220,7 @@ void ObjectBrowserControlExt::Redraw_Infantry()
     auto& infantries = mmh.GetSection("InfantryTypes");
     for (auto& inf : infantries)
     {
-        if (IgnoreSet.find((std::string)inf.second) != IgnoreSet.end())
+        if (IgnoreSet.find(inf.second) != IgnoreSet.end())
             continue;
         int index = STDHelpers::ParseToInt(inf.first, -1);
         if (index == -1)   continue;
@@ -250,7 +250,7 @@ void ObjectBrowserControlExt::Redraw_Vehicle()
     HTREEITEM& hVehicle = ExtNodes[Root_Vehicle];
     if (hVehicle == NULL)   return;
 
-    std::unordered_map<int, HTREEITEM> subNodes;
+    std::map<int, HTREEITEM> subNodes;
 
     auto& fadata = GlobalVars::INIFiles::FAData();
 
@@ -269,7 +269,7 @@ void ObjectBrowserControlExt::Redraw_Vehicle()
     auto& vehicles = mmh.GetSection("VehicleTypes");
     for (auto& veh : vehicles)
     {
-        if (IgnoreSet.find((std::string)veh.second) != IgnoreSet.end())
+        if (IgnoreSet.find(veh.second) != IgnoreSet.end())
             continue;
         int index = STDHelpers::ParseToInt(veh.first, -1);
         if (index == -1)   continue;
@@ -299,7 +299,7 @@ void ObjectBrowserControlExt::Redraw_Aircraft()
     HTREEITEM& hAircraft = ExtNodes[Root_Aircraft];
     if (hAircraft == NULL)   return;
 
-    std::unordered_map<int, HTREEITEM> subNodes;
+    std::map<int, HTREEITEM> subNodes;
 
     auto& rules = GlobalVars::INIFiles::Rules();
     auto& fadata = GlobalVars::INIFiles::FAData();
@@ -319,7 +319,7 @@ void ObjectBrowserControlExt::Redraw_Aircraft()
     auto& aircrafts = mmh.GetSection("AircraftTypes");
     for (auto& air : aircrafts)
     {
-        if (IgnoreSet.find((std::string)air.second) != IgnoreSet.end())
+        if (IgnoreSet.find(air.second) != IgnoreSet.end())
             continue;
         int index = STDHelpers::ParseToInt(air.first, -1);
         if (index == -1)   continue;
@@ -349,7 +349,7 @@ void ObjectBrowserControlExt::Redraw_Building()
     HTREEITEM& hBuilding = ExtNodes[Root_Building];
     if (hBuilding == NULL)   return;
 
-    std::unordered_map<int, HTREEITEM> subNodes;
+    std::map<int, HTREEITEM> subNodes;
 
     auto& rules = GlobalVars::INIFiles::Rules();
     auto& fadata = GlobalVars::INIFiles::FAData();
@@ -369,7 +369,7 @@ void ObjectBrowserControlExt::Redraw_Building()
     auto& buildings = mmh.GetSection("BuildingTypes");
     for (auto& bud : buildings)
     {
-        if (IgnoreSet.find((std::string)bud.second) != IgnoreSet.end())
+        if (IgnoreSet.find(bud.second) != IgnoreSet.end())
             continue;
         int index = STDHelpers::ParseToInt(bud.first, -1);
         if (index == -1)   continue;
@@ -407,7 +407,7 @@ void ObjectBrowserControlExt::Redraw_Terrain()
         CString buffer;
         buffer = QueryUIName(terrains[i]);
         buffer += "(" + terrains[i] + ")";
-        if (IgnoreSet.find((std::string)terrains[i]) == IgnoreSet.end())
+        if (IgnoreSet.find(terrains[i]) == IgnoreSet.end())
             this->InsertString(buffer, Const_Terrain + i, hTerrain);
     }
 }
@@ -420,7 +420,7 @@ void ObjectBrowserControlExt::Redraw_Smudge()
     auto& smudges = mmh.ParseIndicies("SmudgeTypes", true);
     for (size_t i = 0, sz = smudges.size(); i < sz; ++i)
     {
-        if (IgnoreSet.find((std::string)smudges[i]) == IgnoreSet.end())
+        if (IgnoreSet.find(smudges[i]) == IgnoreSet.end())
             this->InsertString(smudges[i], Const_Smudge + i, hSmudge);
     }
 }
@@ -477,7 +477,7 @@ void ObjectBrowserControlExt::Redraw_Overlay()
                 Const_Overlay + i,
                 hWalls
             );
-        if (IgnoreSet.find((std::string)overlays[i]) == IgnoreSet.end())
+        if (IgnoreSet.find(overlays[i]) == IgnoreSet.end())
             this->InsertString(buffer, Const_Overlay + i, hTemp);
     }
 }
@@ -611,13 +611,13 @@ int ObjectBrowserControlExt::GuessGenericSide(const char* pRegName, int nType)
         for (auto& prep : STDHelpers::SplitString(mmh.GetString(pRegName, "Prerequisite")))
         {
             int guess = -1;
-            for (auto& subprep : STDHelpers::SplitString(mmh.GetString("GenericPrerequisites", prep.c_str())))
+            for (auto& subprep : STDHelpers::SplitString(mmh.GetString("GenericPrerequisites", prep)))
             {
-                guess = GuessSide(subprep.c_str(), GuessType(subprep.c_str()));
+                guess = GuessSide(subprep, GuessType(subprep));
                 if (guess != -1)
                     return guess;
             }
-            guess = GuessSide(prep.c_str(), GuessType(prep.c_str()));
+            guess = GuessSide(prep, GuessType(prep));
             if (guess != -1)
                 return guess;
         }
@@ -628,7 +628,7 @@ int ObjectBrowserControlExt::GuessGenericSide(const char* pRegName, int nType)
         auto& owners = STDHelpers::SplitString(mmh.GetString(pRegName, "Owner"));
         if (owners.size() <= 0)
             return -1;
-        auto& itr = Owners.find((std::string)owners[0]);
+        auto& itr = Owners.find(owners[0]);
         if (itr == Owners.end())
             return -1;
         return itr->second;

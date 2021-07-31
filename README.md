@@ -12,8 +12,15 @@ C++ Standard: C++20
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-07-31) ==============================================================================================
+*) Fixed wrongly painted infantry subcell place
+*) Undo/Redo limit is now controlled by ExtConfig: UndoRedoLimit = INTEGER, defaults to 16
++) New ExtConfig: UseRGBHouseColor
++) Now you can copy single action/event in trigger editor
++) Now you can copy taskforce and its member
+
 ======================= Changes (2021-07-19) ==============================================================================================
-*) Undo/Redo extended to 2147483647 steps, be careful about your memory.
+*) Undo/Redo extended to 2147483647 steps, be careful about your memory
 *) Fixed wrongly painted Remap color for technos using UNITXXX.PAL
 *) Fixed buildings with shp turret can only been painted to NORTH
 *) Refactored ScriptTypes window, now you can use MoveUp, MoveDown, InsertMode and Clones
@@ -31,7 +38,7 @@ C++ Standard: C++20
 +) New ExtConfig: SortByTriggerName = BOOLEAN, enable it so FA2 will sort the triggers dropdown and sort them by their name instead of ID
 +) New ExtConfig: AdjustDropdownWidth = BOOLEAN, enable it so FA2 will adjust the param dropdown width automatically
     +) New ExtConfig: AdjustDropdownWidth.Factor = INTERGER, determines how long is a single char takes, defaults to 8
-    +) New ExtConfig: AdjustDropdownWidth.Max = INTERGER, determins the max length of the combobox, defaults to 360
+    +) New ExtConfig: AdjustDropdownWidth.Max = INTERGER, determines the max length of the combobox, defaults to 360
 -) Remove ExtConfig: OverlayFilter, enable it always.
 
 ======================= Changes (2021-03-22) ==============================================================================================
@@ -98,7 +105,9 @@ COLORREF - R,G,B each of them is in [0,255]
             +) Waypoint.Color = COLORREF ; Determines the color of waypoint texts, default to 0,0,255
             +) Waypoint.Background = BOOLEAN ; Determines whether draw a rectangle background for waypoints or not. defaults to false
                 +) Waypoint.Background.Color = COLORREF ; Determines the color of the waypoint background, defaults to 255,255,255
-            +) ExtWaypoints = BOOLEAN ; Determins if FA2sp supports unlimited count of waypoints, defaults to false (Phobos required)
+            +) ExtWaypoints = BOOLEAN ; Determines if FA2sp supports unlimited count of waypoints, defaults to false (Phobos required)
+            +) UndoRedoLimit = INTEGER ; Determines the maximun step of undo/redo, defaults to 16
+            +) UseRGBHouseColor = BOOLEAN ; Determines if House colors are recognized as RGB color instead of HSV, defaults to false 
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.
@@ -301,6 +310,20 @@ COLORREF - R,G,B each of them is in [0,255]
             [CURRENTLANGUAGE-Strings]
             [CURRENTLANGUAGE-TranslationsRA2]
             [CURRENTLANGUAGE-Translations]
+                +) TaskforceTitle = TEXT
+                +) TaskforceList = TEXT
+                +) TaskforceUnits = TEXT
+                +) TaskforceGroup = TEXT
+                +) TaskforceUnitNumber = TEXT
+                +) TaskforceUnitType = TEXT
+                +) TaskforceSelected = TEXT
+                +) TaskforceName = TEXT
+                +) TaskforceNewTask = TEXT
+                +) TaskforceDelTask = TEXT
+                +) TaskforceCloTask = TEXT
+                +) TaskforceNewUnit = TEXT
+                +) TaskforceDelUnit = TEXT
+                +) TaskforceCloUnit = TEXT
                 +) TeamTypesTitle = TEXT
                 +) TeamTypesNewTeam = TEXT
                 +) TeamTypesDelTeam = TEXT
@@ -359,6 +382,7 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) TriggerEventCurrent = TEXT
                 +) TriggerEventNew = TEXT
                 +) TriggerEventDel = TEXT
+                +) TriggerEventClo = TEXT
                 +) TriggerEventOptions = TEXT
                 +) TriggerEventType = TEXT
                 +) TriggerEventParameter = TEXT
@@ -367,6 +391,7 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) TriggerActionCurrent = TEXT
                 +) TriggerActionNew = TEXT
                 +) TriggerActionDel = TEXT
+                +) TriggerActionClo = TEXT
                 +) TriggerActionOptions = TEXT
                 +) TriggerActionType = TEXT
                 +) TriggerActionParameter = TEXT

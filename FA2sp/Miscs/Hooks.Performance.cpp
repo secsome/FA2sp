@@ -6,7 +6,7 @@
 
 #include <set>
 
-#include "../../FA2sp.h"
+#include "../FA2sp.h"
 
 class Performance
 {

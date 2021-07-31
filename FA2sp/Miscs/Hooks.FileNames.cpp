@@ -7,8 +7,8 @@
 
 #include <CLoading.h>
 
-#include "../../Logger.h"
-#include "../../FA2sp.h"
+#include "../Logger.h"
+#include "../FA2sp.h"
 
 DEFINE_HOOK(47A3CC, FileNames_EvaIni, 7)
 {

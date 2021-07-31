@@ -4,8 +4,8 @@
 #include <GlobalVars.h>
 #include <CLoading.h>
 
-#include "../../Helpers/STDHelpers.h"
-#include "../../FA2sp.h"
+#include "../Helpers/STDHelpers.h"
+#include "../FA2sp.h"
 
 using std::map;
 using std::vector;
@@ -16,13 +16,13 @@ public:
     static int LastReadIndex;
     static vector<INIClass*> LoadedINIs;
     static vector<char*> LoadedINIFiles;
-    static map<std::string, unsigned int> CurrentINIIdxHelper;
+    static map<ppmfc::CString, unsigned int> CurrentINIIdxHelper;
 };
 
 int INIIncludes::LastReadIndex = -1;
 vector<INIClass*> INIIncludes::LoadedINIs;
 vector<char*> INIIncludes::LoadedINIFiles;
-map<std::string, unsigned int> INIIncludes::CurrentINIIdxHelper;
+map<ppmfc::CString, unsigned int> INIIncludes::CurrentINIIdxHelper;
 
 DEFINE_HOOK(4530F7, CLoading_ParseINI_PlusSupport, 8)
 {

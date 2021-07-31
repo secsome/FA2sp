@@ -19,6 +19,8 @@ public:
 	CTriggerEventExt() {};
 	~CTriggerEventExt() {};
 
+	void OnBNCloneEventClicked();
+
 private:
 
 };

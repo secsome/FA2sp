@@ -1,4 +1,4 @@
-#include "../../FA2sp.h"
+#include "../FA2sp.h"
 
 #include <MFC/ppmfc_cstring.h>
 #include <GlobalVars.h>
@@ -6,7 +6,6 @@
 #include <CTeamTypes.h>
 
 #include <string>
-
 class ExtWaypoint
 {
 public:
@@ -25,22 +24,27 @@ public:
 		return n - 1;
 	}
 
-	static std::string Waypoint_To_String(int n)
+	static const char* Waypoint_To_String(int nWaypoint)
 	{
-		if (n < 0)
+		static char buffer[8]{ '\0' };
+
+		if (nWaypoint < 0)
 			return "0";
+		else if (nWaypoint == INT_MAX)
+			return "FXSHRXX";
 		else
 		{
-			std::string buffer;
-			++n;
-			while (n> 0)
+			++nWaypoint;
+			int pos = 7;
+			while (nWaypoint > 0)
 			{
-				int m = n% 26;
+				--pos;
+				char m = nWaypoint % 26;
 				if (m == 0) m = 26;
-				buffer = (char)(m + 64) + buffer;
-				n = (n- m) / 26;
+				buffer[pos] = m + '@'; // '@' = 'A' - 1
+				nWaypoint = (nWaypoint - m) / 26;
 			}
-			return buffer;
+			return buffer + pos;
 		}
 	}
 };
@@ -65,7 +69,7 @@ DEFINE_HOOK(4E5F90, Waypoint_To_String, 7)
 	GET_STACK(ppmfc::CString*, pString, 0x4);
 	GET_STACK(int, nWaypoint, 0x8);
 
-	new(pString) ppmfc::CString(ExtWaypoint::Waypoint_To_String(nWaypoint).c_str());
+	new(pString) ppmfc::CString(ExtWaypoint::Waypoint_To_String(nWaypoint));
 
 	R->EAX(pString);
 

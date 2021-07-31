@@ -133,13 +133,14 @@
     <ClCompile Include="FA2sp\Ext\CTileSetBrowserFrame\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerAction\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerEvent\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CTriggerOption\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\FA2Expand.cpp" />
     <ClCompile Include="FA2sp\Ext\Miscs\Hooks.LoadParams.cpp" />
     <ClCompile Include="FA2sp\Helpers\ControlHelpers.cpp" />
     <ClCompile Include="FA2sp\Helpers\MultimapHelper.cpp" />
     <ClCompile Include="FA2sp\Hooks.Debug.cpp" />
     <ClCompile Include="FA2sp\UI\UIColor.cpp" />
-    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.BugFixes.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.BugFixes.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CTaskforce\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CTaskforce\Hooks.cpp" />
@@ -150,14 +151,14 @@
     <ClCompile Include="FA2sp\UI\Hooks.cpp" />
     <ClCompile Include="FA2sp\Logger.cpp" />
     <ClCompile Include="FA2sp\RunTime.cpp" />
-    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.ExtWaypoints.cpp" />
-    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.FileNames.cpp" />
-    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.INI.cpp" />
-    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.LoadParamToCombobox.cpp" />
-    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.Mix.cpp" />
-    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.Performance.cpp" />
-    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.RemapColor.cpp" />
-    <ClCompile Include="FA2sp\Utils\Hooks\Hooks.Stringtables.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.ExtWaypoints.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.FileNames.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.INI.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.LoadParamToCombobox.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.Mix.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.Performance.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.RemapColor.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.Stringtables.cpp" />
     <ClCompile Include="FA2sp\Helpers\MutexHelper.cpp" />
     <ClCompile Include="FA2sp\Helpers\Translations.cpp" />
     <ClCompile Include="FA2sp\ExtraWindow\CTileManager\CTileManager.cpp" />
@@ -194,6 +195,7 @@
   <ItemGroup>
     <ResourceCompile Include="FA2sp\UI\CMenu.rc" />
     <ResourceCompile Include="FA2sp\UI\CScriptTypes.rc" />
+    <ResourceCompile Include="FA2sp\UI\CTaskforce.rc" />
     <ResourceCompile Include="FA2sp\UI\CTriggerFrame.rc" />
     <ResourceCompile Include="FA2sp\UI\CTriggerOption.rc" />
     <ResourceCompile Include="FA2sp\UI\CTriggerAction.rc" />
