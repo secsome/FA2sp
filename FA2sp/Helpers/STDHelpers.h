@@ -15,14 +15,14 @@
 class STDHelpers
 {
 public:
-    static std::vector<std::string> SplitString(const char* pSource, char cSplit = ',')
+    static std::vector<ppmfc::CString> SplitString(const char* pSource, const char* pSplit = ",")
     {
-        std::vector<std::string> ret;
-        std::istringstream iss(pSource);
-        std::string tmp;
+        std::vector<ppmfc::CString> ret;
 
-        while (std::getline(iss, tmp, cSplit)) {
-            ret.push_back(tmp);
+        char* tokenPtr = strtok(const_cast<char*>(pSource), pSplit);
+        while (tokenPtr != nullptr) {
+            ret.push_back(tokenPtr);
+            tokenPtr = strtok(nullptr, pSplit);
         }
 
         return ret;
@@ -61,15 +61,17 @@ public:
             str = str.Mid(0, spaceIndex);
     }
 
-    static bool Contains(const char* str, const char* query, bool bIgnoreCase = false)
+    static bool Contains(ppmfc::CString pStr, ppmfc::CString pQuery, bool bIgnoreCase = false)
     {
-        std::string s = str;
-        std::string q = query;
         if (bIgnoreCase)
         {
-            std::transform(s.begin(), s.end(), s.begin(), ::tolower);
-            std::transform(q.begin(), q.end(), q.begin(), ::tolower);
+            ppmfc::CString s = pStr;
+            ppmfc::CString q = pQuery;
+            s.MakeLower();
+            q.MakeLower();
+            return s.Find(q) != -1;
         }
-        return s.find(q) != std::string::npos;
+        else
+            return pStr.Find(pQuery) != -1;
     }
 };

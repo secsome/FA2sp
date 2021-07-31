@@ -54,19 +54,19 @@ void CTriggerActionExt::OnBNCloneActionClicked()
 			ppmfc::CString data = GlobalVars::INIFiles::CurrentDocument->GetString("Actions", this->ActionID);
 			auto splitResults = STDHelpers::SplitString(data);
 			int beginIndex = 1 + 8 * nActionIndex;
-			int count = atoi(splitResults[0].c_str());
+			int count = atoi(splitResults[0]);
 			data.Format("%d,", count + 1);
 			for (int i = 1; i < splitResults.size(); ++i)
 			{
-				data += splitResults[i].c_str();
+				data += splitResults[i];
 				data += ",";
 			}
 			for (int i = 0; i < 7; ++i)
 			{
-				data += splitResults[beginIndex + i].c_str();
+				data += splitResults[beginIndex + i];
 				data += ",";
 			}
-			data += splitResults[beginIndex + 7].c_str();
+			data += splitResults[beginIndex + 7];
 			GlobalVars::INIFiles::CurrentDocument->WriteString("Actions", this->ActionID, data);
 			
 			ppmfc::CString buffer;

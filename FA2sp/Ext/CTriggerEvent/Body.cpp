@@ -51,24 +51,24 @@ void CTriggerEventExt::OnBNCloneEventClicked()
 		{
 			ppmfc::CString data = GlobalVars::INIFiles::CurrentDocument->GetString("Events", this->EventID);
 			auto splitResults = STDHelpers::SplitString(data);
-			int count = atoi(splitResults[0].c_str());
+			int count = atoi(splitResults[0]);
 			int beginIndex = 1;
 			for (int i = 0; i < nEventIndex; ++i)
-				beginIndex += atoi(splitResults[beginIndex + 1].c_str()) == 2 ? 4 : 3;
-			int eventSize = atoi(splitResults[beginIndex + 1].c_str()) == 2 ? 4 : 3;
+				beginIndex += atoi(splitResults[beginIndex + 1]) == 2 ? 4 : 3;
+			int eventSize = atoi(splitResults[beginIndex + 1]) == 2 ? 4 : 3;
 			
 			data.Format("%d,", count + 1);
 			for (int i = 1; i < splitResults.size(); ++i)
 			{
-				data += splitResults[i].c_str();
+				data += splitResults[i];
 				data += ",";
 			}
 			for (int i = 0; i < eventSize - 1; ++i)
 			{
-				data += splitResults[beginIndex + i].c_str();
+				data += splitResults[beginIndex + i];
 				data += ",";
 			}
-			data += splitResults[beginIndex + eventSize - 1].c_str();
+			data += splitResults[beginIndex + eventSize - 1];
 			GlobalVars::INIFiles::CurrentDocument->WriteString("Events", this->EventID, data);
 
 			ppmfc::CString buffer;

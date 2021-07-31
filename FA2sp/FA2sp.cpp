@@ -10,7 +10,7 @@
 
 HANDLE FA2sp::hInstance;
 ppmfc::CString FA2sp::Buffer;
-std::map<std::string, std::string> FA2sp::TutorialTextsMap;
+std::map<ppmfc::CString, ppmfc::CString> FA2sp::TutorialTextsMap;
 
 bool ExtConfigs::BrowserRedraw;
 int	 ExtConfigs::BrowserRedraw_GuessMode;
