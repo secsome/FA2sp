@@ -11,11 +11,11 @@
 
 MultimapHelper ObjectBrowserControlExt::mmh { &GlobalVars::INIFiles::Rules(), &GlobalVars::INIFiles::CurrentDocument() };
 std::array<HTREEITEM, ObjectBrowserControlExt::Root_Count> ObjectBrowserControlExt::ExtNodes;
-std::unordered_set<ppmfc::CString> ObjectBrowserControlExt::IgnoreSet;
-std::unordered_set<ppmfc::CString> ObjectBrowserControlExt::ForceName;
-std::unordered_set<ppmfc::CString> ObjectBrowserControlExt::ExtSets[Set_Count];
-std::unordered_map<ppmfc::CString, int> ObjectBrowserControlExt::KnownItem;
-std::unordered_map<ppmfc::CString, int> ObjectBrowserControlExt::Owners;
+std::set<ppmfc::CString> ObjectBrowserControlExt::IgnoreSet;
+std::set<ppmfc::CString> ObjectBrowserControlExt::ForceName;
+std::set<ppmfc::CString> ObjectBrowserControlExt::ExtSets[Set_Count];
+std::map<ppmfc::CString, int> ObjectBrowserControlExt::KnownItem;
+std::map<ppmfc::CString, int> ObjectBrowserControlExt::Owners;
 
 HTREEITEM ObjectBrowserControlExt::InsertString(const char* pString, DWORD dwItemData,
     HTREEITEM hParent, HTREEITEM hInsertAfter)
@@ -201,7 +201,7 @@ void ObjectBrowserControlExt::Redraw_Infantry()
     HTREEITEM& hInfantry = ExtNodes[Root_Infantry];
     if (hInfantry == NULL)   return;
 
-    std::unordered_map<int, HTREEITEM> subNodes;
+    std::map<int, HTREEITEM> subNodes;
 
     auto& fadata = GlobalVars::INIFiles::FAData();
 
@@ -250,7 +250,7 @@ void ObjectBrowserControlExt::Redraw_Vehicle()
     HTREEITEM& hVehicle = ExtNodes[Root_Vehicle];
     if (hVehicle == NULL)   return;
 
-    std::unordered_map<int, HTREEITEM> subNodes;
+    std::map<int, HTREEITEM> subNodes;
 
     auto& fadata = GlobalVars::INIFiles::FAData();
 
@@ -299,7 +299,7 @@ void ObjectBrowserControlExt::Redraw_Aircraft()
     HTREEITEM& hAircraft = ExtNodes[Root_Aircraft];
     if (hAircraft == NULL)   return;
 
-    std::unordered_map<int, HTREEITEM> subNodes;
+    std::map<int, HTREEITEM> subNodes;
 
     auto& rules = GlobalVars::INIFiles::Rules();
     auto& fadata = GlobalVars::INIFiles::FAData();
@@ -349,7 +349,7 @@ void ObjectBrowserControlExt::Redraw_Building()
     HTREEITEM& hBuilding = ExtNodes[Root_Building];
     if (hBuilding == NULL)   return;
 
-    std::unordered_map<int, HTREEITEM> subNodes;
+    std::map<int, HTREEITEM> subNodes;
 
     auto& rules = GlobalVars::INIFiles::Rules();
     auto& fadata = GlobalVars::INIFiles::FAData();

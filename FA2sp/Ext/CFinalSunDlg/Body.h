@@ -5,8 +5,8 @@
 #include <CFinalSunDlg.h>
 
 #include <array>
-#include <unordered_set>
-#include <unordered_map>
+#include <set>
+#include <map>
 
 class NOVTABLE CFinalSunDlgExt : CFinalSunDlg
 {
@@ -38,11 +38,11 @@ class ObjectBrowserControlExt : public ObjectBrowserControl
 
     static MultimapHelper mmh;
     static std::array<HTREEITEM, Root_Count> ExtNodes;
-    static std::unordered_set<ppmfc::CString> IgnoreSet;
-    static std::unordered_set<ppmfc::CString> ForceName;
-    static std::unordered_set<ppmfc::CString> ExtSets[Set_Count];
-    static std::unordered_map<ppmfc::CString, int> KnownItem;
-    static std::unordered_map<ppmfc::CString, int> Owners;
+    static std::set<ppmfc::CString> IgnoreSet;
+    static std::set<ppmfc::CString> ForceName;
+    static std::set<ppmfc::CString> ExtSets[Set_Count];
+    static std::map<ppmfc::CString, int> KnownItem;
+    static std::map<ppmfc::CString, int> Owners;
     HTREEITEM InsertString(const char* pString, DWORD dwItemData = 0, 
         HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
     HTREEITEM InsertTranslatedString(const char* pOriginString, DWORD dwItemData = 0,
