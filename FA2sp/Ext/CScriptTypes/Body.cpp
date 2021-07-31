@@ -274,6 +274,8 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 	pCBExtra->SetItemData(pCBExtra->AddString("2 - Nearest"), 2);
 	pCBExtra->SetItemData(pCBExtra->AddString("3 - Farest"), 3);
 
+	ExtCurrentScript.Unset();
+
 	return TRUE;
 }
 
