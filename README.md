@@ -3,14 +3,15 @@ I've decided to make this repository public so that more developers can help me 
 For now it had implemented all features that FA2Ext has and extended more logics than it.
 The codes might be a messy, so I'd appreciate it if someone could help me to make them better arranged.
 
-To clone the submodules, just run update_codes.bat.
-
 SDK: Visual Studio 2017 - Windows XP (v141_xp)
 Compile Using C++ Standard Now: C++14
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+======================= Changes (2021-08-XX) ==============================================================================================
++) New param code: 30 for float, this param code can be used for action 71 & 72
 
 ======================= Changes (2021-08-02) ==============================================================================================
 *) Fixed fatal error on STDHelper::SplitString caused bugs on Clone Actions/Events and ExtConfig::SortByTriggerName
