@@ -15,16 +15,23 @@
 class STDHelpers
 {
 public:
-    static std::vector<ppmfc::CString> SplitString(const char* pSource, const char* pSplit = ",")
+    static std::vector<ppmfc::CString> SplitString(ppmfc::CString& pSource, const char* pSplit = ",")
     {
         std::vector<ppmfc::CString> ret;
+        if (pSource.GetLength() == 0)
+            return ret;
 
-        char* tokenPtr = strtok(const_cast<char*>(pSource), pSplit);
-        while (tokenPtr != nullptr) {
-            ret.push_back(tokenPtr);
-            tokenPtr = strtok(nullptr, pSplit);
+        int nIdx = 0;
+        while (true)
+        {
+            int nPos = pSource.Find(pSplit, nIdx);
+            if (nPos == -1)
+                break;
+
+            ret.push_back(pSource.Mid(nIdx, nPos - nIdx));
+            nIdx = nPos + 1;
         }
-
+        ret.push_back(pSource.Mid(nIdx));
         return ret;
     }
 

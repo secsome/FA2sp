@@ -6,11 +6,14 @@ The codes might be a messy, so I'd appreciate it if someone could help me to mak
 To clone the submodules, just run update_codes.bat.
 
 SDK: Visual Studio 2017 - Windows XP (v141_xp)
-C++ Standard: C++20
+Compile Using C++ Standard Now: C++14
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+======================= Changes (2021-08-02) ==============================================================================================
+*) Fixed fatal error on STDHelper::SplitString caused bugs on Clone Actions/Events and ExtConfig::SortByTriggerName
 
 ======================= Changes (2021-07-31) ==============================================================================================
 *) Fixed wrongly painted infantry subcell place
