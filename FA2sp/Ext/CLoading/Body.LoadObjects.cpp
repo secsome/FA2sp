@@ -32,7 +32,7 @@ inline int Lepton_To_Pixel(LEPTON lepton)
 
 std::vector<CLoadingExt::SHPUnionData> CLoadingExt::UnionSHP_Data;
 std::map<ppmfc::CString, CLoadingExt::ObjectType> CLoadingExt::ObjectTypes;
-unsigned char CLoadingExt::VXL_Data[0x10000];
+unsigned char CLoadingExt::VXL_Data[0x10000] = {0};
 
 ppmfc::CString CLoadingExt::GetImageName(ppmfc::CString ID, int nFacing)
 {
@@ -526,9 +526,10 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 		ppmfc::CString PaletteName = GlobalVars::INIFiles::Art->GetString(ArtID, "Palette", "unit");
 		GetFullPaletteName(PaletteName);
 
-		unsigned char* pImage[8];
-		unsigned char* pTurretImage[8];
-		int rect[8][4], turretrect[8][4];
+		unsigned char* pImage[8]{ nullptr,nullptr ,nullptr ,nullptr ,nullptr ,nullptr ,nullptr ,nullptr };
+		unsigned char* pTurretImage[8]{ nullptr ,nullptr ,nullptr ,nullptr ,nullptr ,nullptr ,nullptr ,nullptr };
+		unsigned char* pBarrelImage[8]{ nullptr ,nullptr ,nullptr ,nullptr ,nullptr ,nullptr ,nullptr ,nullptr };
+		int rect[8][4], turretrect[8][4], barrelrect[8][4];
 		if (DrawStuff::load_vxl(FileName))
 			if (DrawStuff::load_hva(HVAName))
 				for (int i = 0; i < 8; ++i)
@@ -553,24 +554,51 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 							turretrect[i][0], turretrect[i][1], turretrect[i][2], turretrect[i][3]);
 
 						if (!result)
-							return;
-
-						ppmfc::CString DictName;
-						DictName.Format("%s%d", ImageID, i);
-
-						unsigned char* outBuffer;
-						int outW = 0x100, outH = 0x100;
-
-						VXL_Add(pImage[i], rect[i][2], rect[i][3], rect[i][0], rect[i][1]);
-						VXL_Add(pTurretImage[i], turretrect[i][2], turretrect[i][3], turretrect[i][0], turretrect[i][1]);
-
-						GameDelete(pImage[i]);
-						GameDelete(pTurretImage[i]);
-
-						VXL_GetAndClear(outBuffer, &outW, &outH);
-
-						SetImageData(outBuffer, DictName, outW, outH, Palettes::LoadPalette(PaletteName));
+							break;
 					}
+
+			ppmfc::CString barlFileName = ImageID + "barl.vxl";
+			ppmfc::CString barlHVAName = ImageID + "barl.hva";
+			if (DrawStuff::load_vxl(barlFileName))
+				if (DrawStuff::load_hva(barlHVAName))
+					for (int i = 0; i < 8; ++i)
+					{
+						// (i+6) % 8 to fix the facing
+						bool result = DrawStuff::get_to_image((i + 6) % 8, pBarrelImage[i],
+							barrelrect[i][0], barrelrect[i][1], barrelrect[i][2], barrelrect[i][3]);
+
+						if (!result)
+							break;
+					}
+
+			for (int i = 0; i < 8; ++i)
+			{
+				ppmfc::CString DictName;
+				DictName.Format("%s%d", ImageID, i);
+
+				unsigned char* outBuffer;
+				int outW = 0x100, outH = 0x100;
+
+				if (pImage[i])
+				{
+					VXL_Add(pImage[i], rect[i][2], rect[i][3], rect[i][0], rect[i][1]);
+					GameDelete(pImage[i]);
+				}
+				if (pTurretImage[i])
+				{
+					VXL_Add(pTurretImage[i], turretrect[i][2], turretrect[i][3], turretrect[i][0], turretrect[i][1]);
+					GameDelete(pTurretImage[i]);
+				}
+				if (pBarrelImage[i])
+				{
+					VXL_Add(pBarrelImage[i], barrelrect[i][2], barrelrect[i][3], barrelrect[i][0], barrelrect[i][1]);
+					GameDelete(pBarrelImage[i]);
+				}
+
+				VXL_GetAndClear(outBuffer, &outW, &outH);
+
+				SetImageData(outBuffer, DictName, outW, outH, Palettes::LoadPalette(PaletteName));
+			}
 		}
 		else
 		{
