@@ -131,21 +131,19 @@ ppmfc::CString CLoadingExt::GetBuildingFileID(ppmfc::CString ID)
 {
 	ppmfc::CString ArtID = GetArtID(ID);
 	ppmfc::CString ImageID = GlobalVars::INIFiles::Art->GetString(ArtID, "Image", ArtID);
-	if (GlobalVars::INIFiles::Art->GetBool(ID, "NewTheater"))
-	{
-		ppmfc::CString backupID = ImageID;
-		SetTheaterLetter(ImageID);
 
-		ppmfc::CString validator = ImageID + ".SHP";
-		int nMix = this->SearchFile(validator);
+	ppmfc::CString backupID = ImageID;
+	SetTheaterLetter(ImageID);
+
+	ppmfc::CString validator = ImageID + ".SHP";
+	int nMix = this->SearchFile(validator);
+	if (!CMixFile::HasFile(validator, nMix))
+	{
+		SetGenericTheaterLetter(ImageID);
+		validator = ImageID + ".SHP";
+		nMix = this->SearchFile(validator);
 		if (!CMixFile::HasFile(validator, nMix))
-		{
-			SetGenericTheaterLetter(ImageID);
-			validator = ImageID + ".SHP";
-			nMix = this->SearchFile(validator);
-			if (!CMixFile::HasFile(validator, nMix))
-				ImageID = backupID;
-		}
+			ImageID = backupID;
 	}
 	return ImageID;
 }
