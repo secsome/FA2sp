@@ -123,6 +123,17 @@ DEFINE_HOOK(554C8A, FetchResource_Cwnd_ExecuteDlgInit, 5)
 	return 0;
 }
 
+DEFINE_HOOK(432081, FetchResource_CFrameWnd_Menu, 5)
+{
+	if (HMENU hMenu = LoadMenu(static_cast<HINSTANCE>(FA2sp::hInstance), (LPCSTR)(0x81)))
+	{
+		R->EAX(hMenu);
+		return 0x432095;
+	}
+	else
+		return 0;
+}
+
 //DEFINE_HOOK(5521AA, CDialog_OnCtlColor, 8)
 //{
 //	GET(CDialog*, pThis, ECX);
