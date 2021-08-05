@@ -4,6 +4,20 @@
 
 #include <WindowsX.h>
 
+bool CIsoViewExt::DrawStructures = true;
+bool CIsoViewExt::DrawInfantries = true;
+bool CIsoViewExt::DrawUnits = true;
+bool CIsoViewExt::DrawAircrafts = true;
+bool CIsoViewExt::DrawBasenodes = true;
+bool CIsoViewExt::DrawWaypoints = true;
+bool CIsoViewExt::DrawCelltags = true;
+bool CIsoViewExt::DrawMoneyOnMap = true;
+bool CIsoViewExt::DrawOverlays = true;
+bool CIsoViewExt::DrawTerrains = true;
+bool CIsoViewExt::DrawSmudges = true;
+bool CIsoViewExt::DrawTubes = true;
+bool CIsoViewExt::DrawBounds = true;
+
 void CIsoViewExt::ProgramStartupInit()
 {
     // RunTime::ResetMemoryContentAt(0x594518, CIsoViewExt::PreTranslateMessageExt);

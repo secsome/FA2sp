@@ -105,4 +105,20 @@ POPUP "Help"
 	MENUITEM "Credits",  40075
 	MENUITEM "Tip of the day",  40022
 }
+POPUP "Layers"
+{
+	MENUITEM "Structures", 30000
+	MENUITEM "Infantries", 30001
+	MENUITEM "Units", 30002
+	MENUITEM "Aircrafts", 30003
+	MENUITEM "Basenodes", 30004
+	MENUITEM "Waypoints", 30005
+	MENUITEM "Celltags", 30006
+	MENUITEM "MoneyOnMap", 30007
+	MENUITEM "Overlays", 30008
+	MENUITEM "Terrains", 30009
+	MENUITEM "Smudges", 30010
+	MENUITEM "Tubes", 30011
+	MENUITEM "Bounds", 30012
+}
 }

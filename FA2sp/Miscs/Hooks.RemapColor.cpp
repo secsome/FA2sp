@@ -2,69 +2,11 @@
 #include <Drawing.h>
 #include <CPalette.h>
 
-#include <map>
-
-#define GLOBAL_REMAP_START 16
-#define GLOBAL_REMAP_END 31
-
-class RemapColorHelper
-{
-public:
-
-	static void RemapPalette(Palette* pPal, BGRStruct RemapColor, Palette* pReload = nullptr)
-	{
-		if (pReload)
-			memcpy_s(pPal->Data, sizeof Palette, pReload->Data, sizeof Palette);
-
-		for (int i = GLOBAL_REMAP_START; i <= GLOBAL_REMAP_END; i++)
-		{
-			int ii = i - 16;
-			double cosval = ii * 0.08144869842640204 + 0.3490658503988659;
-			double sinval = ii * 0.04654211338651545 + 0.8726646259971648;
-			if (!ii)
-				cosval = 0.1963495408493621;
-
-			RGBClass rgb_remap{ RemapColor.R,RemapColor.G,RemapColor.B };
-			HSVClass hsv_remap = rgb_remap;
-			hsv_remap.H = hsv_remap.H;
-			hsv_remap.S = (unsigned char)(std::sin(sinval) * hsv_remap.S);
-			hsv_remap.V = (unsigned char)(std::cos(cosval) * hsv_remap.V);
-			RGBClass result = hsv_remap;
-
-			pPal->Data[i] = { result.B,result.G,result.R };
-			// pPal->Data[i].R = RemapColor.R * (GLOBAL_REMAP_END + 1 - i) / (GLOBAL_REMAP_END + 1 - GLOBAL_REMAP_START);
-			// pPal->Data[i].G = RemapColor.G * (GLOBAL_REMAP_END + 1 - i) / (GLOBAL_REMAP_END + 1 - GLOBAL_REMAP_START);
-			// pPal->Data[i].B = RemapColor.B * (GLOBAL_REMAP_END + 1 - i) / (GLOBAL_REMAP_END + 1 - GLOBAL_REMAP_START);
-		}
-	}
-
-	static Palette* GetRemappedPalette(BGRStruct RemapColor)
-	{
-		auto itr = RemappedPalettes.find(RemapColor);
-		if (itr != RemappedPalettes.end())
-			return &itr->second;
-		else
-		{
-			auto& tmp = RemappedPalettes.insert(std::make_pair(RemapColor, Palette())).first;
-			RemapPalette(&tmp->second, RemapColor, Palette::PALETTE_UNIT);
-			return &tmp->second;
-		}
-	}
-
-	static void Clear()
-	{
-		RemappedPalettes.clear();
-	}
-private:
-	static std::map<BGRStruct, Palette> RemappedPalettes;
-
-};
-
-std::map<BGRStruct, Palette> RemapColorHelper::RemappedPalettes;
+#include "Palettes.h"
 
 DEFINE_HOOK(49D2C0, LoadMap_ClearUp, 5)
 {
-	RemapColorHelper::Clear();
+	Palettes::Clear();
 
 	return 0;
 }
@@ -74,8 +16,8 @@ DEFINE_HOOK(hook_addr,hook_name,7) \
 { \
 REF_STACK(ImageDataClass, data, STACK_OFFS(0xD18, data_off)); \
 GET_STACK(BGRStruct*, pColor, STACK_OFFS(0xD18, color_off)); \
-if(data.pPalette == Palette::PALETTE_UNIT) \
-	data.pPalette = RemapColorHelper::GetRemappedPalette(*pColor); \
+if(data.pPalette != Palette::PALETTE_ISO && data.pPalette != Palette::PALETTE_THEATER && data.pPalette != Palette::PALETTE_LIB) \
+	data.pPalette = Palettes::GetRemap(data.pPalette,*pColor); \
 return 0; \
 }
 

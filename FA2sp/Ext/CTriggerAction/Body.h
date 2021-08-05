@@ -21,6 +21,8 @@ public:
 
 	void OnBNCloneActionClicked();
 
+	static int nCurrentParamCode;
+
 private:
 
 };

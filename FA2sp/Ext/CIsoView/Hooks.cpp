@@ -131,3 +131,68 @@ DEFINE_HOOK(4685EA, CIsoView_DrawText, 9)
 	}
 	return 0;
 }
+
+DEFINE_HOOK(470194, CIsoView_Draw_LayerVisible_Overlay, 8)
+{
+	return CIsoViewExt::DrawOverlays ? 0 : 0x470772;
+}
+
+DEFINE_HOOK(470772, CIsoView_Draw_LayerVisible_Structures, 8)
+{
+	return CIsoViewExt::DrawStructures ? 0 : 0x4725CB;
+}
+
+DEFINE_HOOK(4725CB, CIsoView_Draw_LayerVisible_Basenodes, 8)
+{
+	return CIsoViewExt::DrawBasenodes ? 0 : 0x472F33;
+}
+
+DEFINE_HOOK(472F33, CIsoView_Draw_LayerVisible_Units, 9)
+{
+	return CIsoViewExt::DrawUnits ? 0 : 0x47371A;
+}
+
+DEFINE_HOOK(47371A, CIsoView_Draw_LayerVisible_Aircrafts, 9)
+{
+	return CIsoViewExt::DrawAircrafts ? 0 : 0x473DA0;
+}
+
+DEFINE_HOOK(473DAA, CIsoView_Draw_LayerVisible_Infantries, 9)
+{
+	return CIsoViewExt::DrawInfantries ? 0 : 0x4741D9;
+}
+
+DEFINE_HOOK(4741E7, CIsoView_Draw_LayerVisible_Terrains, 9)
+{
+	return CIsoViewExt::DrawTerrains ? 0 : 0x474563;
+}
+
+DEFINE_HOOK(474563, CIsoView_Draw_LayerVisible_Smudges, 9)
+{
+	return CIsoViewExt::DrawSmudges ? 0 : 0x4748DC;
+}
+
+DEFINE_HOOK(4748DC, CIsoView_Draw_LayerVisible_Celltags, 9)
+{
+	return CIsoViewExt::DrawCelltags ? 0 : 0x474986;
+}
+
+DEFINE_HOOK(474986, CIsoView_Draw_LayerVisible_Waypoints, 9)
+{
+	return CIsoViewExt::DrawWaypoints ? 0 : 0x474A91;
+}
+
+DEFINE_HOOK(474B9D, CIsoView_Draw_LayerVisible_Tubes, 9)
+{
+	return CIsoViewExt::DrawTubes ? 0 : 0x474D64;
+}
+
+DEFINE_HOOK(474DDF, CIsoView_Draw_LayerVisible_Bounds, 5)
+{
+	return CIsoViewExt::DrawBounds ? 0 : 0x474FE0;
+}
+
+DEFINE_HOOK(474FE0, CIsoView_Draw_LayerVisible_MoneyOnMap, 7)
+{
+	return CIsoViewExt::DrawMoneyOnMap ? 0 : 0x4750B0;
+}

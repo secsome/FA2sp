@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../FA2Expand.h"
-#include "../../Helpers/MultimapHelper.h"
 #include <CFinalSunDlg.h>
 
 #include <array>
@@ -14,6 +13,7 @@ public:
     static void ProgramStartupInit();
 
     BOOL PreTranslateMessageExt(MSG* pMsg);
+    BOOL OnCommandExt(WPARAM wParam, LPARAM lParam);
 };
 
 class ObjectBrowserControlExt : public ObjectBrowserControl
@@ -36,7 +36,6 @@ class ObjectBrowserControlExt : public ObjectBrowserControl
         Const_House = 70000, Const_Smudge = 80000
     };
 
-    static MultimapHelper mmh;
     static std::array<HTREEITEM, Root_Count> ExtNodes;
     static std::set<ppmfc::CString> IgnoreSet;
     static std::set<ppmfc::CString> ForceName;

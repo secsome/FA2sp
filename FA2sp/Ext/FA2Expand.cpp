@@ -52,6 +52,7 @@
 
 void __stdcall FA2Expand::ExeRun()
 {
+    CFinalSunDlgExt::ProgramStartupInit();
     // CIsoViewExt::ProgramStartupInit();
     CTileSetBrowserFrameExt::ProgramStartupInit();
     CTriggerFrameExt::ProgramStartupInit();
