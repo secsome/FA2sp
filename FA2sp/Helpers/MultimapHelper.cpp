@@ -34,9 +34,9 @@ ppmfc::CString* MultimapHelper::TryGetString(ppmfc::CString pSection, ppmfc::CSt
 {
     for (auto ritr = data.rbegin(); ritr != data.rend(); ++ritr)
     {
-        if (!(*ritr)->KeyExists(pSection, pKey))
-            continue;
-        return (*ritr)->TryGetString(pSection, pKey);
+        if (auto pRet = (*ritr)->TryGetString(pSection, pKey))
+            if (!pRet->IsEmpty())
+                return pRet;
     }
     return nullptr;
 }

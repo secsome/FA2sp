@@ -264,12 +264,14 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 				int nStartY = ImageCenterY - pData->FullHeight / 2;
 
 				for (int j = 0; j < pData->FullHeight; ++j)
-					memcpy_s(&pNewBuffer[(nStartY + j) * newW + nStartX], newW, &pData->pImageBuffer[j * pData->FullWidth], newW);
+					memcpy_s(&pNewBuffer[(nStartY + j) * newW + nStartX], pData->FullWidth, &pData->pImageBuffer[j * pData->FullWidth], pData->FullWidth);
 
 				GameDelete(pData->pImageBuffer);
 				pData->pImageBuffer = pNewBuffer;
 				pData->FullWidth = newW;
 				pData->FullHeight = newH;
+				GameDelete(pData->pPixelValidRanges);
+				SetValidBuffer(pData, newW, newH);
 			}
 
 			auto bufsize = pData->FullWidth * pData->FullHeight;
