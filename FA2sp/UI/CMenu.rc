@@ -107,21 +107,18 @@ POPUP "Help"
 }
 POPUP "Layers"
 {
-	MENUITEM "Structures", 70000
-	MENUITEM "Infantries", 70001
-	MENUITEM "Units(VXL)", 70002
-	MENUITEM "Units(SHP)", 70003
-	MENUITEM "Aircrafts(VXL)", 70004
-	MENUITEM "Aircrafts(SHP)", 70005
-	MENUITEM "Basenodes", 70006
-	MENUITEM "PowerUp1", 70007
-	MENUITEM "PowerUp2", 70008
-	MENUITEM "PowerUp3", 70009
-	MENUITEM "Waypoints", 70010
-	MENUITEM "Celltags", 70011
-	MENUITEM "MoneyOnMap", 70012
-	MENUITEM "Overlays", 70013
-	MENUITEM "Terrains", 70014
-	MENUITEM "Smudges", 70015
+	MENUITEM "Structures", 30000
+	MENUITEM "Infantries", 30001
+	MENUITEM "Units", 30002
+	MENUITEM "Aircrafts", 30003
+	MENUITEM "Basenodes", 30004
+	MENUITEM "Waypoints", 30005
+	MENUITEM "Celltags", 30006
+	MENUITEM "MoneyOnMap", 30007
+	MENUITEM "Overlays", 30008
+	MENUITEM "Terrains", 30009
+	MENUITEM "Smudges", 30010
+	MENUITEM "Tubes", 30011
+	MENUITEM "Bounds", 30012
 }
 }

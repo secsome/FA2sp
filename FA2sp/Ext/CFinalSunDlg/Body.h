@@ -13,6 +13,7 @@ public:
     static void ProgramStartupInit();
 
     BOOL PreTranslateMessageExt(MSG* pMsg);
+    BOOL OnCommandExt(WPARAM wParam, LPARAM lParam);
 };
 
 class ObjectBrowserControlExt : public ObjectBrowserControl
