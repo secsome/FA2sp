@@ -2,6 +2,8 @@
 #include "FA2sp.Constants.h"
 
 #include "Helpers/MutexHelper.h"
+#include "Miscs/Palettes.h"
+#include "Miscs/DrawStuff.h"
 
 #include <GlobalVars.h>
 #include <CINI.h>
@@ -33,6 +35,10 @@ int ExtConfigs::Waypoint_Background_Color;
 bool ExtConfigs::ExtWaypoints;
 int ExtConfigs::UndoRedoLimit;
 bool ExtConfigs::UseRGBHouseColor;
+bool ExtConfigs::ForceNewTheaterToGeneric;
+bool ExtConfigs::DrawShadow;
+
+MultimapHelper Variables::Rules = { &GlobalVars::INIFiles::Rules(), &GlobalVars::INIFiles::CurrentDocument() };
 
 DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
 {
@@ -77,6 +83,10 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::UndoRedoLimit = fadata.GetInteger("ExtConfigs", "UndoRedoLimit", 16);
 
 	ExtConfigs::UseRGBHouseColor = fadata.GetBool("ExtConfigs", "UseRGBHouseColor");
+
+	ExtConfigs::ForceNewTheaterToGeneric = fadata.GetBool("ExtConfigs", "ForceNewTheaterToGeneric");
+
+	ExtConfigs::DrawShadow = fadata.GetBool("ExtConfigs", "DrawShadow");
 }
 
 // DllMain
@@ -131,6 +141,7 @@ DEFINE_HOOK(537129, ExeRun, 9)
 	Logger::Info(APPLY_INFO);
 	Logger::Wrap(1);
 	FA2Expand::ExeRun();
+	DrawStuff::init();
 	return 0;
 }
 
@@ -141,6 +152,7 @@ DEFINE_HOOK(537208, ExeTerminate, 9)
 #endif
 	Logger::Info("FA2sp Terminating...\n");
 	Logger::Close();
+	DrawStuff::deinit();
 	GET(UINT, result, EAX);
 	ExitProcess(result);
 }

@@ -96,6 +96,21 @@
     <ClInclude Include="FA2sp\Ext\CIsoView\Body.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2sp\Ext\CLoading\Body.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\Helpers\Bitmap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\Miscs\Palettes.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\vxl_drawing_lib.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\Miscs\DrawStuff.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">
@@ -218,10 +233,25 @@
     <ClCompile Include="FA2pp\FunctionInit.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CLoading\Hooks.LoadObjects.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CLoading\Body.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CLoading\Body.LoadObjects.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Miscs\Palettes.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="FA2sp\Ext\CTriggerOption\Hooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Ext\CTriggerAction\Hooks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Miscs\DrawStuff.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

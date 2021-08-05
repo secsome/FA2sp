@@ -9,7 +9,6 @@
 #include <CINI.h>
 #include <CMapData.h>
 
-MultimapHelper ObjectBrowserControlExt::mmh { &GlobalVars::INIFiles::Rules(), &GlobalVars::INIFiles::CurrentDocument() };
 std::array<HTREEITEM, ObjectBrowserControlExt::Root_Count> ObjectBrowserControlExt::ExtNodes;
 std::set<ppmfc::CString> ObjectBrowserControlExt::IgnoreSet;
 std::set<ppmfc::CString> ObjectBrowserControlExt::ForceName;
@@ -34,7 +33,7 @@ HTREEITEM ObjectBrowserControlExt::InsertTranslatedString(const char* pOriginStr
 ppmfc::CString ObjectBrowserControlExt::QueryUIName(const char* pRegName)
 {
     if (ForceName.find(pRegName) != ForceName.end())
-        return mmh.GetString(pRegName, "Name", pRegName);
+        return Variables::Rules.GetString(pRegName, "Name", pRegName);
     else
         return CMapData::GetUIName(pRegName);
 }
@@ -76,7 +75,7 @@ void ObjectBrowserControlExt::Redraw_Initialize()
     auto loadSet = [](const char* pTypeName, int nType)
     {
         ExtSets[nType].clear();
-        auto& section = mmh.GetSection(pTypeName);
+        auto& section = Variables::Rules.GetSection(pTypeName);
         for (auto& itr : section)
             ExtSets[nType].insert(itr.second);
     };
@@ -90,7 +89,7 @@ void ObjectBrowserControlExt::Redraw_Initialize()
     {
         auto loadOwner = []()
         {
-            auto& sides = mmh.ParseIndicies("Sides", true);
+            auto& sides = Variables::Rules.ParseIndicies("Sides", true);
             for (size_t i = 0, sz = sides.size(); i < sz; ++i)
                 for (auto& owner : STDHelpers::SplitString(sides[i]))
                     Owners[owner] = i;
@@ -174,7 +173,7 @@ void ObjectBrowserControlExt::Redraw_Owner()
     auto& doc = GlobalVars::INIFiles::CurrentDocument();
 
     bool bMultiplayer = doc.GetBool("Basic", "MultiplayerOnly"); 
-    auto& section = mmh.ParseIndicies("Houses", true);
+    auto& section = Variables::Rules.ParseIndicies("Houses", true);
 
     bool &bLoadOnlySpecial = bMultiplayer;
     if (bMultiplayer && section.size() > 2)
@@ -217,7 +216,7 @@ void ObjectBrowserControlExt::Redraw_Infantry()
     }
     subNodes[-1] = this->InsertString("Others", -1, hInfantry);
 
-    auto& infantries = mmh.GetSection("InfantryTypes");
+    auto& infantries = Variables::Rules.GetSection("InfantryTypes");
     for (auto& inf : infantries)
     {
         if (IgnoreSet.find(inf.second) != IgnoreSet.end())
@@ -266,7 +265,7 @@ void ObjectBrowserControlExt::Redraw_Vehicle()
     }
     subNodes[-1] = this->InsertString("Others", -1, hVehicle);
 
-    auto& vehicles = mmh.GetSection("VehicleTypes");
+    auto& vehicles = Variables::Rules.GetSection("VehicleTypes");
     for (auto& veh : vehicles)
     {
         if (IgnoreSet.find(veh.second) != IgnoreSet.end())
@@ -316,7 +315,7 @@ void ObjectBrowserControlExt::Redraw_Aircraft()
     }
     subNodes[-1] = this->InsertString("Others", -1, hAircraft);
 
-    auto& aircrafts = mmh.GetSection("AircraftTypes");
+    auto& aircrafts = Variables::Rules.GetSection("AircraftTypes");
     for (auto& air : aircrafts)
     {
         if (IgnoreSet.find(air.second) != IgnoreSet.end())
@@ -366,7 +365,7 @@ void ObjectBrowserControlExt::Redraw_Building()
     }
     subNodes[-1] = this->InsertString("Others", -1, hBuilding);
 
-    auto& buildings = mmh.GetSection("BuildingTypes");
+    auto& buildings = Variables::Rules.GetSection("BuildingTypes");
     for (auto& bud : buildings)
     {
         if (IgnoreSet.find(bud.second) != IgnoreSet.end())
@@ -401,7 +400,7 @@ void ObjectBrowserControlExt::Redraw_Terrain()
 
     this->InsertTranslatedString("RndTreeObList", 50999, hTerrain);
 
-    auto& terrains = mmh.ParseIndicies("TerrainTypes", true);
+    auto& terrains = Variables::Rules.ParseIndicies("TerrainTypes", true);
     for (size_t i = 0, sz = terrains.size(); i < sz; ++i)
     {
         CString buffer;
@@ -417,7 +416,7 @@ void ObjectBrowserControlExt::Redraw_Smudge()
     HTREEITEM& hSmudge = ExtNodes[Root_Smudge];
     if (hSmudge == NULL)   return;
 
-    auto& smudges = mmh.ParseIndicies("SmudgeTypes", true);
+    auto& smudges = Variables::Rules.ParseIndicies("SmudgeTypes", true);
     for (size_t i = 0, sz = smudges.size(); i < sz; ++i)
     {
         if (IgnoreSet.find(smudges[i]) == IgnoreSet.end())
@@ -608,10 +607,10 @@ int ObjectBrowserControlExt::GuessGenericSide(const char* pRegName, int nType)
     default:
     case 0:
     {
-        for (auto& prep : STDHelpers::SplitString(mmh.GetString(pRegName, "Prerequisite")))
+        for (auto& prep : STDHelpers::SplitString(Variables::Rules.GetString(pRegName, "Prerequisite")))
         {
             int guess = -1;
-            for (auto& subprep : STDHelpers::SplitString(mmh.GetString("GenericPrerequisites", prep)))
+            for (auto& subprep : STDHelpers::SplitString(Variables::Rules.GetString("GenericPrerequisites", prep)))
             {
                 guess = GuessSide(subprep, GuessType(subprep));
                 if (guess != -1)
@@ -625,7 +624,7 @@ int ObjectBrowserControlExt::GuessGenericSide(const char* pRegName, int nType)
     }
     case 1:
     {
-        auto& owners = STDHelpers::SplitString(mmh.GetString(pRegName, "Owner"));
+        auto& owners = STDHelpers::SplitString(Variables::Rules.GetString(pRegName, "Owner"));
         if (owners.size() <= 0)
             return -1;
         auto& itr = Owners.find(owners[0]);

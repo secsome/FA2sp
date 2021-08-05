@@ -47,12 +47,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>MFC42\include;FA2pp;$(IncludePath)</IncludePath>
-    <LibraryPath>MFC42\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>MFC42\lib;Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>MFC42\include;FA2pp;$(IncludePath)</IncludePath>
-    <LibraryPath>MFC42\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>MFC42\lib;Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -82,7 +82,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <AdditionalDependencies>Nafxcwd.lib;Libcmtd.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Nafxcwd.lib;Libcmtd.lib;legacy_stdio_definitions.lib;d3dx9.lib;vxl_drawing_lib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
       <IgnoreSpecificDefaultLibraries>Nafxcwd.lib;Libcmtd.lib</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -115,7 +115,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <AdditionalDependencies>Nafxcwd.lib;Libcmtd.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Nafxcwd.lib;Libcmtd.lib;legacy_stdio_definitions.lib;d3dx9.lib;vxl_drawing_lib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
       <IgnoreSpecificDefaultLibraries>Nafxcwd.lib;Libcmtd.lib</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -126,6 +126,9 @@
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Hooks.ObjectBrowserControl.cpp" />
     <ClCompile Include="FA2sp\Ext\CIsoView\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CIsoView\Hooks.cpp" />
+    <ClCompile Include="FA2sp\Ext\CLoading\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CLoading\Body.LoadObjects.cpp" />
+    <ClCompile Include="FA2sp\Ext\CLoading\Hooks.LoadObjects.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Body.CurrentScript.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTeamTypes\Body.cpp" />
@@ -140,6 +143,8 @@
     <ClCompile Include="FA2sp\Helpers\ControlHelpers.cpp" />
     <ClCompile Include="FA2sp\Helpers\MultimapHelper.cpp" />
     <ClCompile Include="FA2sp\Hooks.Debug.cpp" />
+    <ClCompile Include="FA2sp\Miscs\DrawStuff.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Palettes.cpp" />
     <ClCompile Include="FA2sp\UI\UIColor.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.BugFixes.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Body.cpp" />
@@ -167,6 +172,7 @@
   <ItemGroup>
     <ClInclude Include="FA2sp\Ext\CFinalSunDlg\Body.h" />
     <ClInclude Include="FA2sp\Ext\CIsoView\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CLoading\Body.h" />
     <ClInclude Include="FA2sp\Ext\CScriptTypes\Functional.h" />
     <ClInclude Include="FA2sp\Ext\CTeamTypes\Body.h" />
     <ClInclude Include="FA2sp\Ext\CTriggerAction\Body.h" />
@@ -179,6 +185,7 @@
     <ClInclude Include="FA2sp\Ext\CTriggerOption\Body.h" />
     <ClInclude Include="FA2sp\FA2sp.h" />
     <ClInclude Include="FA2sp\FA2sp.Constants.h" />
+    <ClInclude Include="FA2sp\Helpers\Bitmap.h" />
     <ClInclude Include="FA2sp\Helpers\ControlHelpers.h" />
     <ClInclude Include="FA2sp\Helpers\Helper.h" />
     <ClInclude Include="FA2sp\Helpers\INIParser.h" />
@@ -187,11 +194,14 @@
     <ClInclude Include="FA2sp\Helpers\STDHelpers.h" />
     <ClInclude Include="FA2sp\Helpers\Templates.hpp" />
     <ClInclude Include="FA2sp\Logger.h" />
+    <ClInclude Include="FA2sp\Miscs\DrawStuff.h" />
+    <ClInclude Include="FA2sp\Miscs\Palettes.h" />
     <ClInclude Include="FA2sp\RunTime.h" />
     <ClInclude Include="FA2sp\UI\UIColor.h" />
     <ClInclude Include="FA2sp\Helpers\MutexHelper.h" />
     <ClInclude Include="FA2sp\Helpers\Translations.h" />
     <ClInclude Include="FA2sp\ExtraWindow\CTileManager\CTileManager.h" />
+    <ClInclude Include="FA2sp\vxl_drawing_lib.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FA2sp\UI\CMenu.rc" />

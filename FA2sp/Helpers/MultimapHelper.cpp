@@ -30,18 +30,49 @@ INIClass* MultimapHelper::GetINIAt(int idx)
     return data.at(idx);
 }
 
-ppmfc::CString MultimapHelper::GetString(const char* pSection, const char* pKey, const char* pDefault)
+ppmfc::CString* MultimapHelper::TryGetString(ppmfc::CString pSection, ppmfc::CString pKey)
 {
-    for (auto& ini : data)
+    for (auto ritr = data.rbegin(); ritr != data.rend(); ++ritr)
     {
-        if (!ini->KeyExists(pSection, pKey))
+        if (!(*ritr)->KeyExists(pSection, pKey))
             continue;
-        return ini->GetString(pSection, pKey, pDefault);
+        return (*ritr)->TryGetString(pSection, pKey);
     }
-    return pDefault;
+    return nullptr;
 }
 
-std::vector<ppmfc::CString> MultimapHelper::ParseIndicies(const char* pSection, bool bParseIntoValue)
+ppmfc::CString MultimapHelper::GetString(ppmfc::CString pSection, ppmfc::CString pKey, ppmfc::CString pDefault)
+{
+    auto const pResult = TryGetString(pSection, pKey);
+    return pResult ? *pResult : pDefault;
+}
+
+int MultimapHelper::GetInteger(ppmfc::CString pSection, ppmfc::CString pKey, int nDefault) {
+    ppmfc::CString& pStr = this->GetString(pSection, pKey, "");
+    int ret = 0;
+    if (sscanf_s(pStr, "%d", &ret) == 1)
+        return ret;
+    return nDefault;
+}
+
+bool MultimapHelper::GetBool(ppmfc::CString pSection, ppmfc::CString pKey, bool nDefault) {
+    ppmfc::CString& pStr = this->GetString(pSection, pKey, "");
+    switch (toupper(static_cast<unsigned char>(*pStr)))
+    {
+    case '1':
+    case 'T':
+    case 'Y':
+        return true;
+    case '0':
+    case 'F':
+    case 'N':
+        return false;
+    default:
+        return nDefault;
+    }
+}
+
+std::vector<ppmfc::CString> MultimapHelper::ParseIndicies(ppmfc::CString pSection, bool bParseIntoValue)
 {
     std::vector<ppmfc::CString> ret;
     std::map<unsigned int, ppmfc::CString> tmp;
@@ -87,7 +118,7 @@ std::vector<ppmfc::CString> MultimapHelper::ParseIndicies(const char* pSection, 
     return ret;
 }
 
-std::map<ppmfc::CString, ppmfc::CString, INISectionEntriesComparator> MultimapHelper::GetSection(const char* pSection)
+std::map<ppmfc::CString, ppmfc::CString, INISectionEntriesComparator> MultimapHelper::GetSection(ppmfc::CString pSection)
 {
     std::map<ppmfc::CString, ppmfc::CString, INISectionEntriesComparator> ret;
     int index = 0;

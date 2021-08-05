@@ -11,6 +11,80 @@
 #include <CLoading.h>
 #include <CPalette.h>
 #include <unordered_map>
+#include <Drawing.h>
+
+#include "Helpers/Bitmap.h"
+DEFINE_HOOK(438DB0, DebugDrawDataMap, 6)
+{
+    ImageDataMap& tmp = *reinterpret_cast<ImageDataMap*>(0x72CBC8);
+
+    SomeDataMap& tmp2 = *reinterpret_cast<SomeDataMap*>(0x72A870);
+    for (auto& x : tmp2)
+    {
+        Logger::Debug("%s %d\n", x.first, x.second);
+    }
+
+    for (auto& pair : tmp)
+    {
+        ImageDataClass& value = pair.second;
+
+        if (pair.first.IsEmpty())
+            continue;
+
+        if (value.Flag == ImageDataFlag::SurfaceData)
+        {
+            if (value.lpSurface)
+            {
+                // Screenshot("Exports\\" + pair.first + ".bmp", value.lpSurface);
+            }
+
+        }
+        else
+        {
+            if (pair.second.FullHeight == 0 || pair.second.FullWidth == 0)
+                continue;
+
+            bitmap_image bmp;
+            bmp.setwidth_height(value.FullWidth, value.FullHeight, true);
+
+            int count = 0;
+            for (int j = 0; j < bmp.height(); ++j)
+            {
+                for (int i = 0; i < bmp.width(); ++i)
+                {
+                    bmp.set_pixel(i, j, value.pPalette->GetByteColor(value.pImageBuffer[count]));
+                    ++count;
+                }
+            }
+
+            bmp.save_image((const char*)("Exports2\\" + pair.first + ".bmp"));
+        }
+    }
+
+    return 0x438E4E;
+}
+ 
+//
+//DEFINE_HOOK(4B2610, CMapData_QueryUIName_Debug, 7)
+//{
+//    /*GET_STACK(const char*, pRegName, 0x4);
+//    Logger::Debug(__FUNCTION__" pRegName = %s\n", pRegName);
+//    return 0;*/
+//
+//    static bool asd = true;
+//    if (asd)
+//    {
+//        auto& ini = GlobalVars::INIFiles::CurrentDocument();
+//        for (auto& x : ini.Dict)
+//        {
+//            if (auto name = ini.TryGetString(x.first, "Name"))
+//                Logger::Debug("%s %s\n", x.first, name);
+//        }
+//        asd = false;
+//    }
+//
+//    return 0;
+//}
 
 //DEFINE_HOOK(438DB0, DebugTileDatas, 6)
 //{
