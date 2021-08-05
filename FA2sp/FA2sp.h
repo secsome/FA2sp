@@ -45,8 +45,6 @@ public:
     static bool ExtWaypoints;
     static int UndoRedoLimit;
     static bool UseRGBHouseColor;
-    static bool ForceNewTheaterToGeneric;
-    static bool DrawShadow;
 };
 
 class Variables

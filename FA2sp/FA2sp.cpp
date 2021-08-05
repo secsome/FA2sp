@@ -35,8 +35,6 @@ int ExtConfigs::Waypoint_Background_Color;
 bool ExtConfigs::ExtWaypoints;
 int ExtConfigs::UndoRedoLimit;
 bool ExtConfigs::UseRGBHouseColor;
-bool ExtConfigs::ForceNewTheaterToGeneric;
-bool ExtConfigs::DrawShadow;
 
 MultimapHelper Variables::Rules = { &GlobalVars::INIFiles::Rules(), &GlobalVars::INIFiles::CurrentDocument() };
 
@@ -83,10 +81,6 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::UndoRedoLimit = fadata.GetInteger("ExtConfigs", "UndoRedoLimit", 16);
 
 	ExtConfigs::UseRGBHouseColor = fadata.GetBool("ExtConfigs", "UseRGBHouseColor");
-
-	ExtConfigs::ForceNewTheaterToGeneric = fadata.GetBool("ExtConfigs", "ForceNewTheaterToGeneric");
-
-	ExtConfigs::DrawShadow = fadata.GetBool("ExtConfigs", "DrawShadow");
 }
 
 // DllMain
