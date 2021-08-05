@@ -133,16 +133,18 @@ ppmfc::CString CLoadingExt::GetBuildingFileID(ppmfc::CString ID)
 	ppmfc::CString ImageID = GlobalVars::INIFiles::Art->GetString(ArtID, "Image", ArtID);
 	if (GlobalVars::INIFiles::Art->GetBool(ID, "NewTheater"))
 	{
-		if (ExtConfigs::ForceNewTheaterToGeneric) //force to use G
-			SetGenericTheaterLetter(ImageID);
-		else
+		ppmfc::CString backupID = ImageID;
+		SetTheaterLetter(ImageID);
+
+		ppmfc::CString validator = ImageID + ".SHP";
+		int nMix = this->SearchFile(validator);
+		if (!CMixFile::HasFile(validator, nMix))
 		{
-			SetTheaterLetter(ImageID);
-			
-			ppmfc::CString validator = ImageID + ".SHP";
-			int nMix = this->SearchFile(validator);
+			SetGenericTheaterLetter(ImageID);
+			validator = ImageID + ".SHP";
+			nMix = this->SearchFile(validator);
 			if (!CMixFile::HasFile(validator, nMix))
-				SetGenericTheaterLetter(ImageID);
+				ImageID = backupID;
 		}
 	}
 	return ImageID;
@@ -190,6 +192,24 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 	ppmfc::CString ArtID = GetArtID(ID);
 	ppmfc::CString ImageID = GetBuildingFileID(ID);
 
+	auto loadBuildingFrameShape = [&](ppmfc::CString name, int nFrame = 0, int deltaX = 0, int deltaY = 0) -> bool
+	{
+		ppmfc::CString file = name + ".SHP";
+		int nMix = SearchFile(file);
+		if (!CMixFile::HasFile(file, nMix))
+			return false;
+
+		ShapeHeader header;
+		unsigned char* pBuffer;
+		CMixFile::LoadSHP(file, nMix);
+		CShpFile::GetSHPHeader(&header);
+		CShpFile::LoadFrame(nFrame, 1, &pBuffer);
+
+		UnionSHP_Add(pBuffer, header.Width, header.Height, deltaX, deltaY);
+
+		return true;
+	};
+
 	auto loadSingleFrameShape = [&](ppmfc::CString name,int nFrame = 0, int deltaX = 0 ,int deltaY = 0) -> bool
 	{
 		ppmfc::CString file = name + ".SHP";
@@ -200,7 +220,12 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 			SetGenericTheaterLetter(file);
 			nMix = SearchFile(file);
 			if (!CMixFile::HasFile(file, nMix))
-				return false;
+			{
+				file = name + ".SHP";
+				int nMix = SearchFile(file);
+				if (!CMixFile::HasFile(file, nMix))
+					return false;
+			}
 		}
 		
 		ShapeHeader header;
@@ -214,12 +239,14 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 		return true;
 	};
 
-	if (loadSingleFrameShape(ImageID))
+	if (loadBuildingFrameShape(ImageID))
 	{
-		if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "BibShape"))
-			loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr));
-
 		if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "ActiveAnim"))
+		{
+			int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
+			loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
+		}
+		if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "IdleAnim"))
 		{
 			int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
 			loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
@@ -244,6 +271,9 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 			int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
 			loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
 		}
+		if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "BibShape"))
+			loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr));
+
 		/*if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "SuperAnimTwo"))
 		{
 			int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
@@ -259,11 +289,7 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 			int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
 			loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
 		}*/
-		if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "IdleAnim"))
-		{
-			int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
-			loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
-		}
+		
 
 		ppmfc::CString PaletteName = GlobalVars::INIFiles::Art->GetString(ArtID, "Palette", "unit");
 		if (GlobalVars::INIFiles::Art->GetBool(ArtID, "TerrainPalette"))
@@ -295,7 +321,8 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 					if (DrawStuff::load_hva(HVAName))
 						for (int i = 0; i < 8; ++i)
 						{
-							bool result = DrawStuff::get_to_image(i, pTurImages[i], 
+							// (13 - i) % 8 for facing fix
+							bool result = DrawStuff::get_to_image((13 - i) % 8, pTurImages[i],
 								turrect[i][0], turrect[i][1], turrect[i][2], turrect[i][3]);
 							if (!result)
 								break;
@@ -307,7 +334,8 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 					if (DrawStuff::load_hva(HVAName))
 						for (int i = 0; i < 8; ++i)
 						{
-							bool result = DrawStuff::get_to_image(i, pBarlImages[i],
+							// (13 - i) % 8 for facing fix
+							bool result = DrawStuff::get_to_image((13 - i) % 8, pBarlImages[i],
 								barlrect[i][0], barlrect[i][1], barlrect[i][2], barlrect[i][3]);
 							if (!result)
 								break;
@@ -372,6 +400,11 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 						SetImageData(pImage, DictName, width1, height1, Palettes::LoadPalette(PaletteName));
 					}
 					GameDelete(pBuffer);
+				}
+				else
+				{
+					DictName.Format("%s%d", ImageID, 0);
+					SetImageData(pBuffer, DictName, width, height, Palettes::LoadPalette(PaletteName));
 				}
 			}
 		}
@@ -461,7 +494,9 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 			if (DrawStuff::load_hva(HVAName))
 				for (int i = 0; i < 8; ++i)
 				{
-					bool result = DrawStuff::get_to_image(i, pImage[i], rect[i][0], rect[i][1], rect[i][2], rect[i][3]);
+					// (i+6) % 8 to fix the facing
+					bool result = DrawStuff::get_to_image((i + 6) % 8, pImage[i], 
+						rect[i][0], rect[i][1], rect[i][2], rect[i][3]);
 					if (!result)
 						return;
 				}
@@ -474,7 +509,8 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 				if (DrawStuff::load_hva(turHVAName))
 					for (int i = 0; i < 8; ++i)
 					{
-						bool result = DrawStuff::get_to_image(i, pTurretImage[i],
+						// (i+6) % 8 to fix the facing
+						bool result = DrawStuff::get_to_image((i + 6) % 8, pTurretImage[i],
 							turretrect[i][0], turretrect[i][1], turretrect[i][2], turretrect[i][3]);
 
 						if (!result)

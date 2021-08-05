@@ -52,7 +52,7 @@ bool DrawStuff::load_hva(ppmfc::CString name)
 
 bool DrawStuff::get_to_image(unsigned int nFacing, unsigned char*& pBuffer,int& width, int& height)
 {
-    unsigned int nIndex = 4 * ((nFacing + 6) % 8); // stupid thomas' lib
+    unsigned int nIndex = 4 * nFacing;
     vxl_drawing_lib::prepare_cache(nIndex);
     vxl_drawing_lib::get_image_size(nIndex, width, height);
     pBuffer = GameCreateArray<unsigned char>(width * height);
@@ -61,7 +61,7 @@ bool DrawStuff::get_to_image(unsigned int nFacing, unsigned char*& pBuffer,int& 
 
 bool DrawStuff::get_to_image(unsigned int nFacing, unsigned char*& pBuffer, int& width, int& height, int& x, int& y)
 {
-    unsigned int nIndex = 4 * ((nFacing + 6) % 8); // stupid thomas' lib
+    unsigned int nIndex = 4 * nFacing;
     vxl_drawing_lib::prepare_cache(nIndex);
     vxl_drawing_lib::get_image_frame(nIndex, width, height, x, y);
     pBuffer = GameCreateArray<unsigned char>(width * height);
