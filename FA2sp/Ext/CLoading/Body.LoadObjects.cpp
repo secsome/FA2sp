@@ -237,12 +237,53 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 		return true;
 	};
 
-	if (loadBuildingFrameShape(ImageID))
+	int nBldStartFrame = GlobalVars::INIFiles::Art->GetInteger(ArtID, "LoopStart", 0);
+	if (loadBuildingFrameShape(ImageID, nBldStartFrame))
 	{
-		if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "ActiveAnim"))
+		if (auto ppPowerUpBld = Variables::Rules.TryGetString(ID, "PowersUpBuilding"))
 		{
-			int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
-			loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
+			ppmfc::CString SrcBldName;
+			SrcBldName.Format("%s%d", GetBuildingFileID(*ppPowerUpBld), 0);
+			auto pData = ImageDataMapHelper::GetImageDataFromMap(SrcBldName);
+
+			int powrW = UnionSHP_Data[0].Width;
+			int powrH = UnionSHP_Data[0].Height;
+			if (powrW > pData->FullWidth || powrH > pData->FullHeight) // update src bld image
+			{
+				auto bufsize = pData->FullWidth * pData->FullHeight;
+
+				int newW = powrW > pData->FullWidth ? powrW : pData->FullWidth;
+				int newH = powrH > pData->FullHeight ? powrH : pData->FullHeight;
+
+				auto pNewBuffer = GameCreateArray<unsigned char>(newW * newH);
+				memset(pNewBuffer, 0, newW * newH);
+
+				int ImageCenterX = newW / 2;
+				int ImageCenterY = newH / 2;
+				int nStartX = ImageCenterX - pData->FullWidth / 2;
+				int nStartY = ImageCenterY - pData->FullHeight / 2;
+
+				for (int j = 0; j < pData->FullHeight; ++j)
+					memcpy_s(&pNewBuffer[(nStartY + j) * newW + nStartX], newW, &pData->pImageBuffer[j * pData->FullWidth], newW);
+
+				GameDelete(pData->pImageBuffer);
+				pData->pImageBuffer = pNewBuffer;
+				pData->FullWidth = newW;
+				pData->FullHeight = newH;
+			}
+
+			auto bufsize = pData->FullWidth * pData->FullHeight;
+			auto pTmp = GameCreateArray<unsigned char>(bufsize);
+			memset(pTmp, 0, bufsize);
+			UnionSHP_Add(pTmp, pData->FullWidth, pData->FullHeight);
+		}
+		if (!Variables::Rules.GetBool(ID, "Gate"))
+		{
+			if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "ActiveAnim"))
+			{
+				int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
+				loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
+			}
 		}
 		if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "IdleAnim"))
 		{
