@@ -2,6 +2,7 @@
 
 #include <GlobalVars.h>
 #include <CINI.h>
+#include <CMapData.h>
 #include <CMixFile.h>
 #include <CShpFile.h>
 #include <Drawing.h>
@@ -10,25 +11,6 @@
 #include "../../Miscs/DrawStuff.h"
 #include "../../Miscs/Palettes.h"
 #include "../../FA2sp.h"
-
-/*
-#define	ICON_PIXEL_W	 		24
-#define	ICON_PIXEL_H			24
-#define	ICON_LEPTON_W			256
-#define	ICON_LEPTON_H			256
-#define	CELL_PIXEL_W	 		ICON_PIXEL_W
-#define	CELL_PIXEL_H			ICON_PIXEL_H
-#define	CELL_LEPTON_W			ICON_LEPTON_W
-#define	CELL_LEPTON_H			ICON_LEPTON_H
-
-//	-----------------------------------------------------------
-#define	PIXEL_LEPTON_W			(ICON_LEPTON_W/ICON_PIXEL_W)
-#define	PIXEL_LEPTON_H			(ICON_LEPTON_H/ICON_PIXEL_H)
-inline int Lepton_To_Pixel(LEPTON lepton)
-{
-	return (((int)(signed short)lepton * ICON_PIXEL_W) + (ICON_LEPTON_W / 2) - ((lepton < 0) ? (ICON_LEPTON_W - 1) : 0)) / ICON_LEPTON_W;
-}
-*/
 
 std::vector<CLoadingExt::SHPUnionData> CLoadingExt::UnionSHP_Data;
 std::map<ppmfc::CString, CLoadingExt::ObjectType> CLoadingExt::ObjectTypes;
@@ -91,6 +73,7 @@ void CLoadingExt::LoadObjects(ppmfc::CString ID)
 {
     Logger::Debug("CLoadingExt::LoadObjects loading: %s\n", ID);
 
+	// GlobalVars::CMapData->UpdateCurrentDocument();
 	auto eItemType = GetItemType(ID);
 	switch (eItemType)
 	{
@@ -237,47 +220,19 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 		return true;
 	};
 
+	if (auto ppPowerUpBld = Variables::Rules.TryGetString(ID, "PowersUpBuilding")) // Stupid fix
+	{
+		ppmfc::CString SrcBldName;
+		SrcBldName.Format("%s%d", GetBuildingFileID(*ppPowerUpBld), 0);
+		if (!ImageDataMapHelper::IsImageLoaded(SrcBldName))
+			LoadBuilding(*ppPowerUpBld);
+	}
 	int nBldStartFrame = GlobalVars::INIFiles::Art->GetInteger(ArtID, "LoopStart", 0);
 	if (loadBuildingFrameShape(ImageID, nBldStartFrame))
 	{
 		if (auto ppPowerUpBld = Variables::Rules.TryGetString(ID, "PowersUpBuilding"))
 		{
-			ppmfc::CString SrcBldName;
-			SrcBldName.Format("%s%d", GetBuildingFileID(*ppPowerUpBld), 0);
-			auto pData = ImageDataMapHelper::GetImageDataFromMap(SrcBldName);
-
-			int powrW = UnionSHP_Data[0].Width;
-			int powrH = UnionSHP_Data[0].Height;
-			if (powrW > pData->FullWidth || powrH > pData->FullHeight) // update src bld image
-			{
-				auto bufsize = pData->FullWidth * pData->FullHeight;
-
-				int newW = powrW > pData->FullWidth ? powrW : pData->FullWidth;
-				int newH = powrH > pData->FullHeight ? powrH : pData->FullHeight;
-
-				auto pNewBuffer = GameCreateArray<unsigned char>(newW * newH);
-				memset(pNewBuffer, 0, newW * newH);
-
-				int ImageCenterX = newW / 2;
-				int ImageCenterY = newH / 2;
-				int nStartX = ImageCenterX - pData->FullWidth / 2;
-				int nStartY = ImageCenterY - pData->FullHeight / 2;
-
-				for (int j = 0; j < pData->FullHeight; ++j)
-					memcpy_s(&pNewBuffer[(nStartY + j) * newW + nStartX], pData->FullWidth, &pData->pImageBuffer[j * pData->FullWidth], pData->FullWidth);
-
-				GameDelete(pData->pImageBuffer);
-				pData->pImageBuffer = pNewBuffer;
-				pData->FullWidth = newW;
-				pData->FullHeight = newH;
-				GameDelete(pData->pPixelValidRanges);
-				SetValidBuffer(pData, newW, newH);
-			}
-
-			auto bufsize = pData->FullWidth * pData->FullHeight;
-			auto pTmp = GameCreateArray<unsigned char>(bufsize);
-			memset(pTmp, 0, bufsize);
-			UnionSHP_Add(pTmp, pData->FullWidth, pData->FullHeight);
+			
 		}
 		if (!Variables::Rules.GetBool(ID, "Gate"))
 		{
@@ -670,10 +625,11 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 void CLoadingExt::SetImageData(unsigned char* pBuffer, ppmfc::CString NameInDict, int FullWidth, int FullHeight, Palette* pPal)
 {
 	auto pData = ImageDataMapHelper::GetImageDataFromMap(NameInDict);
-	// unsigned char* pCompressedBuffer = nullptr;
-	// int nWidth, nHeight;
-
-	// ShrinkSHP(pBuffer, FullWidth, FullHeight, pCompressedBuffer, &nWidth, &nHeight);
+	
+	if (pData->pImageBuffer)
+		GameDelete(pData->pImageBuffer);
+	if (pData->pPixelValidRanges)
+		GameDelete(pData->pPixelValidRanges);
 
 	pData->pImageBuffer = pBuffer;
 	pData->FullHeight = FullHeight;
@@ -779,8 +735,8 @@ void CLoadingExt::UnionSHP_GetAndClear(unsigned char*& pOutBuffer, int* OutWidth
 
 	for (auto& data : UnionSHP_Data)
 	{
-		if (W < data.Width) W = data.Width + 2 * abs(data.DeltaX);
-		if (H < data.Height) H = data.Height + 2 * abs(data.DeltaY);
+		if (W < data.Width + 2 * abs(data.DeltaX)) W = data.Width + 2 * abs(data.DeltaX);
+		if (H < data.Height + 2 * abs(data.DeltaY)) H = data.Height + 2 * abs(data.DeltaY);
 	}
 
 	// just make it work like unsigned char[W][H];
