@@ -28,49 +28,50 @@ BOOL CFinalSunDlgExt::OnCommandExt(WPARAM wParam, LPARAM lParam)
 			param = true;
 			CheckMenuItem(hMenu, id, MF_CHECKED);
 		}
+		this->MyViewFrame.RedrawWindow(nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW);
 	};
 
 	switch (wmID)
 	{
 	case 30000:
 		SetMenuStatus(30000, CIsoViewExt::DrawStructures);
-		break;
+		return TRUE;
 	case 30001:
 		SetMenuStatus(30001, CIsoViewExt::DrawInfantries);
-		break;
+		return TRUE;
 	case 30002:
 		SetMenuStatus(30002, CIsoViewExt::DrawUnits);
-		break;
+		return TRUE;
 	case 30003:
 		SetMenuStatus(30003, CIsoViewExt::DrawAircrafts);
-		break;
+		return TRUE;
 	case 30004:
 		SetMenuStatus(30004, CIsoViewExt::DrawBasenodes);
-		break;
+		return TRUE;
 	case 30005:
 		SetMenuStatus(30005, CIsoViewExt::DrawWaypoints);
-		break;
+		return TRUE;
 	case 30006:
 		SetMenuStatus(30006, CIsoViewExt::DrawCelltags);
-		break;
+		return TRUE;
 	case 30007:
 		SetMenuStatus(30007, CIsoViewExt::DrawMoneyOnMap);
-		break;
+		return TRUE;
 	case 30008:
 		SetMenuStatus(30008, CIsoViewExt::DrawOverlays);
-		break;
+		return TRUE;
 	case 30009:
 		SetMenuStatus(30009, CIsoViewExt::DrawTerrains);
-		break;
+		return TRUE;
 	case 30010:
 		SetMenuStatus(30010, CIsoViewExt::DrawSmudges);
-		break;
+		return TRUE;
 	case 30011:
 		SetMenuStatus(30011, CIsoViewExt::DrawTubes);
-		break;
+		return TRUE;
 	case 30012:
 		SetMenuStatus(30012, CIsoViewExt::DrawBounds);
-		break;
+		return TRUE;
 	default:
 		break;
 	}

@@ -329,8 +329,8 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 		{
 			if (Variables::Rules.GetBool(ID, "TurretAnimIsVoxel"))
 			{
-				ppmfc::CString TurName = Variables::Rules.GetString(ID, "TurretAnim", ArtID + "tur");
-				ppmfc::CString BarlName = ArtID + "barl";
+				ppmfc::CString TurName = Variables::Rules.GetString(ID, "TurretAnim", ID + "tur");
+				ppmfc::CString BarlName = ID + "barl";
 
 				ppmfc::CString VXLName = TurName + ".vxl";
 				ppmfc::CString HVAName = TurName + ".hva";
@@ -401,34 +401,27 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 			}
 			else //SHP anim
 			{
-				if (auto ppStr = Variables::Rules.TryGetString(ID, "TurretAnim"))
+				ppmfc::CString TurName = Variables::Rules.GetString(ID, "TurretAnim", ID + "tur");
+				int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(TurName, "LoopStart");
+				for (int i = 0; i < 8; ++i)
 				{
-					int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
-					for (int i = 0; i < 8; ++i)
-					{
-						auto pTempBuf = GameCreateArray<unsigned char>(width * height);
-						memcpy_s(pTempBuf, width * height, pBuffer, width * height);
-						UnionSHP_Add(pTempBuf, width, height);
+					auto pTempBuf = GameCreateArray<unsigned char>(width * height);
+					memcpy_s(pTempBuf, width * height, pBuffer, width * height);
+					UnionSHP_Add(pTempBuf, width, height);
 
-						int deltaX = Variables::Rules.GetInteger(ID, "TurretAnimX", 0);
-						int deltaY = Variables::Rules.GetInteger(ID, "TurretAnimY", 0);
-						loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr),
-							nStartFrame + i * 4, deltaX, deltaY);
+					int deltaX = Variables::Rules.GetInteger(ID, "TurretAnimX", 0);
+					int deltaY = Variables::Rules.GetInteger(ID, "TurretAnimY", 0);
+					loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(TurName, "Image", TurName),
+						nStartFrame + i * 4, deltaX, deltaY);
 
-						unsigned char* pImage;
-						int width1, height1;
-						UnionSHP_GetAndClear(pImage, &width1, &height1);
+					unsigned char* pImage;
+					int width1, height1;
+					UnionSHP_GetAndClear(pImage, &width1, &height1);
 
-						DictName.Format("%s%d", ImageID, i);
-						SetImageData(pImage, DictName, width1, height1, Palettes::LoadPalette(PaletteName));
-					}
-					GameDelete(pBuffer);
+					DictName.Format("%s%d", ImageID, i);
+					SetImageData(pImage, DictName, width1, height1, Palettes::LoadPalette(PaletteName));
 				}
-				else
-				{
-					DictName.Format("%s%d", ImageID, 0);
-					SetImageData(pBuffer, DictName, width, height, Palettes::LoadPalette(PaletteName));
-				}
+				GameDelete(pBuffer);
 			}
 		}
 		else // No turret
