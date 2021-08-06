@@ -579,11 +579,30 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 	else // As SHP
 	{
 		int framesToRead[8];
-		int nStartStandFrame = GlobalVars::INIFiles::Art->GetInteger(ArtID, "nStartStandFrame", 0);
-		int nStandingFrames = GlobalVars::INIFiles::Art->GetInteger(ArtID, "nStandingFrames", 1);
-		for (int i = 0; i < 8; ++i)
-			framesToRead[i] = nStartStandFrame + i * nStandingFrames;
 
+		// so why use StandFrame= =
+		if (GlobalVars::INIFiles::Art->KeyExists(ArtID, "StandingFrames"))
+		{
+			int nStartStandFrame = GlobalVars::INIFiles::Art->GetInteger(ArtID, "StartStandFrame", 0);
+			int nStandingFrames = GlobalVars::INIFiles::Art->GetInteger(ArtID, "StandingFrames", 1);
+			for (int i = 0; i < 8; ++i)
+				framesToRead[i] = nStartStandFrame + i * nStandingFrames;
+		}
+		else
+		{
+			int nStartWalkFrame = GlobalVars::INIFiles::Art->GetInteger(ArtID, "StartWalkFrame", 0);
+			int nWalkFrames = GlobalVars::INIFiles::Art->GetInteger(ArtID, "WalkFrames", 1);
+			for (int i = 0; i < 8; ++i) {
+				framesToRead[i] = nStartWalkFrame + i * nWalkFrames;
+			}
+		}
+
+		// first frame of SHP is NORTH, considered as 224 in FA2 (not 0)
+		int temp = framesToRead[0];
+		for (int i = 0; i < 7; i++)
+			framesToRead[i] = framesToRead[i + 1];
+		framesToRead[7] = temp;
+		
 		ppmfc::CString FileName = ImageID + ".shp";
 		int nMix = this->SearchFile(FileName);
 		if (CMixFile::HasFile(FileName, nMix))
