@@ -38,10 +38,11 @@ private:
 	void LoadTerrainOrSmudge(ppmfc::CString ID);
 	void LoadVehicleOrAircraft(ppmfc::CString ID);
 
-	void SetImageData(unsigned char* pBuffer, ppmfc::CString NameInDict, int FullWidth, int FullHeight,Palette* pPal);
+	void SetImageData(unsigned char* pBuffer, ppmfc::CString NameInDict, int FullWidth, int FullHeight, Palette* pPal);
+	void SetImageData(unsigned char* pBuffer, ImageDataClass* pData, int FullWidth, int FullHeight, Palette* pPal);
 	void ShrinkSHP(unsigned char* pIn, int InWidth, int InHeight, unsigned char*& pOut, int* OutWidth, int* OutHeight);
-	void UnionSHP_Add(unsigned char* pBuffer, int Width, int Height, int DeltaX = 0, int DeltaY = 0);
-	void UnionSHP_GetAndClear(unsigned char*& pOutBuffer, int* OutWidth, int* OutHeight);
+	void UnionSHP_Add(unsigned char* pBuffer, int Width, int Height, int DeltaX = 0, int DeltaY = 0, bool UseTemp = false);
+	void UnionSHP_GetAndClear(unsigned char*& pOutBuffer, int* OutWidth, int* OutHeight, bool UseTemp = false);
 	void VXL_Add(unsigned char* pCache, int X, int Y, int Width, int Height);
 	void VXL_GetAndClear(unsigned char*& pBuffer, int* OutWidth, int* OutHeight);
 	
@@ -74,7 +75,7 @@ private:
 		int DeltaX;
 		int DeltaY;
 	};
-	static std::vector<SHPUnionData> UnionSHP_Data;
+	static std::vector<SHPUnionData> UnionSHP_Data[2];
 	static std::map<ppmfc::CString, ObjectType> ObjectTypes;
 	static unsigned char VXL_Data[0x10000];
 };
