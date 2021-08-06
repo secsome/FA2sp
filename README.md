@@ -10,6 +10,11 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-08-07) ==============================================================================================
+*) The drawing function is fixed for several items
+*) The Isoview now will be redrawn automatically after layers are set
++) New tags in falanguage so you can translate menu items
+
 ======================= Changes (2021-08-06) ==============================================================================================
 +) New param code: 30 for float, this param code can be used for action 71 & 72
 +) New menu checkboxes: Layers, you can hide Strutures, Infantries and so on through this system

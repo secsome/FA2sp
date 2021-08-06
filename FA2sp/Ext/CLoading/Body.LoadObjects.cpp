@@ -2,6 +2,7 @@
 
 #include <GlobalVars.h>
 #include <CINI.h>
+#include <CMapData.h>
 #include <CMixFile.h>
 #include <CShpFile.h>
 #include <Drawing.h>
@@ -11,26 +12,7 @@
 #include "../../Miscs/Palettes.h"
 #include "../../FA2sp.h"
 
-/*
-#define	ICON_PIXEL_W	 		24
-#define	ICON_PIXEL_H			24
-#define	ICON_LEPTON_W			256
-#define	ICON_LEPTON_H			256
-#define	CELL_PIXEL_W	 		ICON_PIXEL_W
-#define	CELL_PIXEL_H			ICON_PIXEL_H
-#define	CELL_LEPTON_W			ICON_LEPTON_W
-#define	CELL_LEPTON_H			ICON_LEPTON_H
-
-//	-----------------------------------------------------------
-#define	PIXEL_LEPTON_W			(ICON_LEPTON_W/ICON_PIXEL_W)
-#define	PIXEL_LEPTON_H			(ICON_LEPTON_H/ICON_PIXEL_H)
-inline int Lepton_To_Pixel(LEPTON lepton)
-{
-	return (((int)(signed short)lepton * ICON_PIXEL_W) + (ICON_LEPTON_W / 2) - ((lepton < 0) ? (ICON_LEPTON_W - 1) : 0)) / ICON_LEPTON_W;
-}
-*/
-
-std::vector<CLoadingExt::SHPUnionData> CLoadingExt::UnionSHP_Data;
+std::vector<CLoadingExt::SHPUnionData> CLoadingExt::UnionSHP_Data[2];
 std::map<ppmfc::CString, CLoadingExt::ObjectType> CLoadingExt::ObjectTypes;
 unsigned char CLoadingExt::VXL_Data[0x10000] = {0};
 
@@ -91,6 +73,7 @@ void CLoadingExt::LoadObjects(ppmfc::CString ID)
 {
     Logger::Debug("CLoadingExt::LoadObjects loading: %s\n", ID);
 
+	// GlobalVars::CMapData->UpdateCurrentDocument();
 	auto eItemType = GetItemType(ID);
 	switch (eItemType)
 	{
@@ -237,47 +220,46 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 		return true;
 	};
 
+	if (auto ppPowerUpBld = Variables::Rules.TryGetString(ID, "PowersUpBuilding")) // Stupid fix
+	{
+		ppmfc::CString SrcBldName = GetBuildingFileID(*ppPowerUpBld) + "0";
+		if (!ImageDataMapHelper::IsImageLoaded(SrcBldName))
+			LoadBuilding(*ppPowerUpBld);
+	}
 	int nBldStartFrame = GlobalVars::INIFiles::Art->GetInteger(ArtID, "LoopStart", 0);
 	if (loadBuildingFrameShape(ImageID, nBldStartFrame))
 	{
 		if (auto ppPowerUpBld = Variables::Rules.TryGetString(ID, "PowersUpBuilding"))
 		{
-			ppmfc::CString SrcBldName;
-			SrcBldName.Format("%s%d", GetBuildingFileID(*ppPowerUpBld), 0);
-			auto pData = ImageDataMapHelper::GetImageDataFromMap(SrcBldName);
+			ppmfc::CString srcArtID = GetArtID(*ppPowerUpBld);
+			ppmfc::CString srcBldID = GetBuildingFileID(*ppPowerUpBld) + "0";
+			auto pSrcData = ImageDataMapHelper::GetImageDataFromMap(srcBldID);
+			unsigned char* pTmp;
+			if (pSrcData->FullWidth < UnionSHP_Data[0][0].Width || pSrcData->FullWidth < UnionSHP_Data[0][0].Height)
+			{ // if width or height is bigger, update the old building image
+				/*int newW = pSrcData->FullWidth > UnionSHP_Data[0][0].Width ? pSrcData->FullWidth : UnionSHP_Data[0][0].Width;
+				int newH = pSrcData->FullHeight > UnionSHP_Data[0][0].Height ? pSrcData->FullHeight : UnionSHP_Data[0][0].Height;
+				pTmp = GameCreateArray<unsigned char>(newW * newH);
+				memset(pTmp, 0, newW * newH);
+				UnionSHP_Add(pSrcData->pImageBuffer, pSrcData->FullWidth, pSrcData->FullHeight, 0, 0, true);
+				pSrcData->pImageBuffer = nullptr;
+				UnionSHP_Add(pTmp, newW, newH, 0, 0, true);
 
-			int powrW = UnionSHP_Data[0].Width;
-			int powrH = UnionSHP_Data[0].Height;
-			if (powrW > pData->FullWidth || powrH > pData->FullHeight) // update src bld image
-			{
-				auto bufsize = pData->FullWidth * pData->FullHeight;
+				unsigned char* pBuffer;
+				UnionSHP_GetAndClear(pBuffer, &newW, &newH, true);
 
-				int newW = powrW > pData->FullWidth ? powrW : pData->FullWidth;
-				int newH = powrH > pData->FullHeight ? powrH : pData->FullHeight;
+				SetImageData(pBuffer, pSrcData, newW, newH, pSrcData->pPalette);
 
-				auto pNewBuffer = GameCreateArray<unsigned char>(newW * newH);
-				memset(pNewBuffer, 0, newW * newH);
-
-				int ImageCenterX = newW / 2;
-				int ImageCenterY = newH / 2;
-				int nStartX = ImageCenterX - pData->FullWidth / 2;
-				int nStartY = ImageCenterY - pData->FullHeight / 2;
-
-				for (int j = 0; j < pData->FullHeight; ++j)
-					memcpy_s(&pNewBuffer[(nStartY + j) * newW + nStartX], pData->FullWidth, &pData->pImageBuffer[j * pData->FullWidth], pData->FullWidth);
-
-				GameDelete(pData->pImageBuffer);
-				pData->pImageBuffer = pNewBuffer;
-				pData->FullWidth = newW;
-				pData->FullHeight = newH;
-				GameDelete(pData->pPixelValidRanges);
-				SetValidBuffer(pData, newW, newH);
+				pTmp = GameCreateArray<unsigned char>(newW * newH);
+				memset(pTmp, 0, newW * newH);
+				UnionSHP_Add(pTmp, newW, newH);*/
 			}
-
-			auto bufsize = pData->FullWidth * pData->FullHeight;
-			auto pTmp = GameCreateArray<unsigned char>(bufsize);
-			memset(pTmp, 0, bufsize);
-			UnionSHP_Add(pTmp, pData->FullWidth, pData->FullHeight);
+			else
+			{
+				pTmp = GameCreateArray<unsigned char>(pSrcData->FullWidth * pSrcData->FullHeight);
+				memset(pTmp, 0, pSrcData->FullWidth * pSrcData->FullHeight);
+				UnionSHP_Add(pTmp, pSrcData->FullWidth, pSrcData->FullHeight);
+			}	
 		}
 		if (!Variables::Rules.GetBool(ID, "Gate"))
 		{
@@ -347,8 +329,8 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 		{
 			if (Variables::Rules.GetBool(ID, "TurretAnimIsVoxel"))
 			{
-				ppmfc::CString TurName = Variables::Rules.GetString(ID, "TurretAnim", ArtID + "tur");
-				ppmfc::CString BarlName = ArtID + "barl";
+				ppmfc::CString TurName = Variables::Rules.GetString(ID, "TurretAnim", ID + "tur");
+				ppmfc::CString BarlName = ID + "barl";
 
 				ppmfc::CString VXLName = TurName + ".vxl";
 				ppmfc::CString HVAName = TurName + ".hva";
@@ -394,11 +376,11 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 					if (pTurImages[i])
 					{
 						VXL_Add(pTurImages[i], turrect[i][2], turrect[i][3], turrect[i][0], turrect[i][1]);
-						GameDelete(pTurImages[i]);
+						GameDeleteArray(pTurImages[i], turrect[i][0] * turrect[i][1]);
 						if (pBarlImages[i])
 						{
 							VXL_Add(pBarlImages[i], barlrect[i][2], barlrect[i][3], barlrect[i][0], barlrect[i][1]);
-							GameDelete(pBarlImages[i]);
+							GameDeleteArray(pBarlImages[i], barlrect[i][0] * barlrect[i][1]);
 						}
 					}
 
@@ -415,38 +397,31 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 					SetImageData(pImage, DictName, width1, height1, Palettes::LoadPalette(PaletteName));
 				}
 
-				GameDelete(pBuffer);
+				GameDeleteArray(pBuffer, width * height);
 			}
 			else //SHP anim
 			{
-				if (auto ppStr = Variables::Rules.TryGetString(ID, "TurretAnim"))
+				ppmfc::CString TurName = Variables::Rules.GetString(ID, "TurretAnim", ID + "tur");
+				int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(TurName, "LoopStart");
+				for (int i = 0; i < 8; ++i)
 				{
-					int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
-					for (int i = 0; i < 8; ++i)
-					{
-						auto pTempBuf = GameCreateArray<unsigned char>(width * height);
-						memcpy_s(pTempBuf, width * height, pBuffer, width * height);
-						UnionSHP_Add(pTempBuf, width, height);
+					auto pTempBuf = GameCreateArray<unsigned char>(width * height);
+					memcpy_s(pTempBuf, width * height, pBuffer, width * height);
+					UnionSHP_Add(pTempBuf, width, height);
 
-						int deltaX = Variables::Rules.GetInteger(ID, "TurretAnimX", 0);
-						int deltaY = Variables::Rules.GetInteger(ID, "TurretAnimY", 0);
-						loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr),
-							nStartFrame + i * 4, deltaX, deltaY);
+					int deltaX = Variables::Rules.GetInteger(ID, "TurretAnimX", 0);
+					int deltaY = Variables::Rules.GetInteger(ID, "TurretAnimY", 0);
+					loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(TurName, "Image", TurName),
+						nStartFrame + i * 4, deltaX, deltaY);
 
-						unsigned char* pImage;
-						int width1, height1;
-						UnionSHP_GetAndClear(pImage, &width1, &height1);
+					unsigned char* pImage;
+					int width1, height1;
+					UnionSHP_GetAndClear(pImage, &width1, &height1);
 
-						DictName.Format("%s%d", ImageID, i);
-						SetImageData(pImage, DictName, width1, height1, Palettes::LoadPalette(PaletteName));
-					}
-					GameDelete(pBuffer);
+					DictName.Format("%s%d", ImageID, i);
+					SetImageData(pImage, DictName, width1, height1, Palettes::LoadPalette(PaletteName));
 				}
-				else
-				{
-					DictName.Format("%s%d", ImageID, 0);
-					SetImageData(pBuffer, DictName, width, height, Palettes::LoadPalette(PaletteName));
-				}
+				GameDelete(pBuffer);
 			}
 		}
 		else // No turret
@@ -584,17 +559,17 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 				if (pImage[i])
 				{
 					VXL_Add(pImage[i], rect[i][2], rect[i][3], rect[i][0], rect[i][1]);
-					GameDelete(pImage[i]);
+					GameDeleteArray(pImage[i], rect[i][0] * rect[i][1]);
 				}
 				if (pTurretImage[i])
 				{
 					VXL_Add(pTurretImage[i], turretrect[i][2], turretrect[i][3], turretrect[i][0], turretrect[i][1]);
-					GameDelete(pTurretImage[i]);
+					GameDeleteArray(pTurretImage[i], turretrect[i][0] * turretrect[i][1]);
 				}
 				if (pBarrelImage[i])
 				{
 					VXL_Add(pBarrelImage[i], barrelrect[i][2], barrelrect[i][3], barrelrect[i][0], barrelrect[i][1]);
-					GameDelete(pBarrelImage[i]);
+					GameDeleteArray(pBarrelImage[i], barrelrect[i][0] * barrelrect[i][1]);
 				}
 
 				VXL_GetAndClear(outBuffer, &outW, &outH);
@@ -624,10 +599,26 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 	else // As SHP
 	{
 		int framesToRead[8];
-		int nStartStandFrame = GlobalVars::INIFiles::Art->GetInteger(ArtID, "nStartStandFrame", 0);
-		int nStandingFrames = GlobalVars::INIFiles::Art->GetInteger(ArtID, "nStandingFrames", 1);
-		for (int i = 0; i < 8; ++i)
-			framesToRead[i] = nStartStandFrame + i * nStandingFrames;
+		if (GlobalVars::INIFiles::Art->KeyExists(ArtID, "StandingFrames"))
+		{
+			int nStartStandFrame = GlobalVars::INIFiles::Art->GetInteger(ArtID, "StartStandFrame", 0);
+			int nStandingFrames = GlobalVars::INIFiles::Art->GetInteger(ArtID, "StandingFrames", 1);
+			for (int i = 0; i < 8; ++i)
+				framesToRead[i] = nStartStandFrame + i * nStandingFrames;
+		}
+		else
+		{
+			int nStartWalkFrame = GlobalVars::INIFiles::Art->GetInteger(ArtID, "StartWalkFrame", 0);
+			int nWalkFrames = GlobalVars::INIFiles::Art->GetInteger(ArtID, "WalkFrames", 1);
+			for (int i = 0; i < 8; ++i) {
+				framesToRead[i] = nStartWalkFrame + i * nWalkFrames;
+			}
+		}
+		// fix from cmcc
+		int temp = framesToRead[0];
+		for (int i = 0; i < 7; i++)
+			framesToRead[i] = framesToRead[i + 1];
+		framesToRead[7] = temp;
 
 		ppmfc::CString FileName = ImageID + ".shp";
 		int nMix = this->SearchFile(FileName);
@@ -650,7 +641,10 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 					int nStartWalkFrame = GlobalVars::INIFiles::Art->GetInteger(ArtID, "StartWalkFrame", 0);
 					int nWalkFrames = GlobalVars::INIFiles::Art->GetInteger(ArtID, "WalkFrames", 1);
 					int turretFramesToRead[8];
-					turretFramesToRead[i] = nStartWalkFrame + 8 * nWalkFrames + 4 * i;
+					
+					// fix from cmcc
+					turretFramesToRead[i] = nStartWalkFrame + 8 * nWalkFrames + 4 * ((i + 1) % 8);
+
 					CShpFile::LoadFrame(turretFramesToRead[i], 1, &FramesBuffers[1]);
 					UnionSHP_Add(FramesBuffers[0], header.Width, header.Height);
 					UnionSHP_Add(FramesBuffers[1], header.Width, header.Height);
@@ -670,16 +664,21 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 void CLoadingExt::SetImageData(unsigned char* pBuffer, ppmfc::CString NameInDict, int FullWidth, int FullHeight, Palette* pPal)
 {
 	auto pData = ImageDataMapHelper::GetImageDataFromMap(NameInDict);
-	// unsigned char* pCompressedBuffer = nullptr;
-	// int nWidth, nHeight;
+	SetImageData(pBuffer, pData, FullWidth, FullHeight, pPal);
+}
 
-	// ShrinkSHP(pBuffer, FullWidth, FullHeight, pCompressedBuffer, &nWidth, &nHeight);
+void CLoadingExt::SetImageData(unsigned char* pBuffer, ImageDataClass* pData, int FullWidth, int FullHeight, Palette* pPal)
+{
+	if (pData->pImageBuffer)
+		GameDeleteArray(pData->pImageBuffer, pData->FullWidth * pData->FullHeight);
+	if (pData->pPixelValidRanges)
+		GameDeleteArray(pData->pPixelValidRanges, pData->FullHeight);
 
 	pData->pImageBuffer = pBuffer;
 	pData->FullHeight = FullHeight;
 	pData->FullWidth = FullWidth;
 	SetValidBuffer(pData, FullWidth, FullHeight);
-	
+
 	// Get available area
 	int counter = 0;
 	int validFirstX = FullWidth - 1;
@@ -704,7 +703,7 @@ void CLoadingExt::SetImageData(unsigned char* pBuffer, ppmfc::CString NameInDict
 			}
 		}
 	}
-	
+
 	pData->ValidX = validFirstX;
 	pData->ValidY = validFirstY;
 	pData->ValidWidth = validLastX - validFirstX + 1;
@@ -713,11 +712,7 @@ void CLoadingExt::SetImageData(unsigned char* pBuffer, ppmfc::CString NameInDict
 	pData->Flag = ImageDataFlag::SHP;
 	pData->IsOverlay = false;
 	pData->pPalette = pPal ? pPal : Palette::PALETTE_UNIT;
-
-
-	// SomeDataMapHelper::SetSomeData(NameInDict, true);
 }
-
 // This function will shrink it to fit.
 // Also will delete the origin buffer and create a new buffer.
 void CLoadingExt::ShrinkSHP(unsigned char* pIn, int InWidth, int InHeight, unsigned char*& pOut, int* OutWidth, int* OutHeight)
@@ -753,34 +748,34 @@ void CLoadingExt::ShrinkSHP(unsigned char* pIn, int InWidth, int InHeight, unsig
 	for (int j = 0; j < *OutHeight; ++j)
 		memcpy_s(&pOut[j * *OutWidth], *OutWidth, &pIn[(j + validFirstY) * InWidth + validFirstX], *OutWidth);
 
-	GameDelete(pIn);
+	GameDeleteArray(pIn, InWidth * InHeight);
 }
 
-void CLoadingExt::UnionSHP_Add(unsigned char* pBuffer, int Width, int Height, int DeltaX, int DeltaY)
+void CLoadingExt::UnionSHP_Add(unsigned char* pBuffer, int Width, int Height, int DeltaX, int DeltaY, bool UseTemp)
 {
-	UnionSHP_Data.push_back(SHPUnionData{ pBuffer,Width,Height,DeltaX,DeltaY });
+	UnionSHP_Data[UseTemp].push_back(SHPUnionData{ pBuffer,Width,Height,DeltaX,DeltaY });
 }
 
-void CLoadingExt::UnionSHP_GetAndClear(unsigned char*& pOutBuffer, int* OutWidth, int* OutHeight)
+void CLoadingExt::UnionSHP_GetAndClear(unsigned char*& pOutBuffer, int* OutWidth, int* OutHeight, bool UseTemp)
 {
 	// never calls it when UnionSHP_Data is empty
 
-	if (UnionSHP_Data.size() == 1)
+	if (UnionSHP_Data[UseTemp].size() == 1)
 	{
-		pOutBuffer = UnionSHP_Data[0].pBuffer;
-		*OutWidth = UnionSHP_Data[0].Width;
-		*OutHeight = UnionSHP_Data[0].Height;
-		UnionSHP_Data.clear();
+		pOutBuffer = UnionSHP_Data[UseTemp][0].pBuffer;
+		*OutWidth = UnionSHP_Data[UseTemp][0].Width;
+		*OutHeight = UnionSHP_Data[UseTemp][0].Height;
+		UnionSHP_Data[UseTemp].clear();
 		return;
 	}
 
 	// For each shp, we make their center at the same point, this will give us proper result.
 	int W = 0, H = 0;
 
-	for (auto& data : UnionSHP_Data)
+	for (auto& data : UnionSHP_Data[UseTemp])
 	{
-		if (W < data.Width) W = data.Width + 2 * abs(data.DeltaX);
-		if (H < data.Height) H = data.Height + 2 * abs(data.DeltaY);
+		if (W < data.Width + 2 * abs(data.DeltaX)) W = data.Width + 2 * abs(data.DeltaX);
+		if (H < data.Height + 2 * abs(data.DeltaY)) H = data.Height + 2 * abs(data.DeltaY);
 	}
 
 	// just make it work like unsigned char[W][H];
@@ -792,7 +787,7 @@ void CLoadingExt::UnionSHP_GetAndClear(unsigned char*& pOutBuffer, int* OutWidth
 	int ImageCenterY = H / 2;
 
 	// Image[X][Y] <=> pOutBuffer[Y * W + X];
-	for (auto& data : UnionSHP_Data)
+	for (auto& data : UnionSHP_Data[UseTemp])
 	{
 		int nStartX = ImageCenterX - data.Width / 2 + data.DeltaX;
 		int nStartY = ImageCenterY - data.Height / 2 + data.DeltaY;
@@ -802,10 +797,10 @@ void CLoadingExt::UnionSHP_GetAndClear(unsigned char*& pOutBuffer, int* OutWidth
 				if (auto nPalIdx = data.pBuffer[j * data.Width + i])
 					pOutBuffer[(nStartY + j) * W + nStartX + i] = nPalIdx;
 
-		GameDelete(data.pBuffer);
+		GameDeleteArray(data.pBuffer, data.Width * data.Height);
 	}
 
-	UnionSHP_Data.clear();
+	UnionSHP_Data[UseTemp].clear();
 }
 
 void CLoadingExt::VXL_Add(unsigned char* pCache, int X, int Y, int Width, int Height)

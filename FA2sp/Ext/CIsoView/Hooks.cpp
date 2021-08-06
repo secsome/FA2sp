@@ -6,19 +6,6 @@
 
 #include <Windows.h>
 
-//DEFINE_HOOK(470A66, DEBUGGGGASD, 7)
-//{
-//	// DEBUG USE
-//
-//	auto dbgmap = reinterpret_cast<FAMap<CString, CString, 0x5D8CD0, 0>*>(0x72A870);
-//	Logger::Debug("dbgmap size = %d\n", dbgmap->size());
-//	for (auto& x : *dbgmap)
-//	{
-//		Logger::Debug("%s\n", x.first);
-//	}
-//	return 0;
-//}
-
 DEFINE_HOOK(45AF03, CIsoView_StatusBar_YXTOXY_YToX_1, 7)
 {
 	GET_STACK(int, nPointX, 0x30);
@@ -111,9 +98,9 @@ DEFINE_HOOK(474A49, CIsoView_Draw_WaypointColor, 5)
 	GET(CIsoView*, pThis, EBP);
 	GET(int, X, ESI);
 	GET(int, Y, EDI);
-	GET_STACK(CString, s, STACK_OFFS(0xD18, 0xCE4));
+	REF_STACK(ppmfc::CString, str, STACK_OFFS(0xD18, 0xCE4));
 
-	pThis->DrawText(X + 15, Y + 7, s, ExtConfigs::Waypoint_Color);
+	pThis->DrawText(X + 15, Y + 7, str, ExtConfigs::Waypoint_Color);
 
 	return 0x474A67;
 }
