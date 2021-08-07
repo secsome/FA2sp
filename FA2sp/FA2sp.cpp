@@ -100,20 +100,15 @@ BOOL APIENTRY DllMain(HANDLE hInstance, DWORD dwReason, LPVOID v)
 SYRINGE_HANDSHAKE(pInfo)
 {
 	if (pInfo) {
-		//if (pInfo->exeFilesize == 0x1F4000)
-		//{
-		//	sprintf_s(pInfo->Message, pInfo->cchMessage, APPLY_INFO);
-		//	return S_OK;
-		//}
-		//else
-		//{
-		//	sprintf_s(pInfo->Message, pInfo->cchMessage, "Requires Final Alert 2 version 1.02.");
-		//	return S_FALSE;
-		//}
-		if (pInfo->Message)
+		if (pInfo->Message && strcmp((const char*)(0x5CEB5C), "\\ecachemd") == 0)
 		{
 			sprintf_s(pInfo->Message, pInfo->cchMessage, APPLY_INFO);
 			return S_OK;
+		}
+		else
+		{
+			sprintf_s(pInfo->Message, pInfo->cchMessage, "Requires Official Final Alert 2 version 1.02.");
+			return S_FALSE;
 		}
 	}
 	return E_POINTER;
