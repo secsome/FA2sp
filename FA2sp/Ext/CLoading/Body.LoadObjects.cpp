@@ -220,47 +220,16 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 		return true;
 	};
 
-	if (auto ppPowerUpBld = Variables::Rules.TryGetString(ID, "PowersUpBuilding")) // Stupid fix
+	if (auto ppPowerUpBld = Variables::Rules.TryGetString(ID, "PowersUpBuilding")) // Early load
 	{
 		ppmfc::CString SrcBldName = GetBuildingFileID(*ppPowerUpBld) + "0";
 		if (!ImageDataMapHelper::IsImageLoaded(SrcBldName))
 			LoadBuilding(*ppPowerUpBld);
 	}
+
 	int nBldStartFrame = GlobalVars::INIFiles::Art->GetInteger(ArtID, "LoopStart", 0);
 	if (loadBuildingFrameShape(ImageID, nBldStartFrame))
 	{
-		if (auto ppPowerUpBld = Variables::Rules.TryGetString(ID, "PowersUpBuilding"))
-		{
-			ppmfc::CString srcArtID = GetArtID(*ppPowerUpBld);
-			ppmfc::CString srcBldID = GetBuildingFileID(*ppPowerUpBld) + "0";
-			auto pSrcData = ImageDataMapHelper::GetImageDataFromMap(srcBldID);
-			unsigned char* pTmp;
-			if (pSrcData->FullWidth < UnionSHP_Data[0][0].Width || pSrcData->FullWidth < UnionSHP_Data[0][0].Height)
-			{ // if width or height is bigger, update the old building image
-				/*int newW = pSrcData->FullWidth > UnionSHP_Data[0][0].Width ? pSrcData->FullWidth : UnionSHP_Data[0][0].Width;
-				int newH = pSrcData->FullHeight > UnionSHP_Data[0][0].Height ? pSrcData->FullHeight : UnionSHP_Data[0][0].Height;
-				pTmp = GameCreateArray<unsigned char>(newW * newH);
-				memset(pTmp, 0, newW * newH);
-				UnionSHP_Add(pSrcData->pImageBuffer, pSrcData->FullWidth, pSrcData->FullHeight, 0, 0, true);
-				pSrcData->pImageBuffer = nullptr;
-				UnionSHP_Add(pTmp, newW, newH, 0, 0, true);
-
-				unsigned char* pBuffer;
-				UnionSHP_GetAndClear(pBuffer, &newW, &newH, true);
-
-				SetImageData(pBuffer, pSrcData, newW, newH, pSrcData->pPalette);
-
-				pTmp = GameCreateArray<unsigned char>(newW * newH);
-				memset(pTmp, 0, newW * newH);
-				UnionSHP_Add(pTmp, newW, newH);*/
-			}
-			else
-			{
-				pTmp = GameCreateArray<unsigned char>(pSrcData->FullWidth * pSrcData->FullHeight);
-				memset(pTmp, 0, pSrcData->FullWidth * pSrcData->FullHeight);
-				UnionSHP_Add(pTmp, pSrcData->FullWidth, pSrcData->FullHeight);
-			}	
-		}
 		if (!Variables::Rules.GetBool(ID, "Gate"))
 		{
 			if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "ActiveAnim"))
@@ -297,22 +266,6 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 		if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "BibShape"))
 			loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr));
 
-		/*if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "SuperAnimTwo"))
-		{
-			int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
-			loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
-		}*/
-		/*if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "SuperAnimThree"))
-		{
-			int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
-			loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
-		}*/
-		/*if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "SuperAnimFour"))
-		{
-			int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
-			loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
-		}*/
-		
 
 		ppmfc::CString PaletteName = GlobalVars::INIFiles::Art->GetString(ArtID, "Palette", "unit");
 		if (GlobalVars::INIFiles::Art->GetBool(ArtID, "TerrainPalette"))

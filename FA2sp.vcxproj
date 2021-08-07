@@ -193,6 +193,7 @@
     <ClInclude Include="FA2sp\Helpers\INIParser.h" />
     <ClInclude Include="FA2sp\Helpers\MultimapHelper.h" />
     <ClInclude Include="FA2sp\Helpers\Parser.h" />
+    <ClInclude Include="FA2sp\Helpers\Screenshot.h" />
     <ClInclude Include="FA2sp\Helpers\STDHelpers.h" />
     <ClInclude Include="FA2sp\Helpers\Templates.hpp" />
     <ClInclude Include="FA2sp\Logger.h" />
