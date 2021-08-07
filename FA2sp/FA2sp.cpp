@@ -124,13 +124,11 @@ DEFINE_HOOK(537129, ExeRun, 9)
 #ifdef _DEBUG
 	// MessageBox(NULL, APPLY_INFO, PRODUCT_NAME, MB_OK);
 #endif
-#ifdef ONLY_ONE
 	bool bMutexResult = MutexHelper::Attach(MUTEX_HASH_VAL);
 	if (!bMutexResult) {
-		MessageBox(nullptr, MUTEX_INIT_ERROR_MSG, MUTEX_INIT_ERROR_TIT, MB_OK);
-		ExitProcess(114514u);
+		if (MessageBox(nullptr, MUTEX_INIT_ERROR_MSG, MUTEX_INIT_ERROR_TIT, MB_YESNO | MB_ICONQUESTION) != IDYES)
+			ExitProcess(114514);
 	}
-#endif
 	Logger::Initialize();
 	Logger::Info(APPLY_INFO);
 	Logger::Wrap(1);
@@ -141,9 +139,7 @@ DEFINE_HOOK(537129, ExeRun, 9)
 
 DEFINE_HOOK(537208, ExeTerminate, 9)
 {
-#ifdef ONLY_ONE
 	MutexHelper::Detach();
-#endif
 	Logger::Info("FA2sp Terminating...\n");
 	Logger::Close();
 	DrawStuff::deinit();
