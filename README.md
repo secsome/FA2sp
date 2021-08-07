@@ -10,6 +10,9 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-08-07B) ==============================================================================================
+*) Fixed the bug for PowerUpLocs
+
 ======================= Changes (2021-08-07) ==============================================================================================
 *) The drawing function is fixed for several items
 *) The Isoview now will be redrawn automatically after layers are set
@@ -321,6 +324,86 @@ COLORREF - R,G,B each of them is in [0,255]
             [CURRENTLANGUAGE-Strings]
             [CURRENTLANGUAGE-TranslationsRA2]
             [CURRENTLANGUAGE-Translations]
+                +) Menu.File = TEXT
+                +) Menu.File.New = TEXT
+                +) Menu.File.Open = TEXT
+                +) Menu.File.Save = TEXT
+                +) Menu.File.SaveAs = TEXT
+                +) Menu.File.CheckMap = TEXT
+                +) Menu.File.RunGame = TEXT
+                +) Menu.File.Quit = TEXT
+                +) Menu.Edit = TEXT
+                +) Menu.Edit.Undo = TEXT
+                +) Menu.Edit.Redo = TEXT
+                +) Menu.Edit.Copy = TEXT
+                +) Menu.Edit.CopyWholeMap = TEXT
+                +) Menu.Edit.Paste = TEXT
+                +) Menu.Edit.PasteCentered = TEXT
+                +) Menu.Edit.Map = TEXT
+                +) Menu.Edit.Basic = TEXT
+                +) Menu.Edit.SpecialFlags = TEXT
+                +) Menu.Edit.Lighting = TEXT
+                +) Menu.Edit.Houses = TEXT
+                +) Menu.Edit.TriggerEditor = TEXT
+                +) Menu.Edit.TagEditor = TEXT
+                +) Menu.Edit.Taskforces = TEXT
+                +) Menu.Edit.Scripts = TEXT
+                +) Menu.Edit.Teams = TEXT
+                +) Menu.Edit.AITriggers = TEXT
+                +) Menu.Edit.AITriggerEnable = TEXT
+                +) Menu.Edit.LocalVariables = TEXT
+                +) Menu.Edit.SingleplayerSettings = TEXT
+                +) Menu.Edit.INIEditor = TEXT
+                +) Menu.Terrain = TEXT
+                +) Menu.Terrain.RaiseGround = TEXT
+                +) Menu.Terrain.LowerGround = TEXT
+                +) Menu.Terrain.FlattenGround = TEXT
+                +) Menu.Terrain.HideTileset = TEXT
+                +) Menu.Terrain.ShowEveryTileset = TEXT
+                +) Menu.Terrain.HideSingleField = TEXT
+                +) Menu.Terrain.ShowAllFields = TEXT
+                +) Menu.Terrain.RaiseSingleTile = TEXT
+                +) Menu.Terrain.LowerSingleTile = TEXT
+                +) Menu.MapTools = TEXT
+                +) Menu.MapTools.ChangeMapHeight = TEXT
+                +) Menu.MapTools.AutoCreateShores = TEXT
+                +) Menu.MapTools.AutoLevelUsingCliffs = TEXT
+                +) Menu.MapTools.PaintCliffFront = TEXT
+                +) Menu.MapTools.PaintCliffBack = TEXT
+                +) Menu.MapTools.SearchWaypoint = TEXT
+                +) Menu.MapTools.ToolScripts = TEXT
+                +) Menu.Online = TEXT
+                +) Menu.Online.Westwood = TEXT
+                +) Menu.Online.FA2Fansite = TEXT
+                +) Menu.Online.FA2Forum = TEXT
+                +) Menu.Options = TEXT
+                +) Menu.Options.Settings = TEXT
+                +) Menu.Options.ShowMinimap = TEXT
+                +) Menu.Options.Easymode = TEXT
+                +) Menu.Options.Sounds = TEXT
+                +) Menu.Options.ShowBuildingOutline = TEXT
+                +) Menu.Options.DisableAutoShore = TEXT
+                +) Menu.Options.DisableAutoLAT = TEXT
+                +) Menu.Options.DisableSlopeCorrection = TEXT
+                +) Menu.Help = TEXT
+                +) Menu.Help.Manual = TEXT
+                +) Menu.Help.Info = TEXT
+                +) Menu.Help.Credits = TEXT
+                +) Menu.Help.TipOfTheDay = TEXT
+                +) Menu.Layers = TEXT
+                +) Menu.Layers.Structures = TEXT
+                +) Menu.Layers.Infantries = TEXT
+                +) Menu.Layers.Units = TEXT
+                +) Menu.Layers.Aircrafts = TEXT
+                +) Menu.Layers.Basenodes = TEXT
+                +) Menu.Layers.Waypoints = TEXT
+                +) Menu.Layers.Celltags = TEXT
+                +) Menu.Layers.MoneyOnMap = TEXT
+                +) Menu.Layers.Overlays = TEXT
+                +) Menu.Layers.Terrains = TEXT
+                +) Menu.Layers.Smudges = TEXT
+                +) Menu.Layers.Tubes = TEXT
+                +) Menu.Layers.Bounds = TEXT
                 +) TaskforceTitle = TEXT
                 +) TaskforceList = TEXT
                 +) TaskforceUnits = TEXT
