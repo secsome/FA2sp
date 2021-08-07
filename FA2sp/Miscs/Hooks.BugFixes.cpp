@@ -53,33 +53,6 @@ DEFINE_HOOK(421BCE, CFinalSunApp_InitInstance_NoEasyViewExplain, 6)
 	return 0x421DBD;
 }
 
-// Fix the bug of SHP turret draws only one face
-DEFINE_HOOK(483EA4, CLoading_LoadObjects_SHPTurretFix_1, 7)
-{
-    REF_STACK(int, nFacingCount, STACK_OFFS(0x868, 0x4C));
-    // GET_STACK(bool, bIsBuilding, STACK_OFFS(0x868, 0x8C));
-    GET_STACK(ppmfc::CString, pRegName, STACK_OFFS(0x868, -0x4));
-
-    if (GlobalVars::INIFiles::Rules->GetBool(pRegName, "Turret"))
-        nFacingCount = 8;
-    else
-        nFacingCount = 1;
-
-    return 0x483EAB;
-}
-
-DEFINE_HOOK(483F9D, CLoading_LoadObjects_SHPTurretFix_2, 5)
-{
-    REF_STACK(int, nFlags, STACK_OFFS(0x868, 0x4C));
-    GET_STACK(bool, bIsBuilding, STACK_OFFS(0x868, 0x8C));
-    GET_STACK(ppmfc::CString, pRegName, STACK_OFFS(0x868, -0x4));
-
-    if (GlobalVars::INIFiles::Rules->GetBool(pRegName, "Turret") && bIsBuilding)
-        return 0x483FA4;
-    else
-        return 0;
-}
-
 // Fix bug for incorrect color while drawing
 DEFINE_HOOK(468760, Miscs_GetColor, 7)
 {

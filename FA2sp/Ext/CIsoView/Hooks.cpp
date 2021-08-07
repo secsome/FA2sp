@@ -3,8 +3,11 @@
 
 #include <GlobalVars.h>
 #include <CINI.h>
+#include <Drawing.h>
 
 #include <Windows.h>
+
+#include "../CLoading/Body.h"
 
 DEFINE_HOOK(45AF03, CIsoView_StatusBar_YXTOXY_YToX_1, 7)
 {
@@ -182,4 +185,88 @@ DEFINE_HOOK(474DDF, CIsoView_Draw_LayerVisible_Bounds, 5)
 DEFINE_HOOK(474FE0, CIsoView_Draw_LayerVisible_MoneyOnMap, 7)
 {
 	return CIsoViewExt::DrawMoneyOnMap ? 0 : 0x4750B0;
+}
+
+DEFINE_HOOK(471162, CIsoView_Draw_PowerUp1Loc_PosFix, 5)
+{
+	REF_STACK(const ppmfc::CString, ID, STACK_OFFS(0xD18, 0xBFC));
+	REF_STACK(const ppmfc::CString, BldID, STACK_OFFS(0xD18, 0xC08));
+	GET_STACK(int, X, STACK_OFFS(0xD18, 0xCFC));
+	GET_STACK(int, Y, STACK_OFFS(0xD18, 0xD00));
+
+	auto pBldData = ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(BldID, 0));
+	auto pData = ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(ID, 0));
+
+	ppmfc::CString ArtID; // BldArtID
+	if (auto ppImage = Variables::Rules.TryGetString(BldID, "Image"))
+		ArtID = *ppImage;
+	else
+		ArtID = BldID;
+
+	X += GlobalVars::INIFiles::Art->GetInteger(ArtID, "PowerUp1LocXX", 0);
+	Y += GlobalVars::INIFiles::Art->GetInteger(ArtID, "PowerUp1LocYY", 0);
+
+	X += (pBldData->FullWidth - pData->FullWidth) / 2;
+	Y += (pBldData->FullHeight - pData->FullHeight) / 2;
+
+	R->ESI(X);
+	R->EDI(Y);
+
+	return 0x47141D;
+}
+
+DEFINE_HOOK(471980, CIsoView_Draw_PowerUp2Loc_PosFix, 5)
+{
+	REF_STACK(const ppmfc::CString, ID, STACK_OFFS(0xD18, 0xBFC));
+	REF_STACK(const ppmfc::CString, BldID, STACK_OFFS(0xD18, 0xC08));
+	GET_STACK(int, X, STACK_OFFS(0xD18, 0xCFC));
+	GET_STACK(int, Y, STACK_OFFS(0xD18, 0xD00));
+
+	auto pBldData = ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(BldID, 0));
+	auto pData = ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(ID, 0));
+
+	ppmfc::CString ArtID; // BldArtID
+	if (auto ppImage = Variables::Rules.TryGetString(BldID, "Image"))
+		ArtID = *ppImage;
+	else
+		ArtID = BldID;
+
+	X += GlobalVars::INIFiles::Art->GetInteger(ArtID, "PowerUp2LocXX", 0);
+	Y += GlobalVars::INIFiles::Art->GetInteger(ArtID, "PowerUp2LocYY", 0);
+
+	X += (pBldData->FullWidth - pData->FullWidth) / 2;
+	Y += (pBldData->FullHeight - pData->FullHeight) / 2;
+
+	R->ESI(X);
+	R->EDI(Y);
+
+	return 0x471BB8;
+}
+
+DEFINE_HOOK(4720D3, CIsoView_Draw_PowerUp3Loc_PosFix, 5)
+{
+	REF_STACK(const ppmfc::CString, ID, STACK_OFFS(0xD18, 0xBFC));
+	REF_STACK(const ppmfc::CString, BldID, STACK_OFFS(0xD18, 0xC08));
+	GET_STACK(int, X, STACK_OFFS(0xD18, 0xCFC));
+	GET_STACK(int, Y, STACK_OFFS(0xD18, 0xD00));
+
+	auto pBldData = ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(BldID, 0));
+	auto pData = ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(ID, 0));
+
+	ppmfc::CString ArtID; // BldArtID
+	if (auto ppImage = Variables::Rules.TryGetString(BldID, "Image"))
+		ArtID = *ppImage;
+	else
+		ArtID = BldID;
+
+	X += GlobalVars::INIFiles::Art->GetInteger(ArtID, "PowerUp3LocXX", 0);
+	Y += GlobalVars::INIFiles::Art->GetInteger(ArtID, "PowerUp3LocYY", 0);
+
+	X += (pBldData->FullWidth - pData->FullWidth) / 2;
+	Y += (pBldData->FullHeight - pData->FullHeight) / 2;
+
+	R->ESI(X);
+	R->EDI(Y);
+
+	return 0x47230B;
 }

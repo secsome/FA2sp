@@ -5,6 +5,7 @@
 #include <CObjectDatas.h>
 #include <GlobalVars.h>
 #include <CINI.h>
+#include <Drawing.h>
 
 #include "../../FA2sp.h"
 
@@ -59,28 +60,3 @@ DEFINE_HOOK(4716BB, CLoading_Draw_PowerUpFacingFix, 7)
     R->Stack(0, 0);
     return 0;
 }
-
-//DEFINE_HOOK(471162, CIsoView_Draw_PowerUp1Loc, 5)
-//{
-//    REF_STACK(const ppmfc::CString, ID, STACK_OFFS(0xD18, 0xBFC));
-//    GET_STACK(const int, X, STACK_OFFS(0xD18, 0xCFC));
-//    GET_STACK(const int, Y, STACK_OFFS(0xD18, 0xD00));
-//    
-//    if (auto ppBld = Variables::Rules.TryGetString(ID, "PowersUpBuilding"))
-//    {
-//        ppmfc::CString ArtID;
-//        if (auto ppImage = Variables::Rules.TryGetString(*ppBld, "Image"))
-//            ArtID = *ppImage;
-//        else
-//            ArtID = *ppBld;
-//        R->ESI(X + GlobalVars::INIFiles::Art->GetInteger(ArtID, "PowerUp1LocXX", 0));
-//        R->EDI(Y + GlobalVars::INIFiles::Art->GetInteger(ArtID, "PowerUp1LocYY", 0));
-//    }
-//    else
-//    {
-//        R->ESI(X);
-//        R->EDI(Y);
-//    }
-//
-//    return 0x47141D;
-//}
