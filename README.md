@@ -10,6 +10,11 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-08-XX) ==============================================================================================
++) New ignore keys: IgnoreIdleAnim and IgnoreActiveAnimX
++) New drawing config: VehicleVoxelBarrelsRA2, use this to fix barrels' offset manually before I managed to make that automatically
+*) IgnoreSuperAnimX will be read correctly now
+
 ======================= Changes (2021-08-07B) ==============================================================================================
 *) Fixed the bug for PowerUpLocs
 
@@ -319,6 +324,7 @@ COLORREF - R,G,B each of them is in [0,255]
             \\\ 68=68 - Convert Type (Ares 3.0 Only),0,0,0,Immediately changes all members of this team into their respective script conversion types (Convert.Script).
             \\\ 69=69 - Sonar Reveal (Ares 3.0 Only),20,0,1,Disables the ability of all team members to cloak themselves for a number of FRAMES.
             \\\ 70=70 - Disable Weapons (Ares 3.0 Only),20,0,1,Disables the ability of all team members to fire for a number of FRAMES.
+        +) [VehicleVoxelBarrelsRA2]
     - FALanguage.ini
         *)  [CURRENTLANGUAGE-StringsRA2]
             [CURRENTLANGUAGE-Strings]
