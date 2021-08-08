@@ -207,8 +207,11 @@
     <ClInclude Include="FA2sp\vxl_drawing_lib.h" />
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="FA2sp\UI\CAircraftDialog.rc" />
+    <ResourceCompile Include="FA2sp\UI\CInfantryDialog.rc" />
     <ResourceCompile Include="FA2sp\UI\CMenu.rc" />
     <ResourceCompile Include="FA2sp\UI\CScriptTypes.rc" />
+    <ResourceCompile Include="FA2sp\UI\CStructureDialog.rc" />
     <ResourceCompile Include="FA2sp\UI\CTaskforce.rc" />
     <ResourceCompile Include="FA2sp\UI\CTriggerFrame.rc" />
     <ResourceCompile Include="FA2sp\UI\CTriggerOption.rc" />
@@ -219,6 +222,7 @@
     <ResourceCompile Include="FA2sp\UI\CHouses.rc" />
     <ResourceCompile Include="FA2sp\UI\CTeamTypes.rc" />
     <ResourceCompile Include="FA2sp\UI\CTileBrowserFrame.DialogBar.rc" />
+    <ResourceCompile Include="FA2sp\UI\CUnitDialog.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
