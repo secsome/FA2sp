@@ -100,7 +100,7 @@ BOOL APIENTRY DllMain(HANDLE hInstance, DWORD dwReason, LPVOID v)
 SYRINGE_HANDSHAKE(pInfo)
 {
 	if (pInfo) {
-		if (pInfo->Message && strcmp((const char*)(0x5CEB5C), "\\ecachemd") == 0)
+		if (pInfo->Message && strcmp((const char*)(0x5D3D28), "\\Red Alert 2") == 0)
 		{
 			sprintf_s(pInfo->Message, pInfo->cchMessage, APPLY_INFO);
 			return S_OK;
