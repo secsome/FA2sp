@@ -320,37 +320,41 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 		{
 			if (Variables::Rules.GetBool(ID, "TurretAnimIsVoxel"))
 			{
+				int turzadjust = Variables::Rules.GetInteger(ID, "TurretAnimZAdjust");
+
 				ppmfc::CString TurName = Variables::Rules.GetString(ID, "TurretAnim", ID + "tur");
 				ppmfc::CString BarlName = ID + "barl";
 
-				ppmfc::CString VXLName = TurName + ".vxl";
-				ppmfc::CString HVAName = TurName + ".hva";
+				
 				if (!DrawStuff::is_vpl_loaded())
 					DrawStuff::load_vpl("voxels.vpl");
 
 				unsigned char* pTurImages[8]{ nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr };
 				unsigned char* pBarlImages[8]{ nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr };
 				int turrect[8][4] = { 0 }, barlrect[8][4] = {0};
-				if (DrawStuff::load_vxl(VXLName))
-					if (DrawStuff::load_hva(HVAName))
-						for (int i = 0; i < 8; ++i)
-						{
-							// (13 - i) % 8 for facing fix
-							bool result = DrawStuff::get_to_image((13 - i) % 8, pTurImages[i],
-								turrect[i][0], turrect[i][1], turrect[i][2], turrect[i][3]);
-							if (!result)
-								break;
-						}
 
-				VXLName = BarlName + ".vxl";
-				HVAName = BarlName + ".hva";
+				ppmfc::CString VXLName = BarlName + ".vxl";
+				ppmfc::CString HVAName = BarlName + ".hva";
 				if (DrawStuff::load_vxl(VXLName))
 					if (DrawStuff::load_hva(HVAName))
 						for (int i = 0; i < 8; ++i)
 						{
 							// (13 - i) % 8 for facing fix
 							bool result = DrawStuff::get_to_image((13 - i) % 8, pBarlImages[i],
-								barlrect[i][0], barlrect[i][1], barlrect[i][2], barlrect[i][3]);
+								barlrect[i][0], barlrect[i][1], barlrect[i][2], barlrect[i][3], turzadjust);
+							if (!result)
+								break;
+						}
+
+				VXLName = TurName + ".vxl";
+				HVAName = TurName + ".hva";
+				if (DrawStuff::load_vxl(VXLName))
+					if (DrawStuff::load_hva(HVAName))
+						for (int i = 0; i < 8; ++i)
+						{
+							// (13 - i) % 8 for facing fix
+							bool result = DrawStuff::get_to_image((13 - i) % 8, pTurImages[i],
+								turrect[i][0], turrect[i][1], turrect[i][2], turrect[i][3], pBarlImages[i] ? 0 : turzadjust);
 							if (!result)
 								break;
 						}
@@ -524,6 +528,8 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 
 		if (bHasTurret)
 		{
+			int turoffset = GlobalVars::INIFiles::Art->GetInteger(ArtID, "TurretOffset");
+
 			ppmfc::CString turFileName = ImageID + "tur.vxl";
 			ppmfc::CString turHVAName = ImageID + "tur.hva";
 			if (DrawStuff::load_vxl(turFileName))
@@ -532,7 +538,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 					{
 						// (i+6) % 8 to fix the facing
 						bool result = DrawStuff::get_to_image((i + 6) % 8, pTurretImage[i],
-							turretrect[i][0], turretrect[i][1], turretrect[i][2], turretrect[i][3]);
+							turretrect[i][0], turretrect[i][1], turretrect[i][2], turretrect[i][3], turoffset);
 
 						if (!result)
 							break;
@@ -546,7 +552,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 					{
 						// (i+6) % 8 to fix the facing
 						bool result = DrawStuff::get_to_image((i + 6) % 8, pBarrelImage[i],
-							barrelrect[i][0], barrelrect[i][1], barrelrect[i][2], barrelrect[i][3]);
+							barrelrect[i][0], barrelrect[i][1], barrelrect[i][2], barrelrect[i][3], turoffset);
 
 						if (!result)
 							break;

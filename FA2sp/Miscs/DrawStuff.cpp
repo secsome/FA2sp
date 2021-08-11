@@ -50,10 +50,10 @@ bool DrawStuff::load_hva(ppmfc::CString name)
     return result;
 }
 
-bool DrawStuff::get_to_image(unsigned int nFacing, unsigned char*& pBuffer,int& width, int& height)
+bool DrawStuff::get_to_image(unsigned int nFacing, unsigned char*& pBuffer,int& width, int& height, const int offset)
 {
     unsigned int nIndex = 4 * nFacing;
-    vxl_drawing_lib::prepare_cache(nIndex);
+    vxl_drawing_lib::prepare_cache(nIndex, offset);
     vxl_drawing_lib::get_image_size(nIndex, width, height);
     if (width < 0 || height < 0)
         return false;
@@ -61,10 +61,10 @@ bool DrawStuff::get_to_image(unsigned int nFacing, unsigned char*& pBuffer,int& 
     return vxl_drawing_lib::get_to_image(nIndex, pBuffer);
 }
 
-bool DrawStuff::get_to_image(unsigned int nFacing, unsigned char*& pBuffer, int& width, int& height, int& x, int& y)
+bool DrawStuff::get_to_image(unsigned int nFacing, unsigned char*& pBuffer, int& width, int& height, int& x, int& y, const int offset)
 {
     unsigned int nIndex = 4 * nFacing;
-    vxl_drawing_lib::prepare_cache(nIndex);
+    vxl_drawing_lib::prepare_cache(nIndex, offset);
     vxl_drawing_lib::get_image_frame(nIndex, width, height, x, y);
     if (width < 0 || height < 0)
         return false;
