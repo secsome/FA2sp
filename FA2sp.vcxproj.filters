@@ -114,6 +114,12 @@
     <ClInclude Include="FA2sp\Helpers\Screenshot.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\Ext\CHouses\Body.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">
@@ -263,6 +269,12 @@
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Hooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CHouses\Body.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FA2sp\FA2sp.rc">
@@ -299,6 +311,21 @@
       <Filter>资源文件</Filter>
     </ResourceCompile>
     <ResourceCompile Include="FA2sp\UI\CTaskforce.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="FA2sp\UI\CAircraftDialog.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="FA2sp\UI\CInfantryDialog.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="FA2sp\UI\CStructureDialog.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="FA2sp\UI\CUnitDialog.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>

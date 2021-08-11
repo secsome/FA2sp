@@ -50,21 +50,11 @@ bool DrawStuff::load_hva(ppmfc::CString name)
     return result;
 }
 
-bool DrawStuff::get_to_image(unsigned int nFacing, unsigned char*& pBuffer,int& width, int& height)
+bool DrawStuff::get_to_image(unsigned int nFacing, unsigned char*& pBuffer, int& width,
+    int& height, int& x, int& y, const int F, const int L, const int H)
 {
     unsigned int nIndex = 4 * nFacing;
-    vxl_drawing_lib::prepare_cache(nIndex);
-    vxl_drawing_lib::get_image_size(nIndex, width, height);
-    if (width < 0 || height < 0)
-        return false;
-    pBuffer = GameCreateArray<unsigned char>(width * height);
-    return vxl_drawing_lib::get_to_image(nIndex, pBuffer);
-}
-
-bool DrawStuff::get_to_image(unsigned int nFacing, unsigned char*& pBuffer, int& width, int& height, int& x, int& y)
-{
-    unsigned int nIndex = 4 * nFacing;
-    vxl_drawing_lib::prepare_cache(nIndex);
+    vxl_drawing_lib::prepare_cache(nIndex, F, L, H);
     vxl_drawing_lib::get_image_frame(nIndex, width, height, x, y);
     if (width < 0 || height < 0)
         return false;

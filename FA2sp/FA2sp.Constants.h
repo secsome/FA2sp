@@ -15,6 +15,6 @@ constexpr char* PRODUCT_NAME = "FA2sp";
 constexpr char* APPLY_INFO = "Found Final Alert 2 version 1.02. Applying FA2sp - "  __DATE__ " - " __TIME__;
 
 constexpr char* MUTEX_HASH_VAL = "b8097bca8590a4f46c975ebb43503aab2243ce7f1c87f12f7984dbe1";
-constexpr char* MUTEX_INIT_ERROR_MSG = "The program has already launched!";
+constexpr char* MUTEX_INIT_ERROR_MSG = "The program has already launched! Some function may work not correctly. Do you still want to launch it?";
 constexpr char* MUTEX_INIT_ERROR_TIT = "FA2sp Init Checker";
 

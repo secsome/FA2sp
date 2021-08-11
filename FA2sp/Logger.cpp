@@ -15,9 +15,12 @@ void Logger::Initialize() {
 }
 
 void Logger::Close() {
-	Time(pTime);
-	Raw("FA2sp Logger Closing at %s.\n", pTime);
-	fclose(pFile);
+	if (bInitialized)
+	{
+		Time(pTime);
+		Raw("FA2sp Logger Closing at %s.\n", pTime);
+		fclose(pFile);
+	}
 }
 
 void Logger::Write(kLoggerType type, const char* format, va_list args) {
@@ -94,7 +97,10 @@ void Logger::Time(char* ret) {
 }
 
 void Logger::Wrap(unsigned int cnt) {
-	while (cnt--)
-		fprintf_s(pFile, "\n");
-	fflush(pFile);
+	if (bInitialized)
+	{
+		while (cnt--)
+			fprintf_s(pFile, "\n");
+		fflush(pFile);
+	}
 }

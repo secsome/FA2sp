@@ -16,7 +16,7 @@ public:
     static bool load_vpl(unsigned char* pVPLBuffer);
     static bool load_vxl(unsigned char* pVXLBuffer);
     static bool load_hva(unsigned char* pHVABuffer);
-    static bool prepare_cache(unsigned int nFacing);
+    static bool prepare_cache(unsigned int nFacing, const int F, const int L, const int H);
     static int get_image_width(unsigned int nFacing);
     static int get_image_height(unsigned int nFacing);
     static void get_image_frame(unsigned int nFacing, int& width, int& height, int& x, int& y);

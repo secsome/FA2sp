@@ -4,9 +4,13 @@
 
 #include "../../Helpers/STDHelpers.h"
 
+#include "../../ExtraWindow/CAllieEditor/CAllieEditor.h"
+
 void CHousesExt::ProgramStartupInit()
 {
-	RunTime::ResetMemoryContentAt(0x593C80 + 0x4, &RunTime::Messages::COMBOBOX_KILLFOCUS, 4);
+	RunTime::ResetMemoryContentAt(0x593DE8, &CHousesExt::PreTranslateMessageExt);
+
+	//RunTime::ResetMemoryContentAt(0x593C80 + 0x4, &RunTime::Messages::COMBOBOX_KILLFOCUS, 4);
 }
 
 void CHousesExt::UpdateComboboxContents()
@@ -23,6 +27,11 @@ void CHousesExt::UpdateComboboxContents()
 BOOL CHousesExt::PreTranslateMessageExt(MSG* pMsg)
 {
 	switch (pMsg->message) {
+	case WM_LBUTTONUP:
+	{
+		if (pMsg->hwnd == this->GetDlgItem(1145)->GetSafeHwnd())
+			CAllieEditor::Create();
+	}
 	default:
 		break;
 	}

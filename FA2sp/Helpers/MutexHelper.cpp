@@ -1,15 +1,15 @@
 #include "MutexHelper.h"
 
-namespace MutexHelper {
-	bool Attach(ppmfc::CString MutexVal) {
-		_Mutex = CreateMutex(NULL, TRUE, MutexVal);
-		DWORD dwError = GetLastError();
-		if (_Mutex && dwError != ERROR_ALREADY_EXISTS)
-			return true;
-		return false;
-	}
+HANDLE MutexHelper::_Mutex = INVALID_HANDLE_VALUE;
 
-	void Detach() {
-		ReleaseMutex(_Mutex);
-	}
+bool MutexHelper::Attach(const char* MutexVal) {
+	_Mutex = CreateMutex(NULL, TRUE, MutexVal);
+	DWORD dwError = GetLastError();
+	if (_Mutex && dwError != ERROR_ALREADY_EXISTS)
+		return true;
+	return false;
+}
+
+void MutexHelper::Detach() {
+	ReleaseMutex(_Mutex);
 }

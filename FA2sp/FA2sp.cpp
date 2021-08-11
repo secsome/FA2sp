@@ -100,20 +100,15 @@ BOOL APIENTRY DllMain(HANDLE hInstance, DWORD dwReason, LPVOID v)
 SYRINGE_HANDSHAKE(pInfo)
 {
 	if (pInfo) {
-		//if (pInfo->exeFilesize == 0x1F4000)
-		//{
-		//	sprintf_s(pInfo->Message, pInfo->cchMessage, APPLY_INFO);
-		//	return S_OK;
-		//}
-		//else
-		//{
-		//	sprintf_s(pInfo->Message, pInfo->cchMessage, "Requires Final Alert 2 version 1.02.");
-		//	return S_FALSE;
-		//}
 		if (pInfo->Message)
 		{
 			sprintf_s(pInfo->Message, pInfo->cchMessage, APPLY_INFO);
 			return S_OK;
+		}
+		else
+		{
+			sprintf_s(pInfo->Message, pInfo->cchMessage, "Requires Official Final Alert 2 version 1.02.");
+			return S_FALSE;
 		}
 	}
 	return E_POINTER;
@@ -124,13 +119,11 @@ DEFINE_HOOK(537129, ExeRun, 9)
 #ifdef _DEBUG
 	// MessageBox(NULL, APPLY_INFO, PRODUCT_NAME, MB_OK);
 #endif
-#ifdef ONLY_ONE
 	bool bMutexResult = MutexHelper::Attach(MUTEX_HASH_VAL);
 	if (!bMutexResult) {
-		MessageBox(nullptr, MUTEX_INIT_ERROR_MSG, MUTEX_INIT_ERROR_TIT, MB_OK);
-		ExitProcess(114514u);
+		if (MessageBox(nullptr, MUTEX_INIT_ERROR_MSG, MUTEX_INIT_ERROR_TIT, MB_YESNO | MB_ICONQUESTION) != IDYES)
+			ExitProcess(114514);
 	}
-#endif
 	Logger::Initialize();
 	Logger::Info(APPLY_INFO);
 	Logger::Wrap(1);
@@ -141,9 +134,7 @@ DEFINE_HOOK(537129, ExeRun, 9)
 
 DEFINE_HOOK(537208, ExeTerminate, 9)
 {
-#ifdef ONLY_ONE
 	MutexHelper::Detach();
-#endif
 	Logger::Info("FA2sp Terminating...\n");
 	Logger::Close();
 	DrawStuff::deinit();
