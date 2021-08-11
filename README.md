@@ -10,10 +10,14 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-======================= Changes (2021-08-XX) ==============================================================================================
+======================= Changes (2021-08-11) ==============================================================================================
+*) VXL Units' TurretOffset and Buildings' VXL turrets should be drawn at correct place
 +) New ignore keys: IgnoreIdleAnim and IgnoreActiveAnimX
-+) New drawing config: VehicleVoxelBarrelsRA2, use this to fix barrels' offset manually before I managed to make that automatically
++) New drawing config: VehicleVoxelBarrelsRA2
 *) IgnoreSuperAnimX will be read correctly now
++) Import AllieEditor for CHouses from FA2Copy
+*) Adjustments on several dialogs
+*) Now you can run multiple FA2sp at the same time
 
 ======================= Changes (2021-08-07B) ==============================================================================================
 *) Fixed the bug for PowerUpLocs
