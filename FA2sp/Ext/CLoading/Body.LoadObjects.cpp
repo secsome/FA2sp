@@ -528,7 +528,11 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 
 		if (bHasTurret)
 		{
-			int turoffset = GlobalVars::INIFiles::Art->GetInteger(ArtID, "TurretOffset");
+			int F, L, H;
+			int s_count = sscanf_s(GlobalVars::INIFiles::Art->GetString(ArtID, "TurretOffset", "0,0,0"), "%d,%d,%d", &F, &L, &H);
+			if (s_count == 0) F = L = H = 0;
+			else if (s_count == 1) L = H = 0;
+			else if (s_count == 2) H = 0;
 
 			ppmfc::CString turFileName = ImageID + "tur.vxl";
 			ppmfc::CString turHVAName = ImageID + "tur.hva";
@@ -538,7 +542,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 					{
 						// (i+6) % 8 to fix the facing
 						bool result = DrawStuff::get_to_image((i + 6) % 8, pTurretImage[i],
-							turretrect[i][0], turretrect[i][1], turretrect[i][2], turretrect[i][3], turoffset);
+							turretrect[i][0], turretrect[i][1], turretrect[i][2], turretrect[i][3], F, L, H);
 
 						if (!result)
 							break;
@@ -552,7 +556,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 					{
 						// (i+6) % 8 to fix the facing
 						bool result = DrawStuff::get_to_image((i + 6) % 8, pBarrelImage[i],
-							barrelrect[i][0], barrelrect[i][1], barrelrect[i][2], barrelrect[i][3], turoffset);
+							barrelrect[i][0], barrelrect[i][1], barrelrect[i][2], barrelrect[i][3], F, L, H);
 
 						if (!result)
 							break;
