@@ -20,7 +20,6 @@ DEFINE_HOOK(4808A0, CLoading_LoadObjects, 5)
     return 0x486173;
 }
 
-
 DEFINE_HOOK(475450, GetObjectName, 7)
 {
     GET_STACK(ppmfc::CString*, pRet, 0x4);
@@ -58,5 +57,17 @@ DEFINE_HOOK_AGAIN(47186C, CLoading_Draw_PowerUpFacingFix, 7)
 DEFINE_HOOK(4716BB, CLoading_Draw_PowerUpFacingFix, 7)
 {
     R->Stack(0, 0);
+    return 0;
+}
+
+DEFINE_HOOK(42CBFC, CFinalSunDlg_CreateMap_ClearCLoadingExtData, 8)
+{
+    CLoadingExt::ClearItemTypes();
+    return 0;
+}
+
+DEFINE_HOOK(49D2C0, CMapData_LoadMap_ClearCLoadingExtData, 5)
+{
+    CLoadingExt::ClearItemTypes();
     return 0;
 }

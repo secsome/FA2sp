@@ -97,6 +97,11 @@ void CLoadingExt::LoadObjects(ppmfc::CString ID)
 	}
 }
 
+void CLoadingExt::ClearItemTypes()
+{
+	ObjectTypes.clear();
+}
+
 ppmfc::CString CLoadingExt::GetTerrainOrSmudgeFileID(ppmfc::CString ID)
 {
 	ppmfc::CString ArtID = GetArtID(ID);
