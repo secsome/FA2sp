@@ -10,6 +10,11 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-08-13 RELEASE 1.0.0) ==============================================================================================
+*) Minor adjustments on ObjectBrowserControl
++) Replace the exception handler, now you can save a dmp file when FA2 crashes
+*) Fix the bug that some building cannot be drawn correctly
+
 ======================= Changes (2021-08-11) ==============================================================================================
 *) VXL Units' TurretOffset and Buildings' VXL turrets should be drawn at correct place
 +) New ignore keys: IgnoreIdleAnim and IgnoreActiveAnimX
@@ -334,6 +339,7 @@ COLORREF - R,G,B each of them is in [0,255]
             [CURRENTLANGUAGE-Strings]
             [CURRENTLANGUAGE-TranslationsRA2]
             [CURRENTLANGUAGE-Translations]
+                +) OthersObList = TEXT
                 +) Menu.File = TEXT
                 +) Menu.File.New = TEXT
                 +) Menu.File.Open = TEXT
