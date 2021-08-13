@@ -1,8 +1,8 @@
 #include <Helpers/Macro.h>
+#include <Drawing.h>
 #include <GlobalVars.h>
 #include <CINI.h>
 #include <CMapData.h>
-#include <Drawing.h>
 #include <CPalette.h>
 #include <CObjectDatas.h>
 
@@ -11,7 +11,7 @@
 #include "../FA2sp.h"
 
 // FA2 will no longer automatically change the extension of map
-DEFINE_HOOK(42703A, CFinalSunDlg_SaveMap_Extension, 9)
+DEFINE_HOOK(42700A, CFinalSunDlg_SaveMap_Extension, 9)
 {
 	return 0x42708D;
 }

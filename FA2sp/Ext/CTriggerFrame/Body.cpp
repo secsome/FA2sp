@@ -37,9 +37,3 @@ BOOL CTriggerFrameExt::PreTranslateMessageExt(MSG* pMsg)
 	}
 	return this->FA2CDialog::PreTranslateMessage(pMsg);
 }
-
-DEFINE_HOOK(4CEC40, ASDUGVJBHASBDIHU, 7)
-{
-	Logger::Debug("ASGDVJHBAS\n");
-	return 0;
-}

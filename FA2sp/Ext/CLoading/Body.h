@@ -23,6 +23,7 @@ public:
 
 	void LoadObjects(ppmfc::CString pRegName);
 	static ppmfc::CString GetImageName(ppmfc::CString ID, int nFacing);
+	static void ClearItemTypes();
 private:
 	void GetFullPaletteName(ppmfc::CString& PaletteName);
 	static ppmfc::CString* __cdecl GetDictName(ppmfc::CString* ret, const char* ID, int nFacing) { JMP_STD(0x475450); }
@@ -75,6 +76,7 @@ private:
 		int DeltaX;
 		int DeltaY;
 	};
+	
 	static std::vector<SHPUnionData> UnionSHP_Data[2];
 	static std::map<ppmfc::CString, ObjectType> ObjectTypes;
 	static unsigned char VXL_Data[0x10000];

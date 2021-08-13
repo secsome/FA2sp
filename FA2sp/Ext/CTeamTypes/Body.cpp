@@ -95,99 +95,60 @@ void CTeamTypesExt::OnBNCloneClicked()
 {
 	if (this->CCBTeamList.GetCount() > 0 && this->CCBTeamList.GetCurSel() >= 0)
 	{
-		int EditsID[13] = { 1010,1011,1012,1122,1143,1123,1126,1103,1140,1079,1124,1125,1083 };
-		CWnd* Edits[13];
-		for (int i = 0; i < 13; ++i)
-			Edits[i] = GetDlgItem(EditsID[i]);
-		int CheckID[20] = { 1113,1114,1115,1116,1117,1128,1129,1130,1131,1132,1119,1120,1127,1133,1134,1135,1137,1136,1138,1139 };
-		CWnd* Check[20];
-		for (int i = 0; i < 20; ++i)
-			Check[i] = GetDlgItem(CheckID[i]);
-		CString CurrentTeamData[13];
-		for (int i = 0; i < 13; ++i)
-			Edits[i]->GetWindowText(CurrentTeamData[i]);
-		CurrentTeamData[0] += " Clone";
-		int IsChecked[20];
-		for (int i = 0; i < 20; ++i)
-			IsChecked[i] = Check[i]->SendMessage(BM_GETCHECK, 0, 0);
+		ppmfc::CString currentID;
+		this->CCBTeamList.GetWindowText(currentID);
+		STDHelpers::TrimIndex(currentID);
 
-		this->OnBNNewTeamClicked();
+		ppmfc::CString key = INIClass::GetAvailableKey("TeamTypes");
+		ppmfc::CString value = INIClass::GetAvailableIndex();
 
-		for (int i = 0; i < 3; ++i)
+		GlobalVars::INIFiles::CurrentDocument->WriteString("TeamTypes", key, value);
+
+		auto name = GlobalVars::INIFiles::CurrentDocument->GetString(currentID, "Name", "New Teamtype") + " Clone";
+		GlobalVars::INIFiles::CurrentDocument->WriteString(value, "Name", name);
+
+		auto copyitem = [&value, &currentID](ppmfc::CString key)
 		{
-			Edits[i]->SetWindowText(CurrentTeamData[i]);
-			this->SendMessage(WM_COMMAND, MAKEWPARAM(EditsID[i], EN_SETFOCUS), (LPARAM)Edits[i]->GetSafeHwnd());
-			this->SendMessage(WM_COMMAND, MAKEWPARAM(EditsID[i], EN_KILLFOCUS), (LPARAM)Edits[i]->GetSafeHwnd());
-		}
-		for (int i = 3; i < 13; ++i)
-		{
-			Edits[i]->SetWindowText(CurrentTeamData[i]);
-			this->SendMessage(WM_COMMAND, MAKEWPARAM(EditsID[i], CBN_SETFOCUS), (LPARAM)Edits[i]->GetSafeHwnd());
-			this->SendMessage(WM_COMMAND, MAKEWPARAM(EditsID[i], CBN_KILLFOCUS), (LPARAM)Edits[i]->GetSafeHwnd());
-		}
+			auto data = GlobalVars::INIFiles::CurrentDocument->GetString(currentID, key);
+			GlobalVars::INIFiles::CurrentDocument->WriteString(value, key, data);
+		};
 
-		for (int i = 0; i < 20; ++i)
-		{
-			Check[i]->SendMessage(BM_SETCHECK, IsChecked[i], 0);
-			Check[i]->SendMessage(WM_LBUTTONDOWN, CheckID[i], 0);
-			Check[i]->SendMessage(WM_LBUTTONUP, CheckID[i], 0);
-			Check[i]->SendMessage(WM_LBUTTONDOWN, CheckID[i], 0);
-			Check[i]->SendMessage(WM_LBUTTONUP, CheckID[i], 0);
-		}
+		copyitem("Max");
+		copyitem("Full");
+		copyitem("Group");
+		copyitem("House");
+		copyitem("Script");
+		copyitem("Whiner");
+		copyitem("Dropped");
+		copyitem("Suicide");
+		copyitem("Loadable");
+		copyitem("Prebuild");
+		copyitem("Priority");
+		copyitem("Waypoint");
+		copyitem("Annoyance");
+		copyitem("IonImmune");
+		copyitem("Recruiter");
+		copyitem("Reinforce");
+		copyitem("TaskForce");
+		copyitem("TechLevel");
+		copyitem("Aggressive");
+		copyitem("Autocreate");
+		copyitem("GuardSlower");
+		copyitem("OnTransOnly");
+		copyitem("AvoidThreats");
+		copyitem("LooseRecruit");
+		copyitem("VeteranLevel");
+		copyitem("IsBaseDefense");
+		copyitem("UseTransportOrigin");
+		copyitem("MindControlDecision");
+		copyitem("OnlyTargetHouseEnemy");
+		copyitem("TransportsReturnOnUnload");
+		copyitem("AreTeamMembersRecruitable");
 
-		for (int i = 0; i < 13; ++i)
-			SAFE_RELEASE(Edits[i]);
+		int idx = this->CCBTeamList.AddString(value + " (" + name + ")");
+		this->CCBTeamList.SetCurSel(idx);
 
-		for (int i = 0; i < 20; ++i)
-			SAFE_RELEASE(Check[i]);
+		// this->OnCBCurrentTaskforceSelectChanged(); unnecessary, this is not needed for we should display them same thing
+		this->SetDlgItemText(1010, name); // update the name huh
 	}
-
-	/*
-	CString src;
-		this->CCBTeamList.GetWindowText(src);
-		STDHelpers::TrimIndex(src);
-		this->OnBNNewTeamClicked();
-		CString des;
-		this->CCBTeamList.GetWindowText(des);
-		STDHelpers::TrimIndex(des);
-
-		auto& doc = GlobalVars::INIFiles::CurrentDocument();
-
-		FAString::Assignment(this->CString_Max, doc.GetString(src, "Max"));
-		this->BOOL_Full = doc.GetBool(src, "Full");
-		FAString::Assignment(this->CString_Name, doc.GetString(src, "Name") + " Clone");
-		FAString::Assignment(this->CString_Group, doc.GetString(src, "Group"));
-		FAString::Assignment(this->CString_House, doc.GetString(src, "House"));
-		FAString::Assignment(this->CString_Script, doc.GetString(src, "Script"));
-		this->BOOL_Whiner = doc.GetBool(src, "Whiner");
-		// dropped
-		this->BOOL_Suicide = doc.GetBool(src, "Suicide");
-		this->BOOL_Loadable = doc.GetBool(src, "Loadable");
-		this->BOOL_Prebuild = doc.GetBool(src, "Prebuild");
-		FAString::Assignment(this->CString_Priority , doc.GetString(src, "Priority"));
-		FAString::Assignment(this->CString_Waypoint , doc.GetString(src, "Waypoint"));
-		this->BOOL_Annoyance = doc.GetBool(src, "Annoyance");
-		this->BOOL_IonImmune = doc.GetBool(src, "IonImmune");
-		this->BOOL_Recruiter = doc.GetBool(src, "Recruiter");
-		this->BOOL_Reinforce = doc.GetBool(src, "Reinforce");
-		FAString::Assignment(this->CString_Taskforce , doc.GetString(src, "TaskForce"));
-		FAString::Assignment(this->CString_TechLevel , doc.GetString(src, "TechLevel"));
-		this->BOOL_Aggressive = doc.GetBool(src, "Aggresive");
-		this->BOOL_Autocreate = doc.GetBool(src, "Autocreate");
-		this->BOOL_GuardSlower = doc.GetBool(src, "GuardSlower");
-		this->BOOL_OnTransOnly = doc.GetBool(src, "OnTransOnly");
-		this->BOOL_AvoidThreats = doc.GetBool(src, "AvoidThreats");
-		this->BOOL_LooseRecruit = doc.GetBool(src, "LooseRecruit");
-		FAString::Assignment(this->CString_VeteranLevel, doc.GetString(src, "VeteranLevel"));
-		this->BOOL_IsBaseDefense = doc.GetBool(src, "IsBaseDefense");
-		FAString::Assignment(this->CString_TransportWaypoint, doc.GetString(src, "TransportWaypoint"));
-		// UseTransportOrigin
-		FAString::Assignment(this->CString_MindControlDecision, doc.GetString(src, "MindControlDecision"));
-		this->BOOL_OnlyTargetHouseEnemy = doc.GetBool(src, "OnlyTargetHouseEnemy");
-		this->BOOL_TransportsReturnOnUnload = doc.GetBool(src, "TransportsReturnOnUnload");
-		this->BOOL_AreTeamMembersRecruitable = doc.GetBool(src, "AreTeamMembersRecruitable");
-		
-		
-		
-		this->FA2CDialog::UpdateData(FALSE);*/
 }

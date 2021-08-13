@@ -175,17 +175,6 @@ void ObjectBrowserControlExt::Redraw_Owner()
     bool bMultiplayer = doc.GetBool("Basic", "MultiplayerOnly"); 
     auto& section = Variables::Rules.ParseIndicies("Houses", true);
 
-    bool &bLoadOnlySpecial = bMultiplayer;
-    if (bMultiplayer && section.size() > 2)
-        bLoadOnlySpecial = 
-        ::MessageBox(
-            NULL,
-            "This map has MultiplayerOnly=yes but has more"
-            "Houses than two (Neutral and Special), do you"
-            "still want to load these houses?",
-            "WARNNING",
-            MB_YESNO
-        ) != IDYES;
     for (size_t i = 0, sz = section.size(); i < sz; ++i)
     {
         if (bMultiplayer)
@@ -214,7 +203,7 @@ void ObjectBrowserControlExt::Redraw_Infantry()
         subNodes[i++] = this->InsertString("Soviet", -1, hInfantry);
         subNodes[i++] = this->InsertString("Yuri", -1, hInfantry);
     }
-    subNodes[-1] = this->InsertString("Others", -1, hInfantry);
+    subNodes[-1] = this->InsertTranslatedString("OthersObList", -1, hInfantry);
 
     auto& infantries = Variables::Rules.GetSection("InfantryTypes");
     for (auto& inf : infantries)
@@ -263,7 +252,7 @@ void ObjectBrowserControlExt::Redraw_Vehicle()
         subNodes[i++] = this->InsertString("Soviet", -1, hVehicle);
         subNodes[i++] = this->InsertString("Yuri", -1, hVehicle);
     }
-    subNodes[-1] = this->InsertString("Others", -1, hVehicle);
+    subNodes[-1] = this->InsertTranslatedString("OthersObList", -1, hVehicle);
 
     auto& vehicles = Variables::Rules.GetSection("VehicleTypes");
     for (auto& veh : vehicles)
@@ -313,7 +302,7 @@ void ObjectBrowserControlExt::Redraw_Aircraft()
         subNodes[i++] = this->InsertString("Soviet", -1, hAircraft);
         subNodes[i++] = this->InsertString("Yuri", -1, hAircraft);
     }
-    subNodes[-1] = this->InsertString("Others", -1, hAircraft);
+    subNodes[-1] = this->InsertTranslatedString("OthersObList", -1, hAircraft);
 
     auto& aircrafts = Variables::Rules.GetSection("AircraftTypes");
     for (auto& air : aircrafts)
@@ -363,7 +352,7 @@ void ObjectBrowserControlExt::Redraw_Building()
         subNodes[i++] = this->InsertString("Soviet", -1, hBuilding);
         subNodes[i++] = this->InsertString("Yuri", -1, hBuilding);
     }
-    subNodes[-1] = this->InsertString("Others", -1, hBuilding);
+    subNodes[-1] = this->InsertTranslatedString("OthersObList", -1, hBuilding);
 
     auto& buildings = Variables::Rules.GetSection("BuildingTypes");
     for (auto& bud : buildings)
@@ -398,16 +387,30 @@ void ObjectBrowserControlExt::Redraw_Terrain()
     HTREEITEM& hTerrain = ExtNodes[Root_Terrain];
     if (hTerrain == NULL)   return;
 
-    this->InsertTranslatedString("RndTreeObList", 50999, hTerrain);
-
     auto& terrains = Variables::Rules.ParseIndicies("TerrainTypes", true);
+
+    HTREEITEM hTree, hTrff, hSign, hLight, hOther;
+    
+    hTree = this->InsertTranslatedString("TreesObList", -1, hTerrain);
+    hTrff = this->InsertTranslatedString("TrafficLightsObList", -1, hTerrain);
+    hSign = this->InsertTranslatedString("SignsObList", -1, hTerrain);
+    hLight = this->InsertTranslatedString("LightPostsObList", -1, hTerrain);
+    hOther = this->InsertTranslatedString("OthersObList", -1, hTerrain);
+    
+    this->InsertTranslatedString("RndTreeObList", 50999, hTree);
+
     for (size_t i = 0, sz = terrains.size(); i < sz; ++i)
     {
-        CString buffer;
-        buffer = QueryUIName(terrains[i]);
-        buffer += "(" + terrains[i] + ")";
+        FA2sp::Buffer = QueryUIName(terrains[i]);
+        FA2sp::Buffer += "(" + terrains[i] + ")";
         if (IgnoreSet.find(terrains[i]) == IgnoreSet.end())
-            this->InsertString(buffer, Const_Terrain + i, hTerrain);
+        {
+            if (terrains[i].Find("TREE") >= 0)  this->InsertString(FA2sp::Buffer, Const_Terrain + i, hTree);
+            else if (terrains[i].Find("TRFF") >= 0)  this->InsertString(FA2sp::Buffer, Const_Terrain + i, hTrff);
+            else if (terrains[i].Find("SIGN") >= 0)  this->InsertString(FA2sp::Buffer, Const_Terrain + i, hSign);
+            else if (terrains[i].Find("LT") >= 0)  this->InsertString(FA2sp::Buffer, Const_Terrain + i, hLight);
+            else this->InsertString(FA2sp::Buffer, Const_Terrain + i, hOther);
+        }
     }
 }
 

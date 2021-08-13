@@ -1,13 +1,15 @@
 #include "Body.h"
 #include "../../FA2sp.h"
 
+#include <Drawing.h>
 #include <GlobalVars.h>
 #include <CINI.h>
-#include <Drawing.h>
+#include <CMapData.h>
 
 #include <Windows.h>
 
 #include "../CLoading/Body.h"
+#include "../../Helpers/STDHelpers.h"
 
 DEFINE_HOOK(45AF03, CIsoView_StatusBar_YXTOXY_YToX_1, 7)
 {
@@ -269,4 +271,33 @@ DEFINE_HOOK(4720D3, CIsoView_Draw_PowerUp3Loc_PosFix, 5)
 	R->EDI(Y);
 
 	return 0x47230B;
+}
+
+DEFINE_HOOK(470986, CIsoView_Draw_BuildingImageDataQuery_1, 8)
+{
+	REF_STACK(ImageDataClass, data, STACK_OFFS(0xD18, 0xAFC));
+	REF_STACK(CellData, cell, STACK_OFFS(0xD18, 0xC60));
+	GET_STACK(int, nRotation, STACK_OFFS(0xD18, 0xC00));
+
+	auto const ID = STDHelpers::SplitString(GlobalVars::INIFiles::CurrentDocument->GetStringAt("Structures", cell.Structure))[1];
+	int nFacing = 0;
+	if (Variables::Rules.GetBool(ID, "Turret"))
+		nFacing = 7 - (nRotation / 32) % 8;
+	data = *ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(ID, nFacing));
+
+	return 0x4709E1;
+}
+
+DEFINE_HOOK(470AE3, CIsoView_Draw_BuildingImageDataQuery_2, 7)
+{
+	REF_STACK(ImageDataClass, data, STACK_OFFS(0xD18, 0xAFC));
+	REF_STACK(ppmfc::CString, ID, STACK_OFFS(0xD18, 0xC08));
+	GET_STACK(int, nRotation, STACK_OFFS(0xD18, 0xC00));
+
+	int nFacing = 0;
+	if (Variables::Rules.GetBool(ID, "Turret"))
+		nFacing = (7 - nRotation / 32) % 8;
+	data = *ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(ID, nFacing));
+
+	return 0x470B4D;
 }
