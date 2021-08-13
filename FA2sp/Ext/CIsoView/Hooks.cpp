@@ -282,7 +282,7 @@ DEFINE_HOOK(470986, CIsoView_Draw_BuildingImageDataQuery_1, 8)
 	auto const ID = STDHelpers::SplitString(GlobalVars::INIFiles::CurrentDocument->GetStringAt("Structures", cell.Structure))[1];
 	int nFacing = 0;
 	if (Variables::Rules.GetBool(ID, "Turret"))
-		nFacing = (7 - nRotation / 32) % 8;
+		nFacing = 7 - (nRotation / 32) % 8;
 	data = *ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(ID, nFacing));
 
 	return 0x4709E1;
