@@ -175,17 +175,6 @@ void ObjectBrowserControlExt::Redraw_Owner()
     bool bMultiplayer = doc.GetBool("Basic", "MultiplayerOnly"); 
     auto& section = Variables::Rules.ParseIndicies("Houses", true);
 
-    bool &bLoadOnlySpecial = bMultiplayer;
-    if (bMultiplayer && section.size() > 2)
-        bLoadOnlySpecial = 
-        ::MessageBox(
-            NULL,
-            "This map has MultiplayerOnly=yes but has more"
-            "Houses than two (Neutral and Special), do you"
-            "still want to load these houses?",
-            "WARNNING",
-            MB_YESNO
-        ) != IDYES;
     for (size_t i = 0, sz = section.size(); i < sz; ++i)
     {
         if (bMultiplayer)
