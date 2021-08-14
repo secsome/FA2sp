@@ -497,6 +497,12 @@ void CScriptTypesExt::OnBNDeleteScriptClicked()
 	if (MessageBox("Are you sure to delete this script?", "FA2sp", MB_YESNO) == IDYES)
 	{
 		GlobalVars::INIFiles::CurrentDocument->DeleteSection(this->ExtCurrentScript.ID);
+		if (auto pScripts = GlobalVars::INIFiles::CurrentDocument->GetSection("ScriptTypes"))
+		{
+			for (auto& pairs : pScripts->EntitiesDictionary)
+				if (strcmp(pairs.second, this->ExtCurrentScript.ID) == 0)
+					GlobalVars::INIFiles::CurrentDocument->DeleteKey("ScriptTypes", pairs.first);
+		}
 		this->ExtCurrentScript.Unset();
 		this->CCBCurrentScript.DeleteString(index);
 		this->CCBCurrentScript.SetCurSel(index - 1);

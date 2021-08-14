@@ -10,6 +10,10 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-08-1X RELEASE 1.0.1) ==============================================================================================
+*) Now Unit&Aircraft&Infantry dialog will show up at the center of the screen
+*) Fixed the bug that delete script do not delete the key in [ScriptTypes]
+
 ======================= Changes (2021-08-13 RELEASE 1.0.0) ==============================================================================================
 *) Minor adjustments on ObjectBrowserControl
 +) Replace the exception handler, now you can save a dmp file when FA2 crashes
