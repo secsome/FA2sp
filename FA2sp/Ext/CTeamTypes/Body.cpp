@@ -119,7 +119,7 @@ void CTeamTypesExt::OnBNCloneClicked()
 		copyitem("House");
 		copyitem("Script");
 		copyitem("Whiner");
-		copyitem("Dropped");
+		copyitem("Droppod");
 		copyitem("Suicide");
 		copyitem("Loadable");
 		copyitem("Prebuild");
