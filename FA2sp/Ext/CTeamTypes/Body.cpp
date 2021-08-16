@@ -109,8 +109,8 @@ void CTeamTypesExt::OnBNCloneClicked()
 
 		auto copyitem = [&value, &currentID](ppmfc::CString key)
 		{
-			auto data = GlobalVars::INIFiles::CurrentDocument->GetString(currentID, key);
-			GlobalVars::INIFiles::CurrentDocument->WriteString(value, key, data);
+			if (auto ppStr = GlobalVars::INIFiles::CurrentDocument->TryGetString(currentID, key))
+				GlobalVars::INIFiles::CurrentDocument->WriteString(value, key, *ppStr);
 		};
 
 		copyitem("Max");
@@ -139,6 +139,7 @@ void CTeamTypesExt::OnBNCloneClicked()
 		copyitem("LooseRecruit");
 		copyitem("VeteranLevel");
 		copyitem("IsBaseDefense");
+		copyitem("TransportWaypoint");
 		copyitem("UseTransportOrigin");
 		copyitem("MindControlDecision");
 		copyitem("OnlyTargetHouseEnemy");
