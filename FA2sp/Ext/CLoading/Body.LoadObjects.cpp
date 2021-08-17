@@ -910,22 +910,3 @@ void CLoadingExt::GetFullPaletteName(ppmfc::CString& PaletteName)
 		return;
 	}
 }
-
-#include "../../Helpers/Bitmap.h"
-void CLoadingExt::DumpFrameToFile(unsigned char* pBuffer, Palette* pPal, int Width, int Height, ppmfc::CString name)
-{
-	bitmap_image bmp;
-	bmp.setwidth_height(Width, Height, true);
-	
-	int count = 0;
-	for (int j = 0; j < bmp.height(); ++j)
-	{
-	    for (int i = 0; i < bmp.width(); ++i)
-	    {
-	        bmp.set_pixel(i, j, pPal->GetByteColor(pBuffer[count]));
-	        ++count;
-	    }
-	}
-	
-	bmp.save_image((const char*)name);
-}
