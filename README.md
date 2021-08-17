@@ -10,6 +10,11 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-08-18 RELEASE 1.0.2) ==============================================================================================
++) Now Allie Editor receive double click command for listboxes
+*) Fixed the bug that TransportWP was not correctly copied
+*) ScriptTypes and VXLDrawing will no longer cause memory leak
+
 ======================= Changes (2021-08-14 RELEASE 1.0.1) ==============================================================================================
 *) Now Unit&Aircraft&Infantry dialog will show up at the center of the screen
 *) Fixed the bug that delete script do not delete the key in [ScriptTypes]

@@ -325,7 +325,7 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 		{
 			if (Variables::Rules.GetBool(ID, "TurretAnimIsVoxel"))
 			{
-				int turzadjust = Variables::Rules.GetInteger(ID, "TurretAnimZAdjust");
+				int turzadjust = Variables::Rules.GetInteger(ID, "TurretAnimZAdjust"); // no idea why apply it but it worked
 
 				ppmfc::CString TurName = Variables::Rules.GetString(ID, "TurretAnim", ID + "tur");
 				ppmfc::CString BarlName = ID + "barl";
@@ -383,7 +383,7 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 						int turdeltaY = GlobalVars::INIFiles::FAData->GetInteger("BuildingVoxelTurretsRA2", pKey);
 
 						VXL_Add(pTurImages[i], turrect[i][2] + turdeltaX, turrect[i][3] + turdeltaY, turrect[i][0], turrect[i][1]);
-						GameDeleteArray(pTurImages[i], turrect[i][0] * turrect[i][1]);
+						delete[] pTurImages[i]; // this buffer is created inside the lib
 
 						if (pBarlImages[i])
 						{
@@ -393,7 +393,7 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 							int barldeltaY = GlobalVars::INIFiles::FAData->GetInteger("BuildingVoxelBarrelsRA2", pKey);
 
 							VXL_Add(pBarlImages[i], barlrect[i][2]+ barldeltaX, barlrect[i][3]+ barldeltaY, barlrect[i][0], barlrect[i][1]);
-							GameDeleteArray(pBarlImages[i], barlrect[i][0] * barlrect[i][1]);
+							delete[] pBarlImages[i];
 						}
 					}
 
@@ -578,7 +578,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 				if (pImage[i])
 				{
 					VXL_Add(pImage[i], rect[i][2], rect[i][3], rect[i][0], rect[i][1]);
-					GameDeleteArray(pImage[i], rect[i][0] * rect[i][1]);
+					delete[] pImage[i];
 				}
 				ppmfc::CString pKey;
 				if (pTurretImage[i])
@@ -588,7 +588,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 					pKey.Format("%sY%d", ID, i);
 					int turdeltaY = GlobalVars::INIFiles::FAData->GetInteger("VehicleVoxelTurretsRA2", pKey);
 					VXL_Add(pTurretImage[i], turretrect[i][2] + turdeltaX, turretrect[i][3] + turdeltaY, turretrect[i][0], turretrect[i][1]);
-					GameDeleteArray(pTurretImage[i], turretrect[i][0] * turretrect[i][1]);
+					delete[] pTurretImage[i];
 
 					if (pBarrelImage[i])
 					{
@@ -598,7 +598,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 						int barldeltaY = GlobalVars::INIFiles::FAData->GetInteger("VehicleVoxelBarrelsRA2", pKey);
 
 						VXL_Add(pBarrelImage[i], barrelrect[i][2] + barldeltaX, barrelrect[i][3] + barldeltaY, barrelrect[i][0], barrelrect[i][1]);
-						GameDeleteArray(pBarrelImage[i], barrelrect[i][0] * barrelrect[i][1]);
+						delete[] pBarrelImage[i];
 					}
 				}
 
@@ -618,13 +618,12 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 				int outW = 0x100, outH = 0x100;
 
 				VXL_Add(pImage[i], rect[i][2], rect[i][3], rect[i][0], rect[i][1]);
+				delete[] pImage[i];
 				VXL_GetAndClear(outBuffer, &outW, &outH);
 
 				SetImageData(outBuffer, DictName, outW, outH, Palettes::LoadPalette(PaletteName));
 			}
 		}
-
-
 	}
 	else // As SHP
 	{
@@ -909,23 +908,4 @@ void CLoadingExt::GetFullPaletteName(ppmfc::CString& PaletteName)
 		PaletteName += "tem.pal";
 		return;
 	}
-}
-
-#include "../../Helpers/Bitmap.h"
-void CLoadingExt::DumpFrameToFile(unsigned char* pBuffer, Palette* pPal, int Width, int Height, ppmfc::CString name)
-{
-	bitmap_image bmp;
-	bmp.setwidth_height(Width, Height, true);
-	
-	int count = 0;
-	for (int j = 0; j < bmp.height(); ++j)
-	{
-	    for (int i = 0; i < bmp.width(); ++i)
-	    {
-	        bmp.set_pixel(i, j, pPal->GetByteColor(pBuffer[count]));
-	        ++count;
-	    }
-	}
-	
-	bmp.save_image((const char*)name);
 }

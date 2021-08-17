@@ -13,9 +13,6 @@
 #include <unordered_map>
 #include <Drawing.h>
 
-#include "Helpers/Bitmap.h"
-#include "Helpers/Screenshot.h"
-
 //DEFINE_HOOK(438DB0, DebugDrawDataMap, 6)
 //{
 //    Screenshot("CurrentSurface.bmp", GlobalVars::Dialogs::CFinalSunDlg->MyViewFrame.pIsoView->lpDDPrimarySurface);
