@@ -212,14 +212,14 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 			default:
 			case 2:
 				CScriptTypeParam::ExtParams[id].Param_ = atoi((const char*)pParseBuffer[1]);
+				SAFE_RELEASE(pParseBuffer[1]);
 			case 1:
 				CScriptTypeParam::ExtParams[id].Label_ = pParseBuffer[0];
+				SAFE_RELEASE(pParseBuffer[0]);
 			case 0:
 				continue;
 			}
 		}
-		SAFE_RELEASE(pParseBuffer[0]);
-		SAFE_RELEASE(pParseBuffer[1]);
 	}
 
 	if (auto entities = fadata.GetSection("ScriptsRA2"))
@@ -236,23 +236,23 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 			case 5:
 			default:
 				CScriptTypeAction::ExtActions[id].Description_ = pParseBuffer[4];
+				SAFE_RELEASE(pParseBuffer[4]);
 			case 4:
 				CScriptTypeAction::ExtActions[id].Editable_ = ParseBool((const char*)pParseBuffer[3]);
+				SAFE_RELEASE(pParseBuffer[3]);
 			case 3:
 				CScriptTypeAction::ExtActions[id].Hide_ = ParseBool((const char*)pParseBuffer[2]);
+				SAFE_RELEASE(pParseBuffer[2]);
 			case 2:
 				CScriptTypeAction::ExtActions[id].ParamCode_ = atoi((const char*)pParseBuffer[1]);
+				SAFE_RELEASE(pParseBuffer[1]);
 			case 1:
 				CScriptTypeAction::ExtActions[id].Name_ = pParseBuffer[0];
+				SAFE_RELEASE(pParseBuffer[0]);
 			case 0:
 				continue;
 			}
 		}
-		SAFE_RELEASE(pParseBuffer[0]);
-		SAFE_RELEASE(pParseBuffer[1]);
-		SAFE_RELEASE(pParseBuffer[2]);
-		SAFE_RELEASE(pParseBuffer[3]);
-		SAFE_RELEASE(pParseBuffer[4]);
 	}
 
 	int counter = 0;
