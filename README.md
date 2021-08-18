@@ -10,6 +10,11 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-08-19 RELEASE 1.0.3) ==============================================================================================
+*) Now we read file without extracting them to the game folder, this might fix some reading bugs
+*) The ObjectBrowserView will show player locations again in Multiplayer maps (with Basic -> MultiplayerOnly=yes)
+-) Easy mode is disabled, and it won't be displayed in menu either anymore
+
 ======================= Changes (2021-08-18 RELEASE 1.0.2) ==============================================================================================
 +) Now Allie Editor receive double click command for listboxes
 *) Fixed the bug that TransportWP was not correctly copied
@@ -349,7 +354,6 @@ COLORREF - R,G,B each of them is in [0,255]
             [CURRENTLANGUAGE-Strings]
             [CURRENTLANGUAGE-TranslationsRA2]
             [CURRENTLANGUAGE-Translations]
-                +) OthersObList = TEXT
                 +) Menu.File = TEXT
                 +) Menu.File.New = TEXT
                 +) Menu.File.Open = TEXT

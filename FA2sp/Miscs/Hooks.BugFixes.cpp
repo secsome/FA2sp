@@ -46,11 +46,12 @@ DEFINE_HOOK(4BBAB8, CMapData_sub_4BB990, 6)
 	return 0x4BBAF7;
 }
 
-
 // Self explained nameing
-DEFINE_HOOK(421BCE, CFinalSunApp_InitInstance_NoEasyViewExplain, 6)
+DEFINE_HOOK(421B70, CFinalSunApp_InitInstance_NoEasyViewExplain, 5)
 {
-	return 0x421DBD;
+	*(bool*)0x7EDFE8 = false;
+
+	return 0x421EEB;
 }
 
 // Fix bug for incorrect color while drawing

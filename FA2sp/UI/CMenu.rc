@@ -90,7 +90,7 @@ POPUP "Options"
 {
 	MENUITEM "Settings",  40004
 	MENUITEM "Show minimap\tF2",  40024
-	MENUITEM "Easy mode",  40023
+	// MENUITEM "Easy mode",  40023
 	MENUITEM "Sounds",  40118
 	MENUITEM "Show Building Outline",  40123
 	MENUITEM "Disable AutoShore\tCtrl+A",  40104

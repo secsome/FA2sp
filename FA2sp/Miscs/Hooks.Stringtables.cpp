@@ -11,7 +11,7 @@ class StringtableLoader
 {
 public:
     static void LoadCSFFiles();
-    static void LoadCSFFile(const char* tmpFilePath, const char* pName);
+    static void LoadCSFFile(const char* pName);
     static bool ParseCSFFile(char* buffer, DWORD size);
     static void WriteCSFFile();
     static bool LoadToBuffer();
@@ -61,64 +61,33 @@ DEFINE_HOOK(49433B, CSFFiles_Stringtables_Support_2, 6)
 
 void StringtableLoader::LoadCSFFiles()
 {
-    char tmpCsfFile[0x400];
-    strcpy_s(tmpCsfFile, GlobalVars::ExePath());
-    strcat_s(tmpCsfFile, "\\RA2Tmp.csf");
-
     char nameBuffer[0x400];
     if (*reinterpret_cast<bool*>(0x5D32AC))
         strcpy_s(nameBuffer, "RA2MD.CSF");
     else
         strcpy_s(nameBuffer, "RA2.CSF");
-    LoadCSFFile(tmpCsfFile, nameBuffer);
+    LoadCSFFile(nameBuffer);
     char stringtable[20];
     for (int i = 1; i <= 99; ++i)
     {
         sprintf_s(stringtable, "stringtable%02d.csf", i);
-        LoadCSFFile(tmpCsfFile, stringtable);
+        LoadCSFFile(stringtable);
     }
     WriteCSFFile();
 }
 
-void StringtableLoader::LoadCSFFile(const char* tmpFilePath, const char* pName)
+void StringtableLoader::LoadCSFFile(const char* pName)
 {
-    bool flag = true;
     HANDLE hFile = INVALID_HANDLE_VALUE;
     char directoryBuffer[0x400];
     strcpy_s(directoryBuffer, GlobalVars::FilePath());
     strcat_s(directoryBuffer, "\\");
     strcat_s(directoryBuffer, pName);
-    hFile = CreateFile(directoryBuffer, GENERIC_READ, FILE_SHARE_READ, nullptr,
-        OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
-    if (hFile == INVALID_HANDLE_VALUE)
-    {
-        const auto nMix = GlobalVars::Dialogs::CLoading->SearchFile(pName);
-        if (CMixFile::ExtractFile(pName, tmpFilePath, nMix))
-        {
-            hFile = CreateFile(tmpFilePath, GENERIC_READ, FILE_SHARE_READ, nullptr,
-                OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
-            if (hFile == INVALID_HANDLE_VALUE)
-                flag = false;
-        }
-        else
-            flag = false;
-    }
-    if (flag)
-    {
-        DWORD filesize = GetFileSize(hFile, nullptr);
-        ULONG nReadBytes;
-        char* fileBuffer = new char[filesize];
-        if (ReadFile(hFile, fileBuffer, filesize, &nReadBytes, nullptr) == TRUE)
-        {
-            bool result = ParseCSFFile(fileBuffer, filesize);
-            flag = result;
-        }
-        CloseHandle(hFile);
-        delete[] fileBuffer;
-    }
-    if(flag)
-        Logger::Debug("Successfully Loaded file %s.\n", pName);
-    return;
+    
+    DWORD dwSize;
+    if (auto pBuffer = GlobalVars::Dialogs::CLoading->ReadWholeFile(pName, &dwSize))
+        if (ParseCSFFile((char*)pBuffer, dwSize))
+            Logger::Debug("Successfully Loaded file %s.\n", pName);
 }
 
 bool StringtableLoader::ParseCSFFile(char* buffer, DWORD size)

@@ -55,7 +55,7 @@ void ObjectBrowserControlExt::Redraw()
     Redraw_Celltag();
     Redraw_Basenode();
     Redraw_Tunnel();
-    // Redraw_PlayerLocation(); // player location is just waypoints!
+    Redraw_PlayerLocation(); // player location is just waypoints!
 }
 
 void ObjectBrowserControlExt::Redraw_Initialize()
@@ -136,7 +136,7 @@ void ObjectBrowserControlExt::Redraw_MainList()
     ExtNodes[Root_Celltag] = this->InsertTranslatedString("CelltagsObList", 7);
     ExtNodes[Root_Basenode] = this->InsertTranslatedString("BaseNodesObList", 8);
     ExtNodes[Root_Tunnel] = this->InsertTranslatedString("TunnelObList", 9);
-    //ExtNodes[Root_PlayerLocation] = this->InsertTranslatedString("StartpointsObList", 12);
+    ExtNodes[Root_PlayerLocation] = this->InsertTranslatedString("StartpointsObList", 12);
     ExtNodes[Root_Delete] = this->InsertTranslatedString("DelObjObList", 10);
 }
 
@@ -203,7 +203,7 @@ void ObjectBrowserControlExt::Redraw_Infantry()
         subNodes[i++] = this->InsertString("Soviet", -1, hInfantry);
         subNodes[i++] = this->InsertString("Yuri", -1, hInfantry);
     }
-    subNodes[-1] = this->InsertTranslatedString("OthersObList", -1, hInfantry);
+    subNodes[-1] = this->InsertTranslatedString("OthObList", -1, hInfantry);
 
     auto& infantries = Variables::Rules.GetSection("InfantryTypes");
     for (auto& inf : infantries)
@@ -252,7 +252,7 @@ void ObjectBrowserControlExt::Redraw_Vehicle()
         subNodes[i++] = this->InsertString("Soviet", -1, hVehicle);
         subNodes[i++] = this->InsertString("Yuri", -1, hVehicle);
     }
-    subNodes[-1] = this->InsertTranslatedString("OthersObList", -1, hVehicle);
+    subNodes[-1] = this->InsertTranslatedString("OthObList", -1, hVehicle);
 
     auto& vehicles = Variables::Rules.GetSection("VehicleTypes");
     for (auto& veh : vehicles)
@@ -302,7 +302,7 @@ void ObjectBrowserControlExt::Redraw_Aircraft()
         subNodes[i++] = this->InsertString("Soviet", -1, hAircraft);
         subNodes[i++] = this->InsertString("Yuri", -1, hAircraft);
     }
-    subNodes[-1] = this->InsertTranslatedString("OthersObList", -1, hAircraft);
+    subNodes[-1] = this->InsertTranslatedString("OthObList", -1, hAircraft);
 
     auto& aircrafts = Variables::Rules.GetSection("AircraftTypes");
     for (auto& air : aircrafts)
@@ -352,7 +352,7 @@ void ObjectBrowserControlExt::Redraw_Building()
         subNodes[i++] = this->InsertString("Soviet", -1, hBuilding);
         subNodes[i++] = this->InsertString("Yuri", -1, hBuilding);
     }
-    subNodes[-1] = this->InsertTranslatedString("OthersObList", -1, hBuilding);
+    subNodes[-1] = this->InsertTranslatedString("OthObList", -1, hBuilding);
 
     auto& buildings = Variables::Rules.GetSection("BuildingTypes");
     for (auto& bud : buildings)
@@ -395,7 +395,7 @@ void ObjectBrowserControlExt::Redraw_Terrain()
     hTrff = this->InsertTranslatedString("TrafficLightsObList", -1, hTerrain);
     hSign = this->InsertTranslatedString("SignsObList", -1, hTerrain);
     hLight = this->InsertTranslatedString("LightPostsObList", -1, hTerrain);
-    hOther = this->InsertTranslatedString("OthersObList", -1, hTerrain);
+    hOther = this->InsertTranslatedString("OthObList", -1, hTerrain);
     
     this->InsertTranslatedString("RndTreeObList", 50999, hTree);
 
@@ -532,6 +532,15 @@ void ObjectBrowserControlExt::Redraw_PlayerLocation()
     if (hPlayerLocation == NULL)   return;
 
     this->InsertTranslatedString("StartpointsDelete", 21, hPlayerLocation);
+
+    if (GlobalVars::INIFiles::CurrentDocument->GetBool("Basic", "MultiplayerOnly"))
+    {
+        for (int i = 0; i < 8; ++i)
+        {
+            FA2sp::Buffer.Format("Player %d", i);
+            this->InsertString(FA2sp::Buffer, 23 + i, hPlayerLocation);
+        }
+    }
 }
 
 int ObjectBrowserControlExt::GuessType(const char* pRegName)
