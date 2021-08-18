@@ -10,6 +10,9 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-08-XX RELEASE 1.0.3) ==============================================================================================
+*) Now we read file without extracting them to the game folder, this might fix some bugs
+
 ======================= Changes (2021-08-18 RELEASE 1.0.2) ==============================================================================================
 +) Now Allie Editor receive double click command for listboxes
 *) Fixed the bug that TransportWP was not correctly copied
