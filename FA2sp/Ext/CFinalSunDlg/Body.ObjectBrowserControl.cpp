@@ -55,7 +55,7 @@ void ObjectBrowserControlExt::Redraw()
     Redraw_Celltag();
     Redraw_Basenode();
     Redraw_Tunnel();
-    // Redraw_PlayerLocation(); // player location is just waypoints!
+    Redraw_PlayerLocation(); // player location is just waypoints!
 }
 
 void ObjectBrowserControlExt::Redraw_Initialize()
@@ -136,7 +136,7 @@ void ObjectBrowserControlExt::Redraw_MainList()
     ExtNodes[Root_Celltag] = this->InsertTranslatedString("CelltagsObList", 7);
     ExtNodes[Root_Basenode] = this->InsertTranslatedString("BaseNodesObList", 8);
     ExtNodes[Root_Tunnel] = this->InsertTranslatedString("TunnelObList", 9);
-    //ExtNodes[Root_PlayerLocation] = this->InsertTranslatedString("StartpointsObList", 12);
+    ExtNodes[Root_PlayerLocation] = this->InsertTranslatedString("StartpointsObList", 12);
     ExtNodes[Root_Delete] = this->InsertTranslatedString("DelObjObList", 10);
 }
 
@@ -532,6 +532,15 @@ void ObjectBrowserControlExt::Redraw_PlayerLocation()
     if (hPlayerLocation == NULL)   return;
 
     this->InsertTranslatedString("StartpointsDelete", 21, hPlayerLocation);
+
+    if (GlobalVars::INIFiles::CurrentDocument->GetBool("Basic", "MultiplayerOnly"))
+    {
+        for (int i = 0; i < 8; ++i)
+        {
+            FA2sp::Buffer.Format("Player %d", i);
+            this->InsertString(FA2sp::Buffer, 23 + i, hPlayerLocation);
+        }
+    }
 }
 
 int ObjectBrowserControlExt::GuessType(const char* pRegName)
