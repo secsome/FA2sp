@@ -18,6 +18,7 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
     {
         GET(INIClass*, pINI, EAX);
         GET_STACK(CFinalSunDlg*, pThis, STACK_OFFS(0x3F4, 0x36C));
+        REF_STACK(ppmfc::CString, filepath, STACK_OFFS(0x3F4, -0x4));
         LEA_STACK(ppmfc::CString*, pPath, STACK_OFFS(0x3F4, 0x360));
 
         ppmfc::CString path = "TmpMap.map";
@@ -25,11 +26,11 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         pThis->MyViewFrame.StatusBar.SetWindowText("Saving...");
         pThis->MyViewFrame.StatusBar.UpdateWindow();
 
-        DeleteFile(path);
+        DeleteFile(filepath);
         CloseHandle(
-            CreateFile(path, GENERIC_WRITE, NULL, nullptr, TRUNCATE_EXISTING, FILE_FLAG_SEQUENTIAL_SCAN | FILE_ATTRIBUTE_NORMAL, NULL)
+            CreateFile(filepath, GENERIC_WRITE, NULL, nullptr, TRUNCATE_EXISTING, FILE_FLAG_SEQUENTIAL_SCAN | FILE_ATTRIBUTE_NORMAL, NULL)
         );
-        auto hFile = CreateFile(path, GENERIC_WRITE, NULL, nullptr, CREATE_ALWAYS, FILE_FLAG_SEQUENTIAL_SCAN | FILE_ATTRIBUTE_NORMAL, NULL);
+        auto hFile = CreateFile(filepath, GENERIC_WRITE, NULL, nullptr, CREATE_ALWAYS, FILE_FLAG_SEQUENTIAL_SCAN | FILE_ATTRIBUTE_NORMAL, NULL);
 
         std::stringstream ss;
         ss <<
@@ -74,6 +75,28 @@ DEFINE_HOOK(42B30F, CFinalSunDlg_SaveMap_SkipMapDTOR, 7)
     return ExtConfigs::SaveMap ? 0x42B323 : 0;
 }
 
+DEFINE_HOOK(42B2AF, CFinalSunDlg_SaveMap_SkipDeleteFile, 7)
+{
+    return ExtConfigs::SaveMap ? 0x42B2C2 : 0;
+}
+
+DEFINE_HOOK(42A8F5, CFinalSunDlg_SaveMap_ReplaceCopyFile, 7)
+{
+    if (!ExtConfigs::SaveMap)
+        return 0;
+
+    REF_STACK(ppmfc::CString, filepath, STACK_OFFS(0x3F4, -0x4));
+
+    HANDLE hFile =
+        CreateFile(filepath, GENERIC_READ, NULL, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (hFile != INVALID_HANDLE_VALUE)
+    {
+        CloseHandle(hFile);
+        return 0x42A92D;
+    }
+    return 0x42A911;
+}
+
 class SaveMapExt
 {
 private:
@@ -111,8 +134,10 @@ public:
 
             std::map<FILETIME, ppmfc::CString, FileTimeComparator> m;
 
+            ppmfc::CString buffer = GlobalVars::ExePath();
+            buffer += "\\AutoSaves\\autosave-*.map";
             WIN32_FIND_DATA Data;
-            auto hFindData = FindFirstFile("AutoSaves\\autosave-*.map", &Data);
+            auto hFindData = FindFirstFile(buffer, &Data);
             while (hFindData != INVALID_HANDLE_VALUE)
             {
                 m[Data.ftLastWriteTime] = Data.cFileName;
@@ -125,10 +150,9 @@ public:
                 return;
 
             auto& itr = m.begin();
-            ppmfc::CString buffer;
             while (count != 0)
             {
-                buffer.Format("AutoSaves\\%s", itr->second);
+                buffer.Format("%s\\AutoSaves\\%s", GlobalVars::ExePath(), itr->second);
                 DeleteFile(buffer);
                 ++itr;
                 --count;
@@ -147,17 +171,19 @@ public:
         SYSTEMTIME time;
         GetLocalTime(&time);
 
-        CreateDirectory("AutoSaves", nullptr);
+        ppmfc::CString buffer = GlobalVars::ExePath();
+        buffer += "\\AutoSaves";
+        CreateDirectory(buffer, nullptr);
 
-        ppmfc::CString path;
-        path.Format("AutoSaves\\autosave-%04d%02d%02d-%02d%02d%02d-%03d.map", 
+        buffer.Format("%s\\AutoSaves\\autosave-%04d%02d%02d-%02d%02d%02d-%03d.map", 
+            GlobalVars::ExePath(),
             time.wYear, time.wMonth, time.wDay, 
             time.wHour, time.wMinute, time.wSecond, 
             time.wMilliseconds
         );
         
         IsAutoSaving = true;
-        GlobalVars::Dialogs::CFinalSunDlg->SaveMap(path);
+        GlobalVars::Dialogs::CFinalSunDlg->SaveMap(buffer);
         IsAutoSaving = false;
 
         RemoveEarlySaves();
