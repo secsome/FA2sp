@@ -1,10 +1,5 @@
 #pragma once
 
-#define wstr(x) wstr_(x)
-#define wstr_(x) L ## #x
-#define str(x) str_(x)
-#define str_(x) #x
-
 constexpr int PRODUCT_MAJOR = 1;
 constexpr int PRODUCT_MINOR = 0;
 constexpr int PRODUCT_REVISION = 3;

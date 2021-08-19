@@ -10,6 +10,12 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-08-XX) ==============================================================================================
++) New ExtConfig: SaveMap = BOOLEAN, enable it so that we will replace FA2's vanilla slow saving function
+    +) New ExtConfig: SaveMap.AutoSave = BOOLEAN, enable it so that we will enable FA2 to save map automatically after one save
+        +) New ExtConfig: SaveMap.AutoSave.Interval = INTEGER, set the interval between two auto saving, need to be greater than or equal to than 30
+        +) New ExtConfig: SaveMap.AutoSave.MaxCount = INTEGER, how many auto saving files can FA2 keep, set to -1 will disable the auto cleanning up
+
 ======================= Changes (2021-08-19 RELEASE 1.0.3) ==============================================================================================
 *) Now we read file without extracting them to the game folder, this might fix some reading bugs
 *) The ObjectBrowserView will show player locations again in Multiplayer maps (with Basic -> MultiplayerOnly=yes)
@@ -151,6 +157,10 @@ COLORREF - R,G,B each of them is in [0,255]
             +) ExtWaypoints = BOOLEAN ; Determines if FA2sp supports unlimited count of waypoints, defaults to false (Phobos required)
             +) UndoRedoLimit = INTEGER ; Determines the maximun step of undo/redo, defaults to 16
             +) UseRGBHouseColor = BOOLEAN ; Determines if House colors are recognized as RGB color instead of HSV, defaults to false 
+            +) SaveMap = BOOLEAN ; Determines if FA2 will save map using a faster method
+                +) SaveMap.AutoSave = BOOLEAN ; Determines if FA2 will save map automatically after one manually saving
+                    +) SaveMap.AutoSave.Interval = INTERGER ; Should be greater than or equal to 30, defaults to 300, determines how many seconds should we wait during the two auto saving
+                    +) SaveMap.AutoSave.MaxCount = INTERGER ; How many saving should FA2 keep, set to -1 will disable the auto cleanning, defaults to 10
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.

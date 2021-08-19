@@ -149,6 +149,7 @@
     <ClCompile Include="FA2sp\Hooks.Debug.cpp" />
     <ClCompile Include="FA2sp\Miscs\DrawStuff.cpp" />
     <ClCompile Include="FA2sp\Miscs\Exception.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.SaveMap.cpp" />
     <ClCompile Include="FA2sp\Miscs\Palettes.cpp" />
     <ClCompile Include="FA2sp\UI\UIColor.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.BugFixes.cpp" />
