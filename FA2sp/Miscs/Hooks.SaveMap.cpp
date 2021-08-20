@@ -19,7 +19,6 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         GET(INIClass*, pINI, EAX);
         GET_STACK(CFinalSunDlg*, pThis, STACK_OFFS(0x3F4, 0x36C));
         REF_STACK(ppmfc::CString, filepath, STACK_OFFS(0x3F4, -0x4));
-        LEA_STACK(ppmfc::CString*, pPath, STACK_OFFS(0x3F4, 0x360));
 
         ppmfc::CString path = "TmpMap.map";
 
@@ -62,8 +61,6 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         WriteFile(hFile, ss.str().c_str(), ss.str().length(), nullptr, nullptr);
         CloseHandle(hFile);
 
-        new(pPath) ppmfc::CString(path);
-
         return 0x42A859;
     }
 
@@ -95,6 +92,11 @@ DEFINE_HOOK(42A8F5, CFinalSunDlg_SaveMap_ReplaceCopyFile, 7)
         return 0x42A92D;
     }
     return 0x42A911;
+}
+
+DEFINE_HOOK(42B2EA, CFinalSunDlg_SaveMap_SkipStringDTOR, C)
+{
+    return ExtConfigs::SaveMap ? 0x42B30F : 0;
 }
 
 class SaveMapExt
@@ -213,4 +215,32 @@ DEFINE_HOOK(427949, CFinalSunDlg_SaveMap_AutoSave_SkipDialog, A)
 DEFINE_HOOK(42B294, CFinalSunDlg_SaveMap_AutoSave_SkipEditFilesMenu, 8)
 {
     return SaveMapExt::IsAutoSaving ? 0x42B2AF : 0;
+}
+
+DEFINE_HOOK(437D84, CFinalSunDlg_LoadMap_StopTimer, 5)
+{
+    if (ExtConfigs::SaveMap_AutoSave)
+        SaveMapExt::StopTimer();
+    return 0;
+}
+
+DEFINE_HOOK(438D90, CFinalSunDlg_LoadMap_ResetTimer, 7)
+{
+    if (ExtConfigs::SaveMap_AutoSave && GlobalVars::CMapData->MapWidthPlusHeight)
+        SaveMapExt::ResetTimer();
+    return 0;
+}
+
+DEFINE_HOOK(42CBF4, CFinalSunDlg_CreateMap_StopTimer, 7)
+{
+    if (ExtConfigs::SaveMap_AutoSave)
+        SaveMapExt::StopTimer();
+    return 0;
+}
+
+DEFINE_HOOK(42E18E, CFinalSunDlg_CreateMap_ResetTimer, 7)
+{
+    if (ExtConfigs::SaveMap_AutoSave && GlobalVars::CMapData->MapWidthPlusHeight)
+        SaveMapExt::ResetTimer();
+    return 0;
 }
