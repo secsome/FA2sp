@@ -231,7 +231,7 @@ DEFINE_HOOK(438D90, CFinalSunDlg_LoadMap_ResetTimer, 7)
     return 0;
 }
 
-DEFINE_HOOK(42CBF4, CFinalSunDlg_CreateMap_StopTimer, 7)
+DEFINE_HOOK(42CBE0, CFinalSunDlg_CreateMap_StopTimer, 5)
 {
     if (ExtConfigs::SaveMap_AutoSave)
         SaveMapExt::StopTimer();
