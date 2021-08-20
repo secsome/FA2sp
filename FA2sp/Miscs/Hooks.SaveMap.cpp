@@ -20,12 +20,9 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         GET_STACK(CFinalSunDlg*, pThis, STACK_OFFS(0x3F4, 0x36C));
         REF_STACK(ppmfc::CString, filepath, STACK_OFFS(0x3F4, -0x4));
 
-        ppmfc::CString path = "TmpMap.map";
-
         pThis->MyViewFrame.StatusBar.SetWindowText("Saving...");
         pThis->MyViewFrame.StatusBar.UpdateWindow();
 
-        DeleteFile(filepath);
         CloseHandle(
             CreateFile(filepath, GENERIC_WRITE, NULL, nullptr, TRUNCATE_EXISTING, FILE_FLAG_SEQUENTIAL_SCAN | FILE_ATTRIBUTE_NORMAL, NULL)
         );
@@ -105,14 +102,17 @@ private:
     static UINT_PTR Timer;
 public:
     static bool IsAutoSaving;
+    static ppmfc::CString FileName;
 
     static void ResetTimer()
     {
         StopTimer();
         if (ExtConfigs::SaveMap_AutoSave_Interval >= 30)
         {
-            Timer = SetTimer(GlobalVars::Dialogs::CFinalSunDlg->m_hWnd,
-                NULL, 1000 * ExtConfigs::SaveMap_AutoSave_Interval, SaveMapCallback);
+            if (Timer = SetTimer(NULL, NULL, 1000 * ExtConfigs::SaveMap_AutoSave_Interval, SaveMapCallback))
+                Logger::Debug("Successfully created timer with ID = %p\n", Timer);
+            else
+                Logger::Debug("Failed to create timer! Auto-save is currently unable to use");
         }
     }
 
@@ -120,7 +120,7 @@ public:
     {
         if (Timer != NULL)
         {
-            KillTimer(GlobalVars::Dialogs::CFinalSunDlg->m_hWnd, Timer);
+            KillTimer(NULL, Timer);
             Timer = NULL;
         }
     }
@@ -148,7 +148,7 @@ public:
             }
 
             int count = m.size() - ExtConfigs::SaveMap_AutoSave_MaxCount;
-            if (count <= 0)    
+            if (count <= 0)
                 return;
 
             auto& itr = m.begin();
@@ -177,13 +177,13 @@ public:
         buffer += "\\AutoSaves";
         CreateDirectory(buffer, nullptr);
 
-        buffer.Format("%s\\AutoSaves\\autosave-%04d%02d%02d-%02d%02d%02d-%03d.map", 
+        buffer.Format("%s\\AutoSaves\\autosave-%04d%02d%02d-%02d%02d%02d-%03d.map",
             GlobalVars::ExePath(),
-            time.wYear, time.wMonth, time.wDay, 
-            time.wHour, time.wMinute, time.wSecond, 
+            time.wYear, time.wMonth, time.wDay,
+            time.wHour, time.wMinute, time.wSecond,
             time.wMilliseconds
         );
-        
+
         IsAutoSaving = true;
         GlobalVars::Dialogs::CFinalSunDlg->SaveMap(buffer);
         IsAutoSaving = false;
@@ -194,6 +194,7 @@ public:
 
 bool SaveMapExt::IsAutoSaving = false;
 UINT_PTR SaveMapExt::Timer = NULL;
+
 
 DEFINE_HOOK(426E50, CFinalSunDlg_SaveMap_AutoSave_StopTimer, 7)
 {
