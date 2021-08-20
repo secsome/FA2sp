@@ -45,6 +45,10 @@ public:
     static bool ExtWaypoints;
     static int UndoRedoLimit;
     static bool UseRGBHouseColor;
+    static bool SaveMap;
+    static bool SaveMap_AutoSave;
+    static int SaveMap_AutoSave_Interval;
+    static int SaveMap_AutoSave_MaxCount;
 };
 
 class Variables

@@ -123,6 +123,7 @@
   <ItemGroup>
     <ClCompile Include="FA2pp\FunctionInit.cpp" />
     <ClCompile Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.cpp" />
+    <ClCompile Include="FA2sp\Ext\CAITriggerTypes\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Body.ObjectBrowserControl.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Hooks.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="FA2sp\Hooks.Debug.cpp" />
     <ClCompile Include="FA2sp\Miscs\DrawStuff.cpp" />
     <ClCompile Include="FA2sp\Miscs\Exception.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.SaveMap.cpp" />
     <ClCompile Include="FA2sp\Miscs\Palettes.cpp" />
     <ClCompile Include="FA2sp\UI\UIColor.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.BugFixes.cpp" />
@@ -176,6 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.h" />
+    <ClInclude Include="FA2sp\Ext\CAITriggerTypes\Body.h" />
     <ClInclude Include="FA2sp\Ext\CFinalSunDlg\Body.h" />
     <ClInclude Include="FA2sp\Ext\CHouses\Body.h" />
     <ClInclude Include="FA2sp\Ext\CIsoView\Body.h" />
@@ -213,6 +216,7 @@
   <ItemGroup>
     <ResourceCompile Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.rc" />
     <ResourceCompile Include="FA2sp\UI\CAircraftDialog.rc" />
+    <ResourceCompile Include="FA2sp\UI\CAITriggerTypes.rc" />
     <ResourceCompile Include="FA2sp\UI\CInfantryDialog.rc" />
     <ResourceCompile Include="FA2sp\UI\CMenu.rc" />
     <ResourceCompile Include="FA2sp\UI\CScriptTypes.rc" />

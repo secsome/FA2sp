@@ -6,18 +6,18 @@
 class NOVTABLE CAITriggerTypesExt : public CAITriggerTypes
 {
 public:
-	typedef BOOL(*FuncT_PTM)(MSG* pMsg);
-
-	static CAITriggerTypes* Instance;
-
-	//hook function to replace in virtual function map
-	BOOL PreTranslateMessageExt(MSG* pMsg);
-
 	static void ProgramStartupInit();
+
+	//
+	// Ext Functions
+	//
+	BOOL OnInitDialogExt();
+	BOOL PreTranslateMessageExt(MSG* pMsg);
 
 	CAITriggerTypesExt() {};
 	~CAITriggerTypesExt() {};
 
+	void OnBNCloneAITriggerClicked();
 private:
 
 };

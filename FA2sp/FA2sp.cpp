@@ -35,6 +35,10 @@ int ExtConfigs::Waypoint_Background_Color;
 bool ExtConfigs::ExtWaypoints;
 int ExtConfigs::UndoRedoLimit;
 bool ExtConfigs::UseRGBHouseColor;
+bool ExtConfigs::SaveMap;
+bool ExtConfigs::SaveMap_AutoSave;
+int ExtConfigs::SaveMap_AutoSave_Interval;
+int ExtConfigs::SaveMap_AutoSave_MaxCount;
 
 MultimapHelper Variables::Rules = { &GlobalVars::INIFiles::Rules(), &GlobalVars::INIFiles::CurrentDocument() };
 
@@ -81,6 +85,19 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::UndoRedoLimit = fadata.GetInteger("ExtConfigs", "UndoRedoLimit", 16);
 
 	ExtConfigs::UseRGBHouseColor = fadata.GetBool("ExtConfigs", "UseRGBHouseColor");
+
+	if (ExtConfigs::SaveMap = fadata.GetBool("ExtConfigs", "SaveMap"))
+	{
+		if (ExtConfigs::SaveMap_AutoSave = fadata.GetBool("ExtConfigs", "SaveMap.AutoSave"))
+		{
+			ExtConfigs::SaveMap_AutoSave_Interval = fadata.GetInteger("ExtConfigs", "SaveMap.AutoSave.Interval", 300);
+			ExtConfigs::SaveMap_AutoSave_MaxCount = fadata.GetInteger("ExtConfigs", "SaveMap.AutoSave.MaxCount", 10);
+		}
+		else
+		{
+			ExtConfigs::SaveMap_AutoSave_Interval = -1;
+		}
+	}
 }
 
 // DllMain

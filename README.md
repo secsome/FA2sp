@@ -10,6 +10,13 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-08-20 RELEASE 1.0.4) ==============================================================================================
++) Now you can copy AITriggers
++) New ExtConfig: SaveMap = BOOLEAN, enable it so that we will replace FA2's vanilla slow saving function
+    +) New ExtConfig: SaveMap.AutoSave = BOOLEAN, enable it so that we will enable FA2 to save map automatically after one save
+        +) New ExtConfig: SaveMap.AutoSave.Interval = INTEGER, set the interval between two auto saving, need to be greater than or equal to than 30
+        +) New ExtConfig: SaveMap.AutoSave.MaxCount = INTEGER, how many auto saving files can FA2 keep, set to -1 will disable the auto cleanning up
+
 ======================= Changes (2021-08-19 RELEASE 1.0.3) ==============================================================================================
 *) Now we read file without extracting them to the game folder, this might fix some reading bugs
 *) The ObjectBrowserView will show player locations again in Multiplayer maps (with Basic -> MultiplayerOnly=yes)
@@ -151,6 +158,10 @@ COLORREF - R,G,B each of them is in [0,255]
             +) ExtWaypoints = BOOLEAN ; Determines if FA2sp supports unlimited count of waypoints, defaults to false (Phobos required)
             +) UndoRedoLimit = INTEGER ; Determines the maximun step of undo/redo, defaults to 16
             +) UseRGBHouseColor = BOOLEAN ; Determines if House colors are recognized as RGB color instead of HSV, defaults to false 
+            +) SaveMap = BOOLEAN ; Determines if FA2 will save map using a faster method
+                +) SaveMap.AutoSave = BOOLEAN ; Determines if FA2 will save map automatically after one manually saving
+                    +) SaveMap.AutoSave.Interval = INTERGER ; Should be greater than or equal to 30, defaults to 300, determines how many seconds should we wait during the two auto saving
+                    +) SaveMap.AutoSave.MaxCount = INTERGER ; How many saving should FA2 keep, set to -1 will disable the auto cleanning, defaults to 10
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.
@@ -434,6 +445,33 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) Menu.Layers.Smudges = TEXT
                 +) Menu.Layers.Tubes = TEXT
                 +) Menu.Layers.Bounds = TEXT
+                +) AITriggerTitle = TEXT
+                +) AITriggerList = TEXT
+                +) AITriggerName = TEXT
+                +) AITriggerTeam1 = TEXT
+                +) AITriggerHouse = TEXT
+                +) AITriggerTeam2 = TEXT
+                +) AITriggerTechlevel = TEXT
+                +) AITriggerType = TEXT
+                +) AITriggerWeight = TEXT
+                +) AITriggerMinWeight = TEXT
+                +) AITriggerMaxWeight = TEXT
+                +) AITriggerMinDiff = TEXT
+                +) AITriggerSide = TEXT
+                +) AITriggerTechnoType = TEXT
+                +) AITriggerCondition = TEXT
+                +) AITriggerNumber = TEXT
+                +) AITriggerAdditionalDesc = TEXT
+                +) AITriggerData = TEXT
+                +) AITriggerEnabled = TEXT
+                +) AITriggerAdd = TEXT
+                +) AITriggerDel = TEXT
+                +) AITriggerClo = TEXT
+                +) AITriggerBaseDefense = TEXT
+                +) AITriggerSkirmish = TEXT
+                +) AITriggerEasy = TEXT
+                +) AITriggerMedium = TEXT
+                +) AITriggerHard = TEXT
                 +) TaskforceTitle = TEXT
                 +) TaskforceList = TEXT
                 +) TaskforceUnits = TEXT
@@ -540,11 +578,6 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) ScriptTypesMoveUp = TEXT
                 +) ScriptTypesMoveDown = TEXT
 
-- WORK IN PROGRESS
-    - Support for taskforces & ai triggers
-    - Custom palettes
-    - ...
-
 - WRITE IN THE END
 This project was developed after FA2Copy with still many bugs to fix,
 then Zero Fanker advised to use inline hooks instead of Win32API message hooks to implement
@@ -564,9 +597,37 @@ tomsons26 has made great assistance on disassembing it(REALLY HELPFUL).
 thomassneddon provided me with vxl drawing lib and drawing stuff assistence, without I cannot draw the VXL stuffs.
 
 (btw the code of FinalAlert 2 is really in a MESSY! Full of unnecessary constructors. I HATE IT!)
-
-- CONTACT ME
-EMAIL : 3179369262@qq.com
-Discord : secsome#5043
-NO OTHER AVAILABLE METHODS ... FOR NOW ;D
 </pre>
+
+这个项目从2020年的2月开始，当时它还是FA2Copy，因为我已经受够了FA2不能复制一些东西。
+当时我也不会想到自己能在这个项目的进行过程中学到这么多的东西，回首看来，算上FA2PP我已经为这个项目写了4w多行代码。
+FA2Copy在当年的5月6号迎来了最后一个版本，当时我放弃FA2Copy的原因其实非常简单：没有办法实现更多想要的功能了。
+这个时候ZF找我，并向我介绍了基于Syringe的拓展方法，然后我也就此，从7月22号开始，开启了FA2的逆向+改进之旅。
+这个项目之所以叫做FA2sp的原因我已经想不起来了，不过Kerb说的secsome's patch我觉得还是挺有道理的，就用这个解释也无妨。
+一开始我也是一个对逆向一窍不通的小白，当初自己刚打完了OI，也是第一次接触到工程类软件的开发，一开始的代码毫无章法可言（可查看FA2Copy），完全就是乱成一坨。
+现在我也大概入门了一个工程项目的架构搭建，能够写出算是另我自己满意且看的过去的代码了，这也算是一大提升。
+
+现在看来，当时逆向遇到的最大瓶颈是CINI类，FA2因为用的是STL的map，一大堆内联展开直接就给我干趴下了。所以一开始我也是偷的AlexB的INI类在用，这里也要感谢
+他的无私分享，初版的所属方颜色修复也是他给的。最后反正是按照时间往前慢慢推，我就去下了一个VC5，把VC5的map给直接搬了出来，当时我是一点一点地对着代码一个个
+的比较，一个个的把函数给找出来并对应上去。
+
+再后来也就没什么大不了的了，在这个过程中令我最印象深刻的就是第一次自己逆向出来FA2绘图数据存储的类（见Drawing.h中的ImageDataClass），依稀记得自己一点点
+地调试输出，最后一点点地把每个成员的用途搞清楚，这个是我在开发过程中所做到最高兴的事情。
+
+要说自己有什么感受，那最直观的就是能自己重写的就重写完事了。FA2的很多代码都是屎山，不管是对map的O(n^2)访问还是放的乱七八糟的建筑数据，我看的时候往往会怀疑自己
+是不是看到正确的代码了，甚至还要怀疑是自己有问题还是什么。但事实很明显，FA2明显也是一个赶工出来的工具，他的设计者也没有考虑到在20年后还有人在用它开发着一个又一个
+的精美地图。对于原版YR和RA2来说，它的功能已经绰绰有余，一些屎山代码也不会造成太大的影响。但是当我对它重置的时候，我就一定要考虑到这个，在我重写的时候，一定要考虑
+好自己所写代码的效率究竟如何。
+
+最后谈谈FA2的绘图问题，FA2的绘图是在第一次读取某个素材的时候对它进行缓存的，之后只是将它从内存中取出来再blt上去罢了。这个思路现在看来仍然是一个很好的思路，它有效
+地控制了FA2的内存占用（点名批评RS）。所以在我发现这一点之后，我终于鼓起勇气替换了FA2的建筑，载具，飞行器，步兵，污染以及地形对象的绘制。这个东西看起来非常复杂，
+我之前也尝试做过，但都因为种种原因半途而废了。最后实际做了下来发现只花了一个星期的时候其实我还是挺惊讶的，这也要多亏了偷猫的画图库，以及每天晚上一起抄VXLSE139到
+凌晨四点。没有偷猫的库估计现在我还卡在VXL的绘制，最后这个绘图分支又会不了了之。
+
+在开发过程中给予过我帮助的人有很多，包括但不局限于许多测试员，虽然他们总是延迟两个版本发现BUG，但最终我们共同努力，让FA2变得更加好用了许多。在这里不一一感谢了。
+
+本项目以后也会更新，但大多数只会是FA2sp改的逻辑或带来的BUG的修复了，其余内容随心而为。
+作为一个开源项目，当然也欢迎有实力的开发者来开几个PR玩玩，需要idb的也可以联系我，我也会提供（里面肯定很多BUG就是了）。
+
+某书纪， 写于2021/08/20，19:03，1.0.4版本发布前夕
+||这个写英文太麻烦了，就中文吧||
