@@ -8,6 +8,16 @@
 
 #include "../FA2sp.h"
 
+// This is useless
+DEFINE_HOOK(47F94E, CLoading_InitPics_SkipBuildingTypeInit, 5) 
+{
+    return 0x47FA2D;
+}
+
+
+
+
+
 class Performance
 {
 public:
