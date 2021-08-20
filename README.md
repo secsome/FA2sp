@@ -11,6 +11,7 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ======================= Changes (2021-08-XX) ==============================================================================================
++) Now you can copy AITriggers
 +) New ExtConfig: SaveMap = BOOLEAN, enable it so that we will replace FA2's vanilla slow saving function
     +) New ExtConfig: SaveMap.AutoSave = BOOLEAN, enable it so that we will enable FA2 to save map automatically after one save
         +) New ExtConfig: SaveMap.AutoSave.Interval = INTEGER, set the interval between two auto saving, need to be greater than or equal to than 30
@@ -444,6 +445,33 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) Menu.Layers.Smudges = TEXT
                 +) Menu.Layers.Tubes = TEXT
                 +) Menu.Layers.Bounds = TEXT
+                +) AITriggerTitle = TEXT
+                +) AITriggerList = TEXT
+                +) AITriggerName = TEXT
+                +) AITriggerTeam1 = TEXT
+                +) AITriggerHouse = TEXT
+                +) AITriggerTeam2 = TEXT
+                +) AITriggerTechlevel = TEXT
+                +) AITriggerType = TEXT
+                +) AITriggerWeight = TEXT
+                +) AITriggerMinWeight = TEXT
+                +) AITriggerMaxWeight = TEXT
+                +) AITriggerMinDiff = TEXT
+                +) AITriggerSide = TEXT
+                +) AITriggerTechnoType = TEXT
+                +) AITriggerCondition = TEXT
+                +) AITriggerNumber = TEXT
+                +) AITriggerAdditionalDesc = TEXT
+                +) AITriggerData = TEXT
+                +) AITriggerEnabled = TEXT
+                +) AITriggerAdd = TEXT
+                +) AITriggerDel = TEXT
+                +) AITriggerClo = TEXT
+                +) AITriggerBaseDefense = TEXT
+                +) AITriggerSkirmish = TEXT
+                +) AITriggerEasy = TEXT
+                +) AITriggerMedium = TEXT
+                +) AITriggerHard = TEXT
                 +) TaskforceTitle = TEXT
                 +) TaskforceList = TEXT
                 +) TaskforceUnits = TEXT

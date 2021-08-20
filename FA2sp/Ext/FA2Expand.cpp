@@ -52,6 +52,7 @@
 
 void __stdcall FA2Expand::ExeRun()
 {
+    CAITriggerTypesExt::ProgramStartupInit();
     CFinalSunDlgExt::ProgramStartupInit();
     CHousesExt::ProgramStartupInit();
     // CIsoViewExt::ProgramStartupInit();
