@@ -19,16 +19,12 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         GET(INIClass*, pINI, EAX);
         GET_STACK(CFinalSunDlg*, pThis, STACK_OFFS(0x3F4, 0x36C));
         REF_STACK(ppmfc::CString, filepath, STACK_OFFS(0x3F4, -0x4));
-        bool hasVersion = false;
 
         pThis->MyViewFrame.StatusBar.SetWindowText("Saving...");
         pThis->MyViewFrame.StatusBar.UpdateWindow();
 
-        int version = pINI->GetInteger("Basic", "Version");
-        if (version >= 1)
-            hasVersion = true;
-        else
-            version = 1;
+        int version = pINI->GetInteger("FA2spVersionControl", "Version");
+        version++;
 
         if (ExtConfigs::SaveMap_OnlySaveMAP) {
             filepath.Delete(filepath.GetLength() - 3, 3);
@@ -51,23 +47,18 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
             "; Current version : ";
         ss << PRODUCT_STR;
         ss << "\n\n";
+        ss << "[FA2spVersionControl]\n";
+        ss << "Version=";
+        ss << version;
+        ss << "\n\n";
 
         for (auto& section : pINI->Dict)
         {
             ss << "[";
             ss << section.first;
             ss << "]\n";
-            if (!std::strcmp(section.first, "Basic")) {
-                ss << "Version=";
-                if (hasVersion) {
-                    version++;
-                }
-                ss << version;
-                ss << "\n";
-            }
             for (auto& pair : section.second.EntitiesDictionary)
             {
-                
                 ss << pair.first;
                 ss << "=";
                 ss << pair.second;
