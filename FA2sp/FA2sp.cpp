@@ -39,6 +39,7 @@ bool ExtConfigs::SaveMap;
 bool ExtConfigs::SaveMap_AutoSave;
 int ExtConfigs::SaveMap_AutoSave_Interval;
 int ExtConfigs::SaveMap_AutoSave_MaxCount;
+bool ExtConfigs::SaveMap_OnlySaveMAP;
 
 MultimapHelper Variables::Rules = { &GlobalVars::INIFiles::Rules(), &GlobalVars::INIFiles::CurrentDocument() };
 
@@ -98,6 +99,7 @@ void FA2sp::ExtConfigsInitialize()
 			ExtConfigs::SaveMap_AutoSave_Interval = -1;
 		}
 	}
+	ExtConfigs::SaveMap_OnlySaveMAP = fadata.GetBool("ExtConfigs", "SaveMap.OnlySaveMAP");
 }
 
 // DllMain
