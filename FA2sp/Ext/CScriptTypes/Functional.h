@@ -87,7 +87,7 @@ static void CScriptTypes_LoadParams_Waypoint(ppmfc::CComboBox& comboBox)
 }
 
 // 3
-static void CScriptTypes_LoadParams_ScriptLine(ppmfc::CComboBox& comboBox, ppmfc::CComboBox& currentScript, CListBox& listBox)
+static void CScriptTypes_LoadParams_ScriptLine(ppmfc::CComboBox& comboBox, ppmfc::CComboBox& currentScript, ppmfc::CListBox& listBox)
 {
     int cnt = listBox.GetCount();
     // up to 50
