@@ -23,8 +23,13 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         pThis->MyViewFrame.StatusBar.SetWindowText("Saving...");
         pThis->MyViewFrame.StatusBar.UpdateWindow();
 
+        ppmfc::CString buffer;
         int version = pINI->GetInteger("FA2spVersionControl", "Version");
         version++;
+        buffer.Format("%d", 
+            version
+        );
+        pINI->WriteString("FA2spVersionControl", "Version", buffer);
 
         if (ExtConfigs::SaveMap_OnlySaveMAP) {
             filepath.Delete(filepath.GetLength() - 3, 3);
@@ -46,10 +51,6 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
             "; Get the lastest dll at https://github.com/secsome/FA2sp\n"
             "; Current version : ";
         ss << PRODUCT_STR;
-        ss << "\n\n";
-        ss << "[FA2spVersionControl]\n";
-        ss << "Version=";
-        ss << version;
         ss << "\n\n";
 
         for (auto& section : pINI->Dict)
