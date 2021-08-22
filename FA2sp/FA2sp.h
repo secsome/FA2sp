@@ -49,6 +49,7 @@ public:
     static bool SaveMap_AutoSave;
     static int SaveMap_AutoSave_Interval;
     static int SaveMap_AutoSave_MaxCount;
+    static bool SaveMap_OnlySaveMAP;
 };
 
 class Variables
