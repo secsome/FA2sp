@@ -24,16 +24,16 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         pThis->MyViewFrame.StatusBar.UpdateWindow();
 
         ppmfc::CString buffer;
-        int version = pINI->GetInteger("FA2spVersionControl", "Version");
-        version++;
-        buffer.Format("%d", 
-            version
-        );
+        buffer.Format("%d", pINI->GetInteger("FA2spVersionControl", "Version") + 1);
         pINI->WriteString("FA2spVersionControl", "Version", buffer);
 
-        if (ExtConfigs::SaveMap_OnlySaveMAP) {
-            filepath.Delete(filepath.GetLength() - 3, 3);
-            filepath += "map";
+        if (ExtConfigs::SaveMap_OnlySaveMAP) 
+        {
+            int nExtIndex = filepath.ReverseFind('.');
+            if (nExtIndex == -1)
+                filepath += ".map";
+            else
+                filepath = filepath.Mid(0, nExtIndex) + ".map";
         }
 
         CloseHandle(
@@ -109,9 +109,6 @@ DEFINE_HOOK(42B2EA, CFinalSunDlg_SaveMap_SkipStringDTOR, C)
     return ExtConfigs::SaveMap ? 0x42B30F : 0;
 }
 
-
-
-
 class SaveMapExt
 {
 private:
@@ -151,25 +148,21 @@ public:
             };
 
             std::map<FILETIME, ppmfc::CString, FileTimeComparator> m;
-            auto& doc = GlobalVars::INIFiles::CurrentDocument();
-
-            auto mapName = doc.GetString("Basic", "Name");
-            bool multiplyOnly = doc.GetBool("Basic", "MultiplayerOnly");
+            const auto mapName = GlobalVars::INIFiles::CurrentDocument->GetString("Basic", "Name","No Name");
+            const auto ext = 
+                !ExtConfigs::SaveMap_OnlySaveMAP && GlobalVars::INIFiles::CurrentDocument->GetBool("Basic", "MultiplayerOnly") ?
+                *reinterpret_cast<bool*>(0x5D32AC) ?
+                "yrm" :
+                "mpr" :
+                "map";
 
             ppmfc::CString buffer = GlobalVars::ExePath();
-            buffer.Format("%s\\AutoSaves\\%s\\%s-*.", 
+            buffer.Format("%s\\AutoSaves\\%s\\%s-*.%s", 
                 GlobalVars::ExePath(),
                 mapName,
-                mapName
+                mapName,
+                ext
             );
-
-            if (!ExtConfigs::SaveMap_OnlySaveMAP && multiplyOnly) {
-                buffer += "yrm";
-            }
-            else {
-                buffer += "map";
-            }
-            
 
             WIN32_FIND_DATA Data;
             auto hFindData = FindFirstFile(buffer, &Data);
@@ -206,48 +199,30 @@ public:
         SYSTEMTIME time;
         GetLocalTime(&time);
 
-        auto& doc = GlobalVars::INIFiles::CurrentDocument();
-        auto mapName = doc.GetString("Basic", "Name");
+        const auto mapName = GlobalVars::INIFiles::CurrentDocument->GetString("Basic", "Name", "No Name");
+        const auto ext = 
+            !ExtConfigs::SaveMap_OnlySaveMAP && GlobalVars::INIFiles::CurrentDocument->GetBool("Basic", "MultiplayerOnly") ?
+            *reinterpret_cast<bool*>(0x5D32AC) ?
+            "yrm" :
+            "mpr" :
+            "map";
 
         ppmfc::CString buffer = GlobalVars::ExePath();
         buffer += "\\AutoSaves\\";
-        buffer += doc.GetString("Basic", "Name");
+        buffer += mapName;
         CreateDirectory(buffer, nullptr);
 
-        bool multiplyOnly = doc.GetBool("Basic", "MultiplayerOnly");
-
-        buffer.Format("%s\\AutoSaves\\%s\\%s-%04d%02d%02d-%02d%02d%02d-%03d.",
+        buffer.Format("%s\\AutoSaves\\%s\\%s-%04d%02d%02d-%02d%02d%02d-%03d.%s",
             GlobalVars::ExePath(),
             mapName,
             mapName,
             time.wYear, time.wMonth, time.wDay,
             time.wHour, time.wMinute, time.wSecond,
-            time.wMilliseconds
+            time.wMilliseconds,
+            ext
         );
-
-        if (!ExtConfigs::SaveMap_OnlySaveMAP && multiplyOnly) {
-            buffer += "yrm";
-        }
-        else {
-            buffer += "map";
-        }
 
         IsAutoSaving = true;
-        GlobalVars::Dialogs::CFinalSunDlg->SaveMap(buffer);
-
-        buffer.Format("%s\\AutoSaves\\%s\\%s.",
-            GlobalVars::ExePath(),
-            mapName,
-            mapName
-        );
-        
-        if (!ExtConfigs::SaveMap_OnlySaveMAP && multiplyOnly) {
-            buffer += "yrm";
-        }
-        else {
-            buffer += "map";
-        }
-
         GlobalVars::Dialogs::CFinalSunDlg->SaveMap(buffer);
         IsAutoSaving = false;
 
