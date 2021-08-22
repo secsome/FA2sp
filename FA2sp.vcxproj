@@ -82,7 +82,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <AdditionalDependencies>Nafxcwd.lib;Libcmtd.lib;DbgHelp.lib;legacy_stdio_definitions.lib;d3dx9.lib;vxl_drawing_lib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Nafxcwd.lib;Libcmtd.lib;DbgHelp.lib;legacy_stdio_definitions.lib;vxl_drawing_lib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
       <IgnoreSpecificDefaultLibraries>Nafxcwd.lib;Libcmtd.lib</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -115,7 +115,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <AdditionalDependencies>Nafxcwd.lib;Libcmtd.lib;DbgHelp.lib;legacy_stdio_definitions.lib;d3dx9d.lib;vxl_drawing_lib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Nafxcwd.lib;Libcmtd.lib;DbgHelp.lib;legacy_stdio_definitions.lib;vxl_drawing_lib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
       <IgnoreSpecificDefaultLibraries>Nafxcwd.lib;Libcmtd.lib</IgnoreSpecificDefaultLibraries>
     </Link>
