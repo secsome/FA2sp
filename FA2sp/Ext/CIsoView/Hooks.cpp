@@ -324,8 +324,8 @@ DEFINE_HOOK(47280B, CIsoView_Draw_BasenodeOutline, 6)
 	GET_STACK(COLORREF, dwColor, STACK_OFFS(0xD18, 0xB94));
 	LEA_STACK(LPDDSURFACEDESC2, lpDesc, STACK_OFFS(0xD18, 0x92C));
 
-	pThis->DrawLockedCellOutline(X, Y, W, H, dwColor, false, true, lpDesc);
-	pThis->DrawLockedCellOutline(X + 1, Y, W, H, dwColor, false, true, lpDesc);
+	pThis->DrawLockedCellOutline(X, Y, W, H, dwColor, true, false, lpDesc);
+	pThis->DrawLockedCellOutline(X + 1, Y, W, H, dwColor, true, false, lpDesc);
 
 	return 0x472884;
 }
