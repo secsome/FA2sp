@@ -11,6 +11,13 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-08-25 RELEASE 1.0.5) ==============================================================================================
++) Enhanced SaveMap logic by Loritas
++) New ExtConfig: SaveMap.OnlySaveMAP, enable it so that FA2 will only save map with .map file extension
+*) Now VXL drawing lib no longer requires DirectX 9 anymore
+*) Reimplemented Building & Basenode outline rendering, also Celltags, Waypoints and Tubes rendering
+*) Significantly reduce the lag of Building & Celltag & Waypoint & Tube rendering
+
 ======================= Changes (2021-08-20 RELEASE 1.0.4) ==============================================================================================
 +) Now you can copy AITriggers
 +) New ExtConfig: SaveMap = BOOLEAN, enable it so that we will replace FA2's vanilla slow saving function
@@ -163,6 +170,7 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) SaveMap.AutoSave = BOOLEAN ; Determines if FA2 will save map automatically after one manually saving
                     +) SaveMap.AutoSave.Interval = INTERGER ; Should be greater than or equal to 30, defaults to 300, determines how many seconds should we wait during the two auto saving
                     +) SaveMap.AutoSave.MaxCount = INTERGER ; How many saving should FA2 keep, set to -1 will disable the auto cleanning, defaults to 10
+            +) SaveMap.OnlySaveMAP = BOOLEAN ; Determines if FA2 will only save map with .map file extension
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.
