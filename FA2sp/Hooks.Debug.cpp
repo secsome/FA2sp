@@ -2,8 +2,6 @@
 
 #include <CINI.h>
 
-#include <GlobalVars.h>
-
 #include <CMapData.h>
 #include <CFinalSunDlg.h>
 #include <CIsoView.h>
@@ -12,6 +10,8 @@
 #include <CPalette.h>
 #include <unordered_map>
 #include <Drawing.h>
+
+#include <GlobalVars.h>
 
 //DEFINE_HOOK(438DB0, DebugDrawDataMap, 6)
 //{

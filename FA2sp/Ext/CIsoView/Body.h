@@ -14,6 +14,8 @@ public:
 
     BOOL OnMouseWheelExt(UINT Flags, short zDelta, CPoint pt);
 
+    void DrawLockedCellOutline(int X, int Y, int W, int H, COLORREF color, bool bUseDot, bool bUsePrimary, LPDDSURFACEDESC2 lpDesc);
+
     static bool DrawStructures;
     static bool DrawInfantries;
     static bool DrawUnits;
