@@ -23,6 +23,19 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         pThis->MyViewFrame.StatusBar.SetWindowText("Saving...");
         pThis->MyViewFrame.StatusBar.UpdateWindow();
 
+        ppmfc::CString buffer;
+        buffer.Format("%d", pINI->GetInteger("FA2spVersionControl", "Version") + 1);
+        pINI->WriteString("FA2spVersionControl", "Version", buffer);
+
+        if (ExtConfigs::SaveMap_OnlySaveMAP) 
+        {
+            int nExtIndex = filepath.ReverseFind('.');
+            if (nExtIndex == -1)
+                filepath += ".map";
+            else
+                filepath = filepath.Mid(0, nExtIndex) + ".map";
+        }
+
         CloseHandle(
             CreateFile(filepath, GENERIC_WRITE, NULL, nullptr, TRUNCATE_EXISTING, FILE_FLAG_SEQUENTIAL_SCAN | FILE_ATTRIBUTE_NORMAL, NULL)
         );
@@ -135,9 +148,22 @@ public:
             };
 
             std::map<FILETIME, ppmfc::CString, FileTimeComparator> m;
+            const auto mapName = GlobalVars::INIFiles::CurrentDocument->GetString("Basic", "Name","No Name");
+            const auto ext = 
+                !ExtConfigs::SaveMap_OnlySaveMAP && GlobalVars::INIFiles::CurrentDocument->GetBool("Basic", "MultiplayerOnly") ?
+                *reinterpret_cast<bool*>(0x5D32AC) ?
+                "yrm" :
+                "mpr" :
+                "map";
 
             ppmfc::CString buffer = GlobalVars::ExePath();
-            buffer += "\\AutoSaves\\autosave-*.map";
+            buffer.Format("%s\\AutoSaves\\%s\\%s-*.%s", 
+                GlobalVars::ExePath(),
+                mapName,
+                mapName,
+                ext
+            );
+
             WIN32_FIND_DATA Data;
             auto hFindData = FindFirstFile(buffer, &Data);
             while (hFindData != INVALID_HANDLE_VALUE)
@@ -154,7 +180,7 @@ public:
             auto& itr = m.begin();
             while (count != 0)
             {
-                buffer.Format("%s\\AutoSaves\\%s", GlobalVars::ExePath(), itr->second);
+                buffer.Format("%s\\AutoSaves\\%s\\%s", GlobalVars::ExePath(), mapName, itr->second);
                 DeleteFile(buffer);
                 ++itr;
                 --count;
@@ -173,15 +199,27 @@ public:
         SYSTEMTIME time;
         GetLocalTime(&time);
 
+        const auto mapName = GlobalVars::INIFiles::CurrentDocument->GetString("Basic", "Name", "No Name");
+        const auto ext = 
+            !ExtConfigs::SaveMap_OnlySaveMAP && GlobalVars::INIFiles::CurrentDocument->GetBool("Basic", "MultiplayerOnly") ?
+            *reinterpret_cast<bool*>(0x5D32AC) ?
+            "yrm" :
+            "mpr" :
+            "map";
+
         ppmfc::CString buffer = GlobalVars::ExePath();
-        buffer += "\\AutoSaves";
+        buffer += "\\AutoSaves\\";
+        buffer += mapName;
         CreateDirectory(buffer, nullptr);
 
-        buffer.Format("%s\\AutoSaves\\autosave-%04d%02d%02d-%02d%02d%02d-%03d.map",
+        buffer.Format("%s\\AutoSaves\\%s\\%s-%04d%02d%02d-%02d%02d%02d-%03d.%s",
             GlobalVars::ExePath(),
+            mapName,
+            mapName,
             time.wYear, time.wMonth, time.wDay,
             time.wHour, time.wMinute, time.wSecond,
-            time.wMilliseconds
+            time.wMilliseconds,
+            ext
         );
 
         IsAutoSaving = true;

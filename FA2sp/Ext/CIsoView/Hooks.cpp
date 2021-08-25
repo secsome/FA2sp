@@ -98,17 +98,17 @@ DEFINE_HOOK(45ADD0, CIsoView_Draw_CursorSelectionBoundHeightColor, 6)
 	return 0;
 }
 
-DEFINE_HOOK(474A49, CIsoView_Draw_WaypointColor, 5)
-{
-	GET(CIsoView*, pThis, EBP);
-	GET(int, X, ESI);
-	GET(int, Y, EDI);
-	REF_STACK(ppmfc::CString, str, STACK_OFFS(0xD18, 0xCE4));
-
-	pThis->DrawText(X + 15, Y + 7, str, ExtConfigs::Waypoint_Color);
-
-	return 0x474A67;
-}
+//DEFINE_HOOK(474A49, CIsoView_Draw_WaypointColor, 5)
+//{
+//	GET(CIsoView*, pThis, EBP);
+//	GET(int, X, ESI);
+//	GET(int, Y, EDI);
+//	REF_STACK(ppmfc::CString, str, STACK_OFFS(0xD18, 0xCE4));
+//
+//	pThis->DrawText(X + 15, Y + 7, str, ExtConfigs::Waypoint_Color);
+//
+//	return 0x474A67;
+//}
 
 DEFINE_HOOK(4685EA, CIsoView_DrawText, 9)
 {
@@ -164,20 +164,20 @@ DEFINE_HOOK(474563, CIsoView_Draw_LayerVisible_Smudges, 9)
 	return CIsoViewExt::DrawSmudges ? 0 : 0x4748DC;
 }
 
-DEFINE_HOOK(4748DC, CIsoView_Draw_LayerVisible_Celltags, 9)
-{
-	return CIsoViewExt::DrawCelltags ? 0 : 0x474986;
-}
-
-DEFINE_HOOK(474986, CIsoView_Draw_LayerVisible_Waypoints, 9)
-{
-	return CIsoViewExt::DrawWaypoints ? 0 : 0x474A91;
-}
-
-DEFINE_HOOK(474B9D, CIsoView_Draw_LayerVisible_Tubes, 9)
-{
-	return CIsoViewExt::DrawTubes ? 0 : 0x474D64;
-}
+//DEFINE_HOOK(4748DC, CIsoView_Draw_LayerVisible_Celltags, 9)
+//{
+//	return CIsoViewExt::DrawCelltags ? 0 : 0x474986;
+//}
+//
+//DEFINE_HOOK(474986, CIsoView_Draw_LayerVisible_Waypoints, 9)
+//{
+//	return CIsoViewExt::DrawWaypoints ? 0 : 0x474A91;
+//}
+//
+//DEFINE_HOOK(474B9D, CIsoView_Draw_LayerVisible_Tubes, 9)
+//{
+//	return CIsoViewExt::DrawTubes ? 0 : 0x474D64;
+//}
 
 DEFINE_HOOK(474DDF, CIsoView_Draw_LayerVisible_Bounds, 5)
 {
@@ -275,29 +275,99 @@ DEFINE_HOOK(4720D3, CIsoView_Draw_PowerUp3Loc_PosFix, 5)
 
 DEFINE_HOOK(470986, CIsoView_Draw_BuildingImageDataQuery_1, 8)
 {
-	REF_STACK(ImageDataClass, data, STACK_OFFS(0xD18, 0xAFC));
-	REF_STACK(CellData, cell, STACK_OFFS(0xD18, 0xC60));
-	GET_STACK(int, nRotation, STACK_OFFS(0xD18, 0xC00));
+	REF_STACK(ImageDataClass, image, STACK_OFFS(0xD18, 0xAFC));
+	REF_STACK(StructureData, structure, STACK_OFFS(0xD18, 0xC0C));
 
-	auto const ID = STDHelpers::SplitString(GlobalVars::INIFiles::CurrentDocument->GetStringAt("Structures", cell.Structure))[1];
 	int nFacing = 0;
-	if (Variables::Rules.GetBool(ID, "Turret"))
-		nFacing = 7 - (nRotation / 32) % 8;
-	data = *ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(ID, nFacing));
+	if (Variables::Rules.GetBool(structure.ID, "Turret"))
+		nFacing = 7 - (structure.Facing / 32) % 8;
+	image = *ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(structure.ID, nFacing));
 
 	return 0x4709E1;
 }
 
 DEFINE_HOOK(470AE3, CIsoView_Draw_BuildingImageDataQuery_2, 7)
 {
-	REF_STACK(ImageDataClass, data, STACK_OFFS(0xD18, 0xAFC));
-	REF_STACK(ppmfc::CString, ID, STACK_OFFS(0xD18, 0xC08));
-	GET_STACK(int, nRotation, STACK_OFFS(0xD18, 0xC00));
+	REF_STACK(ImageDataClass, image, STACK_OFFS(0xD18, 0xAFC));
+	REF_STACK(StructureData, structure, STACK_OFFS(0xD18, 0xC0C));
 
 	int nFacing = 0;
-	if (Variables::Rules.GetBool(ID, "Turret"))
-		nFacing = (7 - nRotation / 32) % 8;
-	data = *ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(ID, nFacing));
+	if (Variables::Rules.GetBool(structure.ID, "Turret"))
+		nFacing = (7 - structure.Facing / 32) % 8;
+	image = *ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(structure.ID, nFacing));
 
 	return 0x470B4D;
+}
+
+DEFINE_HOOK(4709EE, CIsoView_Draw_ShowBuildingOutline, 6)
+{
+	GET(CIsoViewExt*, pThis, EDI);
+	GET(int, X, EBX);
+	GET(int, Y, EBP);
+	GET_STACK(int, W, STACK_OFFS(0xD18, 0xCFC));
+	GET_STACK(int, H, STACK_OFFS(0xD18, 0xD00));
+	GET_STACK(COLORREF, dwColor, STACK_OFFS(0xD18, 0xD04));
+	LEA_STACK(LPDDSURFACEDESC2, lpDesc, STACK_OFFS(0xD18, 0x92C));
+
+	pThis->DrawLockedCellOutline(X, Y, W, H, dwColor, false, false, lpDesc);
+
+	return 0x470A38;
+}
+
+DEFINE_HOOK(47280B, CIsoView_Draw_BasenodeOutline, 6)
+{
+	GET_STACK(CIsoViewExt*, pThis, STACK_OFFS(0xD18, 0xCD4));
+	GET(int, X, EBX);
+	GET(int, Y, EBP);
+	GET_STACK(int, W, STACK_OFFS(0xD18, 0xCFC));
+	GET_STACK(int, H, STACK_OFFS(0xD18, 0xD00));
+	GET_STACK(COLORREF, dwColor, STACK_OFFS(0xD18, 0xB94));
+	LEA_STACK(LPDDSURFACEDESC2, lpDesc, STACK_OFFS(0xD18, 0x92C));
+
+	pThis->DrawLockedCellOutline(X, Y, W, H, dwColor, true, false, lpDesc);
+	pThis->DrawLockedCellOutline(X + 1, Y, W, H, dwColor, true, false, lpDesc);
+
+	return 0x472884;
+}
+
+DEFINE_HOOK(4748DC, CIsoView_Draw_SkipCelltagAndWaypointDrawing, 9)
+{
+	return 0x474A91;
+}
+
+DEFINE_HOOK(474AE3, CIsoView_Draw_DrawCelltagAndWaypointAndTube_EarlyUnlock, 6)
+{
+	GET_STACK(CIsoViewExt*, pThis, STACK_OFFS(0xD18, 0xCD4));
+
+	pThis->lpDDBackBufferSurface->Unlock(nullptr);
+
+	return pThis ? 0x474AEF : 0x474DB3;
+}
+
+DEFINE_HOOK(474B9D, CIsoView_Draw_DrawCelltagAndWaypointAndTube_DrawStuff, 9)
+{
+	GET_STACK(CIsoViewExt*, pThis, STACK_OFFS(0xD18, 0xCD4));
+	REF_STACK(CellData, celldata, STACK_OFFS(0xD18, 0xC60));
+	int X = R->Stack<int>(STACK_OFFS(0xD18, 0xCE4)) - R->Stack<float>(STACK_OFFS(0xD18, 0xCB0));
+	int Y = R->Stack<int>(STACK_OFFS(0xD18, 0xCD0)) - R->Stack<float>(STACK_OFFS(0xD18, 0xCB8));
+
+	// We had unlocked it already, just blt them now
+	if (CIsoViewExt::DrawCelltags && celldata.CellTag != -1)
+		pThis->DrawCelltag(X, Y);
+	if (CIsoViewExt::DrawWaypoints && celldata.Waypoint != -1)
+		pThis->DrawWaypoint(celldata.Waypoint, X, Y);
+	if (CIsoViewExt::DrawTubes && celldata.Tube != -1)
+		pThis->DrawTube(&celldata, X, Y);
+
+	return 0x474D64;
+}
+
+DEFINE_HOOK(474DB7, CIsoView_Draw_DrawCelltagAndWaypointAndTube_SkipOriginUnlock, 6)
+{
+	GET(CIsoViewExt*, pThis, EBX);
+
+	R->EAX(pThis->lpDDBackBufferSurface);
+	R->EBP(&pThis->lpDDBackBufferSurface);
+
+	return 0x474DCE;
 }
