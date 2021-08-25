@@ -202,10 +202,41 @@ void CIsoViewExt::DrawLockedCellOutline(int X, int Y, int W, int H, COLORREF col
     int x4 = X - fullCellHeight + 29;
     int y4 = halfCellHeight + y1 - 1;
 
+    //   1
+    //  # #
+    // 4   2
+    //  # #
+    //   3
+
     ClipAndDrawLine(x1, y1, x2, y2);
     ClipAndDrawLine(x2, y2, x3, y3);
     ClipAndDrawLine(x3, y3, x4, y4);
     ClipAndDrawLine(x4, y4, x1, y1);
+    
+    // thicker
+    if (!bUseDot)
+    {
+        ClipAndDrawLine(x1 + 1, y1, x2 + 1, y2);
+        ClipAndDrawLine(x1 - 1, y1, x2 - 1, y2);
+        ClipAndDrawLine(x1 + 2, y1, x2 + 2, y2);
+        ClipAndDrawLine(x1 - 2, y1, x2 - 2, y2);
+
+        ClipAndDrawLine(x2 + 1, y2, x3 + 1, y3);
+        ClipAndDrawLine(x2 - 1, y2, x3 - 1, y3);
+        ClipAndDrawLine(x2 + 2, y2, x3 + 2, y3);
+        ClipAndDrawLine(x2 - 2, y2, x3 - 2, y3);
+
+        ClipAndDrawLine(x3 + 1, y3, x4 + 1, y4);
+        ClipAndDrawLine(x3 - 1, y3, x4 - 1, y4);
+        ClipAndDrawLine(x3 + 2, y3, x4 + 2, y4);
+        ClipAndDrawLine(x3 - 2, y3, x4 - 2, y4);
+
+        ClipAndDrawLine(x4 + 1, y4, x1 + 1, y1);
+        ClipAndDrawLine(x4 - 1, y4, x1 - 1, y1);
+        ClipAndDrawLine(x4 + 2, y4, x1 + 2, y1);
+        ClipAndDrawLine(x4 - 2, y4, x1 - 2, y1);
+    }
+
 }
 
 BOOL CIsoViewExt::PreTranslateMessageExt(MSG* pMsg)
