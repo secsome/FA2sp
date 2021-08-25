@@ -98,17 +98,17 @@ DEFINE_HOOK(45ADD0, CIsoView_Draw_CursorSelectionBoundHeightColor, 6)
 	return 0;
 }
 
-DEFINE_HOOK(474A49, CIsoView_Draw_WaypointColor, 5)
-{
-	GET(CIsoView*, pThis, EBP);
-	GET(int, X, ESI);
-	GET(int, Y, EDI);
-	REF_STACK(ppmfc::CString, str, STACK_OFFS(0xD18, 0xCE4));
-
-	pThis->DrawText(X + 15, Y + 7, str, ExtConfigs::Waypoint_Color);
-
-	return 0x474A67;
-}
+//DEFINE_HOOK(474A49, CIsoView_Draw_WaypointColor, 5)
+//{
+//	GET(CIsoView*, pThis, EBP);
+//	GET(int, X, ESI);
+//	GET(int, Y, EDI);
+//	REF_STACK(ppmfc::CString, str, STACK_OFFS(0xD18, 0xCE4));
+//
+//	pThis->DrawText(X + 15, Y + 7, str, ExtConfigs::Waypoint_Color);
+//
+//	return 0x474A67;
+//}
 
 DEFINE_HOOK(4685EA, CIsoView_DrawText, 9)
 {
@@ -164,20 +164,20 @@ DEFINE_HOOK(474563, CIsoView_Draw_LayerVisible_Smudges, 9)
 	return CIsoViewExt::DrawSmudges ? 0 : 0x4748DC;
 }
 
-DEFINE_HOOK(4748DC, CIsoView_Draw_LayerVisible_Celltags, 9)
-{
-	return CIsoViewExt::DrawCelltags ? 0 : 0x474986;
-}
-
-DEFINE_HOOK(474986, CIsoView_Draw_LayerVisible_Waypoints, 9)
-{
-	return CIsoViewExt::DrawWaypoints ? 0 : 0x474A91;
-}
-
-DEFINE_HOOK(474B9D, CIsoView_Draw_LayerVisible_Tubes, 9)
-{
-	return CIsoViewExt::DrawTubes ? 0 : 0x474D64;
-}
+//DEFINE_HOOK(4748DC, CIsoView_Draw_LayerVisible_Celltags, 9)
+//{
+//	return CIsoViewExt::DrawCelltags ? 0 : 0x474986;
+//}
+//
+//DEFINE_HOOK(474986, CIsoView_Draw_LayerVisible_Waypoints, 9)
+//{
+//	return CIsoViewExt::DrawWaypoints ? 0 : 0x474A91;
+//}
+//
+//DEFINE_HOOK(474B9D, CIsoView_Draw_LayerVisible_Tubes, 9)
+//{
+//	return CIsoViewExt::DrawTubes ? 0 : 0x474D64;
+//}
 
 DEFINE_HOOK(474DDF, CIsoView_Draw_LayerVisible_Bounds, 5)
 {
@@ -328,4 +328,46 @@ DEFINE_HOOK(47280B, CIsoView_Draw_BasenodeOutline, 6)
 	pThis->DrawLockedCellOutline(X + 1, Y, W, H, dwColor, true, false, lpDesc);
 
 	return 0x472884;
+}
+
+DEFINE_HOOK(4748DC, CIsoView_Draw_SkipCelltagAndWaypointDrawing, 9)
+{
+	return 0x474A91;
+}
+
+DEFINE_HOOK(474AE3, CIsoView_Draw_DrawCelltagAndWaypointAndTube_EarlyUnlock, 6)
+{
+	GET_STACK(CIsoViewExt*, pThis, STACK_OFFS(0xD18, 0xCD4));
+
+	pThis->lpDDBackBufferSurface->Unlock(nullptr);
+
+	return pThis ? 0x474AEF : 0x474DB3;
+}
+
+DEFINE_HOOK(474B9D, CIsoView_Draw_DrawCelltagAndWaypointAndTube_DrawStuff, 9)
+{
+	GET_STACK(CIsoViewExt*, pThis, STACK_OFFS(0xD18, 0xCD4));
+	REF_STACK(CellData, celldata, STACK_OFFS(0xD18, 0xC60));
+	int X = R->Stack<int>(STACK_OFFS(0xD18, 0xCE4)) - R->Stack<float>(STACK_OFFS(0xD18, 0xCB0));
+	int Y = R->Stack<int>(STACK_OFFS(0xD18, 0xCD0)) - R->Stack<float>(STACK_OFFS(0xD18, 0xCB8));
+
+	// We had unlocked it already, just blt them now
+	if (CIsoViewExt::DrawCelltags && celldata.CellTag != -1)
+		pThis->DrawCelltag(X, Y);
+	if (CIsoViewExt::DrawWaypoints && celldata.Waypoint != -1)
+		pThis->DrawWaypoint(celldata.Waypoint, X, Y);
+	if (CIsoViewExt::DrawTubes && celldata.Tube != -1)
+		pThis->DrawTube(&celldata, X, Y);
+
+	return 0x474D64;
+}
+
+DEFINE_HOOK(474DB7, CIsoView_Draw_DrawCelltagAndWaypointAndTube_SkipOriginUnlock, 6)
+{
+	GET(CIsoViewExt*, pThis, EBX);
+
+	R->EAX(pThis->lpDDBackBufferSurface);
+	R->EBP(&pThis->lpDDBackBufferSurface);
+
+	return 0x474DCE;
 }

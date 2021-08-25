@@ -5,6 +5,12 @@
 #include <WindowsX.h>
 #include <CPalette.h>
 
+#include <CMapData.h>
+#include <Drawing.h>
+#include <CINI.h>
+
+#include <GlobalVars.h>
+
 bool CIsoViewExt::DrawStructures = true;
 bool CIsoViewExt::DrawInfantries = true;
 bool CIsoViewExt::DrawUnits = true;
@@ -237,6 +243,31 @@ void CIsoViewExt::DrawLockedCellOutline(int X, int Y, int W, int H, COLORREF col
         ClipAndDrawLine(x4 - 2, y4, x1 - 2, y1);
     }
 
+}
+
+void CIsoViewExt::DrawCelltag(int X, int Y)
+{
+    this->BltToBackBuffer(ImageDataMapHelper::GetImageDataFromMap("CELLTAG")->lpSurface, X, Y, -1, -1);
+}
+
+void CIsoViewExt::DrawWaypoint(int WPIndex, int X, int Y)
+{
+    this->BltToBackBuffer(ImageDataMapHelper::GetImageDataFromMap("FLAG")->lpSurface, X, Y - 2, -1, -1);
+    if (auto pSection = GlobalVars::INIFiles::CurrentDocument->GetSection("Waypoints"))
+        this->DrawText(X + 15, Y + 7, *pSection->GetKeyAt(WPIndex), ExtConfigs::Waypoint_Color);
+}
+
+void CIsoViewExt::DrawTube(CellData* pData, int X, int Y)
+{
+    if (auto pTubeData = GlobalVars::CMapData->GetTubeData(pData->Tube))
+    {
+        auto suffix = pData->TubeDataIndex;
+        if (pData->TubeDataIndex >= 2)
+            suffix = pTubeData->Data[pData->TubeDataIndex] + 2;
+        FA2sp::Buffer.Format("TUBE%d", suffix);
+        if (auto lpSurface = ImageDataMapHelper::GetImageDataFromMap(FA2sp::Buffer)->lpSurface)
+            this->BltToBackBuffer(lpSurface, X + 7, Y + 1, -1, -1);
+    }
 }
 
 BOOL CIsoViewExt::PreTranslateMessageExt(MSG* pMsg)

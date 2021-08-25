@@ -1,8 +1,5 @@
-#include "FA2sp.h"
-
-#include <CINI.h>
-
 #include <CMapData.h>
+#include <CINI.h>
 #include <CFinalSunDlg.h>
 #include <CIsoView.h>
 #include <CMixFile.h>
@@ -13,6 +10,8 @@
 
 #include <GlobalVars.h>
 
+#include "FA2sp.h"
+ 
 //DEFINE_HOOK(438DB0, DebugDrawDataMap, 6)
 //{
 //    Screenshot("CurrentSurface.bmp", GlobalVars::Dialogs::CFinalSunDlg->MyViewFrame.pIsoView->lpDDPrimarySurface);
