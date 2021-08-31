@@ -648,6 +648,15 @@ int ObjectBrowserControlExt::GuessGenericSide(const char* pRegName, int nType)
 }
 
 // ObjectBrowserControlExt::OnSelectChanged
+void ObjectBrowserControlExt::OnExeTerminate()
+{
+    IgnoreSet.clear();
+    ForceName.clear();
+    for (auto& set : ExtSets)
+        set.clear();
+    KnownItem.clear();
+    Owners.clear();
+}
 
 int ObjectBrowserControlExt::UpdateEngine(int nData)
 {

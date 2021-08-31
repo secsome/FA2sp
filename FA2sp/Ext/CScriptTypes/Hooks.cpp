@@ -10,6 +10,7 @@ DEFINE_HOOK(4D5B20, CScriptTypes_DTOR, 7)
 {
     CScriptTypeAction::ExtActions.clear();
     CScriptTypeParam::ExtParams.clear();
+	delete CScriptTypesExt::ExtCurrentScript;
     return 0;
 }
 

@@ -1,161 +1,40 @@
 #include <CMapData.h>
-#include <CINI.h>
 #include <CFinalSunDlg.h>
 #include <CIsoView.h>
-#include <CMixFile.h>
-#include <CLoading.h>
 #include <CPalette.h>
-#include <unordered_map>
 #include <Drawing.h>
 
 #include <GlobalVars.h>
 
-#include "FA2sp.h"
- 
-//DEFINE_HOOK(438DB0, DebugDrawDataMap, 6)
-//{
-//    Screenshot("CurrentSurface.bmp", GlobalVars::Dialogs::CFinalSunDlg->MyViewFrame.pIsoView->lpDDPrimarySurface);
-//
-//    ImageDataMap& tmp = *reinterpret_cast<ImageDataMap*>(0x72CBC8);
-//
-//    SomeDataMap& tmp2 = *reinterpret_cast<SomeDataMap*>(0x72A870);
-//    for (auto& x : tmp2)
-//    {
-//        Logger::Debug("%s %d\n", x.first, x.second);
-//    }
-//
-//    for (auto& pair : tmp)
-//    {
-//        ImageDataClass& value = pair.second;
-//
-//        if (pair.first.IsEmpty())
-//            continue;
-//
-//        if (value.Flag == ImageDataFlag::SurfaceData)
-//        {
-//            if (value.lpSurface)
-//            {
-//                // Screenshot("Exports\\" + pair.first + ".bmp", value.lpSurface);
-//            }
-//
-//        }
-//        else
-//        {
-//            if (pair.second.FullHeight == 0 || pair.second.FullWidth == 0)
-//                continue;
-//
-//            bitmap_image bmp;
-//            bmp.setwidth_height(value.FullWidth, value.FullHeight, true);
-//
-//            int count = 0;
-//            for (int j = 0; j < bmp.height(); ++j)
-//            {
-//                for (int i = 0; i < bmp.width(); ++i)
-//                {
-//                    bmp.set_pixel(i, j, value.pPalette->GetByteColor(value.pImageBuffer[count]));
-//                    ++count;
-//                }
-//            }
-//
-//            bmp.save_image((const char*)("Exports2\\" + pair.first + ".bmp"));
-//        }
-//    }
-//
-//    return 0x438E4E;
-//}
- 
-//
-//DEFINE_HOOK(4B2610, CMapData_QueryUIName_Debug, 7)
-//{
-//    /*GET_STACK(const char*, pRegName, 0x4);
-//    Logger::Debug(__FUNCTION__" pRegName = %s\n", pRegName);
-//    return 0;*/
-//
-//    static bool asd = true;
-//    if (asd)
-//    {
-//        auto& ini = GlobalVars::INIFiles::CurrentDocument();
-//        for (auto& x : ini.Dict)
-//        {
-//            if (auto name = ini.TryGetString(x.first, "Name"))
-//                Logger::Debug("%s %s\n", x.first, name);
-//        }
-//        asd = false;
-//    }
-//
-//    return 0;
-//}
+#include "Logger.h"
 
-//DEFINE_HOOK(438DB0, DebugTileDatas, 6)
+//DEFINE_HOOK(438DB0, DebugTilesetDatas, 6)
 //{
-//    auto& tileset = GlobalVars::CMapData->CellDatas[GlobalVars::CMapData->GetCoordIndex(50, 50)];
-//    Logger::Debug("%d\n", tileset.LAT);
-//
-//    return 0x438E4E;
-//}
-//
-//DEFINE_HOOK(45AF76, CIsoView_OnMouseMove_DebugCurrentCellData, 5)
-//{
-//    GET(int, Y, EDI);
-//    GET(int, X, EBX);
-//
-//    auto& cell = GlobalVars::CMapData->CellDatas[GlobalVars::CMapData->GetCoordIndex(X, Y)];
-//
-//    ppmfc::CString buffer;
-//    char format[] =
-//        "[%d, %d]\n"
-//        "Unit = %d  "
-//        "Infantry = {%d, %d, %d}\n"
-//        "Aircraft = %d  "
-//        "Structure = %d\n"
-//        "TypeListIndex = %d\n"
-//        "TerrainType = %d\n"
-//        "Smudge = %d\n"
-//        "SmudgeType = %d\n"
-//        "Waypoint = %d\n"
-//        "BaseNode = {%d, %d, %s}\n"
-//        "Overlay = {%d, %d}\n"
-//        "TileIndex = %d  "
-//        "Short_30 = %d  "
-//        "TileSubIndex = %d   "
-//        "Height = %d    "
-//        "IceGrowth = %d\n"
-//        "CellTag = %d   "
-//        "Tube = %d  "
-//        "TubeDir = %d\n"
-//        "StatusFlag = %d    "
-//        "LAT = %d";
-//
-//    buffer.Format(format,
-//        X, Y,
-//        cell.Unit, cell.Infantry[0], cell.Infantry[1], cell.Infantry[2],
-//        cell.Aircraft, cell.Structure,
-//        cell.TypeListIndex,
-//        cell.TerrainType,
-//        cell.Smudge,
-//        cell.SmudgeType,
-//        cell.Waypoint,
-//        cell.BaseNode.BuildingID, cell.BaseNode.BasenodeID, cell.BaseNode.House,
-//        cell.Overlay, cell.OverlayData,
-//        cell.TileIndex, cell.Short_30, cell.TileSubIndex, cell.Height, cell.IceGrowth,
-//        cell.CellTag, cell.Tube, cell.TubeDir,
-//        cell.StatusFlag, cell.LAT);
-//
-//    auto pDC = GlobalVars::Dialogs::CFinalSunDlg->MyViewFrame.pIsoView->GetDC();
-//    RECT rect{ 0,35,0,0 };
-//    pDC->SetBkMode(OPAQUE);
-//    pDC->DrawText((LPCSTR)buffer, &rect, DT_CALCRECT);
-//    pDC->DrawText((LPCSTR)buffer, &rect, NULL);
-//
-//    return 0;
-//}
-
-//DEFINE_HOOK(45AF76, CIsoView_OnMouseMove_DebugCurrentCellData, 5)
-//{
-//    struct TheaterRelatedData
+//    struct TileBlockData
 //    {
 //        int Unknown_0;
-//        char* Pointer_4;
+//        ImageDataClass* NormalImage;
+//        void* Pointer_8;
+//        int Unknown_C;
+//        int Unknown_10;
+//        unsigned char Height;
+//        unsigned char Byte_15;
+//        unsigned char Byte_16;
+//        unsigned char ColorLeft_Red;
+//        unsigned char ColorLeft_Green;
+//        unsigned char ColorLeft_Blue;
+//        unsigned char ColorRight_Red;
+//        unsigned char ColorRight_Green;
+//        unsigned char ColorRight_Blue;
+//        unsigned char Byte_1D;
+//        unsigned char Byte_1E;
+//        unsigned char Byte_1F;
+//    };
+//
+//    struct TheaterRelatedData
+//    {
+//        int TileSet;
+//        TileBlockData* SubTileDatas;
 //        __int16 SubTileCount;
 //        __int16 Short_A;
 //        int Unknown_C;
@@ -176,35 +55,34 @@
 //        unsigned __int8 Byte_3F;
 //    };
 //
-//    GET(int, Y, EDI);
-//    GET(int, X, EBX);
+//    Logger::Raw(__FUNCTION__" Runs.\n");
+//    auto datas = *(TheaterRelatedData**)0x7EE070;
+//    int dwTileIndexCount = ((unsigned short*)0x7EE074)[1];
 //
-//    auto& cell = GlobalVars::CMapData->CellDatas[GlobalVars::CMapData->GetCoordIndex(X, Y)];
-//    auto& data = (*(TheaterRelatedData**)0x7EE070)[cell.TileIndex];
-//    int dwTileIndexCount = *(short*)(0x7EE074);
+//    Logger::Raw("count = %d\n", dwTileIndexCount);
+//    
+//    for (int i = 0; i < dwTileIndexCount; ++i)
+//    {
+//        auto& pData = datas[i];
+//        Logger::Raw("\n\n===Tileset = %d(%d)===\n", pData.TileSet, i);
+//        for (int j = 0; j < pData.SubTileCount; ++j)
+//        {
+//            auto& pSubData = pData.SubTileDatas[j];
+//            Logger::Raw("   ---Subtile = %d---\n", j);
+//            Logger::Raw("   0x0 = %d, 0x4 = %p, 0x8 = %p, 0xC = %d, 0x10 = %d\n",
+//                pSubData.Unknown_0, pSubData.NormalImage, pSubData.Pointer_8, pSubData.Unknown_C, pSubData.Unknown_10);
+//            Logger::Raw("   Height = %d, 0x15 = %d, 0x16 = %d\n", pSubData.Height, pSubData.Byte_15, pSubData.Byte_16);
+//            Logger::Raw("   Left Color = (%d %d %d), Right Color = (%d %d %d)\n",
+//                pSubData.ColorLeft_Red, pSubData.ColorLeft_Green, pSubData.ColorLeft_Blue,
+//                pSubData.ColorRight_Red, pSubData.ColorRight_Green, pSubData.ColorRight_Blue);
+//            Logger::Raw("   0x1D = %d, 0x1E = %d, 0x1F = %d\n", pSubData.Byte_1D, pSubData.Byte_1E, pSubData.Byte_1F);
+//        }
+//        Logger::Raw("0xA = %d\n", pData.Short_A);
+//        Logger::Raw("0xC = %d, 0x10 = %d, 0x14 = %d, 0x18 = %d\n", pData.Unknown_C, pData.Unknown_10, pData.Unknown_14, pData.Unknown_18);
+//        Logger::Raw("0x1C = %d, 0x20 = %d, 0x24 = %d, 0x28 = %d\n", pData.Unknown_1C, pData.Unknown_20, pData.Unknown_24, pData.Unknown_28);
+//        Logger::Raw("0x2C = %d, 0x30 = %d, 0x34 = %d, 0x38 = %p\n", pData.Unknown_2C, pData.Unknown_30, pData.Unknown_34, pData.Next_38);
+//        Logger::Raw("0x3C = %d, 0x3D = %d, 0x3E = %d, 0x3F = %d\n", pData.Byte_3C, pData.Byte_3D, pData.Byte_3E, pData.Byte_3F);
+//    }
 //
-//    ppmfc::CString buffer;
-//
-//    char format[] =
-//        "[%d, %d]\n"
-//        "TileIndex = %d  "
-//        "TileSubIndex = %d   "
-//        "Height = %d\n"
-//        "SubTileCount = %d  TileIndexCount = %d";
-//
-//    buffer.Format(format,
-//        X, Y,
-//        cell.TileIndex,
-//        cell.TileSubIndex,
-//        cell.Height,
-//        data.SubTileCount,
-//        dwTileIndexCount);
-//
-//    auto pDC = GlobalVars::Dialogs::CFinalSunDlg->MyViewFrame.pIsoView->GetDC();
-//    RECT rect{ 0,35,0,0 };
-//    pDC->SetBkMode(OPAQUE);
-//    pDC->DrawText((LPCSTR)buffer, &rect, DT_CALCRECT);
-//    pDC->DrawText((LPCSTR)buffer, &rect, NULL);
-//
-//    return 0;
+//    return 0x438E4E;
 //}

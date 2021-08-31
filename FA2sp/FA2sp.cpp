@@ -40,6 +40,7 @@ bool ExtConfigs::SaveMap_AutoSave;
 int ExtConfigs::SaveMap_AutoSave_Interval;
 int ExtConfigs::SaveMap_AutoSave_MaxCount;
 bool ExtConfigs::SaveMap_OnlySaveMAP;
+bool ExtConfigs::CustomFoundation_Regular;
 
 MultimapHelper Variables::Rules = { &GlobalVars::INIFiles::Rules(), &GlobalVars::INIFiles::CurrentDocument() };
 
@@ -100,6 +101,8 @@ void FA2sp::ExtConfigsInitialize()
 		}
 	}
 	ExtConfigs::SaveMap_OnlySaveMAP = fadata.GetBool("ExtConfigs", "SaveMap.OnlySaveMAP");
+	
+	ExtConfigs::CustomFoundation_Regular = fadata.GetBool("ExtConfigs", "CustomFoundation.Regular");
 }
 
 // DllMain
@@ -151,12 +154,18 @@ DEFINE_HOOK(537129, ExeRun, 9)
 	return 0;
 }
 
+#include "Ext/CFinalSunDlg/Body.h"
+
 DEFINE_HOOK(537208, ExeTerminate, 9)
 {
 	MutexHelper::Detach();
 	Logger::Info("FA2sp Terminating...\n");
 	Logger::Close();
 	DrawStuff::deinit();
+
+	// Destruct static ppmfc stuffs here
+	ObjectBrowserControlExt::OnExeTerminate();
+
 	GET(UINT, result, EAX);
 	ExitProcess(result);
 }

@@ -59,7 +59,7 @@ public:
 	void OnCBExtraParamEditChanged();
 	void OnCBExtraParamSelectChanged();
 
-	static CurrentScript ExtCurrentScript;
+	static CurrentScript* ExtCurrentScript;
 	static std::map<int, int> RealScriptID; // PosInComboBox - RealScriptID
 };
 

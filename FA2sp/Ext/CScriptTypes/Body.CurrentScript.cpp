@@ -3,7 +3,7 @@
 #include <GlobalVars.h>
 #include <CINI.h>
 
-CurrentScript CScriptTypesExt::ExtCurrentScript;
+CurrentScript* CScriptTypesExt::ExtCurrentScript;
 ppmfc::CString CurrentScript::ToString()
 {
 	return this->ID + " (" + this->Name + ")";
