@@ -71,3 +71,22 @@ DEFINE_HOOK(49D2C0, CMapData_LoadMap_ClearCLoadingExtData, 5)
     CLoadingExt::ClearItemTypes();
     return 0;
 }
+
+DEFINE_HOOK(491FD4, CLoading_Release_SetImageDataToNullptr, 5)
+{
+    GET(char*, pNode, ESI); // Map node in fact
+    ImageDataClass* pData = (ImageDataClass*)(pNode + 0xC + 0x4); // data = pNode->_Value.second
+    
+    if (pData->pImageBuffer)
+    {
+        GameDelete(pData->pImageBuffer);
+        pData->pImageBuffer = nullptr;
+    }
+    if (pData->pPixelValidRanges)
+    {
+        GameDelete(pData->pPixelValidRanges);
+        pData->pPixelValidRanges = nullptr;
+    }
+
+    return 0x491FF1;
+}
