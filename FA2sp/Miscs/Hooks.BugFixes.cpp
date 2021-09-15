@@ -113,13 +113,14 @@ DEFINE_HOOK(473E66, CIsoView_Draw_InfantrySubcell, B)
 	return 0x473E8C;
 }
 
-DEFINE_HOOK(4C61C5, CMapData_ResizeMap_SmudgePlace, 5)
+DEFINE_HOOK(4C61C5, CMapData_ResizeMap_PositionFix, 5)
 {
 	GET(CellData*, pCell, EAX);
 	auto const pSrc = CONTAINING_RECORD(R->ECX(), CellData, LAT);
 
 	pCell->Smudge = pSrc->Smudge;
 	pCell->SmudgeType = pSrc->SmudgeType;
+	pCell->BaseNode = pSrc->BaseNode;
 
 	return 0;
 }
