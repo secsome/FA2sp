@@ -49,22 +49,13 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
             "\n"
             "; This FA2 uses FA2sp created by secsome\n"
             "; Get the lastest dll at https://github.com/secsome/FA2sp\n"
-            "; Current version : ";
-        ss << PRODUCT_STR;
-        ss << "\n\n";
+            "; Current version : " << PRODUCT_STR << "\n\n";
 
         for (auto& section : pINI->Dict)
         {
-            ss << "[";
-            ss << section.first;
-            ss << "]\n";
+            ss << "[" << section.first << "]\n";
             for (auto& pair : section.second.EntitiesDictionary)
-            {
-                ss << pair.first;
-                ss << "=";
-                ss << pair.second;
-                ss << "\n";
-            }
+                ss << pair.first << "=" << pair.second << "\n";
             ss << "\n";
         }
 
@@ -190,6 +181,9 @@ public:
 
     static void CALLBACK SaveMapCallback(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
     {
+        Logger::Debug("SaveMapCallback called, trying to auto save map. hwnd = %08X, message = %d, iTimerID = %d, dwTime = %d\n.",
+            hwnd, message, iTimerID, dwTime);
+
         if (!GlobalVars::CMapData->MapWidthPlusHeight || !GlobalVars::CMapData->FieldDataAllocated)
         {
             StopTimer();

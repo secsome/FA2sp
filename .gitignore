@@ -14,3 +14,4 @@
 #Don't ignore these files
 !/Debug/vxl_drawing_lib.lib
 !/Release/vxl_drawing_lib.lib
+/.vs/FA2sp/project-colors.json
