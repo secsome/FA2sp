@@ -4,8 +4,6 @@
 #include <CPalette.h>
 #include <Drawing.h>
 
-#include <GlobalVars.h>
-
 #include "Logger.h"
 
 //DEFINE_HOOK(438DB0, DebugTilesetDatas, 6)

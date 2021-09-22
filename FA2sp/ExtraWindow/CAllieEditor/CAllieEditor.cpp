@@ -8,12 +8,12 @@
 
 void CAllieEditor::Create()
 {
-	DialogBox((HINSTANCE)FA2sp::hInstance, MAKEINTRESOURCE(303), GlobalVars::Dialogs::CFinalSunDlg->Houses, DlgProc);
+	DialogBox((HINSTANCE)FA2sp::hInstance, MAKEINTRESOURCE(303), CFinalSunDlg::Instance->Houses, DlgProc);
 }
 
 BOOL CALLBACK CAllieEditor::DlgProc(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
-	auto& cHouses = GlobalVars::Dialogs::CFinalSunDlg->Houses;
+	auto& cHouses = CFinalSunDlg::Instance->Houses;
 
 	switch (Msg)
 	{

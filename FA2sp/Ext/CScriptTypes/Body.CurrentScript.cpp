@@ -1,6 +1,5 @@
 #include "Body.h"
 
-#include <GlobalVars.h>
 #include <CINI.h>
 
 CurrentScript* CScriptTypesExt::ExtCurrentScript;
@@ -96,7 +95,7 @@ CurrentScript::ScriptNode& CurrentScript::RemoveActionAt(int index)
 
 void CurrentScript::Set(ppmfc::CString id)
 {
-	auto& ini = GlobalVars::INIFiles::CurrentDocument();
+	auto& ini = CINI::CurrentDocument();
 
 	if (auto const pSection = ini.GetSection(id))
 	{
@@ -133,7 +132,7 @@ bool CurrentScript::IsAvailable()
 
 void CurrentScript::Write(ppmfc::CString id, ppmfc::CString name)
 {
-	auto& ini = GlobalVars::INIFiles::CurrentDocument();
+	auto& ini = CINI::CurrentDocument();
 	
 	ini.DeleteSection(id);
 	ini.WriteString(id, "Name", name);
@@ -152,7 +151,7 @@ void CurrentScript::Write()
 
 void CurrentScript::WriteLine(ppmfc::CString id, int line)
 {
-	auto& ini = GlobalVars::INIFiles::CurrentDocument();
+	auto& ini = CINI::CurrentDocument();
 
 	ppmfc::CString buffer;
 	buffer.Format("%d", line);

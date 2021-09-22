@@ -2,7 +2,6 @@
 
 #include <FA2PP.h>
 #include <Helpers/Macro.h>
-#include <GlobalVars.h>
 
 #include "../../FA2sp.h"
 

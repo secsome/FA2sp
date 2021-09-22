@@ -46,7 +46,7 @@ BOOL CObjectSearch::JumpToCoord(CWnd* pWnd, int X, int Y)
 //{
 //    GET(CWnd*, pWnd, ECX);
 //    GET(int, nWP, EAX);
-//    auto& doc = GlobalVars::INIFiles::CurrentDocument();
+//    auto& doc = CINI::CurrentDocument();
 //    CString lpWaypoint;
 //    lpWaypoint.Format("%d", nWP);
 //    int nCoord = doc.GetInteger("Waypoints", lpWaypoint, -1);

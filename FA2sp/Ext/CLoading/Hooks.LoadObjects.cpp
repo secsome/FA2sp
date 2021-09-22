@@ -3,7 +3,6 @@
 #include <Helpers/Macro.h>
 
 #include <CObjectDatas.h>
-#include <GlobalVars.h>
 #include <CINI.h>
 #include <Drawing.h>
 

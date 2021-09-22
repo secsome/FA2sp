@@ -1,9 +1,9 @@
 #include <Helpers/Macro.h>
 
 #include <CINI.h>
+#include <CFinalSunApp.h>
 #include <CFinalSunDlg.h>
 #include <CMapData.h>
-#include <GlobalVars.h>
 
 #include "../FA2sp.h"
 #include "../FA2sp.Constants.h"
@@ -16,7 +16,7 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
 {
     if (ExtConfigs::SaveMap)
     {
-        GET(INIClass*, pINI, EAX);
+        GET(CINI*, pINI, EAX);
         GET_STACK(CFinalSunDlg*, pThis, STACK_OFFS(0x3F4, 0x36C));
         REF_STACK(ppmfc::CString, filepath, STACK_OFFS(0x3F4, -0x4));
 
@@ -139,17 +139,17 @@ public:
             };
 
             std::map<FILETIME, ppmfc::CString, FileTimeComparator> m;
-            const auto mapName = GlobalVars::INIFiles::CurrentDocument->GetString("Basic", "Name","No Name");
+            const auto mapName = CINI::CurrentDocument->GetString("Basic", "Name","No Name");
             const auto ext = 
-                !ExtConfigs::SaveMap_OnlySaveMAP && GlobalVars::INIFiles::CurrentDocument->GetBool("Basic", "MultiplayerOnly") ?
+                !ExtConfigs::SaveMap_OnlySaveMAP && CINI::CurrentDocument->GetBool("Basic", "MultiplayerOnly") ?
                 *reinterpret_cast<bool*>(0x5D32AC) ?
                 "yrm" :
                 "mpr" :
                 "map";
 
-            ppmfc::CString buffer = GlobalVars::ExePath();
+            ppmfc::CString buffer;
             buffer.Format("%s\\AutoSaves\\%s\\%s-*.%s", 
-                GlobalVars::ExePath(),
+                CFinalSunApp::ExePath(),
                 mapName,
                 mapName,
                 ext
@@ -171,7 +171,7 @@ public:
             auto& itr = m.begin();
             while (count != 0)
             {
-                buffer.Format("%s\\AutoSaves\\%s\\%s", GlobalVars::ExePath(), mapName, itr->second);
+                buffer.Format("%s\\AutoSaves\\%s\\%s", CFinalSunApp::ExePath(), mapName, itr->second);
                 DeleteFile(buffer);
                 ++itr;
                 --count;
@@ -184,7 +184,7 @@ public:
         Logger::Debug("SaveMapCallback called, trying to auto save map. hwnd = %08X, message = %d, iTimerID = %d, dwTime = %d\n.",
             hwnd, message, iTimerID, dwTime);
 
-        if (!GlobalVars::CMapData->MapWidthPlusHeight || !GlobalVars::CMapData->FieldDataAllocated)
+        if (!CMapData::Instance->MapWidthPlusHeight || !CMapData::Instance->FieldDataAllocated)
         {
             StopTimer();
             return;
@@ -193,21 +193,21 @@ public:
         SYSTEMTIME time;
         GetLocalTime(&time);
 
-        const auto mapName = GlobalVars::INIFiles::CurrentDocument->GetString("Basic", "Name", "No Name");
+        const auto mapName = CINI::CurrentDocument->GetString("Basic", "Name", "No Name");
         const auto ext = 
-            !ExtConfigs::SaveMap_OnlySaveMAP && GlobalVars::INIFiles::CurrentDocument->GetBool("Basic", "MultiplayerOnly") ?
+            !ExtConfigs::SaveMap_OnlySaveMAP && CINI::CurrentDocument->GetBool("Basic", "MultiplayerOnly") ?
             *reinterpret_cast<bool*>(0x5D32AC) ?
             "yrm" :
             "mpr" :
             "map";
 
-        ppmfc::CString buffer = GlobalVars::ExePath();
+        ppmfc::CString buffer = CFinalSunApp::ExePath();
         buffer += "\\AutoSaves\\";
         buffer += mapName;
         CreateDirectory(buffer, nullptr);
 
         buffer.Format("%s\\AutoSaves\\%s\\%s-%04d%02d%02d-%02d%02d%02d-%03d.%s",
-            GlobalVars::ExePath(),
+            CFinalSunApp::ExePath(),
             mapName,
             mapName,
             time.wYear, time.wMonth, time.wDay,
@@ -217,7 +217,7 @@ public:
         );
 
         IsAutoSaving = true;
-        GlobalVars::Dialogs::CFinalSunDlg->SaveMap(buffer);
+        CFinalSunDlg::Instance->SaveMap(buffer);
         IsAutoSaving = false;
 
         RemoveEarlySaves();
@@ -259,7 +259,7 @@ DEFINE_HOOK(437D84, CFinalSunDlg_LoadMap_StopTimer, 5)
 
 DEFINE_HOOK(438D90, CFinalSunDlg_LoadMap_ResetTimer, 7)
 {
-    if (ExtConfigs::SaveMap_AutoSave && GlobalVars::CMapData->MapWidthPlusHeight)
+    if (ExtConfigs::SaveMap_AutoSave && CMapData::Instance->MapWidthPlusHeight)
         SaveMapExt::ResetTimer();
     return 0;
 }
@@ -273,7 +273,7 @@ DEFINE_HOOK(42CBE0, CFinalSunDlg_CreateMap_StopTimer, 5)
 
 DEFINE_HOOK(42E18E, CFinalSunDlg_CreateMap_ResetTimer, 7)
 {
-    if (ExtConfigs::SaveMap_AutoSave && GlobalVars::CMapData->MapWidthPlusHeight)
+    if (ExtConfigs::SaveMap_AutoSave && CMapData::Instance->MapWidthPlusHeight)
         SaveMapExt::ResetTimer();
     return 0;
 }

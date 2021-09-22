@@ -9,8 +9,6 @@
 #include <Drawing.h>
 #include <CINI.h>
 
-#include <GlobalVars.h>
-
 bool CIsoViewExt::DrawStructures = true;
 bool CIsoViewExt::DrawInfantries = true;
 bool CIsoViewExt::DrawUnits = true;
@@ -253,13 +251,13 @@ void CIsoViewExt::DrawCelltag(int X, int Y)
 void CIsoViewExt::DrawWaypoint(int WPIndex, int X, int Y)
 {
     this->BltToBackBuffer(ImageDataMapHelper::GetImageDataFromMap("FLAG")->lpSurface, X, Y - 2, -1, -1);
-    if (auto pSection = GlobalVars::INIFiles::CurrentDocument->GetSection("Waypoints"))
+    if (auto pSection = CINI::CurrentDocument->GetSection("Waypoints"))
         this->DrawText(X + 15, Y + 7, *pSection->GetKeyAt(WPIndex), ExtConfigs::Waypoint_Color);
 }
 
 void CIsoViewExt::DrawTube(CellData* pData, int X, int Y)
 {
-    if (auto pTubeData = GlobalVars::CMapData->GetTubeData(pData->Tube))
+    if (auto pTubeData = CMapData::Instance->GetTubeData(pData->Tube))
     {
         auto suffix = pData->TubeDataIndex;
         if (pData->TubeDataIndex >= 2)

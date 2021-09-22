@@ -1,7 +1,6 @@
 #include "Body.h"
 #include "Functional.h"
 
-#include <GlobalVars.h>
 #include <CMapData.h>
 #include <CFinalSunDlg.h>
 
@@ -196,7 +195,7 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 		curAction.ParamCode_ = 0;
 	}*/
 
-	auto& fadata = GlobalVars::INIFiles::FAData();
+	auto& fadata = CINI::FAData();
 
 	if (auto entities = fadata.GetSection("ScriptParams"))
 	{
@@ -288,7 +287,7 @@ void CScriptTypesExt::UpdateDialog()
 
 	while (this->CCBCurrentScript.DeleteString(0) != CB_ERR);
 
-	auto& ini = GlobalVars::INIFiles::CurrentDocument();
+	auto& ini = CINI::CurrentDocument();
 
 	if (auto pSection = ini.GetSection("ScriptTypes"))
 		for (auto& pair : pSection->EntitiesDictionary)
@@ -339,7 +338,7 @@ void CScriptTypesExt::OnLBScriptActionsSelectChanged()
 	if (index == LB_ERR)
 		return;
 
-	auto& ini = GlobalVars::INIFiles::CurrentDocument();
+	auto& ini = CINI::CurrentDocument();
 	
 	ppmfc::CString currentID;
 	this->CCBCurrentScript.GetWindowText(currentID);
@@ -363,7 +362,7 @@ void CScriptTypesExt::OnETScriptNameChanged()
 	this->CCBCurrentScript.GetWindowText(currentID);
 	STDHelpers::TrimIndex(currentID);
 
-	auto& ini = GlobalVars::INIFiles::CurrentDocument();
+	auto& ini = CINI::CurrentDocument();
 	ini.WriteString(currentID, "Name", FA2sp::Buffer);
 	ExtCurrentScript->Name = FA2sp::Buffer;
 
@@ -475,12 +474,12 @@ void CScriptTypesExt::OnBNDeleteActionClicked()
 
 void CScriptTypesExt::OnBNAddScriptClicked()
 {
-	INIClass::GetAvailableIndex(&FA2sp::Buffer);
-	auto& ini = GlobalVars::INIFiles::CurrentDocument();
+	CINI::GetAvailableIndex(&FA2sp::Buffer);
+	auto& ini = CINI::CurrentDocument();
 	ini.WriteString(FA2sp::Buffer, "Name", "New script");
 	ExtCurrentScript->Set(FA2sp::Buffer);
 	int index = this->CCBCurrentScript.AddString(FA2sp::Buffer + " (New script)");
-	INIClass::GetAvailableKey(&FA2sp::Buffer, "ScriptTypes");
+	CINI::GetAvailableKey(&FA2sp::Buffer, "ScriptTypes");
 	ini.WriteString("ScriptTypes", FA2sp::Buffer, ExtCurrentScript->ID);
 	this->CCBCurrentScript.SetCurSel(index);
 	this->OnCBCurrentScriptSelectChanged();
@@ -497,12 +496,12 @@ void CScriptTypesExt::OnBNDeleteScriptClicked()
 
 	if (MessageBox("Are you sure to delete this script?", "FA2sp", MB_YESNO) == IDYES)
 	{
-		GlobalVars::INIFiles::CurrentDocument->DeleteSection(this->ExtCurrentScript->ID);
-		if (auto pScripts = GlobalVars::INIFiles::CurrentDocument->GetSection("ScriptTypes"))
+		CINI::CurrentDocument->DeleteSection(this->ExtCurrentScript->ID);
+		if (auto pScripts = CINI::CurrentDocument->GetSection("ScriptTypes"))
 		{
 			for (auto& pairs : pScripts->EntitiesDictionary)
 				if (strcmp(pairs.second, this->ExtCurrentScript->ID) == 0)
-					GlobalVars::INIFiles::CurrentDocument->DeleteKey("ScriptTypes", pairs.first);
+					CINI::CurrentDocument->DeleteKey("ScriptTypes", pairs.first);
 		}
 		this->ExtCurrentScript->Unset();
 		this->CCBCurrentScript.DeleteString(index);
@@ -516,11 +515,11 @@ void CScriptTypesExt::OnBNCloneScriptClicked()
 	if (!ExtCurrentScript->IsAvailable())
 		return;
 
-	ExtCurrentScript->Write(*INIClass::GetAvailableIndex(&FA2sp::Buffer), ExtCurrentScript->Name + " Clone");
+	ExtCurrentScript->Write(*CINI::GetAvailableIndex(&FA2sp::Buffer), ExtCurrentScript->Name + " Clone");
 	ExtCurrentScript->Set(FA2sp::Buffer);
 	int index = this->CCBCurrentScript.AddString(FA2sp::Buffer + " (" + ExtCurrentScript->Name + ")");
-	INIClass::GetAvailableKey(&FA2sp::Buffer, "ScriptTypes");
-	GlobalVars::INIFiles::CurrentDocument->WriteString("ScriptTypes", FA2sp::Buffer, ExtCurrentScript->ID);
+	CINI::GetAvailableKey(&FA2sp::Buffer, "ScriptTypes");
+	CINI::CurrentDocument->WriteString("ScriptTypes", FA2sp::Buffer, ExtCurrentScript->ID);
 	this->CCBCurrentScript.SetCurSel(index);
 	this->OnCBCurrentScriptSelectChanged();
 }

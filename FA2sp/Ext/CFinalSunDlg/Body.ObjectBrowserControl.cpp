@@ -5,7 +5,6 @@
 
 #include "../../FA2sp.h"
 
-#include <GlobalVars.h>
 #include <CINI.h>
 #include <CMapData.h>
 
@@ -68,9 +67,9 @@ void ObjectBrowserControlExt::Redraw_Initialize()
     Owners.clear();
     this->DeleteAllItems();
 
-    auto& rules = GlobalVars::INIFiles::Rules();
-    auto& fadata = GlobalVars::INIFiles::FAData();
-    auto& doc = GlobalVars::INIFiles::CurrentDocument();
+    auto& rules = CINI::Rules();
+    auto& fadata = CINI::FAData();
+    auto& doc = CINI::CurrentDocument();
 
     auto loadSet = [](const char* pTypeName, int nType)
     {
@@ -145,7 +144,7 @@ void ObjectBrowserControlExt::Redraw_Ground()
     HTREEITEM& hGround = ExtNodes[Root_Ground];
     if (hGround == NULL)    return;
 
-    auto& doc = GlobalVars::INIFiles::CurrentDocument();
+    auto& doc = CINI::CurrentDocument();
     CString theater = doc.GetString("Map", "Theater");
     if (theater == "NEWURBAN")
         theater = "UBN";
@@ -170,7 +169,7 @@ void ObjectBrowserControlExt::Redraw_Owner()
     HTREEITEM& hOwner = ExtNodes[Root_Owner];
     if (hOwner == NULL)    return;
 
-    auto& doc = GlobalVars::INIFiles::CurrentDocument();
+    auto& doc = CINI::CurrentDocument();
 
     bool bMultiplayer = doc.GetBool("Basic", "MultiplayerOnly"); 
     auto& section = Variables::Rules.ParseIndicies("Houses", true);
@@ -191,7 +190,7 @@ void ObjectBrowserControlExt::Redraw_Infantry()
 
     std::map<int, HTREEITEM> subNodes;
 
-    auto& fadata = GlobalVars::INIFiles::FAData();
+    auto& fadata = CINI::FAData();
 
     int i = 0;
     if (auto sides = fadata.GetSection("Sides"))
@@ -240,7 +239,7 @@ void ObjectBrowserControlExt::Redraw_Vehicle()
 
     std::map<int, HTREEITEM> subNodes;
 
-    auto& fadata = GlobalVars::INIFiles::FAData();
+    auto& fadata = CINI::FAData();
 
     int i = 0;
     if (auto sides = fadata.GetSection("Sides"))
@@ -289,8 +288,8 @@ void ObjectBrowserControlExt::Redraw_Aircraft()
 
     std::map<int, HTREEITEM> subNodes;
 
-    auto& rules = GlobalVars::INIFiles::Rules();
-    auto& fadata = GlobalVars::INIFiles::FAData();
+    auto& rules = CINI::Rules();
+    auto& fadata = CINI::FAData();
 
     int i = 0;
     if (auto sides = fadata.GetSection("Sides"))
@@ -339,8 +338,8 @@ void ObjectBrowserControlExt::Redraw_Building()
 
     std::map<int, HTREEITEM> subNodes;
 
-    auto& rules = GlobalVars::INIFiles::Rules();
-    auto& fadata = GlobalVars::INIFiles::FAData();
+    auto& rules = CINI::Rules();
+    auto& fadata = CINI::FAData();
 
     int i = 0;
     if (auto sides = fadata.GetSection("Sides"))
@@ -432,7 +431,7 @@ void ObjectBrowserControlExt::Redraw_Overlay()
     HTREEITEM& hOverlay = ExtNodes[Root_Overlay];
     if (hOverlay == NULL)   return;
 
-    auto& rules = GlobalVars::INIFiles::Rules();
+    auto& rules = CINI::Rules();
 
     HTREEITEM hTemp;
     hTemp = this->InsertTranslatedString("DelOvrlObList", -1, hOverlay);
@@ -466,7 +465,7 @@ void ObjectBrowserControlExt::Redraw_Overlay()
     this->InsertTranslatedString("Tracks", Const_Overlay + 39, hOverlay);
     
     MultimapHelper mmh;
-    mmh.AddINI(&GlobalVars::INIFiles::Rules());
+    mmh.AddINI(&CINI::Rules());
     auto& overlays = mmh.ParseIndicies("OverlayTypes", true);
     for (size_t i = 0, sz = std::min<unsigned int>(overlays.size(), 255); i < sz; ++i)
     {
@@ -519,7 +518,7 @@ void ObjectBrowserControlExt::Redraw_Tunnel()
     HTREEITEM& hTunnel = ExtNodes[Root_Tunnel];
     if (hTunnel == NULL)   return;
 
-    if (GlobalVars::INIFiles::FAData().GetBool("Debug", "AllowTunnels"))
+    if (CINI::FAData().GetBool("Debug", "AllowTunnels"))
     {
         this->InsertTranslatedString("NewTunnelObList", 50, hTunnel);
         this->InsertTranslatedString("DelTunnelObList", 51, hTunnel);
@@ -533,7 +532,7 @@ void ObjectBrowserControlExt::Redraw_PlayerLocation()
 
     this->InsertTranslatedString("StartpointsDelete", 21, hPlayerLocation);
 
-    if (GlobalVars::INIFiles::CurrentDocument->GetBool("Basic", "MultiplayerOnly"))
+    if (CINI::CurrentDocument->GetBool("Basic", "MultiplayerOnly"))
     {
         for (int i = 0; i < 8; ++i)
         {
@@ -587,7 +586,7 @@ int ObjectBrowserControlExt::GuessSide(const char* pRegName, int nType)
 
 int ObjectBrowserControlExt::GuessBuildingSide(const char* pRegName)
 {
-    auto& rules = GlobalVars::INIFiles::Rules();
+    auto& rules = CINI::Rules();
 
     int planning;
     planning = rules.GetInteger(pRegName, "AIBasePlanningSide", -1);

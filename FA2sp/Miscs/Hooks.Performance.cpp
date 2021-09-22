@@ -1,7 +1,6 @@
 #include <Helpers/Macro.h>
 
 #include <MFC/ppmfc_cstring.h>
-#include <GlobalVars.h>
 #include <CINI.h>
 
 #include <set>
@@ -40,7 +39,7 @@ void Performance::UpdateDict()
 {
     Performance::IndexDict.clear();
 
-    auto& ini = GlobalVars::INIFiles::CurrentDocument();
+    auto& ini = CINI::CurrentDocument();
     auto LoadTypesValue = [&ini](ppmfc::CString section)
     {
         if (auto pSection = ini.GetSection(section))

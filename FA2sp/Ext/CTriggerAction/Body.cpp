@@ -1,7 +1,5 @@
 #include "Body.h"
 
-#include <GlobalVars.h>
-
 #include "../../Helpers/STDHelpers.h"
 #include "../../Helpers/Translations.h"
 
@@ -51,7 +49,7 @@ void CTriggerActionExt::OnBNCloneActionClicked()
 		int nActionIndex = this->CCBCurrentAction.GetCurSel();
 		if (nActionIndex != CB_ERR)
 		{
-			ppmfc::CString data = GlobalVars::INIFiles::CurrentDocument->GetString("Actions", this->ActionID);
+			ppmfc::CString data = CINI::CurrentDocument->GetString("Actions", this->ActionID);
 			auto splitResults = STDHelpers::SplitString(data);
 			int beginIndex = 1 + 8 * nActionIndex;
 			int count = atoi(splitResults[0]);
@@ -67,7 +65,7 @@ void CTriggerActionExt::OnBNCloneActionClicked()
 				data += ",";
 			}
 			data += splitResults[beginIndex + 7];
-			GlobalVars::INIFiles::CurrentDocument->WriteString("Actions", this->ActionID, data);
+			CINI::CurrentDocument->WriteString("Actions", this->ActionID, data);
 			
 			ppmfc::CString buffer;
 			

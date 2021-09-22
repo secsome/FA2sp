@@ -5,7 +5,7 @@
 
 #include <Helpers\Macro.h>
 
-#include <GlobalVars.h>
+#include <CFinalSunApp.h>
 #include <CFinalSunDlg.h>
 #include <CLoading.h>
 
@@ -27,11 +27,11 @@ LONG CALLBACK Exception::ExceptionFilter(PEXCEPTION_POINTERS const pExs)
 {
 	Logger::Raw("Exception handler fired!\n");
 	Logger::Raw("Exception %X at %p\n", pExs->ExceptionRecord->ExceptionCode, pExs->ExceptionRecord->ExceptionAddress);
-	SetWindowText(GlobalVars::Dialogs::CFinalSunDlg->m_hWnd, "Fatal Error - FinalAlert 2");
+	SetWindowText(CFinalSunDlg::Instance->m_hWnd, "Fatal Error - FinalAlert 2");
 
-	Logger::Raw("Last succeeded operation: %d\n", GlobalVars::Exceptions::LastSucceededOperation());
-	Logger::Raw("Last succeeded library operation: %d\n", GlobalVars::Exceptions::LastSucceededLibraryOperation());
-	Logger::Raw("SE2KMODE: %d\n", GlobalVars::Exceptions::SE2KMODE());
+	Logger::Raw("Last succeeded operation: %d\n", CFinalSunDlg::LastSucceededOperation());
+	Logger::Raw("Last succeeded library operation: %d\n", CFinalSunDlg::LastSucceededLibraryOperation());
+	Logger::Raw("SE2KMODE: %d\n", CFinalSunDlg::SE2KMODE());
 
 	//	if (IsDebuggerAttached()) return EXCEPTION_CONTINUE_SEARCH;
 
@@ -90,9 +90,9 @@ LONG CALLBACK Exception::ExceptionFilter(PEXCEPTION_POINTERS const pExs)
 			Logger::Raw("Exception data has been saved to file:\n%ls\n", except_file.c_str());
 		}
 
-		if (MessageBox(GlobalVars::Dialogs::CFinalSunDlg->m_hWnd, "FinalAlert 2 has encountered a fatal error!\nWould you like to create a full crash report for the developer?", "Fatal Error!", MB_YESNO | MB_ICONERROR) == IDYES) {
+		if (MessageBox(CFinalSunDlg::Instance->m_hWnd, "FinalAlert 2 has encountered a fatal error!\nWould you like to create a full crash report for the developer?", "Fatal Error!", MB_YESNO | MB_ICONERROR) == IDYES) {
 			HCURSOR loadCursor = LoadCursor(nullptr, IDC_WAIT);
-			SetClassLong(GlobalVars::Dialogs::CFinalSunDlg->m_hWnd, GCL_HCURSOR, reinterpret_cast<LONG>(loadCursor));
+			SetClassLong(CFinalSunDlg::Instance->m_hWnd, GCL_HCURSOR, reinterpret_cast<LONG>(loadCursor));
 			SetCursor(loadCursor);
 			Logger::Raw("Making a memory dump\n");
 
@@ -104,7 +104,7 @@ LONG CALLBACK Exception::ExceptionFilter(PEXCEPTION_POINTERS const pExs)
 			Exception::FullDump(std::move(path), &expParam);
 
 			loadCursor = LoadCursor(nullptr, IDC_ARROW);
-			SetClassLong(GlobalVars::Dialogs::CFinalSunDlg->m_hWnd, GCL_HCURSOR, reinterpret_cast<LONG>(loadCursor));
+			SetClassLong(CFinalSunDlg::Instance->m_hWnd, GCL_HCURSOR, reinterpret_cast<LONG>(loadCursor));
 			SetCursor(loadCursor);
 		}
 		break;
@@ -120,24 +120,24 @@ LONG CALLBACK Exception::ExceptionFilter(PEXCEPTION_POINTERS const pExs)
 	}
 
 	Logger::Raw("Trying to save current map.\n");
-	ppmfc::CString fcrash_backup = GlobalVars::ExePath();
+	ppmfc::CString fcrash_backup = CFinalSunApp::ExePath();
 	fcrash_backup += "\\fcrash_backup.map";
-	MessageBox(GlobalVars::Dialogs::CFinalSunDlg->m_hWnd, "Current MapData has been saved as fcrash_backup.map.", "Fatal Error!", MB_OK | MB_ICONINFORMATION);
+	MessageBox(CFinalSunDlg::Instance->m_hWnd, "Current MapData has been saved as fcrash_backup.map.", "Fatal Error!", MB_OK | MB_ICONINFORMATION);
 
-	GlobalVars::Dialogs::CFinalSunDlg->SaveMap(fcrash_backup);
-	GlobalVars::Dialogs::CLoading->Release();
+	CFinalSunDlg::Instance->SaveMap(fcrash_backup);
+	CLoading::Instance->Release();
 
-	GlobalVars::INIFiles::Rules->Release();
-	GlobalVars::INIFiles::Ai->Release();
-	GlobalVars::INIFiles::Art->Release();
-	GlobalVars::INIFiles::Temperate->Release();
-	GlobalVars::INIFiles::Snow->Release();
-	GlobalVars::INIFiles::Urban->Release();
-	GlobalVars::INIFiles::CurrentDocument->Release();
-	GlobalVars::INIFiles::Sound->Release();
-	GlobalVars::INIFiles::Turtorial->Release();
-	GlobalVars::INIFiles::FAData->Release();
-	GlobalVars::INIFiles::FALanguage->Release();
+	CINI::Rules->Release();
+	CINI::Ai->Release();
+	CINI::Art->Release();
+	CINI::Temperate->Release();
+	CINI::Snow->Release();
+	CINI::Urban->Release();
+	CINI::CurrentDocument->Release();
+	CINI::Sound->Release();
+	CINI::Turtorial->Release();
+	CINI::FAData->Release();
+	CINI::FALanguage->Release();
 
 	Exception::Exit(pExs->ExceptionRecord->ExceptionCode);
 };

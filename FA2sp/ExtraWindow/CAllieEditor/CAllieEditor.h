@@ -3,7 +3,6 @@
 #include <FA2PP.h>
 #include <CHouses.h>
 #include <CFinalSunDlg.h>
-#include <GlobalVars.h>
 
 class CAllieEditor
 {

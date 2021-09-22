@@ -3,7 +3,6 @@
 #include "STDHelpers.h"
 #include "MultimapHelper.h"
 
-#include <GlobalVars.h>
 #include <CMapData.h>
 
 namespace ControlHelpers
@@ -17,7 +16,7 @@ namespace ControlHelpers
     {
         ComboBox::Clear(combobox);
 
-        auto& doc = GlobalVars::INIFiles::CurrentDocument();
+        auto& doc = CINI::CurrentDocument();
         MultimapHelper mmh;
         mmh.AddINI(&doc);
 
@@ -63,7 +62,7 @@ namespace ControlHelpers
     void ComboBox::LoadCountries(ppmfc::CComboBox& combobox, bool bShowIndex)
     {
         ComboBox::Clear(combobox);
-        auto& doc = GlobalVars::INIFiles::CurrentDocument();
+        auto& doc = CINI::CurrentDocument();
         bool bMultiOnly = doc.GetBool("Basic", "MultiplayerOnly");
         if (bMultiOnly)
         {
@@ -72,8 +71,8 @@ namespace ControlHelpers
         }
 
         MultimapHelper mmh;
-        mmh.AddINI(&GlobalVars::INIFiles::Rules());
-        mmh.AddINI(&GlobalVars::INIFiles::CurrentDocument());
+        mmh.AddINI(&CINI::Rules());
+        mmh.AddINI(&CINI::CurrentDocument());
 
         auto& entries = mmh.ParseIndicies("Countries", true);
         CString buffer;
@@ -92,8 +91,8 @@ namespace ControlHelpers
         ComboBox::Clear(combobox);
 
         MultimapHelper mmh;
-        mmh.AddINI(&GlobalVars::INIFiles::Rules());
-        mmh.AddINI(&GlobalVars::INIFiles::CurrentDocument());
+        mmh.AddINI(&CINI::Rules());
+        mmh.AddINI(&CINI::CurrentDocument());
 
         auto& entries = mmh.ParseIndicies(pSection, true);
         CString buffer;

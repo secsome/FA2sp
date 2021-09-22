@@ -1,7 +1,5 @@
 #include "CTileManager.h"
 
-#include <GlobalVars.h>
-
 #include "../../FA2sp.h"
 #include "../../Helpers/Translations.h"
 #include "../../Helpers/STDHelpers.h"
@@ -164,7 +162,7 @@ void CTileManager::UpdateTypes(HWND hWnd)
     {
         int nTile = SendMessage(hTileComboBox, CB_GETITEMDATA, idx, NULL);
         tile.Format("TileSet%04d", nTile);
-        tile = GlobalVars::INIFiles::CurrentTheater->GetString(tile, "SetName", "NO NAME");
+        tile = CINI::CurrentTheater->GetString(tile, "SetName", "NO NAME");
         bool other = true;
         if (STDHelpers::Contains(tile, "cliff", true))
             { CTileManager::Datas[Nodes_Cliff].push_back(idx); other = false; }
@@ -212,7 +210,7 @@ void CTileManager::UpdateDetails(HWND hWnd, int kNode)
         {
             int data = SendMessage(hTileComboBox, CB_GETITEMDATA, x, NULL);
             text.Format("TileSet%04d", data);
-            text = GlobalVars::INIFiles::CurrentTheater->GetString(text, "SetName", "NO NAME");
+            text = CINI::CurrentTheater->GetString(text, "SetName", "NO NAME");
             Translations::GetTranslationItem(text, text);
             buffer.Format("(%04d) %s", data, text);
             SendMessage(

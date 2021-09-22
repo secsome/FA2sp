@@ -2,7 +2,6 @@
 #include "../../FA2sp.h"
 
 #include <Drawing.h>
-#include <GlobalVars.h>
 #include <CINI.h>
 #include <CMapData.h>
 
@@ -69,7 +68,7 @@ DEFINE_HOOK(469A69, CIsoView_UpdateOverlay_AutoConnect_2, 8)
 		return 0x469A71;
 	if (nOverlayIndex >= 0 && nOverlayIndex <= 255)
 	{
-		auto& rules = GlobalVars::INIFiles::Rules();
+		auto& rules = CINI::Rules();
 		ppmfc::CString key;
 		key.Format("%d", nOverlayIndex);
 		auto pRegName = rules.GetString("OverlayTypes", key, "");
@@ -205,8 +204,8 @@ DEFINE_HOOK(471162, CIsoView_Draw_PowerUp1Loc_PosFix, 5)
 	else
 		ArtID = BldID;
 
-	X += GlobalVars::INIFiles::Art->GetInteger(ArtID, "PowerUp1LocXX", 0);
-	Y += GlobalVars::INIFiles::Art->GetInteger(ArtID, "PowerUp1LocYY", 0);
+	X += CINI::Art->GetInteger(ArtID, "PowerUp1LocXX", 0);
+	Y += CINI::Art->GetInteger(ArtID, "PowerUp1LocYY", 0);
 
 	X += (pBldData->FullWidth - pData->FullWidth) / 2;
 	Y += (pBldData->FullHeight - pData->FullHeight) / 2;
@@ -233,8 +232,8 @@ DEFINE_HOOK(471980, CIsoView_Draw_PowerUp2Loc_PosFix, 5)
 	else
 		ArtID = BldID;
 
-	X += GlobalVars::INIFiles::Art->GetInteger(ArtID, "PowerUp2LocXX", 0);
-	Y += GlobalVars::INIFiles::Art->GetInteger(ArtID, "PowerUp2LocYY", 0);
+	X += CINI::Art->GetInteger(ArtID, "PowerUp2LocXX", 0);
+	Y += CINI::Art->GetInteger(ArtID, "PowerUp2LocYY", 0);
 
 	X += (pBldData->FullWidth - pData->FullWidth) / 2;
 	Y += (pBldData->FullHeight - pData->FullHeight) / 2;
@@ -261,8 +260,8 @@ DEFINE_HOOK(4720D3, CIsoView_Draw_PowerUp3Loc_PosFix, 5)
 	else
 		ArtID = BldID;
 
-	X += GlobalVars::INIFiles::Art->GetInteger(ArtID, "PowerUp3LocXX", 0);
-	Y += GlobalVars::INIFiles::Art->GetInteger(ArtID, "PowerUp3LocYY", 0);
+	X += CINI::Art->GetInteger(ArtID, "PowerUp3LocXX", 0);
+	Y += CINI::Art->GetInteger(ArtID, "PowerUp3LocYY", 0);
 
 	X += (pBldData->FullWidth - pData->FullWidth) / 2;
 	Y += (pBldData->FullHeight - pData->FullHeight) / 2;

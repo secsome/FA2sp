@@ -1,6 +1,5 @@
 #include <Helpers/Macro.h>
 #include <Drawing.h>
-#include <GlobalVars.h>
 #include <CINI.h>
 #include <CMapData.h>
 #include <CPalette.h>
@@ -62,7 +61,7 @@ DEFINE_HOOK(468760, Miscs_GetColor, 7)
 
 	ppmfc::CString color = "";
 	if (pHouse)
-		if (auto pStr = GlobalVars::INIFiles::CurrentDocument->TryGetString(pHouse, "Color"))
+		if (auto pStr = CINI::CurrentDocument->TryGetString(pHouse, "Color"))
 			color = *pStr;
 
 	if (pColor)
@@ -70,7 +69,7 @@ DEFINE_HOOK(468760, Miscs_GetColor, 7)
 
 	HSVClass hsv{ 0,0,0 };
 	if (!color.IsEmpty())
-		if (auto const ppValue = GlobalVars::INIFiles::Rules->TryGetString("Colors", color))
+		if (auto const ppValue = CINI::Rules->TryGetString("Colors", color))
 			sscanf_s(*ppValue, "%hhu,%hhu,%hhu", &hsv.H, &hsv.S, &hsv.V);
 
 	RGBClass rgb;

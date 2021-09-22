@@ -1,7 +1,6 @@
 #include "Body.h"
 
 #include <CINI.h>
-#include <GlobalVars.h>
 
 #include "../../Helpers/STDHelpers.h"
 #include "../../Helpers/Translations.h"
@@ -53,7 +52,7 @@ BOOL CAITriggerTypesExt::OnInitDialogExt()
 
 	::SendMessage(hSides, CB_ADDSTRING, NULL, (LPARAM)"0 - All");
 	int i = 1;
-	if (auto sides = GlobalVars::INIFiles::FAData->GetSection("Sides"))
+	if (auto sides = CINI::FAData->GetSection("Sides"))
 	{
 		for (auto& itr : sides->EntitiesDictionary)
 		{
@@ -88,7 +87,7 @@ void CAITriggerTypesExt::OnBNCloneAITriggerClicked()
 		this->CCBAITriggerList.GetWindowText(currentID);
 		STDHelpers::TrimIndex(currentID);
 
-		ppmfc::CString key = INIClass::GetAvailableIndex();
+		ppmfc::CString key = CINI::GetAvailableIndex();
 		ppmfc::CString value, name;
 
 		HWND hName;
@@ -100,16 +99,16 @@ void CAITriggerTypesExt::OnBNCloneAITriggerClicked()
 		delete[] pStr;
 
 		value = name + ",";
-		auto& results = STDHelpers::SplitString(GlobalVars::INIFiles::CurrentDocument->GetString("AITriggerTypes", currentID));
+		auto& results = STDHelpers::SplitString(CINI::CurrentDocument->GetString("AITriggerTypes", currentID));
 		for (int i = 1; i < results.size() - 1; ++i)
 			value += (results[i] + ",");
 		value += results.back();
 
-		GlobalVars::INIFiles::CurrentDocument->WriteString("AITriggerTypes", key, value);
+		CINI::CurrentDocument->WriteString("AITriggerTypes", key, value);
 
-		GlobalVars::INIFiles::CurrentDocument->WriteString(
+		CINI::CurrentDocument->WriteString(
 			"AITriggerTypesEnable", key,
-			GlobalVars::INIFiles::CurrentDocument->GetString("AITriggerTypesEnable", currentID, "no")
+			CINI::CurrentDocument->GetString("AITriggerTypesEnable", currentID, "no")
 		);
 
 		int idx = this->CCBAITriggerList.AddString(key + " (" + name + ")");
