@@ -3,6 +3,7 @@
 #include <CINI.h>
 #include <CFinalSunApp.h>
 #include <CFinalSunDlg.h>
+#include <CLoading.h>
 #include <CMapData.h>
 
 #include "../FA2sp.h"
@@ -35,6 +36,8 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
             else
                 filepath = filepath.Mid(0, nExtIndex) + ".map";
         }
+
+        Logger::Debug("Trying to save map to %s\n", filepath);
 
         CloseHandle(
             CreateFile(filepath, GENERIC_WRITE, NULL, nullptr, TRUNCATE_EXISTING, FILE_FLAG_SEQUENTIAL_SCAN | FILE_ATTRIBUTE_NORMAL, NULL)
@@ -114,9 +117,9 @@ public:
         if (ExtConfigs::SaveMap_AutoSave_Interval >= 30)
         {
             if (Timer = SetTimer(NULL, NULL, 1000 * ExtConfigs::SaveMap_AutoSave_Interval, SaveMapCallback))
-                Logger::Debug("Successfully created timer with ID = %p\n", Timer);
+                Logger::Debug("Successfully created timer with ID = %p.\n", Timer);
             else
-                Logger::Debug("Failed to create timer! Auto-save is currently unable to use");
+                Logger::Debug("Failed to create timer! Auto-save is currently unable to use!\n");
         }
     }
 
@@ -181,7 +184,7 @@ public:
 
     static void CALLBACK SaveMapCallback(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
     {
-        Logger::Debug("SaveMapCallback called, trying to auto save map. hwnd = %08X, message = %d, iTimerID = %d, dwTime = %d\n.",
+        Logger::Debug("SaveMapCallback called, trying to auto save map. hwnd = %08X, message = %d, iTimerID = %d, dwTime = %d.\n",
             hwnd, message, iTimerID, dwTime);
 
         if (!CMapData::Instance->MapWidthPlusHeight || !CMapData::Instance->FieldDataAllocated)
@@ -193,16 +196,29 @@ public:
         SYSTEMTIME time;
         GetLocalTime(&time);
 
-        const auto mapName = CINI::CurrentDocument->GetString("Basic", "Name", "No Name");
+        auto mapName = CINI::CurrentDocument->GetString("Basic", "Name", "No Name");
+
+        /*
+        * Fix : Windows file name cannot begin with space and cannot have following characters:
+        * \ / : * ? " < > |
+        */
+        for (int i = 0; i < mapName.GetLength(); ++i)
+            if (mapName[i] == '\\' || mapName[i] == '/' || mapName[i] == ':'||
+                mapName[i] == '*' || mapName[i] == '?' || mapName[i] == '"' ||
+                mapName[i] == '<' || mapName[i] == '>' || mapName[i] == '|'
+                )
+                mapName.SetAt(i, '-');
+
         const auto ext = 
             !ExtConfigs::SaveMap_OnlySaveMAP && CINI::CurrentDocument->GetBool("Basic", "MultiplayerOnly") ?
-            *reinterpret_cast<bool*>(0x5D32AC) ?
+            CLoading::HasMdFile() ?
             "yrm" :
             "mpr" :
             "map";
 
         ppmfc::CString buffer = CFinalSunApp::ExePath();
         buffer += "\\AutoSaves\\";
+        CreateDirectory(buffer, nullptr);
         buffer += mapName;
         CreateDirectory(buffer, nullptr);
 
