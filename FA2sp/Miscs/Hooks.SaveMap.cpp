@@ -142,10 +142,22 @@ public:
             };
 
             std::map<FILETIME, ppmfc::CString, FileTimeComparator> m;
-            const auto mapName = CINI::CurrentDocument->GetString("Basic", "Name","No Name");
+            auto mapName = CINI::CurrentDocument->GetString("Basic", "Name","No Name");
+
+            /*
+            * Fix : Windows file name cannot begin with space and cannot have following characters:
+            * \ / : * ? " < > |
+            */
+            for (int i = 0; i < mapName.GetLength(); ++i)
+                if (mapName[i] == '\\' || mapName[i] == '/' || mapName[i] == ':' ||
+                    mapName[i] == '*' || mapName[i] == '?' || mapName[i] == '"' ||
+                    mapName[i] == '<' || mapName[i] == '>' || mapName[i] == '|'
+                    )
+                    mapName.SetAt(i, '-');
+
             const auto ext = 
                 !ExtConfigs::SaveMap_OnlySaveMAP && CINI::CurrentDocument->GetBool("Basic", "MultiplayerOnly") ?
-                *reinterpret_cast<bool*>(0x5D32AC) ?
+                CLoading::HasMdFile() ?
                 "yrm" :
                 "mpr" :
                 "map";
