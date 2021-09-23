@@ -81,6 +81,7 @@ BOOL CALLBACK CAllieEditor::DlgProc(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM l
 
 				cHouses.CETAllies.SetWindowText(allies);
 				EndDialog(hwnd, NULL);
+				cHouses.OnETAlliesKillFocus();
 				return TRUE;
 			}
 			case IDCANCEL: {
