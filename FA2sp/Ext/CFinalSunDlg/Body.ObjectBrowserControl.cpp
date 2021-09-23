@@ -171,15 +171,19 @@ void ObjectBrowserControlExt::Redraw_Owner()
 
     auto& doc = CINI::CurrentDocument();
 
-    bool bMultiplayer = doc.GetBool("Basic", "MultiplayerOnly"); 
-    auto& section = Variables::Rules.ParseIndicies("Houses", true);
-
-    for (size_t i = 0, sz = section.size(); i < sz; ++i)
+    if (CINI::CurrentDocument->GetBool("Basic", "MultiplayerOnly"))
     {
-        if (bMultiplayer)
-            if (section[i] != "Neutral House" && section[i] != "Special House")
-                continue;
-        this->InsertString(section[i], Const_House + i, hOwner);
+        auto& section = Variables::Rules.GetSection("Countries");
+        auto itr = section.begin();
+        for (size_t i = 0, sz = section.size(); i < sz; ++i, ++itr)
+            if (strcmp(itr->second, "Neutral") == 0 || strcmp(itr->second, "Special") == 0)
+                this->InsertString(itr->second, Const_House + i, hOwner);
+    }
+    else
+    {
+        auto& section = Variables::Rules.ParseIndicies("Houses", true);
+        for (size_t i = 0, sz = section.size(); i < sz; ++i)
+            this->InsertString(section[i], Const_House + i, hOwner);
     }
 }
 
