@@ -284,6 +284,9 @@
     <ClCompile Include="FA2sp\Ext\CAITriggerTypes\Body.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CLoading\Hooks.InitPalettes.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FA2sp\FA2sp.rc">
