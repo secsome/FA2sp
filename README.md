@@ -11,6 +11,15 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-09-23 RELEASE 1.0.6) ==============================================================================================
+*) Fix the autosave logic caused by Loritas
+*) Fix the problem that FA2 crashes after kill focus
+*) Fix the problem that Allie Editor not being applied to the data automatically
+*) Fix the bug that resize map not take basenodes and smudges into consideration
+
+==  Known Bug : SaveMap = Yes will sometimes crashes the PreviewPack  ==
+== consider to save it again with origin FA2 after finishing your map ==
+
 ======================= Changes (2021-08-25 RELEASE 1.0.5) ==============================================================================================
 +) Enhanced SaveMap logic by Loritas
 +) New ExtConfig: SaveMap.OnlySaveMAP, enable it so that FA2 will only save map with .map file extension
