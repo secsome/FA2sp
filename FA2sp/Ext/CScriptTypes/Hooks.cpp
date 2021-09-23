@@ -3,13 +3,13 @@
 #include "../../Helpers/Helper.h"
 
 #include <Helpers/Macro.h>
-#include <GlobalVars.h>
 
 // Cleanning up
 DEFINE_HOOK(4D5B20, CScriptTypes_DTOR, 7)
 {
     CScriptTypeAction::ExtActions.clear();
     CScriptTypeParam::ExtParams.clear();
+	delete CScriptTypesExt::ExtCurrentScript;
     return 0;
 }
 

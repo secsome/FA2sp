@@ -65,6 +65,7 @@ class ObjectBrowserControlExt : public ObjectBrowserControl
 public:
     void Redraw();
     int UpdateEngine(int nData);
+    static void OnExeTerminate();
 
     ppmfc::CString QueryUIName(const char* pRegName);
 

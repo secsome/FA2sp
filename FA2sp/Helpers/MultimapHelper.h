@@ -9,11 +9,11 @@ class MultimapHelper
 {
 public:
     MultimapHelper() = default;
-    MultimapHelper(std::initializer_list<INIClass*> list);
+    MultimapHelper(std::initializer_list<CINI*> list);
 
-    void AddINI(INIClass* pINI);
+    void AddINI(CINI* pINI);
 
-    INIClass* GetINIAt(int idx);
+    CINI* GetINIAt(int idx);
 
     ppmfc::CString* TryGetString(ppmfc::CString pSection, ppmfc::CString pKey);
     int GetInteger(ppmfc::CString pSection, ppmfc::CString pKey, int nDefault = 0);
@@ -24,5 +24,5 @@ public:
     std::map<ppmfc::CString, ppmfc::CString, INISectionEntriesComparator> GetSection(ppmfc::CString pSection);
 
 private:
-    std::vector<INIClass*> data;
+    std::vector<CINI*> data;
 };

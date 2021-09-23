@@ -1,7 +1,5 @@
 #include "Body.h"
 
-#include <GlobalVars.h>
-
 #include "../../Helpers/STDHelpers.h"
 
 #include "../../ExtraWindow/CAllieEditor/CAllieEditor.h"
@@ -20,7 +18,7 @@ void CHousesExt::UpdateComboboxContents()
 	while (this->CCBHouses.DeleteString(0) != -1);
 	while (this->CCBHumanHouse.DeleteString(0) != -1);
 
-	auto& doc = GlobalVars::INIFiles::CurrentDocument();
+	auto& doc = CINI::CurrentDocument();
 	
 }
 

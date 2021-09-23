@@ -1,7 +1,5 @@
 #include "Body.h"
 
-#include <GlobalVars.h>
-
 #include "../../Helpers/STDHelpers.h"
 #include "../../Helpers/Translations.h"
 
@@ -99,18 +97,18 @@ void CTeamTypesExt::OnBNCloneClicked()
 		this->CCBTeamList.GetWindowText(currentID);
 		STDHelpers::TrimIndex(currentID);
 
-		ppmfc::CString key = INIClass::GetAvailableKey("TeamTypes");
-		ppmfc::CString value = INIClass::GetAvailableIndex();
+		ppmfc::CString key = CINI::GetAvailableKey("TeamTypes");
+		ppmfc::CString value = CINI::GetAvailableIndex();
 
-		GlobalVars::INIFiles::CurrentDocument->WriteString("TeamTypes", key, value);
+		CINI::CurrentDocument->WriteString("TeamTypes", key, value);
 
-		auto name = GlobalVars::INIFiles::CurrentDocument->GetString(currentID, "Name", "New Teamtype") + " Clone";
-		GlobalVars::INIFiles::CurrentDocument->WriteString(value, "Name", name);
+		auto name = CINI::CurrentDocument->GetString(currentID, "Name", "New Teamtype") + " Clone";
+		CINI::CurrentDocument->WriteString(value, "Name", name);
 
 		auto copyitem = [&value, &currentID](ppmfc::CString key)
 		{
-			if (auto ppStr = GlobalVars::INIFiles::CurrentDocument->TryGetString(currentID, key))
-				GlobalVars::INIFiles::CurrentDocument->WriteString(value, key, *ppStr);
+			if (auto ppStr = CINI::CurrentDocument->TryGetString(currentID, key))
+				CINI::CurrentDocument->WriteString(value, key, *ppStr);
 		};
 
 		copyitem("Max");

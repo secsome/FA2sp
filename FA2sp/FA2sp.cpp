@@ -5,7 +5,6 @@
 #include "Miscs/Palettes.h"
 #include "Miscs/DrawStuff.h"
 
-#include <GlobalVars.h>
 #include <CINI.h>
 
 #include <clocale>
@@ -40,8 +39,9 @@ bool ExtConfigs::SaveMap_AutoSave;
 int ExtConfigs::SaveMap_AutoSave_Interval;
 int ExtConfigs::SaveMap_AutoSave_MaxCount;
 bool ExtConfigs::SaveMap_OnlySaveMAP;
+bool ExtConfigs::CustomFoundation_Regular;
 
-MultimapHelper Variables::Rules = { &GlobalVars::INIFiles::Rules(), &GlobalVars::INIFiles::CurrentDocument() };
+MultimapHelper Variables::Rules = { &CINI::Rules(), &CINI::CurrentDocument() };
 
 DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
 {
@@ -51,7 +51,7 @@ DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
 
 void FA2sp::ExtConfigsInitialize()
 {
-	auto& fadata = GlobalVars::INIFiles::FAData();
+	auto& fadata = CINI::FAData();
 	
 	ExtConfigs::BrowserRedraw = fadata.GetBool("ExtConfigs", "BrowserRedraw");
 	ExtConfigs::BrowserRedraw_GuessMode = fadata.GetInteger("ExtConfigs", "BrowserRedraw.GuessMode", 0);
@@ -100,6 +100,8 @@ void FA2sp::ExtConfigsInitialize()
 		}
 	}
 	ExtConfigs::SaveMap_OnlySaveMAP = fadata.GetBool("ExtConfigs", "SaveMap.OnlySaveMAP");
+	
+	ExtConfigs::CustomFoundation_Regular = fadata.GetBool("ExtConfigs", "CustomFoundation.Regular");
 }
 
 // DllMain
@@ -151,12 +153,18 @@ DEFINE_HOOK(537129, ExeRun, 9)
 	return 0;
 }
 
+#include "Ext/CFinalSunDlg/Body.h"
+
 DEFINE_HOOK(537208, ExeTerminate, 9)
 {
 	MutexHelper::Detach();
 	Logger::Info("FA2sp Terminating...\n");
 	Logger::Close();
 	DrawStuff::deinit();
+
+	// Destruct static ppmfc stuffs here
+	ObjectBrowserControlExt::OnExeTerminate();
+
 	GET(UINT, result, EAX);
 	ExitProcess(result);
 }

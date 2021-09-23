@@ -1,7 +1,5 @@
 #include "Body.h"
 
-#include <GlobalVars.h>
-
 #include "../../Helpers/STDHelpers.h"
 #include "../../Helpers/Translations.h"
 

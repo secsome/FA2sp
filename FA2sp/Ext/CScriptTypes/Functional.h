@@ -2,8 +2,6 @@
 
 #include "Body.h"
 
-#include <GlobalVars.h>
-
 #include <unordered_set>
 
 #include "../../Helpers/STDHelpers.h"
@@ -37,7 +35,7 @@ static void CScriptTypes_LoadParams_Waypoint(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
-    auto& doc = GlobalVars::INIFiles::CurrentDocument();
+    auto& doc = CINI::CurrentDocument();
     
     if (!ExtConfigs::ExtWaypoints)
     {
@@ -96,7 +94,7 @@ static void CScriptTypes_LoadParams_ScriptLine(ppmfc::CComboBox& comboBox, ppmfc
 
     while (comboBox.DeleteString(0) != -1);
 
-    auto& doc = GlobalVars::INIFiles::CurrentDocument();
+    auto& doc = CINI::CurrentDocument();
 
     ppmfc::CString buffer, scriptName, parambuf;
     currentScript.GetLBText(currentScript.GetCurSel(), scriptName);
@@ -133,7 +131,7 @@ static void CScriptTypes_LoadParams_GlobalVariables(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
-    auto& rules = GlobalVars::INIFiles::Rules();
+    auto& rules = CINI::Rules();
     if (auto entities = rules.GetSection("VariableNames"))
     {
         CString text;
@@ -154,7 +152,7 @@ static void CScriptTypes_LoadParams_ScriptTypes(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
-    auto& doc = GlobalVars::INIFiles::CurrentDocument();
+    auto& doc = CINI::CurrentDocument();
     if (auto entities = doc.GetSection("ScriptTypes"))
     {
         CString text, finaltext = "";
@@ -177,7 +175,7 @@ static void CScriptTypes_LoadParams_TeamTypes(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
-    auto& doc = GlobalVars::INIFiles::CurrentDocument();
+    auto& doc = CINI::CurrentDocument();
     if (auto entities = doc.GetSection("TeamTypes"))
     {
         CString text, finaltext = "";
@@ -206,7 +204,7 @@ static void CScriptTypes_LoadParams_Speechs(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
-    auto& eva = GlobalVars::INIFiles::Eva();
+    auto& eva = CINI::Eva();
     if (auto entities = eva.GetSection("DialogList"))
     {
         CString text;
@@ -228,7 +226,7 @@ static void CScriptTypes_LoadParams_Sounds(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
-    auto& sound = GlobalVars::INIFiles::Sound();
+    auto& sound = CINI::Sound();
     if (auto entities = sound.GetSection("SoundList"))
     {
         CString text;
@@ -249,7 +247,7 @@ static void CScriptTypes_LoadParams_Movies(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
-    auto& art = GlobalVars::INIFiles::Art();
+    auto& art = CINI::Art();
     if (auto entities = art.GetSection("Movies"))
     {
         CString text;
@@ -270,7 +268,7 @@ static void CScriptTypes_LoadParams_Themes(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
-    auto& theme = GlobalVars::INIFiles::Theme();
+    auto& theme = CINI::Theme();
     if (auto entities = theme.GetSection("Themes"))
     {
         CString text;
@@ -297,7 +295,7 @@ static void CScriptTypes_LoadParams_LocalVariables(ppmfc::CComboBox& comboBox)
 {
     while (comboBox.DeleteString(0) != -1);
 
-    auto& doc = GlobalVars::INIFiles::CurrentDocument();
+    auto& doc = CINI::CurrentDocument();
     if (auto entities = doc.GetSection("VariableNames"))
     {
         CString text;

@@ -1,6 +1,5 @@
 #include "Body.h"
 
-#include <GlobalVars.h>
 #include <CMapData.h>
 #include "../../ExtraWindow/CTileManager/CTileManager.h"
 
@@ -12,7 +11,7 @@ void CTileSetBrowserFrameExt::ProgramStartupInit()
 
 void CTileSetBrowserFrameExt::OnBNTileManagerClicked()
 {
-	if (GlobalVars::CMapData->MapWidthPlusHeight)
+	if (CMapData::Instance->MapWidthPlusHeight)
 	{
 		if (CTileManager::GetHandle() == NULL)
 			CTileManager::Create(this);

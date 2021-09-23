@@ -1,6 +1,5 @@
 #include "Body.h"
 
-#include <GlobalVars.h>
 #include <CINI.h>
 #include <CMapData.h>
 #include <CMixFile.h>
@@ -20,7 +19,7 @@ ppmfc::CString CLoadingExt::GetImageName(ppmfc::CString ID, int nFacing)
 {
 	ppmfc::CString ImageID;
 	ppmfc::CString DictName;
-	CLoadingExt* pLoading = (CLoadingExt*)GlobalVars::Dialogs::CLoading();
+	CLoadingExt* pLoading = (CLoadingExt*)CLoading::Instance();
 	switch (pLoading->GetItemType(ID))
 	{
 	case ObjectType::Infantry:
@@ -110,7 +109,7 @@ ppmfc::CString CLoadingExt::GetTerrainOrSmudgeFileID(ppmfc::CString ID)
 	else
 		ArtID = ID;
 
-	ppmfc::CString ImageID = GlobalVars::INIFiles::Art->GetString(ArtID, "Image", ArtID);
+	ppmfc::CString ImageID = CINI::Art->GetString(ArtID, "Image", ArtID);
 
 	return ImageID;
 }
@@ -118,7 +117,7 @@ ppmfc::CString CLoadingExt::GetTerrainOrSmudgeFileID(ppmfc::CString ID)
 ppmfc::CString CLoadingExt::GetBuildingFileID(ppmfc::CString ID)
 {
 	ppmfc::CString ArtID = GetArtID(ID);
-	ppmfc::CString ImageID = GlobalVars::INIFiles::Art->GetString(ArtID, "Image", ArtID);
+	ppmfc::CString ImageID = CINI::Art->GetString(ArtID, "Image", ArtID);
 
 	ppmfc::CString backupID = ImageID;
 	SetTheaterLetter(ImageID);
@@ -140,14 +139,14 @@ ppmfc::CString CLoadingExt::GetInfantryFileID(ppmfc::CString ID)
 {
 	ppmfc::CString ArtID = GetArtID(ID);
 
-	ppmfc::CString ImageID = GlobalVars::INIFiles::Art->GetString(ArtID, "Image", ArtID);
+	ppmfc::CString ImageID = CINI::Art->GetString(ArtID, "Image", ArtID);
 
 	if (Variables::Rules.GetBool(ID, "AlternateTheaterArt"))
 		ImageID += this->TheaterIdentifier;
 	else if (Variables::Rules.GetBool(ID, "AlternateArcticArt"))
 		if (this->TheaterIdentifier == 'A')
 			ImageID += 'A';
-	if (!GlobalVars::INIFiles::Art->SectionExists(ImageID))
+	if (!CINI::Art->SectionExists(ImageID))
 		ImageID = ArtID;
 
 	return ImageID;
@@ -168,7 +167,7 @@ ppmfc::CString CLoadingExt::GetVehicleOrAircraftFileID(ppmfc::CString ID)
 {
 	ppmfc::CString ArtID = GetArtID(ID);
 
-	ppmfc::CString ImageID = GlobalVars::INIFiles::Art->GetString(ArtID, "Image", ArtID);
+	ppmfc::CString ImageID = CINI::Art->GetString(ArtID, "Image", ArtID);
 
 	return ImageID;
 }
@@ -232,86 +231,86 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 			LoadBuilding(*ppPowerUpBld);
 	}
 
-	int nBldStartFrame = GlobalVars::INIFiles::Art->GetInteger(ArtID, "LoopStart", 0);
+	int nBldStartFrame = CINI::Art->GetInteger(ArtID, "LoopStart", 0);
 	if (loadBuildingFrameShape(ImageID, nBldStartFrame))
 	{
-		if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "IdleAnim"))
+		if (auto ppStr = CINI::Art->TryGetString(ArtID, "IdleAnim"))
 		{
-			if (!GlobalVars::INIFiles::FAData->GetBool("IgnoreIdleAnim", ID))
+			if (!CINI::FAData->GetBool("IgnoreIdleAnim", ID))
 			{
-				int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
-				loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
+				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
+				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
 			}
 		}
-		if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "ActiveAnim"))
+		if (auto ppStr = CINI::Art->TryGetString(ArtID, "ActiveAnim"))
 		{
-			if (!GlobalVars::INIFiles::FAData->GetBool("IgnoreActiveAnim1", ID))
+			if (!CINI::FAData->GetBool("IgnoreActiveAnim1", ID))
 			{
-				int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
-				loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
+				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
+				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
 			}
 		}
-		if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "ActiveAnimTwo"))
+		if (auto ppStr = CINI::Art->TryGetString(ArtID, "ActiveAnimTwo"))
 		{
-			if (!GlobalVars::INIFiles::FAData->GetBool("IgnoreActiveAnim2", ID))
+			if (!CINI::FAData->GetBool("IgnoreActiveAnim2", ID))
 			{
-				int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
-				loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
+				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
+				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
 			}
 		}
-		if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "ActiveAnimThree"))
+		if (auto ppStr = CINI::Art->TryGetString(ArtID, "ActiveAnimThree"))
 		{
-			if (!GlobalVars::INIFiles::FAData->GetBool("IgnoreActiveAnim3", ID))
+			if (!CINI::FAData->GetBool("IgnoreActiveAnim3", ID))
 			{
-				int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
-				loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
+				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
+				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
 			}
 		}
-		if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "ActiveAnimFour"))
+		if (auto ppStr = CINI::Art->TryGetString(ArtID, "ActiveAnimFour"))
 		{
-			if (!GlobalVars::INIFiles::FAData->GetBool("IgnoreActiveAnim4", ID))
+			if (!CINI::FAData->GetBool("IgnoreActiveAnim4", ID))
 			{
-				int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
-				loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
+				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
+				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
 			}
 		}
-		if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "SuperAnim"))
+		if (auto ppStr = CINI::Art->TryGetString(ArtID, "SuperAnim"))
 		{
-			if (!GlobalVars::INIFiles::FAData->GetBool("IgnoreSuperAnim1", ID))
+			if (!CINI::FAData->GetBool("IgnoreSuperAnim1", ID))
 			{
-				int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
-				loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
+				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
+				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
 			}
 		}
-		if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "SuperAnimTwo"))
+		if (auto ppStr = CINI::Art->TryGetString(ArtID, "SuperAnimTwo"))
 		{
-			if (!GlobalVars::INIFiles::FAData->GetBool("IgnoreSuperAnim2", ID))
+			if (!CINI::FAData->GetBool("IgnoreSuperAnim2", ID))
 			{
-				int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
-				loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
+				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
+				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
 			}
 		}
-		if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "SuperAnimThree"))
+		if (auto ppStr = CINI::Art->TryGetString(ArtID, "SuperAnimThree"))
 		{
-			if (!GlobalVars::INIFiles::FAData->GetBool("IgnoreSuperAnim3", ID))
+			if (!CINI::FAData->GetBool("IgnoreSuperAnim3", ID))
 			{
-				int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
-				loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
+				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
+				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
 			}
 		}
-		if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "SuperAnimFour"))
+		if (auto ppStr = CINI::Art->TryGetString(ArtID, "SuperAnimFour"))
 		{
-			if (!GlobalVars::INIFiles::FAData->GetBool("IgnoreSuperAnim4", ID))
+			if (!CINI::FAData->GetBool("IgnoreSuperAnim4", ID))
 			{
-				int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(*ppStr, "LoopStart");
-				loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
+				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
+				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
 			}
 		}
-		if (auto ppStr = GlobalVars::INIFiles::Art->TryGetString(ArtID, "BibShape"))
-			loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(*ppStr, "Image", *ppStr));
+		if (auto ppStr = CINI::Art->TryGetString(ArtID, "BibShape"))
+			loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr));
 
-		ppmfc::CString PaletteName = GlobalVars::INIFiles::Art->GetString(ArtID, "Palette", "unit");
-		if (GlobalVars::INIFiles::Art->GetBool(ArtID, "TerrainPalette"))
+		ppmfc::CString PaletteName = CINI::Art->GetString(ArtID, "Palette", "unit");
+		if (CINI::Art->GetBool(ArtID, "TerrainPalette"))
 			PaletteName = "iso";
 		GetFullPaletteName(PaletteName);
 
@@ -378,9 +377,9 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 						ppmfc::CString pKey;
 
 						pKey.Format("%sX%d", ID, (15 - i) % 8);
-						int turdeltaX = GlobalVars::INIFiles::FAData->GetInteger("BuildingVoxelTurretsRA2", pKey);
+						int turdeltaX = CINI::FAData->GetInteger("BuildingVoxelTurretsRA2", pKey);
 						pKey.Format("%sY%d", ID, (15 - i) % 8);
-						int turdeltaY = GlobalVars::INIFiles::FAData->GetInteger("BuildingVoxelTurretsRA2", pKey);
+						int turdeltaY = CINI::FAData->GetInteger("BuildingVoxelTurretsRA2", pKey);
 
 						VXL_Add(pTurImages[i], turrect[i][2] + turdeltaX, turrect[i][3] + turdeltaY, turrect[i][0], turrect[i][1]);
 						delete[] pTurImages[i]; // this buffer is created inside the lib
@@ -388,9 +387,9 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 						if (pBarlImages[i])
 						{
 							pKey.Format("%sX%d", ID, (15 - i) % 8);
-							int barldeltaX = GlobalVars::INIFiles::FAData->GetInteger("BuildingVoxelBarrelsRA2", pKey);
+							int barldeltaX = CINI::FAData->GetInteger("BuildingVoxelBarrelsRA2", pKey);
 							pKey.Format("%sY%d", ID, (15 - i) % 8);
-							int barldeltaY = GlobalVars::INIFiles::FAData->GetInteger("BuildingVoxelBarrelsRA2", pKey);
+							int barldeltaY = CINI::FAData->GetInteger("BuildingVoxelBarrelsRA2", pKey);
 
 							VXL_Add(pBarlImages[i], barlrect[i][2]+ barldeltaX, barlrect[i][3]+ barldeltaY, barlrect[i][0], barlrect[i][1]);
 							delete[] pBarlImages[i];
@@ -415,7 +414,7 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 			else //SHP anim
 			{
 				ppmfc::CString TurName = Variables::Rules.GetString(ID, "TurretAnim", ID + "tur");
-				int nStartFrame = GlobalVars::INIFiles::Art->GetInteger(TurName, "LoopStart");
+				int nStartFrame = CINI::Art->GetInteger(TurName, "LoopStart");
 				for (int i = 0; i < 8; ++i)
 				{
 					auto pTempBuf = GameCreateArray<unsigned char>(width * height);
@@ -424,7 +423,7 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 
 					int deltaX = Variables::Rules.GetInteger(ID, "TurretAnimX", 0);
 					int deltaY = Variables::Rules.GetInteger(ID, "TurretAnimY", 0);
-					loadSingleFrameShape(GlobalVars::INIFiles::Art->GetString(TurName, "Image", TurName),
+					loadSingleFrameShape(CINI::Art->GetString(TurName, "Image", TurName),
 						nStartFrame + i * 4, deltaX, deltaY);
 
 					unsigned char* pImage;
@@ -450,8 +449,8 @@ void CLoadingExt::LoadInfantry(ppmfc::CString ID)
 	ppmfc::CString ArtID = GetArtID(ID);
 	ppmfc::CString ImageID = GetInfantryFileID(ID);
 
-	ppmfc::CString sequenceName = GlobalVars::INIFiles::Art->GetString(ImageID, "Sequence");
-	ppmfc::CString frames = GlobalVars::INIFiles::Art->GetString(sequenceName, "Guard", "0,1,1");
+	ppmfc::CString sequenceName = CINI::Art->GetString(ImageID, "Sequence");
+	ppmfc::CString frames = CINI::Art->GetString(sequenceName, "Guard", "0,1,1");
 	int framesToRead[8];
 	int frameStart, frameStep;
 	sscanf_s(frames, "%d,%d,%d", &frameStart, &framesToRead[0], &frameStep);
@@ -471,7 +470,7 @@ void CLoadingExt::LoadInfantry(ppmfc::CString ID)
 			CShpFile::LoadFrame(framesToRead[i], 1, &FramesBuffers);
 			ppmfc::CString DictName;
 			DictName.Format("%s%d", ImageID, i);
-			ppmfc::CString PaletteName = GlobalVars::INIFiles::Art->GetString(ArtID, "Palette", "unit");
+			ppmfc::CString PaletteName = CINI::Art->GetString(ArtID, "Palette", "unit");
 			GetFullPaletteName(PaletteName);
 			SetImageData(FramesBuffers, DictName, header.Width, header.Height, Palettes::LoadPalette(PaletteName));
 		}
@@ -493,7 +492,7 @@ void CLoadingExt::LoadTerrainOrSmudge(ppmfc::CString ID)
 		CShpFile::LoadFrame(0, 1, &FramesBuffers[0]);
 		ppmfc::CString DictName;
 		DictName.Format("%s%d", ImageID, 0);
-		ppmfc::CString PaletteName = GlobalVars::INIFiles::Art->GetString(ArtID, "Palette", "iso");
+		ppmfc::CString PaletteName = CINI::Art->GetString(ArtID, "Palette", "iso");
 		GetFullPaletteName(PaletteName);
 		SetImageData(FramesBuffers[0], DictName, header.Width, header.Height, Palettes::LoadPalette(PaletteName));
 	}
@@ -505,7 +504,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 	ppmfc::CString ImageID = GetVehicleOrAircraftFileID(ID);
 	bool bHasTurret = Variables::Rules.GetBool(ID, "Turret");
 
-	if (GlobalVars::INIFiles::Art->GetBool(ArtID, "Voxel")) // As VXL
+	if (CINI::Art->GetBool(ArtID, "Voxel")) // As VXL
 	{
 		ppmfc::CString FileName = ImageID + ".vxl";
 		ppmfc::CString HVAName = ImageID + ".hva";
@@ -513,7 +512,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 		if (!DrawStuff::is_vpl_loaded())
 			DrawStuff::load_vpl("voxels.vpl");
 
-		ppmfc::CString PaletteName = GlobalVars::INIFiles::Art->GetString(ArtID, "Palette", "unit");
+		ppmfc::CString PaletteName = CINI::Art->GetString(ArtID, "Palette", "unit");
 		GetFullPaletteName(PaletteName);
 
 		unsigned char* pImage[8]{ nullptr,nullptr ,nullptr ,nullptr ,nullptr ,nullptr ,nullptr ,nullptr };
@@ -534,7 +533,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 		if (bHasTurret)
 		{
 			int F, L, H;
-			int s_count = sscanf_s(GlobalVars::INIFiles::Art->GetString(ArtID, "TurretOffset", "0,0,0"), "%d,%d,%d", &F, &L, &H);
+			int s_count = sscanf_s(CINI::Art->GetString(ArtID, "TurretOffset", "0,0,0"), "%d,%d,%d", &F, &L, &H);
 			if (s_count == 0) F = L = H = 0;
 			else if (s_count == 1) L = H = 0;
 			else if (s_count == 2) H = 0;
@@ -584,18 +583,18 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 				if (pTurretImage[i])
 				{
 					pKey.Format("%sX%d", ID, i);
-					int turdeltaX = GlobalVars::INIFiles::FAData->GetInteger("VehicleVoxelTurretsRA2", pKey);
+					int turdeltaX = CINI::FAData->GetInteger("VehicleVoxelTurretsRA2", pKey);
 					pKey.Format("%sY%d", ID, i);
-					int turdeltaY = GlobalVars::INIFiles::FAData->GetInteger("VehicleVoxelTurretsRA2", pKey);
+					int turdeltaY = CINI::FAData->GetInteger("VehicleVoxelTurretsRA2", pKey);
 					VXL_Add(pTurretImage[i], turretrect[i][2] + turdeltaX, turretrect[i][3] + turdeltaY, turretrect[i][0], turretrect[i][1]);
 					delete[] pTurretImage[i];
 
 					if (pBarrelImage[i])
 					{
 						pKey.Format("%sX%d", ID, i);
-						int barldeltaX = GlobalVars::INIFiles::FAData->GetInteger("VehicleVoxelBarrelsRA2", pKey);
+						int barldeltaX = CINI::FAData->GetInteger("VehicleVoxelBarrelsRA2", pKey);
 						pKey.Format("%sY%d", ID, i);
-						int barldeltaY = GlobalVars::INIFiles::FAData->GetInteger("VehicleVoxelBarrelsRA2", pKey);
+						int barldeltaY = CINI::FAData->GetInteger("VehicleVoxelBarrelsRA2", pKey);
 
 						VXL_Add(pBarrelImage[i], barrelrect[i][2] + barldeltaX, barrelrect[i][3] + barldeltaY, barrelrect[i][0], barrelrect[i][1]);
 						delete[] pBarrelImage[i];
@@ -628,17 +627,17 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 	else // As SHP
 	{
 		int framesToRead[8];
-		if (GlobalVars::INIFiles::Art->KeyExists(ArtID, "StandingFrames"))
+		if (CINI::Art->KeyExists(ArtID, "StandingFrames"))
 		{
-			int nStartStandFrame = GlobalVars::INIFiles::Art->GetInteger(ArtID, "StartStandFrame", 0);
-			int nStandingFrames = GlobalVars::INIFiles::Art->GetInteger(ArtID, "StandingFrames", 1);
+			int nStartStandFrame = CINI::Art->GetInteger(ArtID, "StartStandFrame", 0);
+			int nStandingFrames = CINI::Art->GetInteger(ArtID, "StandingFrames", 1);
 			for (int i = 0; i < 8; ++i)
 				framesToRead[i] = nStartStandFrame + i * nStandingFrames;
 		}
 		else
 		{
-			int nStartWalkFrame = GlobalVars::INIFiles::Art->GetInteger(ArtID, "StartWalkFrame", 0);
-			int nWalkFrames = GlobalVars::INIFiles::Art->GetInteger(ArtID, "WalkFrames", 1);
+			int nStartWalkFrame = CINI::Art->GetInteger(ArtID, "StartWalkFrame", 0);
+			int nWalkFrames = CINI::Art->GetInteger(ArtID, "WalkFrames", 1);
 			for (int i = 0; i < 8; ++i) {
 				framesToRead[i] = nStartWalkFrame + i * nWalkFrames;
 			}
@@ -662,13 +661,13 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 				CShpFile::LoadFrame(framesToRead[i], 1, &FramesBuffers[0]);
 				ppmfc::CString DictName;
 				DictName.Format("%s%d", ImageID, i);
-				ppmfc::CString PaletteName = GlobalVars::INIFiles::Art->GetString(ArtID, "Palette", "unit");
+				ppmfc::CString PaletteName = CINI::Art->GetString(ArtID, "Palette", "unit");
 				GetFullPaletteName(PaletteName);
 
 				if (bHasTurret)
 				{
-					int nStartWalkFrame = GlobalVars::INIFiles::Art->GetInteger(ArtID, "StartWalkFrame", 0);
-					int nWalkFrames = GlobalVars::INIFiles::Art->GetInteger(ArtID, "WalkFrames", 1);
+					int nStartWalkFrame = CINI::Art->GetInteger(ArtID, "StartWalkFrame", 0);
+					int nWalkFrames = CINI::Art->GetInteger(ArtID, "WalkFrames", 1);
 					int turretFramesToRead[8];
 					
 					// fix from cmcc

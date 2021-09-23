@@ -1,7 +1,6 @@
 #include "../FA2sp.h"
 
 #include <MFC/ppmfc_cstring.h>
-#include <GlobalVars.h>
 #include <CINI.h>
 #include <CTeamTypes.h>
 

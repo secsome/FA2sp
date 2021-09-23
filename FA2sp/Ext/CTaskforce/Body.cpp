@@ -3,7 +3,6 @@
 #include "../../Helpers/STDHelpers.h"
 #include "../../Helpers/Translations.h"
 
-#include <GlobalVars.h>
 #include <CINI.h>
 
 void CTaskForceExt::ProgramStartupInit()
@@ -87,22 +86,22 @@ void CTaskForceExt::OnBNCloneTaskforceClicked()
 		this->CCBCurrentTaskforce.GetWindowText(currentID);
 		STDHelpers::TrimIndex(currentID);
 
-		ppmfc::CString key = INIClass::GetAvailableKey("TaskForces");
-		ppmfc::CString value = INIClass::GetAvailableIndex();
+		ppmfc::CString key = CINI::GetAvailableKey("TaskForces");
+		ppmfc::CString value = CINI::GetAvailableIndex();
 
-		GlobalVars::INIFiles::CurrentDocument->WriteString("TaskForces", key, value);
+		CINI::CurrentDocument->WriteString("TaskForces", key, value);
 		
 		for (int i = 0; i < this->CLBMembers.GetCount(); ++i)
 		{
 			key.Format("%d", i);
-			auto data = GlobalVars::INIFiles::CurrentDocument->GetString(currentID, key, "1,E1");
-			GlobalVars::INIFiles::CurrentDocument->WriteString(value, key, data);
+			auto data = CINI::CurrentDocument->GetString(currentID, key, "1,E1");
+			CINI::CurrentDocument->WriteString(value, key, data);
 		}
-		auto name = GlobalVars::INIFiles::CurrentDocument->GetString(currentID, "Name", "New Taskforce") + " Clone";
-		GlobalVars::INIFiles::CurrentDocument->WriteString(value, "Name", name);
+		auto name = CINI::CurrentDocument->GetString(currentID, "Name", "New Taskforce") + " Clone";
+		CINI::CurrentDocument->WriteString(value, "Name", name);
 		
-		auto group = GlobalVars::INIFiles::CurrentDocument->GetString(currentID, "Group", "-1");
-		GlobalVars::INIFiles::CurrentDocument->WriteString(value, "Group", group);
+		auto group = CINI::CurrentDocument->GetString(currentID, "Group", "-1");
+		CINI::CurrentDocument->WriteString(value, "Group", group);
 
 		int idx = this->CCBCurrentTaskforce.AddString(value + " (" + name + ")");
 		this->CCBCurrentTaskforce.SetCurSel(idx);

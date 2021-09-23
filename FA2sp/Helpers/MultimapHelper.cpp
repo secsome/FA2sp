@@ -14,18 +14,18 @@
 
 #include <set>
 
-MultimapHelper::MultimapHelper(std::initializer_list<INIClass*> list)
+MultimapHelper::MultimapHelper(std::initializer_list<CINI*> list)
 {
     for (auto pINI : list)
         data.push_back(pINI);
 }
 
-void MultimapHelper::AddINI(INIClass* pINI)
+void MultimapHelper::AddINI(CINI* pINI)
 {
     data.push_back(pINI);
 }
 
-INIClass* MultimapHelper::GetINIAt(int idx)
+CINI* MultimapHelper::GetINIAt(int idx)
 {
     return data.at(idx);
 }
@@ -78,7 +78,7 @@ std::vector<ppmfc::CString> MultimapHelper::ParseIndicies(ppmfc::CString pSectio
     std::map<unsigned int, ppmfc::CString> tmp;
     std::map<ppmfc::CString, unsigned int> tmp2;
     std::map<ppmfc::CString, ppmfc::CString> tmp3; // Value - Key
-    std::map<unsigned int, INIClass*> belonging;
+    std::map<unsigned int, CINI*> belonging;
 
     for (auto& pINI : data)
     {

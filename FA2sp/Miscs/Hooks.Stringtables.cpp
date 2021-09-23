@@ -1,7 +1,7 @@
 #include <CMixFile.h>
 #include <CLoading.h>
-#include <GlobalVars.h>
 #include <FAMemory.h>
+#include <CFinalSunApp.h>
 
 #include "../FA2sp.h"
 
@@ -49,7 +49,7 @@ DEFINE_HOOK(49433B, CSFFiles_Stringtables_Support_2, 6)
     {
         GameDelete(StringtableLoader::pEDIBuffer);
         char tmpCsfFile[0x400];
-        strcpy_s(tmpCsfFile, GlobalVars::ExePath());
+        strcpy_s(tmpCsfFile, CFinalSunApp::ExePath());
         strcat_s(tmpCsfFile, "\\RA2Tmp.csf");
         DeleteFile(tmpCsfFile);
         Logger::Debug("Successfully loaded %d csf labels.\n", StringtableLoader::CSFFiles_Stringtable.size());
@@ -80,12 +80,12 @@ void StringtableLoader::LoadCSFFile(const char* pName)
 {
     HANDLE hFile = INVALID_HANDLE_VALUE;
     char directoryBuffer[0x400];
-    strcpy_s(directoryBuffer, GlobalVars::FilePath());
+    strcpy_s(directoryBuffer, CFinalSunApp::FilePath());
     strcat_s(directoryBuffer, "\\");
     strcat_s(directoryBuffer, pName);
     
     DWORD dwSize;
-    if (auto pBuffer = GlobalVars::Dialogs::CLoading->ReadWholeFile(pName, &dwSize))
+    if (auto pBuffer = CLoading::Instance->ReadWholeFile(pName, &dwSize))
         if (ParseCSFFile((char*)pBuffer, dwSize))
             Logger::Debug("Successfully Loaded file %s.\n", pName);
 }
@@ -183,7 +183,7 @@ bool StringtableLoader::ParseCSFFile(char* buffer, DWORD size)
 void StringtableLoader::WriteCSFFile()
 {
     char tmpCsfFile[0x400];
-    strcpy_s(tmpCsfFile, GlobalVars::ExePath());
+    strcpy_s(tmpCsfFile, CFinalSunApp::ExePath());
     strcat_s(tmpCsfFile, "\\RA2Tmp.csf");
     HANDLE hFile = CreateFile(tmpCsfFile, GENERIC_WRITE, FILE_SHARE_WRITE, nullptr,
         CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
@@ -236,7 +236,7 @@ bool StringtableLoader::LoadToBuffer()
 {
     HANDLE hFile = INVALID_HANDLE_VALUE;
     char directoryBuffer[0x400];
-    strcpy_s(directoryBuffer, GlobalVars::ExePath());
+    strcpy_s(directoryBuffer, CFinalSunApp::ExePath());
     strcat_s(directoryBuffer, "\\");
     strcat_s(directoryBuffer, "RA2Tmp.csf");
     hFile = CreateFile(directoryBuffer, GENERIC_READ, FILE_SHARE_READ, nullptr,

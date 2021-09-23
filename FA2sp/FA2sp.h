@@ -50,6 +50,7 @@ public:
     static int SaveMap_AutoSave_Interval;
     static int SaveMap_AutoSave_MaxCount;
     static bool SaveMap_OnlySaveMAP;
+    static bool CustomFoundation_Regular;
 };
 
 class Variables

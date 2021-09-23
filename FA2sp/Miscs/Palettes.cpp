@@ -1,6 +1,5 @@
 #include "Palettes.h"
 
-#include <GlobalVars.h>
 #include <Drawing.h>
 #include <CMixFile.h>
 #include <CLoading.h>
@@ -43,7 +42,7 @@ Palette* Palettes::LoadPalette(ppmfc::CString palName)
     if (itr != LoadedPalettes.end())
         return itr->second;
 
-    if (BytePalette* pBuffer = (BytePalette*)GlobalVars::Dialogs::CLoading->ReadWholeFile(palName))
+    if (BytePalette* pBuffer = (BytePalette*)CLoading::Instance->ReadWholeFile(palName))
     {
         auto pPal = GameCreate<Palette>();
         for (int i = 0; i < 256; ++i)

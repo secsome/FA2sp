@@ -1,7 +1,5 @@
 #include "Body.h"
 
-#include <GlobalVars.h>
-
 #include "../../FA2sp.h"
 
 DEFINE_HOOK(4F1670, CTileSetBrowserFrame_ReloadComboboxes_OverlayFilter, 6)

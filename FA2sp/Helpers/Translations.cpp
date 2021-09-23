@@ -1,7 +1,7 @@
 #include "Translations.h"
 
+#include <CFinalSunApp.h>
 #include <Helpers/Macro.h>
-#include <GlobalVars.h>
 #include <CINI.h>
 
 CString FinalAlertConfig::lpPath;
@@ -10,7 +10,7 @@ char FinalAlertConfig::pLastRead[0x400];
 // Load after ExePath is initialized
 DEFINE_HOOK(41F7F5, Translations_Initialzation, 9)
 {
-    FinalAlertConfig::lpPath = GlobalVars::ExePath();
+    FinalAlertConfig::lpPath = CFinalSunApp::ExePath();
     FinalAlertConfig::lpPath += "FinalAlert.ini";
     FinalAlertConfig::ReadString("FinalSun", "Language", "English");
     strcpy_s(Translations::pLanguage[0], FinalAlertConfig::pLastRead);
@@ -39,7 +39,7 @@ void FinalAlertConfig::WriteString(const char* pSection, const char* pKey, const
 char Translations::pLanguage[4][0x400];
 bool Translations::GetTranslationItem(const char* pLabelName, ppmfc::CString& ret)
 {
-    auto& falanguage = GlobalVars::INIFiles::FALanguage();
+    auto& falanguage = CINI::FALanguage();
 
     for(const auto& language : Translations::pLanguage)
         if (auto section = falanguage.GetSection(language))

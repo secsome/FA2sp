@@ -1,6 +1,5 @@
 #include "DrawStuff.h"
 
-#include <GlobalVars.h>
 #include <CLoading.h>
 
 #include "../vxl_drawing_lib.h"
@@ -19,7 +18,7 @@ bool DrawStuff::load_vpl(ppmfc::CString name)
 {
     bool result = false;
     DWORD dwSize;
-    if (auto pBuffer = (unsigned char*)GlobalVars::Dialogs::CLoading->ReadWholeFile(name, &dwSize))
+    if (auto pBuffer = (unsigned char*)CLoading::Instance->ReadWholeFile(name, &dwSize))
     {
         result = vxl_drawing_lib::load_vpl(pBuffer);
         GameDeleteArray(pBuffer, dwSize);
@@ -31,7 +30,7 @@ bool DrawStuff::load_vxl(ppmfc::CString name)
 {
     bool result = false;
     DWORD dwSize;
-    if (auto pBuffer = (unsigned char*)GlobalVars::Dialogs::CLoading->ReadWholeFile(name, &dwSize))
+    if (auto pBuffer = (unsigned char*)CLoading::Instance->ReadWholeFile(name, &dwSize))
     {
         if (vxl_drawing_lib::is_loaded())
             vxl_drawing_lib::clear();
@@ -45,7 +44,7 @@ bool DrawStuff::load_hva(ppmfc::CString name)
 {
     bool result = false;
     DWORD dwSize;
-    if (auto pBuffer = (unsigned char*)GlobalVars::Dialogs::CLoading->ReadWholeFile(name, &dwSize))
+    if (auto pBuffer = (unsigned char*)CLoading::Instance->ReadWholeFile(name, &dwSize))
     {
         result = vxl_drawing_lib::load_hva(pBuffer);
         GameDeleteArray(pBuffer, dwSize);

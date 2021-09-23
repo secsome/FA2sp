@@ -1,7 +1,6 @@
 #include <CINI.h>
 #include <vector>
 #include <map>
-#include <GlobalVars.h>
 #include <CLoading.h>
 
 #include "../Helpers/STDHelpers.h"
@@ -14,13 +13,13 @@ class INIIncludes
 {
 public:
     static int LastReadIndex;
-    static vector<INIClass*> LoadedINIs;
+    static vector<CINI*> LoadedINIs;
     static vector<char*> LoadedINIFiles;
     static map<ppmfc::CString, unsigned int> CurrentINIIdxHelper;
 };
 
 int INIIncludes::LastReadIndex = -1;
-vector<INIClass*> INIIncludes::LoadedINIs;
+vector<CINI*> INIIncludes::LoadedINIs;
 vector<char*> INIIncludes::LoadedINIFiles;
 map<ppmfc::CString, unsigned int> INIIncludes::CurrentINIIdxHelper;
 
@@ -29,7 +28,7 @@ DEFINE_HOOK(4530F7, CLoading_ParseINI_PlusSupport, 8)
     if (ExtConfigs::AllowPlusEqual)
     {
         // length [0x1000]
-        GET_STACK(INIClass*, pINI, STACK_OFFS(0x22FC, 0x22D0));
+        GET_STACK(CINI*, pINI, STACK_OFFS(0x22FC, 0x22D0));
         LEA_STACK(char*, lpKey, STACK_OFFS(0x22FC, 0x200C));
         LEA_STACK(const char*, lpSection, STACK_OFFS(0x22FC, 0x210C));
 
@@ -59,7 +58,7 @@ DEFINE_HOOK(47FFB0, CLoading_LoadTSINI_IncludeSupport_1, 7)
     if (ExtConfigs::AllowIncludes)
     {
         GET_STACK(const char*, pFile, 0x4);
-        GET_STACK(INIClass*, pINI, 0x8);
+        GET_STACK(CINI*, pINI, 0x8);
 
         INIIncludes::LoadedINIs.push_back(pINI);
         INIIncludes::LoadedINIFiles.push_back(_strdup(pFile));
@@ -75,7 +74,7 @@ DEFINE_HOOK(480880, INIClass_LoadTSINI_IncludeSupport_2, 5)
         char buffer[0x80];
         if (INIIncludes::LoadedINIs.size() == 0)
             return 0;
-        INIClass* xINI = INIIncludes::LoadedINIs.back();
+        CINI* xINI = INIIncludes::LoadedINIs.back();
         if (!xINI)
             return 0;
 
@@ -99,7 +98,7 @@ DEFINE_HOOK(480880, INIClass_LoadTSINI_IncludeSupport_2, 5)
 
                 if (canLoad) {
                     Logger::Debug("Include Ext Loaded File: %s\n", buffer);
-                    GlobalVars::Dialogs::CLoading()->LoadTSINI(
+                    CLoading::Instance->LoadTSINI(
                         buffer, xINI, TRUE
                     );
                 }
