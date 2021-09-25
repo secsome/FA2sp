@@ -3,85 +3,44 @@
 #include <MFC/ppmfc_cstring.h>
 #include <CINI.h>
 
+#include <algorithm>
 #include <set>
 
 #include "../FA2sp.h"
 
-class Performance
+DEFINE_HOOK(4F2620, GetTileTypeIndex, 7)
 {
-public:
-    static void UpdateDict();
-    static ppmfc::CString GetAvailableIndex();
-    static bool NeedsReload;
-private:
-    static std::set<ppmfc::CString> IndexDict;
-};
+    GET_STACK(const int, nTileSet, 0x4);
+    GET_STACK(const int, nthTileInSet, 0x8);
 
-bool Performance::NeedsReload = true;
-std::set<ppmfc::CString> Performance::IndexDict{};
+    int nResult = 0;
+    ppmfc::CString section;
 
-ppmfc::CString Performance::GetAvailableIndex()
-{
-    ppmfc::CString buffer;
-    for (int i = 1000000;; ++i)
+    if (nthTileInSet < 10000)
     {
-        buffer.Format("%08d", i);
-        auto itr = Performance::IndexDict.find(buffer); // optimize, not find twice
-        if (itr == Performance::IndexDict.end())
+        for (int i = 0; i < nTileSet; ++i)
         {
-            Performance::IndexDict.insert(itr, buffer);
-            return buffer;
+            section.Format("TileSet%04d", i);
+            auto const nCount = CINI::CurrentTheater->GetInteger(section, "TilesInSet", -1);
+            if (nCount == -1)
+            {
+                nResult = 0;
+                break;
+            }
+            /*
+            * I just cannot understand who did this:
+            *
+            * for (int j = 0; j < nCount; ++j)
+            *   ++nResult;
+            * 
+            * WHYYYYYYYYYYYYYYY? - secsome
+            */
+            nResult += nCount;
         }
     }
+    nResult += nthTileInSet;
+
+    R->EAX(nResult);
+
+    return 0x4F2B05;
 }
-
-void Performance::UpdateDict()
-{
-    Performance::IndexDict.clear();
-
-    auto& ini = CINI::CurrentDocument();
-    auto LoadTypesValue = [&ini](ppmfc::CString section)
-    {
-        if (auto pSection = ini.GetSection(section))
-            for (auto& pair : pSection->EntitiesDictionary)
-                Performance::IndexDict.insert(pair.second);
-    };
-    auto LoadTypesKey = [&ini](ppmfc::CString section)
-    {
-        if (auto pSection = ini.GetSection(section))
-            for (auto& pair : pSection->EntitiesDictionary)
-                Performance::IndexDict.insert(pair.first);
-    };
-    LoadTypesValue("ScriptTypes");
-    LoadTypesValue("Taskforces");
-    LoadTypesValue("TeamTypes");
-    LoadTypesKey("Triggers");
-    LoadTypesKey("Events");
-    LoadTypesKey("Tags");
-    LoadTypesKey("Actions");
-    LoadTypesKey("AITriggerTypes");
-
-    Performance::NeedsReload = false;
-}
-
-//DEFINE_HOOK(49EDD3, CMapData_LoadMap_UpdateDict, 6)
-//{
-//    Performance::NeedsReload = true;
-//    return 0;
-//}
-//
-//DEFINE_HOOK(446520, Miscs_GetAvailableIndex, 7)
-//{
-//    if (ExtConfigs::FastAvailableIndex)
-//    {
-//        GET_STACK(ppmfc::CString*, pString, 0x4);
-//
-//        if (Performance::NeedsReload)
-//            Performance::UpdateDict();
-//
-//        new(pString) ppmfc::CString(Performance::GetAvailableIndex());
-//
-//        return 0x446FB3;
-//    }
-//    return 0;
-//}
