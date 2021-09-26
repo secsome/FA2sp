@@ -22,6 +22,10 @@ public:
 	// Functional Functions
 	void OnBNTileManagerClicked();
 
+	void InitTabControl();
+
 private:
 
+public:
+	static HWND hTabCtrl;
 };
