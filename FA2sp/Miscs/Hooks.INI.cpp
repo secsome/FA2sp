@@ -6,6 +6,10 @@
 #include "../Helpers/STDHelpers.h"
 #include "../FA2sp.h"
 
+/*
+* Codes imported from Ares
+*/
+
 using std::map;
 using std::vector;
 

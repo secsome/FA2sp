@@ -17,7 +17,7 @@ DEFINE_HOOK(4F2620, GetTileTypeIndex, 7)
     int nResult = 0;
     ppmfc::CString section;
 
-    if (nthTileInSet < 10000)
+    if (nthTileInSet < 100)
     {
         for (int i = 0; i < nTileSet; ++i)
         {
@@ -40,6 +40,8 @@ DEFINE_HOOK(4F2620, GetTileTypeIndex, 7)
         }
     }
     nResult += nthTileInSet;
+    if (nResult > USHRT_MAX)
+        nResult = USHRT_MAX;
 
     R->EAX(nResult);
 

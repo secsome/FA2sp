@@ -54,7 +54,7 @@ DEFINE_HOOK(48B020, CLoading_InitPalettes, 7)
     loadPalette("desert.pal", pThis->PAL_DESERT);
 
     if (!loadPalette("libtem.pal", pThis->PAL_LIB_ID2124019542))
-        loadPalette("_ID2124019542", pThis->PAL_LIB_ID2124019542); // not quite understand why origin FA2 called this
+        loadPalette("_ID2124019542", pThis->PAL_LIB_ID2124019542);
 
     return 0x48C3CD;
 }
