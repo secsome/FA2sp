@@ -370,3 +370,27 @@ DEFINE_HOOK(474DB7, CIsoView_Draw_DrawCelltagAndWaypointAndTube_SkipOriginUnlock
 
 	return 0x474DCE;
 }
+
+#if 0
+// No same random, abandoned.
+DEFINE_HOOK(46BD0C, CISoView_DrawMouseAttachedStuff_RandomTerrain, 5)
+{
+	GET(int, size, ESI);
+
+	static int nLastRand = -1;
+
+	// srand(time(nullptr));
+
+	int nResult = rand() % size;
+	if (size != 1)
+		while (nResult == nLastRand)
+			nResult = rand() % size;
+
+	nLastRand = nResult;
+
+	R->ECX(nResult);
+	R->EDX(R->EAX());
+
+	return 0x46BD2C;
+}
+#endif
