@@ -8,6 +8,7 @@
 
 #include "../FA2sp.h"
 
+DEFINE_HOOK_AGAIN(4BA0A0, GetTileTypeIndex,7)
 DEFINE_HOOK(4F2620, GetTileTypeIndex, 7)
 {
     GET_STACK(const int, nTileSet, 0x4);
@@ -42,5 +43,5 @@ DEFINE_HOOK(4F2620, GetTileTypeIndex, 7)
 
     R->EAX(nResult);
 
-    return 0x4F2B05;
+    return R->Origin() + 0x4E5;
 }

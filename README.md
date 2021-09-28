@@ -11,7 +11,7 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-======================= Changes (2021-09-26 RELEASE 1.0.7) ==============================================================================================
+======================= Changes (2021-09-28 RELEASE 1.0.7) ==============================================================================================
 *) Changed the layout of CRightView::CTileSetBrowserFrame from [0, 1] to [1, 0], it's vertical now
 *) Now FA2 will not only read default palettes from cache.mix but read them like the normal files
 *) Fix the remaining autosave bug cannot removing earlier maps
