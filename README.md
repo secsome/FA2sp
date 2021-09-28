@@ -11,8 +11,14 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-09-26 RELEASE 1.0.7) ==============================================================================================
+*) Changed the layout of CRightView::CTileSetBrowserFrame from [0, 1] to [1, 0], it's vertical now
+*) Now FA2 will not only read default palettes from cache.mix but read them like the normal files
+*) Fix the remaining autosave bug cannot removing earlier maps
+*) Fix the bug that Multiplayer map cannot save PreviewPack correctly
+
 ======================= Changes (2021-09-23 RELEASE 1.0.6) ==============================================================================================
-*) Fix the autosave logic caused by Loritas
+*) Fix the autosave bug caused by Loritas
 *) Fix the problem that FA2 crashes after kill focus
 *) Fix the problem that Allie Editor not being applied to the data automatically
 *) Fix the bug that resize map not take basenodes and smudges into consideration

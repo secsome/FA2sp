@@ -28,6 +28,8 @@ DEFINE_HOOK(48B020, CLoading_InitPalettes, 7)
             GameDelete(pBuffer);
             return true;
         }
+
+        return false;
     };
 
     loadPalette("isotem.pal", pThis->PAL_ISOTEM);
@@ -51,7 +53,7 @@ DEFINE_HOOK(48B020, CLoading_InitPalettes, 7)
     loadPalette("lunar.pal", pThis->PAL_LUNAR);
     loadPalette("desert.pal", pThis->PAL_DESERT);
 
-    if (!loadPalette("lib.pal", pThis->PAL_LIB_ID2124019542))
+    if (!loadPalette("libtem.pal", pThis->PAL_LIB_ID2124019542))
         loadPalette("_ID2124019542", pThis->PAL_LIB_ID2124019542); // not quite understand why origin FA2 called this
 
     return 0x48C3CD;
