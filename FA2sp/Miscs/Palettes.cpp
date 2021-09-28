@@ -1,5 +1,6 @@
 #include "Palettes.h"
 
+#include <CPalette.h>
 #include <Drawing.h>
 #include <CMixFile.h>
 #include <CLoading.h>
@@ -30,7 +31,7 @@ void Palettes::Init()
     LoadedPalettes["lunar.pal"] = Palette::PALETTE_THEATER;
     LoadedPalettes["desert.pal"] = Palette::PALETTE_THEATER;
 
-    LoadedPalettes["lib.pal"] = Palette::PALETTE_LIB;
+    LoadedPalettes["libtem.pal"] = Palette::PALETTE_LIB;
 }
 
 Palette* Palettes::LoadPalette(ppmfc::CString palName)

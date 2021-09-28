@@ -133,6 +133,7 @@
     <ClCompile Include="FA2sp\Ext\CIsoView\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Body.LoadObjects.cpp" />
+    <ClCompile Include="FA2sp\Ext\CLoading\Hooks.InitPalettes.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Hooks.LoadObjects.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Body.CurrentScript.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Hooks.cpp" />
@@ -148,6 +149,7 @@
     <ClCompile Include="FA2sp\Helpers\ControlHelpers.cpp" />
     <ClCompile Include="FA2sp\Helpers\MultimapHelper.cpp" />
     <ClCompile Include="FA2sp\Hooks.Debug.cpp" />
+    <ClCompile Include="FA2sp\MFCWindow\Hooks.cpp" />
     <ClCompile Include="FA2sp\Miscs\DrawStuff.cpp" />
     <ClCompile Include="FA2sp\Miscs\Exception.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.SaveMap.cpp" />

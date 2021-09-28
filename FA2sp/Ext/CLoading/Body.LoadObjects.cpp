@@ -223,6 +223,18 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 			
 		return true;
 	};
+	
+	auto loadAnimFrameShape = [&](ppmfc::CString animkey, ppmfc::CString ignorekey)
+	{
+		if (auto ppStr = CINI::Art->TryGetString(ArtID, animkey))
+		{
+			if (!CINI::FAData->GetBool(ignorekey, ID))
+			{
+				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
+				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
+			}
+		}
+	};
 
 	if (auto ppPowerUpBld = Variables::Rules.TryGetString(ID, "PowersUpBuilding")) // Early load
 	{
@@ -234,78 +246,16 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 	int nBldStartFrame = CINI::Art->GetInteger(ArtID, "LoopStart", 0);
 	if (loadBuildingFrameShape(ImageID, nBldStartFrame))
 	{
-		if (auto ppStr = CINI::Art->TryGetString(ArtID, "IdleAnim"))
-		{
-			if (!CINI::FAData->GetBool("IgnoreIdleAnim", ID))
-			{
-				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
-				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
-			}
-		}
-		if (auto ppStr = CINI::Art->TryGetString(ArtID, "ActiveAnim"))
-		{
-			if (!CINI::FAData->GetBool("IgnoreActiveAnim1", ID))
-			{
-				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
-				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
-			}
-		}
-		if (auto ppStr = CINI::Art->TryGetString(ArtID, "ActiveAnimTwo"))
-		{
-			if (!CINI::FAData->GetBool("IgnoreActiveAnim2", ID))
-			{
-				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
-				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
-			}
-		}
-		if (auto ppStr = CINI::Art->TryGetString(ArtID, "ActiveAnimThree"))
-		{
-			if (!CINI::FAData->GetBool("IgnoreActiveAnim3", ID))
-			{
-				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
-				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
-			}
-		}
-		if (auto ppStr = CINI::Art->TryGetString(ArtID, "ActiveAnimFour"))
-		{
-			if (!CINI::FAData->GetBool("IgnoreActiveAnim4", ID))
-			{
-				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
-				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
-			}
-		}
-		if (auto ppStr = CINI::Art->TryGetString(ArtID, "SuperAnim"))
-		{
-			if (!CINI::FAData->GetBool("IgnoreSuperAnim1", ID))
-			{
-				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
-				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
-			}
-		}
-		if (auto ppStr = CINI::Art->TryGetString(ArtID, "SuperAnimTwo"))
-		{
-			if (!CINI::FAData->GetBool("IgnoreSuperAnim2", ID))
-			{
-				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
-				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
-			}
-		}
-		if (auto ppStr = CINI::Art->TryGetString(ArtID, "SuperAnimThree"))
-		{
-			if (!CINI::FAData->GetBool("IgnoreSuperAnim3", ID))
-			{
-				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
-				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
-			}
-		}
-		if (auto ppStr = CINI::Art->TryGetString(ArtID, "SuperAnimFour"))
-		{
-			if (!CINI::FAData->GetBool("IgnoreSuperAnim4", ID))
-			{
-				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
-				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
-			}
-		}
+		loadAnimFrameShape("IdleAnim", "IgnoreIdleAnim");
+		loadAnimFrameShape("ActiveAnim", "IgnoreActiveAnim1");
+		loadAnimFrameShape("ActiveAnimTwo", "IgnoreActiveAnim2");
+		loadAnimFrameShape("ActiveAnimThree", "IgnoreActiveAnim3");
+		loadAnimFrameShape("ActiveAnimFour", "IgnoreActiveAnim4");
+		loadAnimFrameShape("SuperAnim", "IgnoreSuperAnim1");
+		loadAnimFrameShape("SuperAnimTwo", "IgnoreSuperAnim2");
+		loadAnimFrameShape("SuperAnimThree", "IgnoreSuperAnim3");
+		loadAnimFrameShape("SuperAnimFour", "IgnoreSuperAnim4");
+
 		if (auto ppStr = CINI::Art->TryGetString(ArtID, "BibShape"))
 			loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr));
 

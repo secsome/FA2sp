@@ -21,12 +21,27 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         GET_STACK(CFinalSunDlg*, pThis, STACK_OFFS(0x3F4, 0x36C));
         REF_STACK(ppmfc::CString, filepath, STACK_OFFS(0x3F4, -0x4));
 
+        GET_STACK(bool, bGeneratePreview, STACK_OFFS(0x3F8, 0x3C8));
+
         pThis->MyViewFrame.StatusBar.SetWindowText("Saving...");
         pThis->MyViewFrame.StatusBar.UpdateWindow();
 
         ppmfc::CString buffer;
         buffer.Format("%d", pINI->GetInteger("FA2spVersionControl", "Version") + 1);
         pINI->WriteString("FA2spVersionControl", "Version", buffer);
+
+        // Begin of Preprocesses
+        pINI->DeleteSection("");
+        // Trim all key and value, I think it's unnecessary cause the game will do that
+        if (bGeneratePreview)
+        {
+            pINI->DeleteSection("Preview");
+            pINI->DeleteSection("PreviewPack");
+            pINI->WriteString("Preview", "Size", "0,0,106,61");
+            pINI->WriteString("PreviewPack", "1", "yAsAIAXQ5PDQ5PDQ6JQATAEE6PDQ4PDI4JgBTAFEAkgAJyAATAG0AydEAEABpAJIA0wBVA");
+            pINI->WriteString("PreviewPack", "2", "BIACcgAEwBtAMnRABAAaQCSANMAVQASAAnIABMAbQDJ0QAQAGkAkgDTAFUAEgAJyAATAG0");
+        }
+        // End of Preprocesses
 
         if (ExtConfigs::SaveMap_OnlySaveMAP) 
         {
@@ -142,10 +157,22 @@ public:
             };
 
             std::map<FILETIME, ppmfc::CString, FileTimeComparator> m;
-            const auto mapName = CINI::CurrentDocument->GetString("Basic", "Name","No Name");
+            auto mapName = CINI::CurrentDocument->GetString("Basic", "Name","No Name");
+
+            /*
+            * Fix : Windows file name cannot begin with space and cannot have following characters:
+            * \ / : * ? " < > |
+            */
+            for (int i = 0; i < mapName.GetLength(); ++i)
+                if (mapName[i] == '\\' || mapName[i] == '/' || mapName[i] == ':' ||
+                    mapName[i] == '*' || mapName[i] == '?' || mapName[i] == '"' ||
+                    mapName[i] == '<' || mapName[i] == '>' || mapName[i] == '|'
+                    )
+                    mapName.SetAt(i, '-');
+
             const auto ext = 
                 !ExtConfigs::SaveMap_OnlySaveMAP && CINI::CurrentDocument->GetBool("Basic", "MultiplayerOnly") ?
-                *reinterpret_cast<bool*>(0x5D32AC) ?
+                CLoading::HasMdFile() ?
                 "yrm" :
                 "mpr" :
                 "map";

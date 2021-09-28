@@ -174,6 +174,6 @@ DEFINE_HOOK(43209D, CFinalSunDlg_Update_TranslateMenuItems, A)
 
 DEFINE_HOOK(432010, CFinalSunDlg_Update_NoFuckingEasyMode, 7)
 {
-    *((bool*)0x7EDFE8) = false;
+    CFinalSunDlg::EasyMode = false;
     return 0;
 }

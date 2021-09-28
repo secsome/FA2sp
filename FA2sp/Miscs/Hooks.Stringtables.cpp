@@ -29,7 +29,7 @@ DEFINE_HOOK(492D10, CSFFiles_Stringtables_Support_1, 5)
 {
     if (ExtConfigs::Stringtables)
     {
-        StringtableLoader::LoadCSFFiles(/*R->Stack32(0x2C0 - 0x268)*/);
+        StringtableLoader::LoadCSFFiles();
         StringtableLoader::bLoadRes = StringtableLoader::LoadToBuffer();
         if (StringtableLoader::bLoadRes)
         {
@@ -62,7 +62,7 @@ DEFINE_HOOK(49433B, CSFFiles_Stringtables_Support_2, 6)
 void StringtableLoader::LoadCSFFiles()
 {
     char nameBuffer[0x400];
-    if (*reinterpret_cast<bool*>(0x5D32AC))
+    if (CLoading::HasMdFile())
         strcpy_s(nameBuffer, "RA2MD.CSF");
     else
         strcpy_s(nameBuffer, "RA2.CSF");
