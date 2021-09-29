@@ -11,6 +11,10 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-XX-XX RELEASE 1.1.0) ==============================================================================================
++) Trigger sort, which will provide you some handy in trigger classification
++) New ExtConfig: VerticalLayout = BOOLEAN, enable it so that FA2sp will make the bottom view go to the right side
+
 ======================= Changes (2021-09-28 RELEASE 1.0.7) ==============================================================================================
 *) Changed the layout of CRightView::CTileSetBrowserFrame from [0, 1] to [1, 0], it's vertical now
 *) Now FA2 will not only read default palettes from cache.mix but read them like the normal files
@@ -182,10 +186,11 @@ COLORREF - R,G,B each of them is in [0,255]
             +) UndoRedoLimit = INTEGER ; Determines the maximun step of undo/redo, defaults to 16
             +) UseRGBHouseColor = BOOLEAN ; Determines if House colors are recognized as RGB color instead of HSV, defaults to false 
             +) SaveMap = BOOLEAN ; Determines if FA2 will save map using a faster method
-                +) SaveMap.AutoSave = BOOLEAN ; Determines if FA2 will save map automatically after one manually saving
+                +) SaveMap.AutoSave = BOOLEAN ; Determines if FA2 will save map automatically
                     +) SaveMap.AutoSave.Interval = INTERGER ; Should be greater than or equal to 30, defaults to 300, determines how many seconds should we wait during the two auto saving
                     +) SaveMap.AutoSave.MaxCount = INTERGER ; How many saving should FA2 keep, set to -1 will disable the auto cleanning, defaults to 10
             +) SaveMap.OnlySaveMAP = BOOLEAN ; Determines if FA2 will only save map with .map file extension
+            +) VerticalLayout = BOOLEAN ; Determines if FA2 will make the bottom view go to the right side
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.

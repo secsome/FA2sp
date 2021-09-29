@@ -38,6 +38,9 @@ DEFINE_HOOK(4F1B00, CTileSetBrowserFrame_RecalcLayout, 7)
     pThis->DialogBar.MoveWindow(2, 29, tabRect.right - tabRect.left - 6, 110, FALSE);
     pThis->View.MoveWindow(2, 139, tabRect.right - tabRect.left - 6, tabRect.bottom - 145, FALSE);
 
+    SIZE sz{ tabRect.right,pThis->View.ScrollWidth };
+    pThis->View.SetScrollSizes(1, sz, (LPSIZE)0x59D220, (LPSIZE)0x59D220);
+
     return 0x4F1B8A;
 }
 

@@ -39,7 +39,7 @@ bool ExtConfigs::SaveMap_AutoSave;
 int ExtConfigs::SaveMap_AutoSave_Interval;
 int ExtConfigs::SaveMap_AutoSave_MaxCount;
 bool ExtConfigs::SaveMap_OnlySaveMAP;
-bool ExtConfigs::CustomFoundation_Regular;
+bool ExtConfigs::VerticalLayout;
 
 MultimapHelper Variables::Rules = { &CINI::Rules(), &CINI::CurrentDocument() };
 
@@ -101,7 +101,7 @@ void FA2sp::ExtConfigsInitialize()
 	}
 	ExtConfigs::SaveMap_OnlySaveMAP = fadata.GetBool("ExtConfigs", "SaveMap.OnlySaveMAP");
 	
-	ExtConfigs::CustomFoundation_Regular = fadata.GetBool("ExtConfigs", "CustomFoundation.Regular");
+	ExtConfigs::VerticalLayout = fadata.GetBool("ExtConfigs", "VerticalLayout");
 }
 
 // DllMain
