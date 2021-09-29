@@ -2,6 +2,8 @@
 
 #include "../../FA2sp.h"
 
+#include "TabPages/TriggerSort.h"
+
 DEFINE_HOOK(4F1A40, CTileSetBrowserFrame_CreateContent, 5)
 {
     GET(CTileSetBrowserFrameExt*, pThis, ECX);
@@ -10,13 +12,13 @@ DEFINE_HOOK(4F1A40, CTileSetBrowserFrame_CreateContent, 5)
 
     pThis->InitTabControl();
     
-    auto pTab = CWnd::FromHandle(CTileSetBrowserFrameExt::hTabCtrl);
+    auto const pTab = CWnd::FromHandle(CTileSetBrowserFrameExt::hTabCtrl);
 
     RECT rect;
     pThis->GetClientRect(&rect);
     pThis->DialogBar.FA2CDialogBar::Create(pTab, (LPCSTR)0xE3, 0x2800, 5);
     pThis->View.FA2CScrollView::Create(nullptr, nullptr, 0x50300000, &rect, pTab, 1, nullptr);
-    pThis->RecalcLayout();
+    pThis->FA2CFrameWnd::RecalcLayout();
     SIZE sz{ rect.right, pThis->View.ScrollWidth };
     pThis->View.FA2CScrollView::SetScrollSizes(1, sz, (SIZE*)0x59D220, (SIZE*)0x59D220);
     R->EAX(pThis->FA2CFrameWnd::OnCreateClient(lpcs, pContent));
@@ -40,6 +42,8 @@ DEFINE_HOOK(4F1B00, CTileSetBrowserFrame_RecalcLayout, 7)
 
     SIZE sz{ tabRect.right,pThis->View.ScrollWidth };
     pThis->View.SetScrollSizes(1, sz, (LPSIZE)0x59D220, (LPSIZE)0x59D220);
+
+    TriggerSort::Instance.OnSize();
 
     return 0x4F1B8A;
 }

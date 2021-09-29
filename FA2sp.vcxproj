@@ -140,6 +140,7 @@
     <ClCompile Include="FA2sp\Ext\CTeamTypes\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CTeamTypes\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTileSetBrowserFrame\Hooks.cpp" />
+    <ClCompile Include="FA2sp\Ext\CTileSetBrowserFrame\TabPages\TriggerSort.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerAction\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerAction\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerEvent\Body.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="FA2sp\Ext\CLoading\Body.h" />
     <ClInclude Include="FA2sp\Ext\CScriptTypes\Functional.h" />
     <ClInclude Include="FA2sp\Ext\CTeamTypes\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CTileSetBrowserFrame\TabPages\TriggerSort.h" />
     <ClInclude Include="FA2sp\Ext\CTriggerAction\Body.h" />
     <ClInclude Include="FA2sp\Ext\CTriggerEvent\Body.h" />
     <ClInclude Include="FA2sp\Ext\FA2Expand.h" />

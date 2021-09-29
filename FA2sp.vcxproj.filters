@@ -123,6 +123,9 @@
     <ClInclude Include="FA2pp\MFC\ppmfc_ctabctrl.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2sp\Ext\CTileSetBrowserFrame\TabPages\TriggerSort.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">
@@ -291,6 +294,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\MFCWindow\Hooks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CTileSetBrowserFrame\TabPages\TriggerSort.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

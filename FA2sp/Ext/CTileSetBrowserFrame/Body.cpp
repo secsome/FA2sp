@@ -7,6 +7,8 @@
 
 #include "../../FA2sp.h"
 
+#include "TabPages/TriggerSort.h"
+
 HWND CTileSetBrowserFrameExt::hTabCtrl = NULL;
 HIMAGELIST CTileSetBrowserFrameExt::hTabImageList = NULL;
 
@@ -35,6 +37,12 @@ BOOL CTileSetBrowserFrameExt::PreTranslateMessageExt(MSG* pMsg)
 		if (pMsg->hwnd == this->DialogBar.GetDlgItem(6102)->GetSafeHwnd())
 			this->OnBNTileManagerClicked();
 	}
+	if (pMsg->hwnd == TriggerSort::Instance)
+	{
+		if (TriggerSort::Instance.OnMessage(pMsg))
+			return TRUE;
+	}
+	
 
 	return this->FA2CFrameWnd::PreTranslateMessage(pMsg);
 }
@@ -53,10 +61,14 @@ BOOL CTileSetBrowserFrameExt::OnNotifyExt(WPARAM wParam, LPARAM lParam, LRESULT*
 			case TabPage::TilesetBrowser:
 				this->DialogBar.ShowWindow(SW_SHOW);
 				this->View.ShowWindow(SW_SHOW);
+
+				TriggerSort::Instance.HideWindow();
 				break;
 			case TabPage::TriggerSort:
 				this->DialogBar.ShowWindow(SW_HIDE);
 				this->View.ShowWindow(SW_HIDE);
+
+				TriggerSort::Instance.ShowWindow();
 				break;
 			}
 			return TRUE;
@@ -64,6 +76,9 @@ BOOL CTileSetBrowserFrameExt::OnNotifyExt(WPARAM wParam, LPARAM lParam, LRESULT*
 			break;
 		}
 	}
+	else if (lpNmhdr->hwndFrom == TriggerSort::Instance)
+		if (TriggerSort::Instance.OnNotify(reinterpret_cast<LPNMTREEVIEW>(lpNmhdr)))
+			return TRUE;
 	return this->FA2CFrameWnd::OnNotify(wParam, lParam, pResult);
 }
 
@@ -91,4 +106,8 @@ void CTileSetBrowserFrameExt::InitTabControl()
 	TabCtrl_InsertItem(this->hTabCtrl, 0, &pitem);
 	pitem.pszText = "Trigger sort";
 	TabCtrl_InsertItem(this->hTabCtrl, 1, &pitem);
+
+	// Create the pages
+	TriggerSort::Instance.Create(hTabCtrl);
+	TriggerSort::Instance.HideWindow();
 }
