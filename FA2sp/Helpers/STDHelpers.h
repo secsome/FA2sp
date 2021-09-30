@@ -31,7 +31,8 @@ public:
             ret.push_back(pSource.Mid(nIdx, nPos - nIdx));
             nIdx = nPos + 1;
         }
-        ret.push_back(pSource.Mid(nIdx));
+        if (nIdx != pSource.GetLength() - 1)
+            ret.push_back(pSource.Mid(nIdx));
         return ret;
     }
 

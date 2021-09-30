@@ -3,12 +3,17 @@
 #include "../../../FA2sp.h"
 #include "../../../Helpers/STDHelpers.h"
 
+#include <CFinalSunDlg.h>
+
 TriggerSort TriggerSort::Instance;
 
 void TriggerSort::LoadAllTriggers()
 {
     this->Clear();
 
+    // TODO : 
+    // Optimisze the efficiency
+    // Refactor the Trigger handling
     if (auto pSection = CINI::CurrentDocument->GetSection("Triggers"))
     {
         for (auto& pair : pSection->EntitiesDictionary)
@@ -28,7 +33,28 @@ BOOL TriggerSort::OnNotify(LPNMTREEVIEW lpNmTreeView)
     switch (lpNmTreeView->hdr.code)
     {
     case TVN_SELCHANGED:
-        
+        if (auto pID = reinterpret_cast<const char*>(lpNmTreeView->itemNew.lParam))
+        {
+            if (strlen(pID))
+            {
+                if (CFinalSunDlg::Instance->TriggerFrame.m_hWnd)
+                {
+                    auto pStr = CINI::CurrentDocument->GetString("Triggers", pID);
+                    auto results = STDHelpers::SplitString(pStr);
+                    if (results.size() <= 3)
+                        return FALSE;
+                    pStr = results[2];
+                    auto idx = CFinalSunDlg::Instance->TriggerFrame.CCBCurrentTrigger.FindStringExact(0, pStr);
+                    if (idx == CB_ERR)
+                        return FALSE;
+                    CFinalSunDlg::Instance->TriggerFrame.CCBCurrentTrigger.SetCurSel(idx);
+                    CFinalSunDlg::Instance->TriggerFrame.OnCBCurrentTriggerSelectedChanged();
+                    return TRUE;
+                }
+                else
+                    return FALSE;
+            }
+        }
         break;
     default:
         break;
@@ -164,6 +190,7 @@ void TriggerSort::AddTrigger(std::vector<ppmfc::CString>&& group, ppmfc::CString
             tvis.hInsertAfter = TVI_SORT;
             tvis.hParent = hParent;
             tvis.item.mask = TVIF_TEXT | TVIF_PARAM;
+            tvis.item.lParam = NULL;
             tvis.item.pszText = node.m_pchData;
             hParent = TreeView_InsertItem(this->GetHwnd(), &tvis);
         }
@@ -175,6 +202,7 @@ void TriggerSort::AddTrigger(std::vector<ppmfc::CString>&& group, ppmfc::CString
         item.hItem = hNode;
         if (TreeView_GetItem(this->GetHwnd(), &item))
         {
+            strcat(item.pszText, " (" + id + ")");
             item.lParam = (LPARAM)id.m_pchData;
             TreeView_SetItem(this->GetHwnd(), &item);
         }
@@ -186,6 +214,7 @@ void TriggerSort::AddTrigger(std::vector<ppmfc::CString>&& group, ppmfc::CString
         tvis.hParent = hParent;
         tvis.item.mask = TVIF_TEXT | TVIF_PARAM;
         tvis.item.pszText = name.m_pchData;
+        strcat(tvis.item.pszText, " (" + id + ")");
         tvis.item.lParam = (LPARAM)id.m_pchData;
         TreeView_InsertItem(this->GetHwnd(), &tvis);
     }
