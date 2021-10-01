@@ -22,6 +22,7 @@ public:
     void ShowWindow() const;
     void HideWindow() const;
     bool IsValid() const;
+    bool IsVisible() const;
     HWND GetHwnd() const;
     operator HWND() const;
 

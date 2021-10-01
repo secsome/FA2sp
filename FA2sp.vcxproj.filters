@@ -299,6 +299,9 @@
     <ClCompile Include="FA2sp\Ext\CTileSetBrowserFrame\TabPages\TriggerSort.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CTriggerFrame\Hooks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FA2sp\FA2sp.rc">

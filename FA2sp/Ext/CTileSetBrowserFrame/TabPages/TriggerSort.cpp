@@ -113,6 +113,11 @@ bool TriggerSort::IsValid() const
     return this->GetHwnd() != NULL;
 }
 
+bool TriggerSort::IsVisible() const
+{
+    return this->IsValid() && ::IsWindowVisible(this->m_hWnd);
+}
+
 HWND TriggerSort::GetHwnd() const
 {
     return this->m_hWnd;
@@ -154,7 +159,7 @@ std::vector<ppmfc::CString> TriggerSort::GetGroup(ppmfc::CString& triggerId, ppm
     auto pSrc = CINI::CurrentDocument->GetString("Triggers", triggerId, "");
 
     auto ret = STDHelpers::SplitString(pSrc);
-    if (ret.size() >= 3)
+    if (ret.size() == 7)
     {
         pSrc = ret[2];
         int nStart = pSrc.Find('[');
@@ -229,7 +234,8 @@ void TriggerSort::AddTrigger(ppmfc::CString triggerId) const
 
 DEFINE_HOOK(4FA450, CTriggerFrame_Update_TriggerSort, 7)
 {
-    TriggerSort::Instance.LoadAllTriggers();
+    if(TriggerSort::Instance.IsVisible())
+        TriggerSort::Instance.LoadAllTriggers();
 
     return 0;
 }

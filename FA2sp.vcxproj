@@ -144,6 +144,7 @@
     <ClCompile Include="FA2sp\Ext\CTriggerAction\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerAction\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerEvent\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CTriggerFrame\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerOption\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\FA2Expand.cpp" />
     <ClCompile Include="FA2sp\Ext\Miscs\Hooks.LoadParams.cpp" />
