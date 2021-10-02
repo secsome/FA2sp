@@ -137,6 +137,8 @@
     <ClCompile Include="FA2sp\Ext\CLoading\Hooks.LoadObjects.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Body.CurrentScript.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Hooks.cpp" />
+    <ClCompile Include="FA2sp\Ext\CSingleplayerSettings\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CSingleplayerSettings\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTeamTypes\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CTeamTypes\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTileSetBrowserFrame\Hooks.cpp" />
@@ -189,6 +191,7 @@
     <ClInclude Include="FA2sp\Ext\CIsoView\Body.h" />
     <ClInclude Include="FA2sp\Ext\CLoading\Body.h" />
     <ClInclude Include="FA2sp\Ext\CScriptTypes\Functional.h" />
+    <ClInclude Include="FA2sp\Ext\CSingleplayerSettings\Body.h" />
     <ClInclude Include="FA2sp\Ext\CTeamTypes\Body.h" />
     <ClInclude Include="FA2sp\Ext\CTileSetBrowserFrame\TabPages\TriggerSort.h" />
     <ClInclude Include="FA2sp\Ext\CTriggerAction\Body.h" />
@@ -226,6 +229,7 @@
     <ResourceCompile Include="FA2sp\UI\CInfantryDialog.rc" />
     <ResourceCompile Include="FA2sp\UI\CMenu.rc" />
     <ResourceCompile Include="FA2sp\UI\CScriptTypes.rc" />
+    <ResourceCompile Include="FA2sp\UI\CSingleplayerSettings.rc" />
     <ResourceCompile Include="FA2sp\UI\CStructureDialog.rc" />
     <ResourceCompile Include="FA2sp\UI\CTaskforce.rc" />
     <ResourceCompile Include="FA2sp\UI\CTriggerFrame.rc" />

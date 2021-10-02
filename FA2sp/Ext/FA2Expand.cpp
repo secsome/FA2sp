@@ -63,6 +63,7 @@ void __stdcall FA2Expand::ExeRun()
     CTriggerActionExt::ProgramStartupInit();
     CTaskForceExt::ProgramStartupInit();
     CScriptTypesExt::ProgramStartupInit();
+    CSingleplayerSettingsExt::ProgramStartupInit();
     CTeamTypesExt::ProgramStartupInit();
 }
 
