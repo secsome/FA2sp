@@ -3,19 +3,21 @@
 #include <FA2PP.h>
 
 #include <CMapData.h>
+#include <CFinalSunDlg.h>
 #include "../../ExtraWindow/CTileManager/CTileManager.h"
 
 #include "../../FA2sp.h"
+#include "../CTriggerFrame/Body.h"
 
 #include "TabPages/TriggerSort.h"
 
 HWND CTileSetBrowserFrameExt::hTabCtrl = NULL;
-HIMAGELIST CTileSetBrowserFrameExt::hTabImageList = NULL;
 
 void CTileSetBrowserFrameExt::ProgramStartupInit()
 {
 	RunTime::ResetMemoryContentAt(0x597458, &CTileSetBrowserFrameExt::PreTranslateMessageExt);
 	RunTime::ResetMemoryContentAt(0x597444, &CTileSetBrowserFrameExt::OnNotifyExt);
+	RunTime::ResetMemoryContentAt(0x597440, &CTileSetBrowserFrameExt::OnCommandExt);
 }
 
 
@@ -32,6 +34,24 @@ void CTileSetBrowserFrameExt::OnBNTileManagerClicked()
 
 BOOL CTileSetBrowserFrameExt::PreTranslateMessageExt(MSG* pMsg)
 {
+	if (pMsg->message == WM_COMMAND)
+	{
+		auto nID = LOWORD(pMsg->wParam);
+		auto nHi = HIWORD(pMsg->wParam);
+
+		if (nID == (UINT)TriggerSort::MenuItem::AddTrigger)
+		{
+			if (CFinalSunDlg::Instance->TriggerFrame.m_hWnd)
+			{
+				CTriggerFrameExt::CreateFromTriggerSort = true;
+				TriggerSort::Instance.Menu_AddTrigger();
+				CFinalSunDlg::Instance->TriggerFrame.OnBNNewTriggerClicked();
+				CTriggerFrameExt::CreateFromTriggerSort = false;
+			}
+
+			return TRUE;
+		}
+	}
 	if (pMsg->message == WM_LBUTTONUP)
 	{
 		if (pMsg->hwnd == this->DialogBar.GetDlgItem(6102)->GetSafeHwnd())
@@ -69,6 +89,11 @@ BOOL CTileSetBrowserFrameExt::OnNotifyExt(WPARAM wParam, LPARAM lParam, LRESULT*
 				this->View.ShowWindow(SW_HIDE);
 
 				TriggerSort::Instance.ShowWindow();
+				if (CFinalSunDlg::Instance->TriggerFrame.m_hWnd)
+				{
+					if (!TreeView_GetCount(TriggerSort::Instance.GetHwnd()))
+						TriggerSort::Instance.LoadAllTriggers();
+				}
 				break;
 			}
 			return TRUE;
@@ -82,6 +107,11 @@ BOOL CTileSetBrowserFrameExt::OnNotifyExt(WPARAM wParam, LPARAM lParam, LRESULT*
 	return this->FA2CFrameWnd::OnNotify(wParam, lParam, pResult);
 }
 
+BOOL CTileSetBrowserFrameExt::OnCommandExt(WPARAM wParam, LPARAM lParam)
+{
+	return FA2CFrameWnd::OnCommand(wParam, lParam);
+}
+
 void CTileSetBrowserFrameExt::InitTabControl()
 {
 	RECT rect;
@@ -91,16 +121,14 @@ void CTileSetBrowserFrameExt::InitTabControl()
 		nullptr, TCS_FIXEDWIDTH | WS_CHILD | WS_VISIBLE,
 		rect.left + 2, rect.top + 2, rect.right - 4, rect.bottom - 4,
 		*this, NULL, (HINSTANCE)FA2sp::hInstance, nullptr);
+
 	::SendMessage(this->hTabCtrl, WM_SETFONT, (WPARAM)GetStockObject(DEFAULT_GUI_FONT), NULL);
 	::ShowWindow(this->hTabCtrl, SW_SHOW);
 	
 	::SetWindowPos(this->hTabCtrl, *this, NULL, NULL, NULL, NULL, SWP_NOSIZE | SWP_NOMOVE | SWP_SHOWWINDOW);
 
-	this->hTabImageList = ImageList_Create(32, 32, ILC_COLOR24, 0, 1);
-
 	TCITEM pitem;
-	pitem.mask = TCIF_TEXT | TCIF_IMAGE;
-	pitem.iImage = -1;
+	pitem.mask = TCIF_TEXT;
 
 	pitem.pszText = "Tile placement";
 	TabCtrl_InsertItem(this->hTabCtrl, 0, &pitem);

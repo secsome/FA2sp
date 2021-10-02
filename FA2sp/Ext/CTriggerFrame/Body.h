@@ -21,4 +21,6 @@ public:
 
 private:
 
+public:
+	static bool CreateFromTriggerSort;
 };

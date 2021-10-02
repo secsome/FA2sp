@@ -15,7 +15,7 @@
 class STDHelpers
 {
 public:
-    static std::vector<ppmfc::CString> SplitString(ppmfc::CString& pSource, const char* pSplit = ",")
+    static std::vector<ppmfc::CString> SplitString(const ppmfc::CString& pSource, const char* pSplit = ",")
     {
         std::vector<ppmfc::CString> ret;
         if (pSource.GetLength() == 0)
@@ -31,8 +31,35 @@ public:
             ret.push_back(pSource.Mid(nIdx, nPos - nIdx));
             nIdx = nPos + 1;
         }
+        ret.push_back(pSource.Mid(nIdx));
+        return ret;
+    }
+
+    static std::vector<ppmfc::CString> SplitString(const ppmfc::CString& pSource, size_t nth, const char* pSplit = ",")
+    {
+        std::vector<ppmfc::CString> ret;
+        if (pSource.GetLength() == 0)
+            return ret;
+
+        size_t i = 0;
+
+        int nIdx = 0;
+        while (true)
+        {
+            int nPos = pSource.Find(pSplit, nIdx);
+            if (nPos == -1)
+                break;
+
+            ret.push_back(pSource.Mid(nIdx, nPos - nIdx));
+            nIdx = nPos + 1;
+            if (++i > nth)
+                return ret;
+        }
         if (nIdx != pSource.GetLength() - 1)
+        {
+            ++i;
             ret.push_back(pSource.Mid(nIdx));
+        }
         return ret;
     }
 

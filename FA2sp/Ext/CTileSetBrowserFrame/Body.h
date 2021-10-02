@@ -22,6 +22,7 @@ public:
 	BOOL OnInitDialogExt();
 	BOOL PreTranslateMessageExt(MSG* pMsg);
 	BOOL OnNotifyExt(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+	BOOL OnCommandExt(WPARAM wParam, LPARAM lParam);
 
 	CTileSetBrowserFrameExt() {};
 	~CTileSetBrowserFrameExt() {};
@@ -35,5 +36,4 @@ private:
 
 public:
 	static HWND hTabCtrl;
-	static HIMAGELIST hTabImageList;
 };

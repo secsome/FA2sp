@@ -13,7 +13,6 @@ void TriggerSort::LoadAllTriggers()
 
     // TODO : 
     // Optimisze the efficiency
-    // Refactor the Trigger handling
     if (auto pSection = CINI::CurrentDocument->GetSection("Triggers"))
     {
         for (auto& pair : pSection->EntitiesDictionary)
@@ -67,7 +66,9 @@ BOOL TriggerSort::OnMessage(PMSG pMsg)
 {
     switch (pMsg->message)
     {
-        break;
+    case WM_RBUTTONDOWN:
+        this->ShowMenu(pMsg->pt);
+        return TRUE;
     default:
         break;
     }
@@ -81,7 +82,8 @@ void TriggerSort::Create(HWND hParent)
     ::GetClientRect(hParent, &rect);
 
     this->m_hWnd = CreateWindowEx(NULL, "SysTreeView32", nullptr,
-        WS_CHILD | WS_BORDER | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS,
+        WS_CHILD | WS_BORDER | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL | 
+        TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS | TVS_SHOWSELALWAYS,
         rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, hParent,
         NULL, static_cast<HINSTANCE>(FA2sp::hInstance), nullptr);
 }
@@ -108,6 +110,13 @@ void TriggerSort::HideWindow() const
     this->ShowWindow(false);
 }
 
+void TriggerSort::ShowMenu(POINT pt) const
+{
+    HMENU hPopupMenu = ::CreatePopupMenu();
+    ::AppendMenu(hPopupMenu, MF_STRING, (UINT_PTR)MenuItem::AddTrigger, "New Trigger from this group");
+    ::TrackPopupMenu(hPopupMenu, TPM_VERTICAL | TPM_HORIZONTAL, pt.x, pt.y, NULL, this->GetHwnd(), nullptr);
+}
+
 bool TriggerSort::IsValid() const
 {
     return this->GetHwnd() != NULL;
@@ -116,6 +125,49 @@ bool TriggerSort::IsValid() const
 bool TriggerSort::IsVisible() const
 {
     return this->IsValid() && ::IsWindowVisible(this->m_hWnd);
+}
+
+void TriggerSort::Menu_AddTrigger()
+{
+    HTREEITEM hItem = TreeView_GetSelection(this->GetHwnd());
+    ppmfc::CString prefix = "";
+    if (hItem != NULL)
+    {
+        const char* pID = nullptr;
+        while (true)
+        {
+            TVITEM tvi;
+            tvi.hItem = hItem;
+            TreeView_GetItem(this->GetHwnd(), &tvi);
+            if (pID = reinterpret_cast<const char*>(tvi.lParam))
+                break;
+            hItem = TreeView_GetChild(this->GetHwnd(), hItem);
+            if (hItem == NULL)
+            {
+                this->m_strPrefix = prefix;
+                return;
+            }
+        }
+
+        ppmfc::CString buffer;
+        prefix += "[";
+        for (auto group : this->GetGroup(pID, buffer))
+            prefix += group + ".";
+        if (prefix[prefix.GetLength() - 1] == '.')
+        {
+            prefix.SetAt(prefix.GetLength() - 1, ']');
+            if (prefix.GetLength() == 2)
+                prefix = "";
+        }
+        else
+            prefix = "";
+    }
+    this->m_strPrefix = prefix;
+}
+
+const ppmfc::CString& TriggerSort::GetCurrentPrefix() const
+{
+    return this->m_strPrefix;
 }
 
 HWND TriggerSort::GetHwnd() const
@@ -154,32 +206,29 @@ HTREEITEM TriggerSort::FindLabel(HTREEITEM hItemParent, LPCSTR pszLabel) const
     return NULL;
 }
 
-std::vector<ppmfc::CString> TriggerSort::GetGroup(ppmfc::CString& triggerId, ppmfc::CString& name) const
+std::vector<ppmfc::CString> TriggerSort::GetGroup(ppmfc::CString triggerId, ppmfc::CString& name) const
 {
     auto pSrc = CINI::CurrentDocument->GetString("Triggers", triggerId, "");
 
-    auto ret = STDHelpers::SplitString(pSrc);
-    if (ret.size() == 7)
+    auto ret = STDHelpers::SplitString(pSrc, 2);
+    pSrc = ret[2];
+    int nStart = pSrc.Find('[');
+    int nEnd = pSrc.Find(']');
+    if (nStart < nEnd)
     {
-        pSrc = ret[2];
-        int nStart = pSrc.Find('[');
-        int nEnd = pSrc.Find(']');
-        if (nStart < nEnd)
-        {
-            name = pSrc.Mid(nEnd + 1);
-            pSrc = pSrc.Mid(nStart + 1, nEnd - nStart - 1);
-            ret = STDHelpers::SplitString(pSrc, ".");
-            return ret;
-        }
-        else
-            name = pSrc;
+        name = pSrc.Mid(nEnd + 1);
+        pSrc = pSrc.Mid(nStart + 1, nEnd - nStart - 1);
+        ret = STDHelpers::SplitString(pSrc, ".");
+        return ret;
     }
+    else
+        name = pSrc;
     
     ret.clear();
     return ret;
 }
 
-void TriggerSort::AddTrigger(std::vector<ppmfc::CString>&& group, ppmfc::CString& name, ppmfc::CString& id) const
+void TriggerSort::AddTrigger(std::vector<ppmfc::CString>&& group, ppmfc::CString name, ppmfc::CString id) const
 {
     HTREEITEM hParent = TVI_ROOT;
     for (auto& node : group)
@@ -227,15 +276,42 @@ void TriggerSort::AddTrigger(std::vector<ppmfc::CString>&& group, ppmfc::CString
 
 void TriggerSort::AddTrigger(ppmfc::CString triggerId) const
 {
-    ppmfc::CString name;
-    auto group = this->GetGroup(triggerId, name);
-    this->AddTrigger(std::move(group), name, triggerId);
+    if (this->IsVisible())
+    {
+        ppmfc::CString name;
+        auto group = this->GetGroup(triggerId, name);
+        this->AddTrigger(std::move(group), name, triggerId);
+    }
+}
+
+void TriggerSort::DeleteTrigger(ppmfc::CString triggerId, HTREEITEM hItemParent) const
+{
+    if (this->IsVisible())
+    {
+        TVITEM tvi;
+        char chLabel[0x200];
+
+        for (tvi.hItem = TreeView_GetChild(this->GetHwnd(), hItemParent); tvi.hItem;
+            tvi.hItem = TreeView_GetNextSibling(this->GetHwnd(), tvi.hItem))
+        {
+            tvi.mask = TVIF_PARAM | TVIF_CHILDREN;
+            if (TreeView_GetItem(this->GetHwnd(), &tvi))
+            {
+                if (tvi.lParam && strcmp((const char*)tvi.lParam, triggerId) == 0)
+                {
+                    TreeView_DeleteItem(this->GetHwnd(), tvi.hItem);
+                    return;
+                }
+                if (tvi.cChildren)
+                    this->DeleteTrigger(triggerId, tvi.hItem);
+            }
+        }
+    }
 }
 
 DEFINE_HOOK(4FA450, CTriggerFrame_Update_TriggerSort, 7)
 {
     if(TriggerSort::Instance.IsVisible())
         TriggerSort::Instance.LoadAllTriggers();
-
     return 0;
 }

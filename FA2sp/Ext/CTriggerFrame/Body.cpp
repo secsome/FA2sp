@@ -3,6 +3,8 @@
 #include "../../Helpers/STDHelpers.h"
 #include "../../Helpers/Translations.h"
 
+bool CTriggerFrameExt::CreateFromTriggerSort = false;
+
 void CTriggerFrameExt::ProgramStartupInit()
 {
 	RunTime::ResetMemoryContentAt(0x597BC4, &CTriggerFrameExt::OnInitDialogExt);

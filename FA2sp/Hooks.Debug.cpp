@@ -6,6 +6,62 @@
 
 #include "Logger.h"
 
+//DEFINE_HOOK(45AF76, CIsoView_OnMouseMove_DebugCurrentCellData, 5)
+//{
+//    GET(int, Y, EDI);
+//    GET(int, X, EBX);
+//
+//    auto& cell = CMapData::Instance->CellDatas[CMapData::Instance->GetCoordIndex(X, Y)];
+//
+//    ppmfc::CString buffer;
+//    char format[] =
+//        "[%d, %d]\n"
+//        "Unit = %d  "
+//        "Infantry = {%d, %d, %d}\n"
+//        "Aircraft = %d  "
+//        "Structure = %d\n"
+//        "TypeListIndex = %d\n"
+//        "TerrainType = %d\n"
+//        "Smudge = %d\n"
+//        "SmudgeType = %d\n"
+//        "Waypoint = %d\n"
+//        "BaseNode = {%d, %d, %s}\n"
+//        "Overlay = {%d, %d}\n"
+//        "TileIndex = %d  "
+//        "Short_30 = %d  "
+//        "TileSubIndex = %d   "
+//        "Height = %d    "
+//        "IceGrowth = %d\n"
+//        "CellTag = %d   "
+//        "Tube = %d  "
+//        "TubeDir = %d\n"
+//        "StatusFlag = %d    "
+//        "LAT = %d";
+//
+//    buffer.Format(format,
+//        X, Y,
+//        cell.Unit, cell.Infantry[0], cell.Infantry[1], cell.Infantry[2],
+//        cell.Aircraft, cell.Structure,
+//        cell.TypeListIndex,
+//        cell.TerrainType,
+//        cell.Smudge,
+//        cell.SmudgeType,
+//        cell.Waypoint,
+//        cell.BaseNode.BuildingID, cell.BaseNode.BasenodeID, cell.BaseNode.House,
+//        cell.Overlay, cell.OverlayData,
+//        cell.TileIndex, cell.Short_30, cell.TileSubIndex, cell.Height, cell.IceGrowth,
+//        cell.CellTag, cell.Tube, cell.TubeDataIndex,
+//        cell.StatusFlag, cell.LAT);
+//
+//    auto pDC = CFinalSunDlg::Instance->MyViewFrame.pIsoView->GetDC();
+//    RECT rect{ 0,35,0,0 };
+//    pDC->SetBkMode(OPAQUE);
+//    pDC->DrawText((LPCSTR)buffer, &rect, DT_CALCRECT);
+//    pDC->DrawText((LPCSTR)buffer, &rect, NULL);
+//
+//    return 0;
+//}
+//
 //DEFINE_HOOK(438DB0, DebugTilesetDatas, 6)
 //{
 //    struct TileBlockData
@@ -58,7 +114,7 @@
 //    int dwTileIndexCount = ((unsigned short*)0x7EE074)[1];
 //
 //    Logger::Raw("count = %d\n", dwTileIndexCount);
-//    
+//
 //    for (int i = 0; i < dwTileIndexCount; ++i)
 //    {
 //        auto& pData = datas[i];

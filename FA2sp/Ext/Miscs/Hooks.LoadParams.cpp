@@ -1,6 +1,10 @@
-//#include <GlobalVars.h>
 #include <Miscs/Miscs.LoadParams.h>
 #include <Helpers/Macro.h>
+
+#include <CINI.h>
+#include <CMapData.h>
+
+#include "../../Helpers/STDHelpers.h"
 
 #include "../../Logger.h"
 

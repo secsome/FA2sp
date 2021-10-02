@@ -8,6 +8,7 @@
 
 #include <set>
 
+#include "../CTileSetBrowserFrame/TabPages/TriggerSort.h"
 #include "../../Helpers/STDHelpers.h"
 
 DEFINE_HOOK(4FA450, CTriggerFrame_Update, 7)
@@ -27,10 +28,8 @@ DEFINE_HOOK(4FA450, CTriggerFrame_Update, 7)
     {
         for (auto& pair : pSection->EntitiesDictionary)
         {
-            auto strs = STDHelpers::SplitString(pair.second);
-            if (strs.size() != 7)
-                continue;
-            int nIdx = pThis->CCBCurrentTrigger.AddString(strs[2]);
+            auto splits = STDHelpers::SplitString(pair.second, 2);
+            int nIdx = pThis->CCBCurrentTrigger.AddString(splits[2]);
             pThis->CCBCurrentTrigger.SetItemDataPtr(nIdx, pair.first.m_pchData);
         }
     }
@@ -51,6 +50,9 @@ DEFINE_HOOK(4FA450, CTriggerFrame_Update, 7)
             }
         }
     }
+
+    if (pThis->CCBCurrentTrigger.GetCurSel() < 0 && pThis->CCBCurrentTrigger.GetCount() > 0)
+        pThis->CCBCurrentTrigger.SetCurSel(0);
 
     pThis->OnCBCurrentTriggerSelectedChanged();
 
@@ -88,19 +90,26 @@ DEFINE_HOOK(4FAAD0, CTriggerFrame_OnBNNewTriggerClicked, 7)
 
     auto ID = CINI::GetAvailableIndex();
     auto Owner = CMapData::Instance->FindAvailableOwner(0, 1);
-    auto TriggerBuffer = Owner + ",<none>,New trigger,0,1,1,1,0";
+    ppmfc::CString Name =
+        CTriggerFrameExt::CreateFromTriggerSort ?
+        TriggerSort::Instance.GetCurrentPrefix() + "New Trigger" : 
+        "New Trigger";
+
+    auto TriggerBuffer = Owner + ",<none>,"+ Name + ",0,1,1,1,0";
 
     CINI::CurrentDocument->WriteString("Triggers", ID, TriggerBuffer);
     CINI::CurrentDocument->WriteString("Events", ID, "0");
     CINI::CurrentDocument->WriteString("Actions", ID, "0");
     auto TagID = CINI::GetAvailableIndex();
-    CINI::CurrentDocument->WriteString("Tags", TagID, "0,New tag," + ID);
+    CINI::CurrentDocument->WriteString("Tags", TagID, "0," + Name + " 1," + ID);
 
-    int nIndex = pThis->CCBCurrentTrigger.AddString("New Trigger");
+    int nIndex = pThis->CCBCurrentTrigger.AddString(Name);
     pThis->CCBCurrentTrigger.SetItemDataPtr(nIndex, ID.m_pchData);
     pThis->CCBCurrentTrigger.SetCurSel(nIndex);
 
     pThis->OnCBCurrentTriggerSelectedChanged();
+
+    TriggerSort::Instance.AddTrigger(ID);
 
     return 0x4FB1AD;
 }
@@ -121,8 +130,9 @@ DEFINE_HOOK(4FB1B0, CTriggerFrame_OnBNDelTriggerClicked, 6)
                 "Note: CellTags will be deleted too using this function if you press Yes.";
 
             int nResult = pThis->MessageBox(pMessage, "Delete trigger", MB_YESNOCANCEL);
-            if (nResult == IDOK || nResult == IDNO)
+            if (nResult == IDYES || nResult == IDNO)
             {
+                TriggerSort::Instance.DeleteTrigger(ID);
                 CINI::CurrentDocument->DeleteKey("Triggers", ID);
                 CINI::CurrentDocument->DeleteKey("Events", ID);
                 CINI::CurrentDocument->DeleteKey("Actions", ID);
@@ -133,12 +143,9 @@ DEFINE_HOOK(4FB1B0, CTriggerFrame_OnBNDelTriggerClicked, 6)
                         std::set<ppmfc::CString> TagsToRemove;
                         for (auto& pair : pTagsSection->EntitiesDictionary)
                         {
-                            auto splits = STDHelpers::SplitString(pair.second);
-                            if (splits.size() == 3)
-                            {
-                                if (strcmp(splits[2], ID) == 0)
-                                    TagsToRemove.insert(pair.first);
-                            }
+                            auto splits = STDHelpers::SplitString(pair.second, 2);
+                            if (strcmp(splits[2], ID) == 0)
+                                TagsToRemove.insert(pair.first);
                         }
                         for (auto& tag : TagsToRemove)
                             CINI::CurrentDocument->DeleteKey("Tags", tag);
@@ -152,11 +159,22 @@ DEFINE_HOOK(4FB1B0, CTriggerFrame_OnBNDelTriggerClicked, 6)
                                     CellTagsToRemove.push_back(pair.first);
                             }
                             for (auto& celltag : CellTagsToRemove)
+                            {
                                 CINI::CurrentDocument->DeleteKey("CellTags", celltag);
+                                int nCoord = atoi(celltag);
+                                int nMapCoord = CMapData::Instance->GetCoordIndex(nCoord % 1000, nCoord / 1000);
+                                CMapData::Instance->CellDatas[nMapCoord].CellTag = -1;
+                            }
                         }
                         
                     }
                     
+                }
+                pThis->CCBCurrentTrigger.DeleteString(nCurSel);
+                if (--nCurSel >= 0)
+                {
+                    pThis->CCBCurrentTrigger.SetCurSel(nCurSel);
+                    pThis->OnCBCurrentTriggerSelectedChanged();
                 }
             }
         }
@@ -178,16 +196,13 @@ DEFINE_HOOK(4FBD10, CTriggerFrame_OnBNPlaceOnMapClicked, 6)
             {
                 for (auto& pair : pTagsSection->EntitiesDictionary)
                 {
-                    auto splits = STDHelpers::SplitString(pair.second);
-                    if (splits.size() == 3)
+                    auto splits = STDHelpers::SplitString(pair.second, 2);
+                    if (strcmp(splits[2], ID) == 0)
                     {
-                        if (strcmp(splits[2], ID) == 0)
-                        {
-                            CIsoView::CurrentCommand = 4;
-                            CIsoView::CurrentType = 4;
-                            CIsoView::CurrentObjectID.get() = splits[2];
-                            break;
-                        }
+                        CIsoView::CurrentCommand = 4;
+                        CIsoView::CurrentType = 4;
+                        CIsoView::CurrentObjectID.get() = pair.first;
+                        break;
                     }
                 }
             }
@@ -207,28 +222,27 @@ DEFINE_HOOK(4FC180, CTriggerFrame_OnBNCloneTriggerClicked, 6)
         if (auto CurrentID = reinterpret_cast<const char*>(pThis->CCBCurrentTrigger.GetItemDataPtr(nCurSel)))
         {
             auto buffer = CINI::CurrentDocument->GetString("Triggers", CurrentID);
-            auto splits = STDHelpers::SplitString(buffer);
-            if (splits.size() == 7)
-            {
-                auto& Name = splits[2];
-                auto NewID = CINI::GetAvailableIndex();
+            auto splits = STDHelpers::SplitString(buffer, 2);
+            auto& Name = splits[2];
+            auto NewID = CINI::GetAvailableIndex();
 
-                buffer.Format("%s,%s,%s Clone,%s,%s,%s,%s",
-                    splits[0], splits[1], splits[2], splits[3],
-                    splits[4], splits[5], splits[6]);
+            buffer.Format("%s,%s,%s Clone,%s,%s,%s,%s",
+                splits[0], splits[1], splits[2], splits[3],
+                splits[4], splits[5], splits[6]);
 
-                CINI::CurrentDocument->WriteString("Triggers", NewID, buffer);
-                CINI::CurrentDocument->WriteString("Events", NewID, CINI::CurrentDocument->GetString("Events", CurrentID));
-                CINI::CurrentDocument->WriteString("Actions", NewID, CINI::CurrentDocument->GetString("Actions", CurrentID));
-                auto TagID = CINI::GetAvailableIndex();
-                CINI::CurrentDocument->WriteString("Tags", TagID, "0,New tag," + NewID);
+            CINI::CurrentDocument->WriteString("Triggers", NewID, buffer);
+            CINI::CurrentDocument->WriteString("Events", NewID, CINI::CurrentDocument->GetString("Events", CurrentID));
+            CINI::CurrentDocument->WriteString("Actions", NewID, CINI::CurrentDocument->GetString("Actions", CurrentID));
+            auto TagID = CINI::GetAvailableIndex();
+            CINI::CurrentDocument->WriteString("Tags", TagID, "0,New tag," + NewID);
 
-                int nIndex = pThis->CCBCurrentTrigger.AddString(Name + " Clone");
-                pThis->CCBCurrentTrigger.SetItemDataPtr(nIndex, NewID.m_pchData);
-                pThis->CCBCurrentTrigger.SetCurSel(nIndex);
+            int nIndex = pThis->CCBCurrentTrigger.AddString(Name + " Clone");
+            pThis->CCBCurrentTrigger.SetItemDataPtr(nIndex, NewID.m_pchData);
+            pThis->CCBCurrentTrigger.SetCurSel(nIndex);
 
-                pThis->OnCBCurrentTriggerSelectedChanged();
-            }
+            pThis->OnCBCurrentTriggerSelectedChanged();
+
+            TriggerSort::Instance.AddTrigger(NewID);
         }
     }
 
