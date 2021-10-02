@@ -15,10 +15,11 @@ DEFINE_HOOK(4FA450, CTriggerFrame_Update, 7)
 {
     GET(CTriggerFrameExt*, pThis, ECX);
 
+    int nFinalSel = CB_ERR;
     int nCurSel = pThis->CCBCurrentTrigger.GetCurSel();
-    const char* pData = nullptr;
+    const char* ID = nullptr;
     if (nCurSel != CB_ERR)
-        pData = reinterpret_cast<const char*>(pThis->CCBCurrentTrigger.GetItemDataPtr(nCurSel));
+        ID = reinterpret_cast<const char*>(pThis->CCBCurrentTrigger.GetItemDataPtr(nCurSel));
 
     while (pThis->CCBCurrentTrigger.DeleteString(0) != CB_ERR);
 
@@ -35,25 +36,24 @@ DEFINE_HOOK(4FA450, CTriggerFrame_Update, 7)
     }
 
     int nCount = pThis->CCBCurrentTrigger.GetCount();
-    if (nCurSel < 0) nCurSel = 0;
-    if (nCount >= nCurSel)
-        nCurSel = nCount - 1;
 
-    if (pData)
+    if (ID)
     {
         for (int i = 0; i < nCount; ++i)
         {
-            if (strcmp(reinterpret_cast<const char*>(pThis->CCBCurrentTrigger.GetItemDataPtr(i)), pData) == 0)
+            if (strcmp(reinterpret_cast<const char*>(pThis->CCBCurrentTrigger.GetItemDataPtr(i)), ID) == 0)
             {
-                pThis->CCBCurrentTrigger.SetCurSel(i);
+                nFinalSel = i;
                 break;
             }
         }
     }
 
-    if (pThis->CCBCurrentTrigger.GetCurSel() < 0 && pThis->CCBCurrentTrigger.GetCount() > 0)
-        pThis->CCBCurrentTrigger.SetCurSel(0);
+    if (nCurSel == 0) nCurSel = 1;
+    if (nFinalSel < 0 && nCount > 0)
+        nFinalSel = nCount - 1;
 
+    pThis->CCBCurrentTrigger.SetCurSel(nFinalSel);
     pThis->OnCBCurrentTriggerSelectedChanged();
 
     return 0x4FAACF;
