@@ -11,9 +11,11 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-======================= Changes (2021-XX-XX RELEASE 1.1.0) ==============================================================================================
+======================= Changes (2021-10-XX RELEASE 1.1.0) ==============================================================================================
 +) Trigger sort, which will provide you some handy in trigger classification
++) Now you can directly edit [Ranking] in SingleplayerSettings
 +) New ExtConfig: VerticalLayout = BOOLEAN, enable it so that FA2sp will make the bottom view go to the right side
+*) Now you can delete a trigger and its celltags at the same time
 
 ======================= Changes (2021-09-28 RELEASE 1.0.7) ==============================================================================================
 *) Changed the layout of CRightView::CTileSetBrowserFrame from [0, 1] to [1, 0], it's vertical now
@@ -606,6 +608,13 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) ScriptTypesExtraParam = TEXT
                 +) ScriptTypesMoveUp = TEXT
                 +) ScriptTypesMoveDown = TEXT
+                +) SingleplayerParTimeEasy = TEXT
+                +) SingleplayerParTimeMedium = TEXT
+                +) SingleplayerParTimeHard = TEXT
+                +) SingleplayerOverParTitle = TEXT
+                +) SingleplayerOverParMessage = TEXT
+                +) SingleplayerUnderParTitle = TEXT
+                +) SingleplayerUnderParMessage = TEXT
 
 - WRITE IN THE END
 This project was developed after FA2Copy with still many bugs to fix,
