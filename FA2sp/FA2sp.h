@@ -17,6 +17,7 @@ public:
     static HANDLE hInstance;
     static ppmfc::CString Buffer;
     static std::map<ppmfc::CString, ppmfc::CString> TutorialTextsMap;
+    static void* pExceptionHandler;
 
     static void ExtConfigsInitialize();
 };
@@ -50,7 +51,7 @@ public:
     static int SaveMap_AutoSave_Interval;
     static int SaveMap_AutoSave_MaxCount;
     static bool SaveMap_OnlySaveMAP;
-    static bool CustomFoundation_Regular;
+    static bool VerticalLayout;
 };
 
 class Variables

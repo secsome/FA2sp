@@ -4,6 +4,7 @@
 #include "Helpers/MutexHelper.h"
 #include "Miscs/Palettes.h"
 #include "Miscs/DrawStuff.h"
+#include "Miscs/Exception.h"
 
 #include <CINI.h>
 
@@ -12,6 +13,7 @@
 HANDLE FA2sp::hInstance;
 ppmfc::CString FA2sp::Buffer;
 std::map<ppmfc::CString, ppmfc::CString> FA2sp::TutorialTextsMap;
+void* FA2sp::pExceptionHandler = nullptr;
 
 bool ExtConfigs::BrowserRedraw;
 int	 ExtConfigs::BrowserRedraw_GuessMode;
@@ -39,7 +41,7 @@ bool ExtConfigs::SaveMap_AutoSave;
 int ExtConfigs::SaveMap_AutoSave_Interval;
 int ExtConfigs::SaveMap_AutoSave_MaxCount;
 bool ExtConfigs::SaveMap_OnlySaveMAP;
-bool ExtConfigs::CustomFoundation_Regular;
+bool ExtConfigs::VerticalLayout;
 
 MultimapHelper Variables::Rules = { &CINI::Rules(), &CINI::CurrentDocument() };
 
@@ -101,7 +103,7 @@ void FA2sp::ExtConfigsInitialize()
 	}
 	ExtConfigs::SaveMap_OnlySaveMAP = fadata.GetBool("ExtConfigs", "SaveMap.OnlySaveMAP");
 	
-	ExtConfigs::CustomFoundation_Regular = fadata.GetBool("ExtConfigs", "CustomFoundation.Regular");
+	ExtConfigs::VerticalLayout = fadata.GetBool("ExtConfigs", "VerticalLayout");
 }
 
 // DllMain
@@ -150,6 +152,13 @@ DEFINE_HOOK(537129, ExeRun, 9)
 	Logger::Wrap(1);
 	FA2Expand::ExeRun();
 	DrawStuff::init();
+
+	/*if (HINSTANCE handle = GetModuleHandle("kernel32.dll")) {
+		if (GetProcAddress(handle, "AddVectoredExceptionHandler")) {
+			FA2sp::pExceptionHandler = AddVectoredExceptionHandler(1, Exception::ExceptionFilter);
+		}
+	}*/
+
 	return 0;
 }
 
@@ -164,6 +173,13 @@ DEFINE_HOOK(537208, ExeTerminate, 9)
 
 	// Destruct static ppmfc stuffs here
 	ObjectBrowserControlExt::OnExeTerminate();
+
+	/*if (HINSTANCE handle = GetModuleHandle("kernel32.dll")) {
+		if (GetProcAddress(handle, "RemoveVectoredExceptionHandler")) {
+			RemoveVectoredExceptionHandler(FA2sp::pExceptionHandler);
+			FA2sp::pExceptionHandler = nullptr;
+		}
+	}*/
 
 	GET(UINT, result, EAX);
 	ExitProcess(result);

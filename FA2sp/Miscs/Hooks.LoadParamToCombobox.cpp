@@ -60,38 +60,47 @@ DEFINE_HOOK(441910, Miscs_LoadParams_TutorialTexts, 7)
 
 DEFINE_HOOK(441A40, Miscs_LoadParams_Triggers, 6)
 {
-    GET_STACK(CComboBox*, pComboBox, 0x4);
-    if (ExtConfigs::SortByTriggerName)
+    GET_STACK(ppmfc::CComboBox*, pComboBox, 0x4);
+
+    while (pComboBox->DeleteString(0) != CB_ERR);
+
+    auto const pINI = CMapData::GetMapDocument(true);
+    pComboBox->LockWindowUpdate();
+
+    if (ExtConfigs::SortByTriggerName && pComboBox->GetDlgCtrlID() == 1402)
     {
-        // Param value combobox
-        if (pComboBox->GetDlgCtrlID() == 1402/* && pComboBox->GetParent()->GetDlgCtrlID() == 252*/)
+        std::map<ppmfc::CString, ppmfc::CString> collector;
+        
+        if (auto const pSection = pINI->GetSection("Triggers"))
         {
-            while (pComboBox->DeleteString(0) != CB_ERR);
-
-            std::map<ppmfc::CString, ppmfc::CString> collector;
-
-            auto const pINI = CMapData::GetMapDocument(true);
-            if (auto const pSection = pINI->GetSection("Triggers"))
+            for (auto pair : pSection->EntitiesDictionary)
             {
-                for (auto pair : pSection->EntitiesDictionary)
-                {
-                    ppmfc::CString key(STDHelpers::SplitString(pair.second)[2]);
-                    ppmfc::CString buffer(pair.first);
-                    buffer += " (";
-                    buffer += key;
-                    buffer += ")";
-                    
-                    collector.insert(std::make_pair(key, buffer));
-                }
+                auto splits = STDHelpers::SplitString(pair.second, 2);
+                ppmfc::CString buffer(pair.first);
+                buffer += " (" + splits[2] + ")";
+                collector.insert(std::make_pair(splits[2], buffer));
             }
+        }
 
-            for (auto pair : collector)
-                pComboBox->AddString(pair.second);
+        for (auto pair : collector)
+            pComboBox->AddString(pair.second);
 
-            collector.clear();
-
-            return 0x441DF6;
+        collector.clear();
+    }
+    else
+    {
+        if (auto pSection = pINI->GetSection("Triggers"))
+        {
+            for (auto& pair : pSection->EntitiesDictionary)
+            {
+                auto splits = STDHelpers::SplitString(pair.second, 2);
+                ppmfc::CString buffer = pair.first;
+                buffer += " (" + splits[2] + ")";
+                pComboBox->AddString(buffer);
+            }
         }
     }
-    return 0;
+
+    pComboBox->UnlockWindowUpdate();
+    return 0x441DF6;
 }

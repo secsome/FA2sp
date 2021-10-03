@@ -55,6 +55,7 @@ void __stdcall FA2Expand::ExeRun()
     CAITriggerTypesExt::ProgramStartupInit();
     CFinalSunDlgExt::ProgramStartupInit();
     CHousesExt::ProgramStartupInit();
+    CLightingExt::ProgramStartupInit();
     // CIsoViewExt::ProgramStartupInit();
     CTileSetBrowserFrameExt::ProgramStartupInit();
     CTriggerFrameExt::ProgramStartupInit();
@@ -63,6 +64,7 @@ void __stdcall FA2Expand::ExeRun()
     CTriggerActionExt::ProgramStartupInit();
     CTaskForceExt::ProgramStartupInit();
     CScriptTypesExt::ProgramStartupInit();
+    CSingleplayerSettingsExt::ProgramStartupInit();
     CTeamTypesExt::ProgramStartupInit();
 }
 

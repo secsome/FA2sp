@@ -42,12 +42,12 @@ BOOL CTriggerEventExt::PreTranslateMessageExt(MSG* pMsg)
 
 void CTriggerEventExt::OnBNCloneEventClicked()
 {
-	if (!this->EventID.IsEmpty() && this->CCBCurrentEvent.GetCount() > 0)
+	if (!this->TriggerID.IsEmpty() && this->CCBCurrentEvent.GetCount() > 0)
 	{
 		int nEventIndex = this->CCBCurrentEvent.GetCurSel();
 		if (nEventIndex != CB_ERR)
 		{
-			ppmfc::CString data = CINI::CurrentDocument->GetString("Events", this->EventID);
+			ppmfc::CString data = CINI::CurrentDocument->GetString("Events", this->TriggerID);
 			auto splitResults = STDHelpers::SplitString(data);
 			int count = atoi(splitResults[0]);
 			int beginIndex = 1;
@@ -67,7 +67,7 @@ void CTriggerEventExt::OnBNCloneEventClicked()
 				data += ",";
 			}
 			data += splitResults[beginIndex + eventSize - 1];
-			CINI::CurrentDocument->WriteString("Events", this->EventID, data);
+			CINI::CurrentDocument->WriteString("Events", this->TriggerID, data);
 
 			ppmfc::CString buffer;
 

@@ -4,8 +4,13 @@
 
 #include <Helpers/Macro.h>
 
+#include "../FA2sp.h"
+
 DEFINE_HOOK(4D2680, CMyViewFrame_OnCreateClient, 5)
 {
+    if (!ExtConfigs::VerticalLayout)
+        return 0;
+
     GET(CMyViewFrame*, pThis, ECX);
     GET_STACK(LPCREATESTRUCT, lpcs, 0x4);
     GET_STACK(CCreateContext*, pContent, 0x8);
@@ -42,6 +47,9 @@ DEFINE_HOOK(4D2680, CMyViewFrame_OnCreateClient, 5)
 
 DEFINE_HOOK(4D3E50, CRightFrame_OnClientCreate, 5)
 {
+    if (!ExtConfigs::VerticalLayout)
+        return 0;
+
     GET(CRightFrame*, pThis, ECX);
     GET_STACK(LPCREATESTRUCT, lpcs, 0x4);
     GET_STACK(CCreateContext*, pContent, 0x8);

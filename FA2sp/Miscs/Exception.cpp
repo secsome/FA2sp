@@ -196,7 +196,7 @@ std::wstring Exception::FullDump(
 //ifdef DUMP_EXTENSIVE
 //DEFINE_HOOK(434920, Exception_Handler, 7)
 //{
-//	//GET(int, code, ECX);
+//	//GET(int, code, ECX);s
 //	GET(LPEXCEPTION_POINTERS, pExs, EDX);
 //	Exception::ExceptionHandler(pExs);
 //}

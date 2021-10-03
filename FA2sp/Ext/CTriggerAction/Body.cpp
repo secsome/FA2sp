@@ -44,12 +44,12 @@ BOOL CTriggerActionExt::PreTranslateMessageExt(MSG* pMsg)
 
 void CTriggerActionExt::OnBNCloneActionClicked()
 {
-	if (!this->ActionID.IsEmpty() && this->CCBCurrentAction.GetCount() > 0)
+	if (!this->TriggerID.IsEmpty() && this->CCBCurrentAction.GetCount() > 0)
 	{
 		int nActionIndex = this->CCBCurrentAction.GetCurSel();
 		if (nActionIndex != CB_ERR)
 		{
-			ppmfc::CString data = CINI::CurrentDocument->GetString("Actions", this->ActionID);
+			ppmfc::CString data = CINI::CurrentDocument->GetString("Actions", this->TriggerID);
 			auto splitResults = STDHelpers::SplitString(data);
 			int beginIndex = 1 + 8 * nActionIndex;
 			int count = atoi(splitResults[0]);
@@ -65,7 +65,7 @@ void CTriggerActionExt::OnBNCloneActionClicked()
 				data += ",";
 			}
 			data += splitResults[beginIndex + 7];
-			CINI::CurrentDocument->WriteString("Actions", this->ActionID, data);
+			CINI::CurrentDocument->WriteString("Actions", this->TriggerID, data);
 			
 			ppmfc::CString buffer;
 			

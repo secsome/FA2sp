@@ -11,6 +11,14 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-10-03 RELEASE 1.1.0) ==============================================================================================
++) Trigger sort, which will provide you some handy in trigger classification
++) Now you can directly edit [Ranking] in SingleplayerSettings
++) Now you can edit all stuff of [Lighting]
++) New ExtConfig: VerticalLayout = BOOLEAN, enable it so that FA2sp will make the bottom view go to the right side
+*) Now you can delete a trigger and its celltags at the same time
+*) Now you can custom script param typelist
+
 ======================= Changes (2021-09-28 RELEASE 1.0.7) ==============================================================================================
 *) Changed the layout of CRightView::CTileSetBrowserFrame from [0, 1] to [1, 0], it's vertical now
 *) Now FA2 will not only read default palettes from cache.mix but read them like the normal files
@@ -182,10 +190,11 @@ COLORREF - R,G,B each of them is in [0,255]
             +) UndoRedoLimit = INTEGER ; Determines the maximun step of undo/redo, defaults to 16
             +) UseRGBHouseColor = BOOLEAN ; Determines if House colors are recognized as RGB color instead of HSV, defaults to false 
             +) SaveMap = BOOLEAN ; Determines if FA2 will save map using a faster method
-                +) SaveMap.AutoSave = BOOLEAN ; Determines if FA2 will save map automatically after one manually saving
+                +) SaveMap.AutoSave = BOOLEAN ; Determines if FA2 will save map automatically
                     +) SaveMap.AutoSave.Interval = INTERGER ; Should be greater than or equal to 30, defaults to 300, determines how many seconds should we wait during the two auto saving
                     +) SaveMap.AutoSave.MaxCount = INTERGER ; How many saving should FA2 keep, set to -1 will disable the auto cleanning, defaults to 10
             +) SaveMap.OnlySaveMAP = BOOLEAN ; Determines if FA2 will only save map with .map file extension
+            +) VerticalLayout = BOOLEAN ; Determines if FA2 will make the bottom view go to the right side
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.
@@ -251,6 +260,21 @@ COLORREF - R,G,B each of them is in [0,255]
             \\\ DesertYR=desertmp.ini
             \\\ MixExtension=mp
             \\\ 
+        +) [ScriptTypeLists]
+            {Contains a list of param type lists}
+            \\\ NOTICE THAT KEY BEGINS FROM 1 AND HAS TO BE INTERGER
+            \\\ 
+            \\\ X=TypeListName
+        +) [TypeListName]
+            {This name is just an example, it should be registered in the [ScriptTypeLists]}
+            \\\ HasExtraParam = BOOLEAN
+            \\\ ExtraParamType = ExtraParamTypeListName
+            \\\ BuiltInType = INTEGER
+            \\\ ScriptActionParam = Description (Like 0=Buildings, key must be integer, will be ignored if BuiltInType being set and not -1)
+        +) [ExtraParamTypeListName]
+            {This name is just an example, it needn't to be registered in the [ScriptTypeLists]}
+            \\\ BuiltInType = INTEGER
+            \\\ ScriptActionExtraParam = Description (Like 0=Nearest, key must be integer, will be ignored if BuiltInType being set and not -1)
         +) [ScriptParams] **
             {Contains a list of param types used for scripts}
             \\\ NOTICE THAT OUR SCRIPT PARAMS ARE INDEPENDENT
@@ -278,6 +302,7 @@ COLORREF - R,G,B each of them is in [0,255]
             \\\ 18=TalkBubbles
             \\\ 19=Status
             \\\ 20=Boolean
+            \\\ -X = ScriptTypeList at [ScriptTypeLists] X
             \\\ (LIST END)
             \\\
             \\\ Or just copy the section below:
@@ -601,6 +626,26 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) ScriptTypesExtraParam = TEXT
                 +) ScriptTypesMoveUp = TEXT
                 +) ScriptTypesMoveDown = TEXT
+                +) SingleplayerParTimeEasy = TEXT
+                +) SingleplayerParTimeMedium = TEXT
+                +) SingleplayerParTimeHard = TEXT
+                +) SingleplayerOverParTitle = TEXT
+                +) SingleplayerOverParMessage = TEXT
+                +) SingleplayerUnderParTitle = TEXT
+                +) SingleplayerUnderParMessage = TEXT
+                +) LightingTitle = TEXT
+                +) LightingDesc = TEXT
+                +) LightingNormal = TEXT
+                +) LightingIonStorm = TEXT
+                +) LightingDominator = TEXT
+                +) LightingAmbient = TEXT
+                +) LightingGreen = TEXT
+                +) LightingRed = TEXT
+                +) LightingBlue = TEXT
+                +) LightingLevel = TEXT
+                +) LightingGround = TEXT
+                +) LightingNukeAmbientChangeRate = TEXT
+                +) LightingDominatorAmbientChangeRate = TEXT
 
 - WRITE IN THE END
 This project was developed after FA2Copy with still many bugs to fix,

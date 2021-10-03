@@ -2,6 +2,8 @@
 
 #include "Body.h"
 
+#include <CFinalSunDlg.h>
+
 #include <unordered_set>
 
 #include "../../Helpers/STDHelpers.h"
@@ -11,6 +13,104 @@
 class CScriptTypesFunctions
 {
 public:
+
+// negative
+static void CScriptTypes_LoadParams_TypeList(ppmfc::CComboBox& comboBox, int nID)
+{
+    while (comboBox.DeleteString(0) != -1);
+
+    ppmfc::CString buffer;
+    buffer.Format("%d", nID);
+
+    buffer = CINI::FAData->GetString("ScriptTypeLists", buffer);
+    int nBuiltInType = CINI::FAData->GetInteger(buffer, "BuiltInType", -1);
+    if (nBuiltInType != -1)
+    {
+        switch (nBuiltInType)
+        {
+        default:
+        case 0:
+            break;
+        case 1:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_Target(comboBox);
+            break;
+        case 2:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_Waypoint(comboBox);
+            break;
+        case 3:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_ScriptLine(
+                comboBox,
+                CFinalSunDlg::Instance->ScriptTypes.CCBCurrentScript,
+                CFinalSunDlg::Instance->ScriptTypes.CLBScriptActions
+            );
+            break;
+        case 4:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_SplitGroup(comboBox);
+            break;
+        case 5:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_GlobalVariables(comboBox);
+            break;
+        case 6:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_ScriptTypes(comboBox);
+            break;
+        case 7:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_TeamTypes(comboBox);
+            break;
+        case 8:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_Houses(comboBox);
+            break;
+        case 9:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_Speechs(comboBox);
+            break;
+        case 10:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_Sounds(comboBox);
+            break;
+        case 11:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_Movies(comboBox);
+            break;
+        case 12:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_Themes(comboBox);
+            break;
+        case 13:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_Countries(comboBox);
+            break;
+        case 14:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_LocalVariables(comboBox);
+            break;
+        case 15:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_Facing(comboBox);
+            break;
+        case 16:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_BuildingTypes(comboBox);
+            break;
+        case 17:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_Animations(comboBox);
+            break;
+        case 18:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_TalkBubble(comboBox);
+            break;
+        case 19:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_Status(comboBox);
+            break;
+        case 20:
+            CScriptTypesFunctions::CScriptTypes_LoadParams_Boolean(comboBox);
+            break;
+        }
+    }
+    else
+    {
+        if (auto pSection = CINI::FAData->GetSection(buffer))
+            for (auto& pair : pSection->EntitiesDictionary)
+            {
+                int data;
+                if (sscanf_s(pair.first, "%d", &data) == 1)
+                {
+                    buffer = pair.first + " - " + pair.second;
+                    comboBox.SetItemData(comboBox.AddString(buffer), data);
+                }
+            }
+    }
+}
 
 // 1
 static void CScriptTypes_LoadParams_Target(ppmfc::CComboBox& comboBox)

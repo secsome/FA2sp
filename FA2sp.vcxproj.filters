@@ -120,6 +120,15 @@
     <ClInclude Include="FA2sp\Ext\CAITriggerTypes\Body.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2sp\Ext\CTileSetBrowserFrame\TabPages\TriggerSort.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\Ext\CSingleplayerSettings\Body.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\Ext\CLighting\Body.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">
@@ -290,6 +299,24 @@
     <ClCompile Include="FA2sp\MFCWindow\Hooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CTileSetBrowserFrame\TabPages\TriggerSort.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CTriggerFrame\Hooks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CSingleplayerSettings\Body.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CSingleplayerSettings\Hooks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CLighting\Body.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CLighting\Hooks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FA2sp\FA2sp.rc">
@@ -344,6 +371,12 @@
       <Filter>资源文件</Filter>
     </ResourceCompile>
     <ResourceCompile Include="FA2sp\UI\CAITriggerTypes.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="FA2sp\UI\CSingleplayerSettings.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="FA2sp\UI\CLighting.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>
