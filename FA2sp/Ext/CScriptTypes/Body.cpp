@@ -129,6 +129,9 @@ void CScriptTypesExt::UpdateParams(int actionIndex)
 		CScriptTypesFunctions::CScriptTypes_LoadParams_Boolean(this->CCBScriptParameter);
 		break;
 	}
+	if (param.Param_ < 0)
+		CScriptTypesFunctions::CScriptTypes_LoadParams_TypeList(this->CCBScriptParameter, -param.Param_);
+
 	this->CSTParameterOfSection.SetWindowText(param.Label_);
 	this->CSTParameterOfSection.EnableWindow(action.Editable_);
 	this->CCBScriptParameter.EnableWindow(action.Editable_);
@@ -138,6 +141,7 @@ void CScriptTypesExt::UpdateParams(int actionIndex)
 	{
 		auto pCBExtra = (ppmfc::CComboBox*)this->GetDlgItem(6304);
 		pCBExtra->EnableWindow(true);
+		ExtCurrentScript->LoadExtraParamBox(*pCBExtra, actionIndex);
 		pCBExtra->SetCurSel(0);
 	}
 	else

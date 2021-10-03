@@ -122,4 +122,5 @@ public:
 	void WriteLine(int line);
 	bool IsExtraParamEnabled(int actionIndex);
 	bool IsExtraParamEnabledAtLine(int line);
+	void LoadExtraParamBox(ppmfc::CComboBox& comboBox, int actionIndex);
 };

@@ -17,6 +17,7 @@ Compile Using C++ Standard Now: C++14
 +) Now you can edit all stuff of [Lighting]
 +) New ExtConfig: VerticalLayout = BOOLEAN, enable it so that FA2sp will make the bottom view go to the right side
 *) Now you can delete a trigger and its celltags at the same time
+*) Now you can custom script param typelist
 
 ======================= Changes (2021-09-28 RELEASE 1.0.7) ==============================================================================================
 *) Changed the layout of CRightView::CTileSetBrowserFrame from [0, 1] to [1, 0], it's vertical now
@@ -259,6 +260,21 @@ COLORREF - R,G,B each of them is in [0,255]
             \\\ DesertYR=desertmp.ini
             \\\ MixExtension=mp
             \\\ 
+        +) [ScriptTypeLists]
+            {Contains a list of param type lists}
+            \\\ NOTICE THAT KEY BEGINS FROM 1 AND HAS TO BE INTERGER
+            \\\ 
+            \\\ X=TypeListName
+        +) [TypeListName]
+            {This name is just an example, it should be registered in the [ScriptTypeLists]}
+            \\\ HasExtraParam = BOOLEAN
+            \\\ ExtraParamType = ExtraParamTypeListName
+            \\\ BuiltInType = INTEGER
+            \\\ ScriptActionParam = Description (Like 0=Buildings, key must be integer, will be ignored if BuiltInType being set and not -1)
+        +) [ExtraParamTypeListName]
+            {This name is just an example, it needn't to be registered in the [ScriptTypeLists]}
+            \\\ BuiltInType = INTEGER
+            \\\ ScriptActionExtraParam = Description (Like 0=Nearest, key must be integer, will be ignored if BuiltInType being set and not -1)
         +) [ScriptParams] **
             {Contains a list of param types used for scripts}
             \\\ NOTICE THAT OUR SCRIPT PARAMS ARE INDEPENDENT
@@ -286,6 +302,7 @@ COLORREF - R,G,B each of them is in [0,255]
             \\\ 18=TalkBubbles
             \\\ 19=Status
             \\\ 20=Boolean
+            \\\ -X = ScriptTypeList at [ScriptTypeLists] X
             \\\ (LIST END)
             \\\
             \\\ Or just copy the section below:
