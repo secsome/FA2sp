@@ -62,7 +62,7 @@ DEFINE_HOOK(468760, Miscs_GetColor, 7)
 
 	ppmfc::CString color = "";
 	if (pHouse)
-		if (auto pStr = CINI::CurrentDocument->TryGetString(pHouse, "Color"))
+		if (auto pStr = Variables::Rules.TryGetString(pHouse, "Color"))
 			color = *pStr;
 
 	if (pColor)
