@@ -55,6 +55,7 @@ void __stdcall FA2Expand::ExeRun()
     CAITriggerTypesExt::ProgramStartupInit();
     CFinalSunDlgExt::ProgramStartupInit();
     CHousesExt::ProgramStartupInit();
+    CLightingExt::ProgramStartupInit();
     // CIsoViewExt::ProgramStartupInit();
     CTileSetBrowserFrameExt::ProgramStartupInit();
     CTriggerFrameExt::ProgramStartupInit();

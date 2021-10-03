@@ -6,14 +6,12 @@
 class NOVTABLE CLightingExt : public CLighting
 {
 public:
-	typedef BOOL(*FuncT_PTM)(MSG* pMsg);
-
-	static CLighting* Instance;
-
 	//hook function to replace in virtual function map
 	BOOL PreTranslateMessageExt(MSG* pMsg);
 
 	static void ProgramStartupInit();
+
+	void Translate();
 
 	CLightingExt() {};
 	~CLightingExt() {};

@@ -14,6 +14,7 @@ Compile Using C++ Standard Now: C++14
 ======================= Changes (2021-10-XX RELEASE 1.1.0) ==============================================================================================
 +) Trigger sort, which will provide you some handy in trigger classification
 +) Now you can directly edit [Ranking] in SingleplayerSettings
++) Now you can edit all stuff of [Lighting]
 +) New ExtConfig: VerticalLayout = BOOLEAN, enable it so that FA2sp will make the bottom view go to the right side
 *) Now you can delete a trigger and its celltags at the same time
 

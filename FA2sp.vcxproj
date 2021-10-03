@@ -131,6 +131,8 @@
     <ClCompile Include="FA2sp\Ext\CHouses\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CIsoView\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CIsoView\Hooks.cpp" />
+    <ClCompile Include="FA2sp\Ext\CLighting\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CLighting\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Body.LoadObjects.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Hooks.InitPalettes.cpp" />
@@ -189,6 +191,7 @@
     <ClInclude Include="FA2sp\Ext\CFinalSunDlg\Body.h" />
     <ClInclude Include="FA2sp\Ext\CHouses\Body.h" />
     <ClInclude Include="FA2sp\Ext\CIsoView\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CLighting\Body.h" />
     <ClInclude Include="FA2sp\Ext\CLoading\Body.h" />
     <ClInclude Include="FA2sp\Ext\CScriptTypes\Functional.h" />
     <ClInclude Include="FA2sp\Ext\CSingleplayerSettings\Body.h" />
@@ -227,6 +230,7 @@
     <ResourceCompile Include="FA2sp\UI\CAircraftDialog.rc" />
     <ResourceCompile Include="FA2sp\UI\CAITriggerTypes.rc" />
     <ResourceCompile Include="FA2sp\UI\CInfantryDialog.rc" />
+    <ResourceCompile Include="FA2sp\UI\CLighting.rc" />
     <ResourceCompile Include="FA2sp\UI\CMenu.rc" />
     <ResourceCompile Include="FA2sp\UI\CScriptTypes.rc" />
     <ResourceCompile Include="FA2sp\UI\CSingleplayerSettings.rc" />
