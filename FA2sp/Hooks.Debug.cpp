@@ -5,6 +5,11 @@
 #include <Drawing.h>
 
 #include "Logger.h"
+//
+//DEFINE_HOOK(438DB0, CrashMePlease, 6)
+//{
+//    return 0x114514;
+//}
 
 //DEFINE_HOOK(45AF76, CIsoView_OnMouseMove_DebugCurrentCellData, 5)
 //{

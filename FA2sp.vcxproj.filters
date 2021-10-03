@@ -120,9 +120,6 @@
     <ClInclude Include="FA2sp\Ext\CAITriggerTypes\Body.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="FA2pp\MFC\ppmfc_ctabctrl.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="FA2sp\Ext\CTileSetBrowserFrame\TabPages\TriggerSort.h">
       <Filter>头文件</Filter>
     </ClInclude>

@@ -11,7 +11,7 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-======================= Changes (2021-10-XX RELEASE 1.1.0) ==============================================================================================
+======================= Changes (2021-10-03 RELEASE 1.1.0) ==============================================================================================
 +) Trigger sort, which will provide you some handy in trigger classification
 +) Now you can directly edit [Ranking] in SingleplayerSettings
 +) Now you can edit all stuff of [Lighting]
@@ -633,6 +633,19 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) SingleplayerOverParMessage = TEXT
                 +) SingleplayerUnderParTitle = TEXT
                 +) SingleplayerUnderParMessage = TEXT
+                +) LightingTitle = TEXT
+                +) LightingDesc = TEXT
+                +) LightingNormal = TEXT
+                +) LightingIonStorm = TEXT
+                +) LightingDominator = TEXT
+                +) LightingAmbient = TEXT
+                +) LightingGreen = TEXT
+                +) LightingRed = TEXT
+                +) LightingBlue = TEXT
+                +) LightingLevel = TEXT
+                +) LightingGround = TEXT
+                +) LightingNukeAmbientChangeRate = TEXT
+                +) LightingDominatorAmbientChangeRate = TEXT
 
 - WRITE IN THE END
 This project was developed after FA2Copy with still many bugs to fix,

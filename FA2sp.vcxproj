@@ -185,7 +185,6 @@
     <ClCompile Include="FA2sp\ExtraWindow\CTileManager\CTileManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FA2pp\MFC\ppmfc_ctabctrl.h" />
     <ClInclude Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.h" />
     <ClInclude Include="FA2sp\Ext\CAITriggerTypes\Body.h" />
     <ClInclude Include="FA2sp\Ext\CFinalSunDlg\Body.h" />

@@ -17,6 +17,7 @@ public:
     static HANDLE hInstance;
     static ppmfc::CString Buffer;
     static std::map<ppmfc::CString, ppmfc::CString> TutorialTextsMap;
+    static void* pExceptionHandler;
 
     static void ExtConfigsInitialize();
 };
