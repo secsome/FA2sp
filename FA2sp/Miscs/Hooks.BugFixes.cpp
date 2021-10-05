@@ -2,6 +2,7 @@
 #include <Drawing.h>
 #include <CINI.h>
 #include <CFinalSunDlg.h>
+#include <CFinalSunApp.h>
 #include <CMapData.h>
 #include <CPalette.h>
 #include <CObjectDatas.h>
@@ -49,7 +50,7 @@ DEFINE_HOOK(4BBAB8, CMapData_sub_4BB990, 6)
 // Self explained nameing
 DEFINE_HOOK(421B70, CFinalSunApp_InitInstance_NoEasyViewExplain, 5)
 {
-	CFinalSunDlg::EasyMode = false;
+	CFinalSunApp::Instance->EasyMode = false;
 
 	return 0x421EEB;
 }
