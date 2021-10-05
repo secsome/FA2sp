@@ -317,6 +317,9 @@
     <ClCompile Include="FA2sp\Ext\CLighting\Hooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CEasterEgg\Hooks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FA2sp\FA2sp.rc">
