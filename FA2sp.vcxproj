@@ -218,6 +218,7 @@
     <ClInclude Include="FA2sp\Miscs\DrawStuff.h" />
     <ClInclude Include="FA2sp\Miscs\Exception.h" />
     <ClInclude Include="FA2sp\Miscs\Palettes.h" />
+    <ClInclude Include="FA2sp\resource.h" />
     <ClInclude Include="FA2sp\RunTime.h" />
     <ClInclude Include="FA2sp\UI\UIColor.h" />
     <ClInclude Include="FA2sp\Helpers\MutexHelper.h" />
@@ -246,6 +247,9 @@
     <ResourceCompile Include="FA2sp\UI\CTeamTypes.rc" />
     <ResourceCompile Include="FA2sp\UI\CTileBrowserFrame.DialogBar.rc" />
     <ResourceCompile Include="FA2sp\UI\CUnitDialog.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FA2sp\rt_manif.bin" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

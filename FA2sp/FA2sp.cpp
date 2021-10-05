@@ -137,6 +137,9 @@ SYRINGE_HANDSHAKE(pInfo)
 	return E_POINTER;
 }
 
+#define ENABLE_VISUAL_STYLE
+static ULONG_PTR ulCookie;
+
 DEFINE_HOOK(537129, ExeRun, 9)
 {
 #ifdef _DEBUG
@@ -152,6 +155,22 @@ DEFINE_HOOK(537129, ExeRun, 9)
 	Logger::Wrap(1);
 	FA2Expand::ExeRun();
 	DrawStuff::init();
+
+#ifdef ENABLE_VISUAL_STYLE
+	ACTCTX enableThemingActivationContext;
+	enableThemingActivationContext.cbSize = sizeof ACTCTX;
+	enableThemingActivationContext.lpSource = "FA2sp.dll";
+	enableThemingActivationContext.lpResourceName = (LPCSTR)101;
+	enableThemingActivationContext.dwFlags = ACTCTX_FLAG_RESOURCE_NAME_VALID;
+	auto hActCtx = ::CreateActCtx(&enableThemingActivationContext);
+	if (hActCtx != INVALID_HANDLE_VALUE)
+	{
+		if (::ActivateActCtx(hActCtx, &ulCookie))
+		{
+			Logger::Debug("ActivateActCtx!\n");
+		}
+	}
+#endif
 
 	/*if (HINSTANCE handle = GetModuleHandle("kernel32.dll")) {
 		if (GetProcAddress(handle, "AddVectoredExceptionHandler")) {
@@ -173,6 +192,10 @@ DEFINE_HOOK(537208, ExeTerminate, 9)
 
 	// Destruct static ppmfc stuffs here
 	ObjectBrowserControlExt::OnExeTerminate();
+
+#ifdef ENABLE_VISUAL_STYLE
+	::DeactivateActCtx(NULL, ulCookie);
+#endif
 
 	/*if (HINSTANCE handle = GetModuleHandle("kernel32.dll")) {
 		if (GetProcAddress(handle, "RemoveVectoredExceptionHandler")) {
