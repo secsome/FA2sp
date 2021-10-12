@@ -2,6 +2,8 @@
 
 #include <Helpers/Macro.h>
 
+#include <CFinalSunApp.h>
+
 #include "../CIsoView/Body.h"
 
 DEFINE_HOOK(424654, CFinalSunDlg_OnInitDialog_EnableLayersByDefault, 7)
@@ -174,6 +176,6 @@ DEFINE_HOOK(43209D, CFinalSunDlg_Update_TranslateMenuItems, A)
 
 DEFINE_HOOK(432010, CFinalSunDlg_Update_NoFuckingEasyMode, 7)
 {
-    CFinalSunDlg::EasyMode = false;
+    CFinalSunApp::Instance->EasyMode = false;
     return 0;
 }

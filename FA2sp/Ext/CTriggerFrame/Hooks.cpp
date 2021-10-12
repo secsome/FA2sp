@@ -222,7 +222,7 @@ DEFINE_HOOK(4FC180, CTriggerFrame_OnBNCloneTriggerClicked, 6)
         if (auto CurrentID = reinterpret_cast<const char*>(pThis->CCBCurrentTrigger.GetItemDataPtr(nCurSel)))
         {
             auto buffer = CINI::CurrentDocument->GetString("Triggers", CurrentID);
-            auto splits = STDHelpers::SplitString(buffer, 2);
+            auto splits = STDHelpers::SplitString(buffer, 7);
             auto& Name = splits[2];
             auto NewID = CINI::GetAvailableIndex();
 

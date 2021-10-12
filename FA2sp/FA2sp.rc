@@ -1,42 +1,45 @@
+#include <Windows.h>
+
 129 ACCELERATORS
 BEGIN
-    "A", 40104, NOINVERT, CONTROL, VIRTKEY
-    "C", 57634, NOINVERT, CONTROL, VIRTKEY
-    "F", 40115, NOINVERT, CONTROL, VIRTKEY
-    "L", 40105, NOINVERT, CONTROL, VIRTKEY
-    "V", 57637, NOINVERT, CONTROL, VIRTKEY
-    "Y", 57644, NOINVERT, CONTROL, VIRTKEY
-    "Z", 57643, NOINVERT, CONTROL, VIRTKEY
-    "N", 57600, NOINVERT, CONTROL, VIRTKEY
-    "O", 40001, NOINVERT, CONTROL, VIRTKEY
-    "S", 57603, NOINVERT, CONTROL, VIRTKEY
-    "S", 40002, NOINVERT, CONTROL, SHIFT, VIRTKEY
-    0x7B, 40025, NOINVERT, VIRTKEY                          // F12
-    "M", 40040, NOINVERT, CONTROL, VIRTKEY
-    "B", 40036, NOINVERT, CONTROL, VIRTKEY
-    "P", 40038, NOINVERT, CONTROL, VIRTKEY
-    "U", 40043, NOINVERT, CONTROL, VIRTKEY
-    "H", 40039, NOINVERT, CONTROL, VIRTKEY
-    "R", 40076, NOINVERT, CONTROL, VIRTKEY
-    "G", 40042, NOINVERT, CONTROL, VIRTKEY
-    "T", 40046, NOINVERT, CONTROL, VIRTKEY
-    "C", 40044, NOINVERT, CONTROL, SHIFT, VIRTKEY
-    "E", 40045, NOINVERT, CONTROL, VIRTKEY
-    "J", 40047, NOINVERT, CONTROL, VIRTKEY
-    "K", 40048, NOINVERT, CONTROL, VIRTKEY
-    "Q", 40082, NOINVERT, CONTROL, VIRTKEY
-    "M", 40037, NOINVERT, CONTROL, SHIFT, VIRTKEY
-    "I", 40049, NOINVERT, CONTROL, VIRTKEY
-    0x74, 40053, NOINVERT, VIRTKEY                       // F5
-    0x75, 40054, NOINVERT, VIRTKEY                       // F6
-    0x76, 40064, NOINVERT, VIRTKEY                       // F7
-    0x77, 40065, NOINVERT, VIRTKEY                       // F8
-    0x78, 40066, NOINVERT, VIRTKEY                       // F9
-    0x79, 40072, NOINVERT, VIRTKEY                          // F10
-    0x7A, 40071, NOINVERT, VIRTKEY                          // F11
-    0x72, 40092, NOINVERT, VIRTKEY                       // F3
-    0x73, 40093, NOINVERT, VIRTKEY                       // F4
-    "W", 40133, NOINVERT, CONTROL, VIRTKEY
-    0x71, 40024, NOINVERT, VIRTKEY                       // F2
+    "A",            40104,                  VIRTKEY, CONTROL, NOINVERT
+    "C",            57634,                  VIRTKEY, CONTROL, NOINVERT
+    "F",            40115,                  VIRTKEY, CONTROL, NOINVERT
+    "L",            40105,                  VIRTKEY, CONTROL, NOINVERT
+    "V",            57637,                  VIRTKEY, CONTROL, NOINVERT
+    "Y",            57644,                  VIRTKEY, CONTROL, NOINVERT
+    "Z",            57643,                  VIRTKEY, CONTROL, NOINVERT
+    "N",            57600,                  VIRTKEY, CONTROL, NOINVERT
+    "O",            40001,                  VIRTKEY, CONTROL, NOINVERT
+    "S",            57603,                  VIRTKEY, CONTROL, NOINVERT
+    "S",            40002,                  VIRTKEY, SHIFT, CONTROL, NOINVERT
+    VK_F12,         40025,                  VIRTKEY, NOINVERT
+    "M",            40040,                  VIRTKEY, CONTROL, NOINVERT
+    "B",            40036,                  VIRTKEY, CONTROL, NOINVERT
+    "P",            40038,                  VIRTKEY, CONTROL, NOINVERT
+    "U",            40043,                  VIRTKEY, CONTROL, NOINVERT
+    "H",            40039,                  VIRTKEY, CONTROL, NOINVERT
+    "R",            40076,                  VIRTKEY, CONTROL, NOINVERT
+    "G",            40042,                  VIRTKEY, CONTROL, NOINVERT
+    "T",            40046,                  VIRTKEY, CONTROL, NOINVERT
+    "C",            40044,                  VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "E",            40045,                  VIRTKEY, CONTROL, NOINVERT
+    "J",            40047,                  VIRTKEY, CONTROL, NOINVERT
+    "K",            40048,                  VIRTKEY, CONTROL, NOINVERT
+    "Q",            40082,                  VIRTKEY, CONTROL, NOINVERT
+    "M",            40037,                  VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "I",            40049,                  VIRTKEY, CONTROL, NOINVERT
+    VK_F5,          40053,                  VIRTKEY, NOINVERT
+    VK_F6,          40054,                  VIRTKEY, NOINVERT
+    VK_F7,          40064,                  VIRTKEY, NOINVERT
+    VK_F8,          40065,                  VIRTKEY, NOINVERT
+    VK_F9,          40066,                  VIRTKEY, NOINVERT
+    VK_F10,         40072,                  VIRTKEY, NOINVERT
+    VK_F11,         40071,                  VIRTKEY, NOINVERT
+    VK_F3,          40092,                  VIRTKEY, NOINVERT
+    VK_F4,          40093,                  VIRTKEY, NOINVERT
+    "W",            40133,                  VIRTKEY, CONTROL, NOINVERT
+    VK_F2,          40024,                  VIRTKEY, NOINVERT
 END
 
+101        RT_MANIFEST             "rt_manif.bin"

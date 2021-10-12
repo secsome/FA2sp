@@ -63,9 +63,10 @@
       <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <ExceptionHandling>false</ExceptionHandling>
-      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <BufferSecurityCheck>
+      </BufferSecurityCheck>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
-      <DisableSpecificWarnings>4065;4530;4731;4244;4114;4172;4018</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4065;4530;4731;4244;4114;4172;4018;4390;4091</DisableSpecificWarnings>
       <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MinimalRebuild>
@@ -82,9 +83,10 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <AdditionalDependencies>Nafxcwd.lib;Libcmtd.lib;DbgHelp.lib;legacy_stdio_definitions.lib;vxl_drawing_lib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DbgHelp.lib;legacy_stdio_definitions.lib;vxl_drawing_lib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
-      <IgnoreSpecificDefaultLibraries>Nafxcwd.lib;Libcmtd.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -96,9 +98,10 @@
       <PreprocessorDefinitions>_DEBUG;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;WIN32;_CRT_SECURE_NO_WARNINGS;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <ExceptionHandling>false</ExceptionHandling>
-      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <BufferSecurityCheck>
+      </BufferSecurityCheck>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
-      <DisableSpecificWarnings>4065;4530;4731;4244;4114;4172;4018</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4065;4530;4731;4244;4114;4172;4018;4390;4091</DisableSpecificWarnings>
       <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MinimalRebuild>
@@ -115,15 +118,17 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <AdditionalDependencies>Nafxcwd.lib;Libcmtd.lib;DbgHelp.lib;legacy_stdio_definitions.lib;vxl_drawing_lib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DbgHelp.lib;legacy_stdio_definitions.lib;vxl_drawing_lib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
-      <IgnoreSpecificDefaultLibraries>Nafxcwd.lib;Libcmtd.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FA2pp\FunctionInit.cpp" />
     <ClCompile Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.cpp" />
     <ClCompile Include="FA2sp\Ext\CAITriggerTypes\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CEasterEgg\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Body.ObjectBrowserControl.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Hooks.cpp" />
@@ -217,6 +222,7 @@
     <ClInclude Include="FA2sp\Miscs\DrawStuff.h" />
     <ClInclude Include="FA2sp\Miscs\Exception.h" />
     <ClInclude Include="FA2sp\Miscs\Palettes.h" />
+    <ClInclude Include="FA2sp\resource.h" />
     <ClInclude Include="FA2sp\RunTime.h" />
     <ClInclude Include="FA2sp\UI\UIColor.h" />
     <ClInclude Include="FA2sp\Helpers\MutexHelper.h" />
@@ -245,6 +251,9 @@
     <ResourceCompile Include="FA2sp\UI\CTeamTypes.rc" />
     <ResourceCompile Include="FA2sp\UI\CTileBrowserFrame.DialogBar.rc" />
     <ResourceCompile Include="FA2sp\UI\CUnitDialog.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FA2sp\rt_manif.bin" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

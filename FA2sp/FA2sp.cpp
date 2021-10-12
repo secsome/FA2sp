@@ -137,6 +137,9 @@ SYRINGE_HANDSHAKE(pInfo)
 	return E_POINTER;
 }
 
+#define ENABLE_VISUAL_STYLE
+static ULONG_PTR ulCookie;
+
 DEFINE_HOOK(537129, ExeRun, 9)
 {
 #ifdef _DEBUG
@@ -152,6 +155,45 @@ DEFINE_HOOK(537129, ExeRun, 9)
 	Logger::Wrap(1);
 	FA2Expand::ExeRun();
 	DrawStuff::init();
+
+#ifdef ENABLE_VISUAL_STYLE
+
+#if defined _M_IX86
+#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#elif defined _M_X64
+#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#else
+#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#endif
+	// GetModuleName
+	char ModuleNameBuffer[MAX_PATH];
+	GetModuleFileName(static_cast<HMODULE>(FA2sp::hInstance), ModuleNameBuffer, MAX_PATH);
+	int nLength = strlen(ModuleNameBuffer);
+	int i = nLength - 1;
+	for (; i >= 0; --i)
+	{
+		if (ModuleNameBuffer[i] == '\\')
+			break;
+	}
+	++i;
+	int nModuleNameLen = nLength - i;
+	memcpy(ModuleNameBuffer, ModuleNameBuffer + i, nModuleNameLen);
+	ModuleNameBuffer[nModuleNameLen] = '\0';
+
+	// Codes from 
+	// https://referencesource.microsoft.com/#System.Windows.Forms/winforms/Managed/System/WinForms/UnsafeNativeMethods.cs,8197
+	ACTCTX enableThemingActivationContext;
+	enableThemingActivationContext.cbSize = sizeof ACTCTX;
+	enableThemingActivationContext.lpSource = ModuleNameBuffer; // "FA2sp.dll"
+	enableThemingActivationContext.lpResourceName = (LPCSTR)101;
+	enableThemingActivationContext.dwFlags = ACTCTX_FLAG_RESOURCE_NAME_VALID;
+	auto hActCtx = ::CreateActCtx(&enableThemingActivationContext);
+	if (hActCtx != INVALID_HANDLE_VALUE)
+	{
+		if (::ActivateActCtx(hActCtx, &ulCookie))
+			Logger::Debug("Visual Style Enabled!\n");
+	}
+#endif
 
 	/*if (HINSTANCE handle = GetModuleHandle("kernel32.dll")) {
 		if (GetProcAddress(handle, "AddVectoredExceptionHandler")) {
@@ -173,6 +215,10 @@ DEFINE_HOOK(537208, ExeTerminate, 9)
 
 	// Destruct static ppmfc stuffs here
 	ObjectBrowserControlExt::OnExeTerminate();
+
+#ifdef ENABLE_VISUAL_STYLE
+	::DeactivateActCtx(NULL, ulCookie);
+#endif
 
 	/*if (HINSTANCE handle = GetModuleHandle("kernel32.dll")) {
 		if (GetProcAddress(handle, "RemoveVectoredExceptionHandler")) {

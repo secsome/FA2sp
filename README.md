@@ -11,6 +11,10 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-10-12 RELEASE 1.1.1) ==============================================================================================
+*) Minor bugfixes
+*) Now FA2sp will apply Visual Style depending on your system instead of keeping them look like Windows95 style
+
 ======================= Changes (2021-10-03 RELEASE 1.1.0) ==============================================================================================
 +) Trigger sort, which will provide you some handy in trigger classification
 +) Now you can directly edit [Ranking] in SingleplayerSettings

@@ -289,7 +289,6 @@ void TriggerSort::DeleteTrigger(ppmfc::CString triggerId, HTREEITEM hItemParent)
     if (this->IsVisible())
     {
         TVITEM tvi;
-        char chLabel[0x200];
 
         for (tvi.hItem = TreeView_GetChild(this->GetHwnd(), hItemParent); tvi.hItem;
             tvi.hItem = TreeView_GetNextSibling(this->GetHwnd(), tvi.hItem))

@@ -129,6 +129,9 @@
     <ClInclude Include="FA2sp\Ext\CLighting\Body.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2sp\resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">
@@ -317,6 +320,9 @@
     <ClCompile Include="FA2sp\Ext\CLighting\Hooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CEasterEgg\Hooks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FA2sp\FA2sp.rc">
@@ -379,5 +385,10 @@
     <ResourceCompile Include="FA2sp\UI\CLighting.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FA2sp\rt_manif.bin">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
 </Project>
