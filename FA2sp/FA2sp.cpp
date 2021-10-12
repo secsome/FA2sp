@@ -165,19 +165,33 @@ DEFINE_HOOK(537129, ExeRun, 9)
 #else
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #endif
+	// GetModuleName
+	char ModuleNameBuffer[MAX_PATH];
+	GetModuleFileName(static_cast<HMODULE>(FA2sp::hInstance), ModuleNameBuffer, MAX_PATH);
+	int nLength = strlen(ModuleNameBuffer);
+	int i = nLength - 1;
+	for (; i >= 0; --i)
+	{
+		if (ModuleNameBuffer[i] == '\\')
+			break;
+	}
+	++i;
+	int nModuleNameLen = nLength - i;
+	memcpy(ModuleNameBuffer, ModuleNameBuffer + i, nModuleNameLen);
+	ModuleNameBuffer[nModuleNameLen] = '\0';
 
+	// Codes from 
+	// https://referencesource.microsoft.com/#System.Windows.Forms/winforms/Managed/System/WinForms/UnsafeNativeMethods.cs,8197
 	ACTCTX enableThemingActivationContext;
 	enableThemingActivationContext.cbSize = sizeof ACTCTX;
-	enableThemingActivationContext.lpSource = "FA2sp.dll";
+	enableThemingActivationContext.lpSource = ModuleNameBuffer; // "FA2sp.dll"
 	enableThemingActivationContext.lpResourceName = (LPCSTR)101;
 	enableThemingActivationContext.dwFlags = ACTCTX_FLAG_RESOURCE_NAME_VALID;
 	auto hActCtx = ::CreateActCtx(&enableThemingActivationContext);
 	if (hActCtx != INVALID_HANDLE_VALUE)
 	{
 		if (::ActivateActCtx(hActCtx, &ulCookie))
-		{
-			Logger::Debug("ActivateActCtx!\n");
-		}
+			Logger::Debug("Visual Style Enabled!\n");
 	}
 #endif
 
