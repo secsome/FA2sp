@@ -11,6 +11,9 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-10-16 RELEASE 1.1.2) ==============================================================================================
+*) Fixed the bug that FA2sp crashes while trying to read/write file on some systems
+
 ======================= Changes (2021-10-12 RELEASE 1.1.1) ==============================================================================================
 *) Minor bugfixes
 *) Now FA2sp will apply Visual Style depending on your system instead of keeping them look like Windows95 style
