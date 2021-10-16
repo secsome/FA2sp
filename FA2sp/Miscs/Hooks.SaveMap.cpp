@@ -10,7 +10,7 @@
 #include "../FA2sp.Constants.h"
 
 #include <map>
-#include <sstream>
+#include <fstream>
 
 // FA2 SaveMap is almost O(N^4), who wrote that?
 DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
@@ -54,31 +54,35 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
 
         Logger::Debug("Trying to save map to %s\n", filepath);
 
-        CloseHandle(
-            CreateFile(filepath, GENERIC_WRITE, NULL, nullptr, TRUNCATE_EXISTING, FILE_FLAG_SEQUENTIAL_SCAN | FILE_ATTRIBUTE_NORMAL, NULL)
-        );
-        auto hFile = CreateFile(filepath, GENERIC_WRITE, NULL, nullptr, CREATE_ALWAYS, FILE_FLAG_SEQUENTIAL_SCAN | FILE_ATTRIBUTE_NORMAL, NULL);
+        std::ofstream fout;
+        fout.open(filepath, std::ios::out | std::ios::trunc);
 
-        std::stringstream ss;
-        ss <<
-            "; Map created with FinalAlert 2(tm) Mission Editor\n"
-            "; Get it at http://www.westwood.com\n"
-            "; note that all comments were truncated\n"
-            "\n"
-            "; This FA2 uses FA2sp created by secsome\n"
-            "; Get the lastest dll at https://github.com/secsome/FA2sp\n"
-            "; Current version : " << PRODUCT_STR << "\n\n";
-
-        for (auto& section : pINI->Dict)
+        if (fout.is_open())
         {
-            ss << "[" << section.first << "]\n";
-            for (auto& pair : section.second.EntitiesDictionary)
-                ss << pair.first << "=" << pair.second << "\n";
-            ss << "\n";
-        }
+            fout <<
+                "; Map created with FinalAlert 2(tm) Mission Editor\n"
+                "; Get it at http://www.westwood.com\n"
+                "; note that all comments were truncated\n"
+                "\n"
+                "; This FA2 uses FA2sp created by secsome\n"
+                "; Get the lastest dll at https://github.com/secsome/FA2sp\n"
+                "; Current version : " << PRODUCT_STR << "\n\n";
 
-        WriteFile(hFile, ss.str().c_str(), ss.str().length(), nullptr, nullptr);
-        CloseHandle(hFile);
+            for (auto& section : pINI->Dict)
+            {
+                fout << "[" << section.first << "]\n";
+                for (auto& pair : section.second.EntitiesDictionary)
+                    fout << pair.first << "=" << pair.second << "\n";
+                fout << "\n";
+            }
+
+            fout.close();
+        }
+        else
+        {
+            FA2sp::Buffer.Format("Failed to create file %s.\n", filepath);
+            ::MessageBox(NULL, FA2sp::Buffer, "Error", MB_OK | MB_ICONERROR);
+        }
 
         return 0x42A859;
     }
@@ -103,11 +107,11 @@ DEFINE_HOOK(42A8F5, CFinalSunDlg_SaveMap_ReplaceCopyFile, 7)
 
     REF_STACK(ppmfc::CString, filepath, STACK_OFFS(0x3F4, -0x4));
 
-    HANDLE hFile =
-        CreateFile(filepath, GENERIC_READ, NULL, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-    if (hFile != INVALID_HANDLE_VALUE)
+    std::ifstream fin;
+    fin.open(filepath, std::ios::in | std::ios::binary);
+    if (fin.is_open())
     {
-        CloseHandle(hFile);
+        fin.close();
         return 0x42A92D;
     }
     return 0x42A911;
