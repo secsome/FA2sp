@@ -6,6 +6,7 @@
 #include "../FA2sp.h"
 
 #include <map>
+#include <fstream>
 
 class StringtableLoader
 {
@@ -185,17 +186,17 @@ void StringtableLoader::WriteCSFFile()
     char tmpCsfFile[0x400];
     strcpy_s(tmpCsfFile, CFinalSunApp::ExePath());
     strcat_s(tmpCsfFile, "\\RA2Tmp.csf");
-    HANDLE hFile = CreateFile(tmpCsfFile, GENERIC_WRITE, FILE_SHARE_WRITE, nullptr,
-        CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
-    if (hFile == INVALID_HANDLE_VALUE)
+    std::ofstream fout;
+    fout.open(tmpCsfFile, std::ios::out | std::ios::trunc | std::ios::binary);
+    if (!fout.is_open())
         return;
 
-    auto write_to_stream = [&hFile](const void* buffer, size_t size = 4) {
-        WriteFile(hFile, buffer, size, nullptr, nullptr);
+    auto write_to_stream = [&fout](const void* buffer, size_t size = 4) {
+        fout.write((char*)buffer, size);
     };
 
-    auto write_int = [&hFile](int n) {
-        WriteFile(hFile, &n, 4, nullptr, nullptr);
+    auto write_int = [&fout](int n) {
+        fout.write((char*)&n, 4);
     };
 
     // CSF header
@@ -229,27 +230,30 @@ void StringtableLoader::WriteCSFFile()
         write_to_stream(buffer, valueBufferSize << 1);
         delete[] value;
     }
-    CloseHandle(hFile);
+    fout.close();
 }
 
 bool StringtableLoader::LoadToBuffer()
 {
-    HANDLE hFile = INVALID_HANDLE_VALUE;
     char directoryBuffer[0x400];
     strcpy_s(directoryBuffer, CFinalSunApp::ExePath());
     strcat_s(directoryBuffer, "\\");
     strcat_s(directoryBuffer, "RA2Tmp.csf");
-    hFile = CreateFile(directoryBuffer, GENERIC_READ, FILE_SHARE_READ, nullptr,
-        OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
-    if (hFile != INVALID_HANDLE_VALUE)
+    std::ifstream fin;
+    fin.open(directoryBuffer, std::ios::in | std::ios::binary);
+    if (fin.is_open())
     {
-        DWORD dwFileSize = GetFileSize(hFile, nullptr);
-        StringtableLoader::pEDIBuffer = GameCreateArray<char>(dwFileSize);
+        fin.seekg(0, std::ios::end);
+        const int size = static_cast<int>(fin.tellg());
+        if (size == 0)
+            return false;
+        fin.seekg(0, std::ios::beg);
+        StringtableLoader::pEDIBuffer = GameCreateArray<char>(size);
         bool result = false;
         if (StringtableLoader::pEDIBuffer)
-            result = ReadFile(hFile, StringtableLoader::pEDIBuffer, dwFileSize, nullptr, nullptr);
-        CloseHandle(hFile);
-        return result;
+            fin.read(StringtableLoader::pEDIBuffer, size);
+        fin.close();
+        return true;
     }
     return false;
 }
