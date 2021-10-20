@@ -171,6 +171,7 @@ void ObjectBrowserControlExt::Redraw_Owner()
 
     auto& doc = CINI::CurrentDocument();
 
+
     if (CINI::CurrentDocument->GetBool("Basic", "MultiplayerOnly"))
     {
         auto& section = Variables::Rules.GetSection("Countries");
@@ -181,9 +182,19 @@ void ObjectBrowserControlExt::Redraw_Owner()
     }
     else
     {
-        auto& section = Variables::Rules.ParseIndicies("Houses", true);
-        for (size_t i = 0, sz = section.size(); i < sz; ++i)
-            this->InsertString(section[i], Const_House + i, hOwner);
+        if (ExtConfigs::BrowserRedraw_SafeHouses)
+        {
+            auto& section = Variables::Rules.ParseIndicies("Houses", true);
+            for (size_t i = 0, sz = section.size(); i < sz; ++i)
+                this->InsertString(section[i], Const_House + i, hOwner);
+        }
+        else
+        {
+            auto& section = CINI::Rules->GetSection("Houses")->EntitiesDictionary;
+            size_t i = 0;
+            for (auto& itr : section)
+                this->InsertString(itr.second, Const_House + i++, hOwner);
+        }
     }
 }
 

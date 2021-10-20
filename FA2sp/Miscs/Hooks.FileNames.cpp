@@ -17,7 +17,7 @@ DEFINE_HOOK(47A3CC, FileNames_EvaIni, 7)
         CLoading::HasMdFile() ?
         CINI::FAData->GetString("Filenames", "EVAYR", "evamd.ini") :
         CINI::FAData->GetString("Filenames", "EVA", "eva.ini"),
-        &CINI::Sound(), FALSE);
+        &CINI::Eva(), FALSE);
     
     return 0x47A3DF;
 }
