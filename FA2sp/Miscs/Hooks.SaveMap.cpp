@@ -31,8 +31,35 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         pINI->WriteString("FA2spVersionControl", "Version", buffer);
 
         // Begin of Preprocesses
-        pINI->DeleteSection("");
-        // Trim all key and value, I think it's unnecessary cause the game will do that
+
+        // Step 1 : Remove empty sections and keys
+        std::vector<ppmfc::CString> sectionsToRemove;
+        for (auto& section_pair : pINI->Dict)
+        {
+            ppmfc::CString buffer;
+            buffer = section_pair.first;
+            buffer.Trim();
+            if (buffer.GetLength() == 0 || section_pair.second.EntitiesDictionary.size() == 0)
+                sectionsToRemove.push_back(section_pair.first);
+
+            std::vector<ppmfc::CString> keysToRemove;
+            for (auto& key_pair : section_pair.second.EntitiesDictionary)
+            {
+                buffer = key_pair.first;
+                buffer.Trim();
+                if (buffer.GetLength() == 0)
+                    keysToRemove.push_back(key_pair.first);
+            }
+
+            for (auto& key : keysToRemove)
+                pINI->DeleteKey(section_pair.first, key);
+
+            if (section_pair.second.EntitiesDictionary.size() == 0)
+                sectionsToRemove.push_back(section_pair.first);
+        }
+        for (auto& section : sectionsToRemove)
+            pINI->DeleteSection(section);
+
         if (bGeneratePreview)
         {
             pINI->DeleteSection("Preview");
