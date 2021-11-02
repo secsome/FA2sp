@@ -142,7 +142,7 @@ void CScriptTypesExt::UpdateParams(int actionIndex)
 		auto pCBExtra = (ppmfc::CComboBox*)this->GetDlgItem(6304);
 		pCBExtra->EnableWindow(true);
 		ExtCurrentScript->LoadExtraParamBox(*pCBExtra, actionIndex);
-		pCBExtra->SetCurSel(0);
+		
 	}
 	else
 	{
@@ -270,10 +270,6 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 
 	auto pCBExtra = (ppmfc::CComboBox*)this->GetDlgItem(6304);
 	while (pCBExtra->DeleteString(0) != CB_ERR);
-	pCBExtra->SetItemData(pCBExtra->AddString("0 - Min Threat"), 0);
-	pCBExtra->SetItemData(pCBExtra->AddString("1 - Max Threat"), 1);
-	pCBExtra->SetItemData(pCBExtra->AddString("2 - Nearest"), 2);
-	pCBExtra->SetItemData(pCBExtra->AddString("3 - Farest"), 3);
 
 	ExtCurrentScript = new CurrentScript;
 	ExtCurrentScript->Unset();
@@ -320,7 +316,16 @@ void CScriptTypesExt::OnCBCurrentScriptSelectChanged()
 	ExtCurrentScript->Set(currentID);
 	for (int i = 0; i < ExtCurrentScript->Count; ++i)
 	{
-		FA2sp::Buffer.Format("[%d] : %d - %d", i, ExtCurrentScript->Actions[i].Type, ExtCurrentScript->Actions[i].Param);
+		if (ExtCurrentScript->IsExtraParamEnabledAtLine(i))
+			FA2sp::Buffer.Format("[%d] : %d - (%d, %d)", i,
+				ExtCurrentScript->Actions[i].Type,
+				ExtCurrentScript->Actions[i].ParamNormal,
+				ExtCurrentScript->Actions[i].ParamExt);
+		else
+			FA2sp::Buffer.Format("[%d] : %d - %d", i, 
+				ExtCurrentScript->Actions[i].Type, 
+				ExtCurrentScript->Actions[i].Param);
+
 		this->CLBScriptActions.AddString(FA2sp::Buffer);
 	}
 
@@ -389,7 +394,8 @@ void CScriptTypesExt::OnCBCurrentActionEditChanged()
 	if (ExtCurrentScript->IsExtraParamEnabled(currentAction.Type))
 	{
 		auto pCBExtra = (ppmfc::CComboBox*)this->GetDlgItem(6304);
-		pCBExtra->SetCurSel(currentAction.ParamExt);
+		FA2sp::Buffer.Format("%d", currentAction.ParamExt);
+		pCBExtra->SetWindowText(FA2sp::Buffer);
 
 		FA2sp::Buffer.Format("%d", currentAction.ParamNormal);
 		this->CCBScriptParameter.SetWindowText(FA2sp::Buffer);
@@ -426,7 +432,16 @@ void CScriptTypesExt::OnCBScriptParameterEditChanged()
 	ExtCurrentScript->WriteLine(index);
 
 	this->CLBScriptActions.DeleteString(index);
-	FA2sp::Buffer.Format("[%d] : %d - %d", index, ExtCurrentScript->Actions[index].Type, ExtCurrentScript->Actions[index].Param);
+	if (ExtCurrentScript->IsExtraParamEnabledAtLine(index))
+		FA2sp::Buffer.Format("[%d] : %d - (%d, %d)", index,
+			ExtCurrentScript->Actions[index].Type,
+			ExtCurrentScript->Actions[index].ParamNormal,
+			ExtCurrentScript->Actions[index].ParamExt);
+	else
+		FA2sp::Buffer.Format("[%d] : %d - %d", index,
+			ExtCurrentScript->Actions[index].Type,
+			ExtCurrentScript->Actions[index].Param);
+
 	this->CLBScriptActions.InsertString(index, FA2sp::Buffer);
 	this->CLBScriptActions.SetCurSel(index);
 }
@@ -593,10 +608,8 @@ void CScriptTypesExt::OnCBExtraParamEditChanged()
 		return;
 
 	auto pCBExtra = (ppmfc::CComboBox*)this->GetDlgItem(6304);
-	int nSel = pCBExtra->GetCurSel();
-	if (nSel == CB_ERR)
-		nSel = 0;
-	ExtCurrentScript->Actions[index].ParamExt = nSel;
+	pCBExtra->GetWindowText(FA2sp::Buffer);
+	ExtCurrentScript->Actions[index].ParamExt = atoi(FA2sp::Buffer);
 
 	this->OnCBScriptParameterSelectChanged();
 }
