@@ -28,6 +28,7 @@ public:
     static bool BrowserRedraw;
     static int  BrowserRedraw_GuessMode;
     static bool BrowserRedraw_CleanUp;
+    static bool BrowserRedraw_SafeHouses;
     static bool AllowIncludes;
     static bool AllowPlusEqual;
     static bool Stringtables;

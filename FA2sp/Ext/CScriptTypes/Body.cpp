@@ -258,16 +258,14 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 		}
 	}
 
-	int counter = 0;
 	for (auto& ent : CScriptTypeAction::ExtActions)
 	{
 		if (!ent.second.Hide_)
 		{
 			int data = CCBCurrentAction.AddString(ent.second.Name_);
 			ent.second.PosInComboBox = data;
-			RealScriptID[data] = counter;
+			RealScriptID[data] = ent.first;
 		}
-		++counter;
 	}
 
 	auto pCBExtra = (ppmfc::CComboBox*)this->GetDlgItem(6304);

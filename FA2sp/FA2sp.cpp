@@ -18,6 +18,7 @@ void* FA2sp::pExceptionHandler = nullptr;
 bool ExtConfigs::BrowserRedraw;
 int	 ExtConfigs::BrowserRedraw_GuessMode;
 bool ExtConfigs::BrowserRedraw_CleanUp;
+bool ExtConfigs::BrowserRedraw_SafeHouses;
 bool ExtConfigs::AllowIncludes;
 bool ExtConfigs::AllowPlusEqual;
 bool ExtConfigs::Stringtables;
@@ -58,6 +59,7 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::BrowserRedraw = fadata.GetBool("ExtConfigs", "BrowserRedraw");
 	ExtConfigs::BrowserRedraw_GuessMode = fadata.GetInteger("ExtConfigs", "BrowserRedraw.GuessMode", 0);
 	ExtConfigs::BrowserRedraw_CleanUp = fadata.GetBool("ExtConfigs", "BrowserRedraw.CleanUp");
+	ExtConfigs::BrowserRedraw_SafeHouses = fadata.GetBool("ExtConfigs", "BrowserRedraw.SafeHouses");
 	
 	ExtConfigs::AllowIncludes = fadata.GetBool("ExtConfigs", "AllowIncludes");
 	ExtConfigs::AllowPlusEqual = fadata.GetBool("ExtConfigs", "AllowPlusEqual");

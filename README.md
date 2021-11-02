@@ -11,6 +11,11 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-11-02 RELEASE 1.1.3) ==============================================================================================
+*) Fixed the bug that EVA(md).ini cannot be loaded
+*) Now ScriptsRA2 will correctly read inconsistent keys
++) New ExtConfig: BrowserRedraw.SafeHouses, enable it so that the houses being displayed in ObjectBrowserView will be rearranged correctly but won't update until you load the map again
+
 ======================= Changes (2021-10-16 RELEASE 1.1.2) ==============================================================================================
 *) Fixed the bug that FA2sp crashes while trying to read/write file on some systems
 
@@ -178,6 +183,7 @@ COLORREF - R,G,B each of them is in [0,255]
             +) BrowserRedraw=BOOLEAN ; Enable refactored ObjectBrowserView
                 +) BrowserRedraw.GuessMode=0/1 ; Determines how FA2sp guess Technos' side, 0(Default) to Prerequisite, 1 to use first Owner 
                 +) BrowserRedraw.CleanUp=BOOLEAN ; Sides classification will clear empty items
+                +)  BrowserRedraw.SafeHouses=BOOLEAN ; Determines whether FA2sp will rearrangement the houses or not
             +) AllowIncludes=BOOLEAN ; Read #include section for other ini (NOT RECOMMENDED) 
             +) AllowPlusEqual=BOOLEAN ; Read += (NOT RECOMMENDED)
             +) Stringtables=BOOLEAN ; Read stringtableXX.csf
