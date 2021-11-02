@@ -2,10 +2,10 @@
 
 constexpr int PRODUCT_MAJOR = 1;
 constexpr int PRODUCT_MINOR = 1;
-constexpr int PRODUCT_REVISION = 2;
-constexpr char* PRODUCT_STR = "1.1.2";
+constexpr int PRODUCT_REVISION = 3;
+constexpr char* PRODUCT_STR = "1.1.3";
 constexpr char* DISPLAY_STR = PRODUCT_STR;
-constexpr char* VERSION_STRVER = "FA2sp 1.1.2";
+constexpr char* VERSION_STRVER = "FA2sp 1.1.3";
 
 constexpr char* PRODUCT_NAME = "FA2sp";
 constexpr char* APPLY_INFO = "Found Final Alert 2 version 1.02. Applying FA2sp 1.1.2.";
