@@ -11,8 +11,9 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-======================= Changes (2021-10-XX RELEASE 1.1.3) ==============================================================================================
+======================= Changes (2021-11-02 RELEASE 1.1.3) ==============================================================================================
 *) Fixed the bug that EVA(md).ini cannot be loaded
+*) Now ScriptsRA2 will correctly read inconsistent keys
 +) New ExtConfig: BrowserRedraw.SafeHouses, enable it so that the houses being displayed in ObjectBrowserView will be rearranged correctly but won't update until you load the map again
 
 ======================= Changes (2021-10-16 RELEASE 1.1.2) ==============================================================================================

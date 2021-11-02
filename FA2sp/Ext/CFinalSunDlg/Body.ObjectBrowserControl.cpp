@@ -190,10 +190,14 @@ void ObjectBrowserControlExt::Redraw_Owner()
         }
         else
         {
-            auto& section = CINI::Rules->GetSection("Houses")->EntitiesDictionary;
-            size_t i = 0;
-            for (auto& itr : section)
-                this->InsertString(itr.second, Const_House + i++, hOwner);
+            if (auto pSection = CINI::Rules->GetSection("Houses"))
+            {
+                auto& section = pSection->EntitiesDictionary;
+                size_t i = 0;
+                for (auto& itr : section)
+                    this->InsertString(itr.second, Const_House + i++, hOwner);
+            }
+           
         }
     }
 }

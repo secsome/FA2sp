@@ -33,7 +33,7 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         // Begin of Preprocesses
 
         // Step 1 : Remove empty sections and keys
-        std::vector<ppmfc::CString> sectionsToRemove;
+        /*std::vector<ppmfc::CString> sectionsToRemove;
         for (auto& section_pair : pINI->Dict)
         {
             ppmfc::CString buffer;
@@ -58,7 +58,7 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
                 sectionsToRemove.push_back(section_pair.first);
         }
         for (auto& section : sectionsToRemove)
-            pINI->DeleteSection(section);
+            pINI->DeleteSection(section);*/
 
         if (bGeneratePreview)
         {
