@@ -7,6 +7,7 @@
 
 #include <CINI.h>
 #include <CMapData.h>
+#include <CIsoView.h>
 
 std::array<HTREEITEM, ObjectBrowserControlExt::Root_Count> ObjectBrowserControlExt::ExtNodes;
 std::set<ppmfc::CString> ObjectBrowserControlExt::IgnoreSet;
@@ -14,6 +15,15 @@ std::set<ppmfc::CString> ObjectBrowserControlExt::ForceName;
 std::set<ppmfc::CString> ObjectBrowserControlExt::ExtSets[Set_Count];
 std::map<ppmfc::CString, int> ObjectBrowserControlExt::KnownItem;
 std::map<ppmfc::CString, int> ObjectBrowserControlExt::Owners;
+
+std::unique_ptr<CPropertyBuilding> ObjectBrowserControlExt::BuildingBrushDlg;
+std::unique_ptr<CPropertyInfantry> ObjectBrowserControlExt::InfantryBrushDlg;
+std::unique_ptr<CPropertyUnit> ObjectBrowserControlExt::VehicleBrushDlg;
+std::unique_ptr<CPropertyAircraft> ObjectBrowserControlExt::AircraftBrushDlg;
+bool ObjectBrowserControlExt::BuildingBrushBools[14];
+bool ObjectBrowserControlExt::InfantryBrushBools[10];
+bool ObjectBrowserControlExt::VehicleBrushBools[11];
+bool ObjectBrowserControlExt::AircraftBrushBools[9];
 
 HTREEITEM ObjectBrowserControlExt::InsertString(const char* pString, DWORD dwItemData,
     HTREEITEM hParent, HTREEITEM hInsertAfter)
@@ -55,6 +65,7 @@ void ObjectBrowserControlExt::Redraw()
     Redraw_Basenode();
     Redraw_Tunnel();
     Redraw_PlayerLocation(); // player location is just waypoints!
+    Redraw_PropertyBrush();
 }
 
 void ObjectBrowserControlExt::Redraw_Initialize()
@@ -136,6 +147,7 @@ void ObjectBrowserControlExt::Redraw_MainList()
     ExtNodes[Root_Basenode] = this->InsertTranslatedString("BaseNodesObList", 8);
     ExtNodes[Root_Tunnel] = this->InsertTranslatedString("TunnelObList", 9);
     ExtNodes[Root_PlayerLocation] = this->InsertTranslatedString("StartpointsObList", 12);
+    ExtNodes[Root_PropertyBrush] = this->InsertTranslatedString("PropertyBrushObList", 14);
     ExtNodes[Root_Delete] = this->InsertTranslatedString("DelObjObList", 10);
 }
 
@@ -561,6 +573,220 @@ void ObjectBrowserControlExt::Redraw_PlayerLocation()
     }
 }
 
+void ObjectBrowserControlExt::Redraw_PropertyBrush()
+{
+    HTREEITEM& hPropertyBrush = ExtNodes[Root_PropertyBrush];
+    if (hPropertyBrush == NULL)    return;
+
+    this->InsertTranslatedString("PropertyBrushBuilding", Const_PropertyBrush + Set_Building, hPropertyBrush);
+    this->InsertTranslatedString("PropertyBrushInfantry", Const_PropertyBrush + Set_Infantry, hPropertyBrush);
+    this->InsertTranslatedString("PropertyBrushVehicle", Const_PropertyBrush + Set_Vehicle, hPropertyBrush);
+    this->InsertTranslatedString("PropertyBrushAircraft", Const_PropertyBrush + Set_Aircraft, hPropertyBrush);
+}
+
+bool ObjectBrowserControlExt::DoPropertyBrush_Building()
+{
+    if (this->BuildingBrushDlg.get() == nullptr)
+        this->BuildingBrushDlg = std::make_unique<CPropertyBuilding>(CFinalSunDlg::Instance->MyViewFrame.pIsoView);
+
+    for (auto& v : this->BuildingBrushBools)
+        v = false;
+
+    return this->BuildingBrushDlg->FA2CDialog::DoModal() == IDOK;
+}
+
+bool ObjectBrowserControlExt::DoPropertyBrush_Aircraft()
+{
+    if (this->AircraftBrushDlg.get() == nullptr)
+        this->AircraftBrushDlg = std::make_unique<CPropertyAircraft>(CFinalSunDlg::Instance->MyViewFrame.pIsoView);
+
+    for (auto& v : this->AircraftBrushBools)
+        v = false;
+
+    return this->AircraftBrushDlg->FA2CDialog::DoModal() == IDOK;
+}
+
+bool ObjectBrowserControlExt::DoPropertyBrush_Vehicle()
+{
+    if (this->VehicleBrushDlg.get() == nullptr)
+        this->VehicleBrushDlg = std::make_unique<CPropertyUnit>(CFinalSunDlg::Instance->MyViewFrame.pIsoView);
+
+    for (auto& v : this->VehicleBrushBools)
+        v = false;
+
+    return this->VehicleBrushDlg->FA2CDialog::DoModal() == IDOK;
+}
+
+bool ObjectBrowserControlExt::DoPropertyBrush_Infantry()
+{
+    if (this->InfantryBrushDlg.get() == nullptr)
+        this->InfantryBrushDlg = std::make_unique<CPropertyInfantry>(CFinalSunDlg::Instance->MyViewFrame.pIsoView);
+
+    for (auto& v : this->InfantryBrushBools)
+        v = false;
+
+    return this->InfantryBrushDlg->FA2CDialog::DoModal() == IDOK;
+}
+
+void ObjectBrowserControlExt::ApplyPropertyBrush(int X, int Y)
+{
+    int nIndex = CMapData::Instance->GetCoordIndex(X, Y);
+    const auto& CellData = CMapData::Instance->CellDatas[nIndex];
+
+    if (CIsoView::CurrentType == Set_Building)
+    {
+        if (CellData.Structure != -1)
+            ApplyPropertyBrush_Building(CellData.Structure);
+    }
+    else if (CIsoView::CurrentType == Set_Infantry)
+    {
+        if (CellData.Infantry[0] != -1)
+            ApplyPropertyBrush_Infantry(CellData.Infantry[0]);
+        if (CellData.Infantry[1] != -1)
+            ApplyPropertyBrush_Infantry(CellData.Infantry[1]);
+        if (CellData.Infantry[2] != -1)
+            ApplyPropertyBrush_Infantry(CellData.Infantry[2]);
+    }
+    else if (CIsoView::CurrentType == Set_Vehicle)
+    {
+        if (CellData.Unit != -1)
+            ApplyPropertyBrush_Vehicle(CellData.Unit);
+    }
+    else if (CIsoView::CurrentType == Set_Aircraft)
+    {
+        if (CellData.Aircraft != -1)
+            ApplyPropertyBrush_Aircraft(CellData.Aircraft);
+    }
+}
+
+void ObjectBrowserControlExt::ApplyPropertyBrush_Building(int nIndex)
+{
+    CStructureData data;
+    CMapData::Instance->QueryStructureData(nIndex, data);
+    
+    auto ApplyValue = [&](int nCheckBoxIdx, ppmfc::CString& src, ppmfc::CString& dst)
+    {
+        if (BuildingBrushBools[nCheckBoxIdx - 1300])
+        {
+            if (!src.IsEmpty())
+                dst = src;
+        }
+    };
+
+    ApplyValue(1300, BuildingBrushDlg->CString_House, data.House);
+    ApplyValue(1301, BuildingBrushDlg->CString_HealthPoint, data.Health);
+    ApplyValue(1302, BuildingBrushDlg->CString_Direction, data.Facing);
+    ApplyValue(1303, BuildingBrushDlg->CString_Sellable, data.AISellable);
+    ApplyValue(1304, BuildingBrushDlg->CString_Rebuildable, data.AIRebuildable);
+    ApplyValue(1305, BuildingBrushDlg->CString_EnergySupport, data.PoweredOn);
+    ApplyValue(1306, BuildingBrushDlg->CString_UpgradeCount, data.Upgrades);
+    ApplyValue(1307, BuildingBrushDlg->CString_Spotlight, data.SpotLight);
+    ApplyValue(1308, BuildingBrushDlg->CString_Upgrade1, data.Upgrade1);
+    ApplyValue(1309, BuildingBrushDlg->CString_Upgrade2, data.Upgrade2);
+    ApplyValue(1310, BuildingBrushDlg->CString_Upgrade3, data.Upgrade3);
+    ApplyValue(1311, BuildingBrushDlg->CString_AIRepairs, data.AIRepairable);
+    ApplyValue(1312, BuildingBrushDlg->CString_ShowName, data.Nominal);
+    ApplyValue(1313, BuildingBrushDlg->CString_Tag, data.Tag);
+
+    CMapData::Instance->DeleteStructureData(nIndex);
+    CMapData::Instance->SetStructureData(data, nullptr, nullptr, 0, "");
+
+    ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
+}
+
+void ObjectBrowserControlExt::ApplyPropertyBrush_Infantry(int nIndex)
+{
+    CInfantryData data;
+    CMapData::Instance->QueryInfantryData(nIndex, data);
+
+    auto ApplyValue = [&](int nCheckBoxIdx, ppmfc::CString& src, ppmfc::CString& dst)
+    {
+        if (InfantryBrushBools[nCheckBoxIdx - 1300])
+        {
+            if (!src.IsEmpty())
+                dst = src;
+        }
+    };
+
+    ApplyValue(1300, InfantryBrushDlg->CString_House, data.House);
+    ApplyValue(1301, InfantryBrushDlg->CString_HealthPoint, data.Health);
+    ApplyValue(1302, InfantryBrushDlg->CString_State, data.Status);
+    ApplyValue(1303, InfantryBrushDlg->CString_Direction, data.Facing);
+    ApplyValue(1304, InfantryBrushDlg->CString_VerteranStatus, data.VeterancyPercentage);
+    ApplyValue(1305, InfantryBrushDlg->CString_Group, data.Group);
+    ApplyValue(1306, InfantryBrushDlg->CString_OnBridge, data.IsAboveGround);
+    ApplyValue(1307, InfantryBrushDlg->CString_AutoCreateNoRecruitable, data.AutoNORecruitType);
+    ApplyValue(1308, InfantryBrushDlg->CString_AutoCreateYesRecruitable, data.AutoYESRecruitType);
+    ApplyValue(1309, InfantryBrushDlg->CString_Tag, data.Tag);
+
+    CMapData::Instance->DeleteInfantryData(nIndex);
+    CMapData::Instance->SetInfantryData(data, nullptr, nullptr, 0, -1);
+
+    ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
+}
+
+void ObjectBrowserControlExt::ApplyPropertyBrush_Aircraft(int nIndex)
+{
+    CAircraftData data;
+    CMapData::Instance->QueryAircraftData(nIndex, data);
+
+    auto ApplyValue = [&](int nCheckBoxIdx, ppmfc::CString& src, ppmfc::CString& dst)
+    {
+        if (AircraftBrushBools[nCheckBoxIdx - 1300])
+        {
+            if (!src.IsEmpty())
+                dst = src;
+        }
+    };
+
+    ApplyValue(1300, AircraftBrushDlg->CString_House, data.House);
+    ApplyValue(1301, AircraftBrushDlg->CString_HealthPoint, data.Health);
+    ApplyValue(1302, AircraftBrushDlg->CString_Direction, data.Facing);
+    ApplyValue(1303, AircraftBrushDlg->CString_Status, data.Status);
+    ApplyValue(1304, AircraftBrushDlg->CString_VeteranLevel, data.VeterancyPercentage);
+    ApplyValue(1305, AircraftBrushDlg->CString_Group, data.Group);
+    ApplyValue(1306, AircraftBrushDlg->CString_AutoCreateNoRecruitable, data.AutoNORecruitType);
+    ApplyValue(1307, AircraftBrushDlg->CString_AutoCreateYesRecruitable, data.AutoYESRecruitType);
+    ApplyValue(1308, AircraftBrushDlg->CString_Tag, data.Tag);
+
+    CMapData::Instance->DeleteAircraftData(nIndex);
+    CMapData::Instance->SetAircraftData(data, nullptr, nullptr, 0, "");
+
+    ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
+}
+
+void ObjectBrowserControlExt::ApplyPropertyBrush_Vehicle(int nIndex)
+{
+    CUnitData data;
+    CMapData::Instance->QueryUnitData(nIndex, data);
+
+    auto ApplyValue = [&](int nCheckBoxIdx, ppmfc::CString& src, ppmfc::CString& dst)
+    {
+        if (VehicleBrushBools[nCheckBoxIdx - 1300])
+        {
+            if (!src.IsEmpty())
+                dst = src;
+        }
+    };
+
+    ApplyValue(1300, VehicleBrushDlg->CString_House, data.House);
+    ApplyValue(1301, VehicleBrushDlg->CString_HealthPoint, data.Health);
+    ApplyValue(1302, VehicleBrushDlg->CString_State, data.Status);
+    ApplyValue(1303, VehicleBrushDlg->CString_Direction, data.Facing);
+    ApplyValue(1304, VehicleBrushDlg->CString_VeteranLevel, data.VeterancyPercentage);
+    ApplyValue(1305, VehicleBrushDlg->CString_Group, data.Group);
+    ApplyValue(1306, VehicleBrushDlg->CString_OnBridge, data.IsAboveGround);
+    ApplyValue(1307, VehicleBrushDlg->CString_FollowerID, data.FollowsIndex);
+    ApplyValue(1308, VehicleBrushDlg->CString_AutoCreateNoRecruitable, data.AutoNORecruitType);
+    ApplyValue(1309, VehicleBrushDlg->CString_AutoCreateYesRecruitable, data.AutoYESRecruitType);
+    ApplyValue(1310, VehicleBrushDlg->CString_Tag, data.Tag);
+
+    CMapData::Instance->DeleteUnitData(nIndex);
+    CMapData::Instance->SetUnitData(data, nullptr, nullptr, 0, "");
+
+    ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
+}
+
 int ObjectBrowserControlExt::GuessType(const char* pRegName)
 {
     if (ExtSets[Set_Building].find(pRegName) != ExtSets[Set_Building].end())
@@ -676,16 +902,58 @@ void ObjectBrowserControlExt::OnExeTerminate()
     Owners.clear();
 }
 
-int ObjectBrowserControlExt::UpdateEngine(int nData)
+bool ObjectBrowserControlExt::UpdateEngine(int nData)
 {
-    if (nData < 10000)
-        switch (nData)
+    int nCode = nData / 10000;
+    nData %= 10000;
+
+    if (nCode == 9) // PropertyBrush
+    {
+        if (nData == Set_Building)
         {
-        case 114514:
-            return 0x51BB28;
-        default:
-            return 0x51AFBE;
+            if (this->DoPropertyBrush_Building())
+            {
+                CIsoView::CurrentCommand = 0x17; // PropertyBrush
+                CIsoView::CurrentType = Set_Building;
+            }
+            else
+                CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+            return true;
         }
-    else
-        return 0x51BB28;
+        else if (nData == Set_Infantry)
+        {
+            if (this->DoPropertyBrush_Infantry())
+            {
+                CIsoView::CurrentCommand = 0x17;
+                CIsoView::CurrentType = Set_Infantry;
+            }
+            else
+                CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+            return true;
+        }
+        else if (nData == Set_Vehicle)
+        {
+            if (this->DoPropertyBrush_Vehicle())
+            {
+                CIsoView::CurrentCommand = 0x17;
+                CIsoView::CurrentType = Set_Vehicle;
+            }
+            else
+                CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+            return true;
+        }
+        else if (nData == Set_Aircraft)
+        {
+            if (this->DoPropertyBrush_Aircraft())
+            {
+                CIsoView::CurrentCommand = 0x17;
+                CIsoView::CurrentType = Set_Aircraft;
+            }
+            else
+                CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+            return true;
+        }
+    }
+
+    return false;
 }

@@ -5,6 +5,8 @@
 
 #include "../../FA2sp.h"
 
+#include <CIsoView.h>
+
 DEFINE_HOOK(51CD20, ObjectBrowserControl_Redraw, 7)
 {
     if (ExtConfigs::BrowserRedraw)
@@ -15,6 +17,46 @@ DEFINE_HOOK(51CD20, ObjectBrowserControl_Redraw, 7)
     }
     return 0;
 }
+
+DEFINE_HOOK(51AF40, ObjectBrowserControl_OnSelectChanged, 7)
+{
+    GET_STACK(LPNMTREEVIEW, pNM, 0x4);
+
+    return
+        ((ObjectBrowserControlExt*)&CFinalSunDlg::Instance->ObjectBrowserView)->UpdateEngine(pNM->itemNew.lParam) ?
+        0x51CC8B :
+        0;
+}
+
+DEFINE_HOOK(461766, CIsoView_OnLButtonDown_PropertyBrush, 5)
+{
+    if (CIsoView::CurrentCommand == 0x17)
+    {
+        GET(const int, Y, EDI);
+        GET(const int, X, ESI);
+
+        ObjectBrowserControlExt::ApplyPropertyBrush(X, Y);
+
+        return 0x466860;
+    }
+
+    return 0;
+}
+
+//DEFINE_HOOK(45BF73, CIsoView_OnMouseMove_PropertyBrush, 9)
+//{
+//    if (CIsoView::CurrentCommand == 0x17)
+//    {
+//        GET_STACK(const int, X, STACK_OFFS(0x3D540, 0x3D510));
+//        GET_STACK(const int, Y, STACK_OFFS(0x3D540, 0x3D50C));
+//        
+//        ObjectBrowserControlExt::ApplyPropertyBrush(X, Y);
+//
+//        return 0x45CD6D;
+//    }
+//
+//    return 0;
+//}
 
 // Add a house won't update indices, so there might be hidden risks if not reloading the map.
 // That's why these hooks are not used.

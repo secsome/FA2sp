@@ -7,6 +7,11 @@
 #include <set>
 #include <map>
 
+#include <CPropertyBuilding.h>
+#include <CPropertyAircraft.h>
+#include <CPropertyInfantry.h>
+#include <CPropertyUnit.h>
+
 class NOVTABLE CFinalSunDlgExt : CFinalSunDlg
 {
 public:
@@ -22,7 +27,7 @@ class ObjectBrowserControlExt : public ObjectBrowserControl
         Root_Nothing = 0, Root_Ground, Root_Owner, Root_Infantry, Root_Vehicle,
         Root_Aircraft, Root_Building, Root_Terrain, Root_Smudge, Root_Overlay,
         Root_Waypoint, Root_Celltag, Root_Basenode, Root_Tunnel, Root_PlayerLocation,
-        Root_Delete, Root_Count
+        Root_PropertyBrush, Root_Delete, Root_Count
     };
 
     enum {
@@ -33,7 +38,7 @@ class ObjectBrowserControlExt : public ObjectBrowserControl
     {
         Const_Infantry = 10000, Const_Building = 20000, Const_Aircraft = 30000,
         Const_Vehicle = 40000, Const_Terrain = 50000, Const_Overlay = 63000,
-        Const_House = 70000, Const_Smudge = 80000
+        Const_House = 70000, Const_Smudge = 80000, Const_PropertyBrush = 90000
     };
 
     static std::array<HTREEITEM, Root_Count> ExtNodes;
@@ -42,6 +47,11 @@ class ObjectBrowserControlExt : public ObjectBrowserControl
     static std::set<ppmfc::CString> ExtSets[Set_Count];
     static std::map<ppmfc::CString, int> KnownItem;
     static std::map<ppmfc::CString, int> Owners;
+    static std::unique_ptr<CPropertyBuilding> BuildingBrushDlg;
+    static std::unique_ptr<CPropertyInfantry> InfantryBrushDlg;
+    static std::unique_ptr<CPropertyUnit> VehicleBrushDlg;
+    static std::unique_ptr<CPropertyAircraft> AircraftBrushDlg;
+
     HTREEITEM InsertString(const char* pString, DWORD dwItemData = 0, 
         HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
     HTREEITEM InsertTranslatedString(const char* pOriginString, DWORD dwItemData = 0,
@@ -62,11 +72,28 @@ class ObjectBrowserControlExt : public ObjectBrowserControl
     void Redraw_Basenode();
     void Redraw_Tunnel();
     void Redraw_PlayerLocation();
-public:
-    void Redraw();
-    int UpdateEngine(int nData);
-    static void OnExeTerminate();
+    void Redraw_PropertyBrush();
 
+    bool DoPropertyBrush_Building();
+    bool DoPropertyBrush_Infantry();
+    bool DoPropertyBrush_Vehicle();
+    bool DoPropertyBrush_Aircraft();
+
+public:
+    static bool BuildingBrushBools[14];
+    static bool InfantryBrushBools[10];
+    static bool VehicleBrushBools[11];
+    static bool AircraftBrushBools[9];
+
+    void Redraw();
+    bool UpdateEngine(int nData);
+    static void OnExeTerminate();
+    static void ApplyPropertyBrush(int X, int Y);
+    static void ApplyPropertyBrush_Building(int nIndex);
+    static void ApplyPropertyBrush_Infantry(int nIndex);
+    static void ApplyPropertyBrush_Aircraft(int nIndex);
+    static void ApplyPropertyBrush_Vehicle(int nIndex);
+    
     ppmfc::CString QueryUIName(const char* pRegName);
 
 public:

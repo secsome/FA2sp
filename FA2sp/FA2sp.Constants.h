@@ -1,15 +1,22 @@
 #pragma once
 
-constexpr int PRODUCT_MAJOR = 1;
-constexpr int PRODUCT_MINOR = 1;
-constexpr int PRODUCT_REVISION = 3;
-constexpr char* PRODUCT_STR = "1.1.3";
-constexpr char* DISPLAY_STR = PRODUCT_STR;
-constexpr char* VERSION_STRVER = "FA2sp 1.1.3";
+#define __str(x) __str_(x)
+#define __str_(x) #x
 
-constexpr char* PRODUCT_NAME = "FA2sp";
-constexpr char* APPLY_INFO = "Found Final Alert 2 version 1.02. Applying FA2sp 1.1.2.";
-// constexpr char* APPLY_INFO = "Found Final Alert 2 version 1.02. Applying FA2sp - "  __DATE__ " - " __TIME__;
+#define PRODUCT_MAJOR 1
+#define PRODUCT_MINOR 2
+#define PRODUCT_REVISION 0
+
+#define PRODUCT_STR __str(PRODUCT_MAJOR) "." __str(PRODUCT_MINOR) "." __str(PRODUCT_REVISION)
+#define DISPLAY_STR PRODUCT_STR
+#define PRODUCT_NAME "FA2sp"
+#define VERSION_STRVER PRODUCT_NAME " " PRODUCT_STR
+
+#define LOADING_VERSION "Final Alert 2 1.02 - " VERSION_STRVER
+#define LOADING_AUTHOR "FA2 by Matthias Wagner - FA2sp by secsome"
+#define LOADING_WEBSITE "Github Repository: https://github.com/secsome/FA2sp"
+
+#define APPLY_INFO "Found Final Alert 2 version 1.02. Applying " VERSION_STRVER
 
 constexpr char* MUTEX_HASH_VAL = "b8097bca8590a4f46c975ebb43503aab2243ce7f1c87f12f7984dbe1";
 constexpr char* MUTEX_INIT_ERROR_MSG = "The program has already launched! Some function may work not correctly. Do you still want to launch it?";

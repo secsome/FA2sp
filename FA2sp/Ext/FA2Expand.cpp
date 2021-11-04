@@ -1,6 +1,5 @@
 #include "FA2Expand.h"
 
-#include "CAircraftProperty/Body.h"
 #include "CAITriggerEnable/Body.h"
 #include "CAITriggerTypes/Body.h"
 #include "CAITriggerTypesEnable/Body.h"
@@ -28,6 +27,7 @@
 #include "CMMX/Body.h"
 #include "CNewHouse/Body.h"
 #include "COptions/Body.h"
+#include "CPropertyAircraft/Body.h"
 #include "CPropertyBuilding/Body.h"
 #include "CPropertyInfantry/Body.h"
 #include "CPropertyUnit/Body.h"
@@ -57,6 +57,10 @@ void __stdcall FA2Expand::ExeRun()
     CHousesExt::ProgramStartupInit();
     CLightingExt::ProgramStartupInit();
     // CIsoViewExt::ProgramStartupInit();
+    CPropertyAircraftExt::ProgramStartupInit();
+    CPropertyBuildingExt::ProgramStartupInit();
+    CPropertyInfantryExt::ProgramStartupInit();
+    CPropertyUnitExt::ProgramStartupInit();
     CTileSetBrowserFrameExt::ProgramStartupInit();
     CTriggerFrameExt::ProgramStartupInit();
     CTriggerOptionExt::ProgramStartupInit();
