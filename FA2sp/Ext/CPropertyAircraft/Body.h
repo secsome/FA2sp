@@ -1,12 +1,11 @@
 #pragma once
 
-#include <CPropertyUnit.h>
+#include <CPropertyAircraft.h>
 #include "../FA2Expand.h"
 
-class NOVTABLE CPropertyUnitExt : public CPropertyUnit
+class NOVTABLE CPropertyAircraftExt : public CPropertyAircraft
 {
 public:
-
 	BOOL PreTranslateMessageExt(MSG* pMsg);
 
 	static void ProgramStartupInit();

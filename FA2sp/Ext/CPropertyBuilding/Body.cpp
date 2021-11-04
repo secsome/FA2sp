@@ -1,6 +1,6 @@
 #include "Body.h"
 
-CPropertyBuilding* CPropertyBuildingExt::Instance = nullptr;
+#include "../CFinalSunDlg/Body.h"
 
 void CPropertyBuildingExt::ProgramStartupInit()
 {
@@ -9,37 +9,32 @@ void CPropertyBuildingExt::ProgramStartupInit()
 
 BOOL CPropertyBuildingExt::PreTranslateMessageExt(MSG* pMsg)
 {
-	switch (pMsg->message) {
-
-	default:
-		break;
+#define DECLARE_BST(id) \
+if(pMsg->hwnd == this->GetDlgItem(id)->GetSafeHwnd()) \
+{ \
+	bool tmp = ::SendMessage(::GetDlgItem(*this, id), BM_GETCHECK, 0, 0) == BST_CHECKED; \
+	::SendMessage(::GetDlgItem(*this, id), BM_SETCHECK, tmp ? BST_UNCHECKED : BST_CHECKED, 0); \
+	ObjectBrowserControlExt::BuildingBrushBools[id-1300] = tmp == false; \
+}
+	if (pMsg->message == WM_LBUTTONUP)
+	{
+		DECLARE_BST(1300)
+	else DECLARE_BST(1301)
+	else DECLARE_BST(1302)
+	else DECLARE_BST(1303)
+	else DECLARE_BST(1304)
+	else DECLARE_BST(1305)
+	else DECLARE_BST(1306)
+	else DECLARE_BST(1307)
+	else DECLARE_BST(1308)
+	else DECLARE_BST(1309)
+	else DECLARE_BST(1310)
+	else DECLARE_BST(1311)
+	else DECLARE_BST(1312)
+	else DECLARE_BST(1313)
 	}
+
+#undef DECLARE_BST
+
 	return this->FA2CDialog::PreTranslateMessage(pMsg);
 }
-
-// TODO
-// CACO TRY THIS, IT'S EASY
-// Hook/Rewrite OnInitDialog
-// 
-// Powerups stupid error
-// Houses Reader
-//
-// You can have a look on CScriptTypesExt as a reference
-//
-//BOOL CPropertyBuildingExt::OnInitDialogExt()
-//{
-//	if (!this->FA2CDialog::OnInitDialog())
-//		return FALSE;
-//
-//	// INITIALIZE WORKS
-//
-//	return TRUE;
-//}
-//
-//DEFINE_HOOK(417F40, CPropertyBuilding_OnInitDialog, 7)
-//{
-//	GET(CPropertyBuildingExt*, pThis, ECX);
-//	R->EAX(pThis->CPropertyBuildingExt::OnInitDialogExt());
-//
-//	return 0x41A4AE;
-//}

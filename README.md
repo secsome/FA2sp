@@ -11,6 +11,9 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-11-04 RELEASE 1.2.0) ==============================================================================================
++) New ObjectBrowser items: Property brushes (FALanguage has been updated)
+
 ======================= Changes (2021-11-02 RELEASE 1.1.3) ==============================================================================================
 *) Fixed the bug that EVA(md).ini cannot be loaded
 *) Now ScriptsRA2 will correctly read inconsistent keys
@@ -659,6 +662,11 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) LightingGround = TEXT
                 +) LightingNukeAmbientChangeRate = TEXT
                 +) LightingDominatorAmbientChangeRate = TEXT
+                +) PropertyBrushObList = TEXT
+                +) PropertyBrushBuilding = TEXT
+                +) PropertyBrushInfantry = TEXT
+                +) PropertyBrushVehicle = TEXT
+                +) PropertyBrushAircraft = TEXT
 
 - WRITE IN THE END
 This project was developed after FA2Copy with still many bugs to fix,

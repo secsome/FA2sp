@@ -1,5 +1,7 @@
 #include "Body.h"
 
+#include <Helpers/Macro.h>
+
 int CTriggerActionExt::nCurrentParamCode;
 
 DEFINE_HOOK(4F8617, CTriggerAction_OnLBParamsSelChanged_SetCurrentParamCode, 7)
@@ -36,6 +38,16 @@ DEFINE_HOOK(4F8BC4, CTriggerAction_OnCBParamValueEditChanged_WriteParamValue, 6)
         if (sscanf_s(pParamValue, "%f", &fValue) == 1)
             pParamValue.Format("%010u", *(unsigned int*)&fValue);
     }
+
+    return 0;
+}
+
+DEFINE_HOOK(4F6A97, CTriggerAction_OnCBActionTypeEditChanged_DescFix, 5)
+{
+    REF_STACK(ppmfc::CString, lpDesc, STACK_OFFS(0x1B8, 0x140));
+
+    lpDesc.Replace("\\n", "\n");
+    lpDesc.Replace("\\t", "\t");
 
     return 0;
 }

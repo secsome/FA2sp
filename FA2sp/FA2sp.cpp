@@ -145,7 +145,9 @@ static ULONG_PTR ulCookie;
 DEFINE_HOOK(537129, ExeRun, 9)
 {
 #ifdef _DEBUG
+	// system("taskkill /IM Syringe.exe /F");
 	MessageBox(NULL, APPLY_INFO, PRODUCT_NAME, MB_OK);
+	
 #endif
 	bool bMutexResult = MutexHelper::Attach(MUTEX_HASH_VAL);
 	if (!bMutexResult) {
@@ -202,6 +204,19 @@ DEFINE_HOOK(537129, ExeRun, 9)
 			FA2sp::pExceptionHandler = AddVectoredExceptionHandler(1, Exception::ExceptionFilter);
 		}
 	}*/
+
+	return 0;
+}
+
+#include <CLoading.h>
+
+DEFINE_HOOK(47FACE, CLoading_OnInitDialog_ProgramInfo, 7)
+{
+	GET(CLoading*, pThis, ESI);
+
+	pThis->CSCVersion.SetWindowText(LOADING_VERSION);
+	pThis->CSCBuiltby.SetWindowText(LOADING_AUTHOR);
+	pThis->SetDlgItemText(1300, LOADING_WEBSITE);
 
 	return 0;
 }
