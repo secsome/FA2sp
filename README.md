@@ -13,7 +13,7 @@ Compile Using C++ Standard Now: C++14
 
 ======================= Changes (2021-11-XX RELEASE 1.2.1) ==============================================================================================
 *) Remove a hook that might lead to some problem
-*) Adjust some UI
+*) Adjust some rc file
 
 ======================= Changes (2021-11-04 RELEASE 1.2.0) ==============================================================================================
 +) New ObjectBrowser items: Property brushes (FALanguage has been updated)
