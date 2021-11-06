@@ -5,6 +5,36 @@
 #include <Drawing.h>
 
 #include "Logger.h"
+
+//DEFINE_HOOK(438DB0, Debug_Map, 6)
+//{
+//    Logger::Raw(__FUNCTION__"\n");
+//    Logger::Raw("Size = %d\n", CMapData::Instance->HeightDatas.size());
+//    for (auto& pair : CMapData::Instance->HeightDatas)
+//        Logger::Raw("%d %d\n", pair.first, pair.second);
+//    Logger::Wrap(2);
+//
+//    return 0x438E4E;
+//}
+
+//DEFINE_HOOK(466890, Math_ClientCoord2WHAT_Begin, 8)
+//{
+//    GET_STACK(int* const, pX, STACK_OFFS(0x0, -0x4));
+//    GET_STACK(int* const, pY, STACK_OFFS(0x0, -0x8));
+//
+//    Logger::Debug(__FUNCTION__ " (X, Y) = (%d %d)\n", *pY, *pX);
+//
+//    double yy = *pY * 0.033333335;
+//    double xx = *pX * 0.016666668;
+//
+//    int x = yy - xx + CMapData::Instance->MapWidthPlusHeight * 0.5 + 1.5;
+//    int y = xx + yy - CMapData::Instance->MapWidthPlusHeight * 0.5 - 0.5 + 1.0;
+//
+//    Logger::Debug(__FUNCTION__ " calculated (X, Y) = (%d %d)\n", y, x);
+// 
+//    return 0;
+//}
+
 //
 //DEFINE_HOOK(438DB0, CrashMePlease, 6)
 //{

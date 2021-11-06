@@ -10,6 +10,15 @@
 #include "../CLoading/Body.h"
 #include "../../Helpers/STDHelpers.h"
 
+DEFINE_HOOK(46DE00, CIsoView_Draw, 7)
+{
+	GET(CIsoViewExt*, pThis, ECX);
+
+	pThis->OnDraw();
+
+	return 0x46DE59;
+}
+
 DEFINE_HOOK(45AF03, CIsoView_StatusBar_YXTOXY_YToX_1, 7)
 {
 	GET_STACK(int, nPointX, 0x30);

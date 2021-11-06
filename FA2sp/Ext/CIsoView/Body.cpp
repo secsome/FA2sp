@@ -2,8 +2,12 @@
 
 #include "../../FA2sp.h"
 
+#include <CFinalSunApp.h>
+#include <CFinalSunDlg.h>
+
 #include <WindowsX.h>
 #include <CPalette.h>
+#include <CTileTypeClass.h>
 
 #include <CMapData.h>
 #include <Drawing.h>
@@ -26,6 +30,171 @@ bool CIsoViewExt::DrawBounds = true;
 void CIsoViewExt::ProgramStartupInit()
 {
     // RunTime::ResetMemoryContentAt(0x594518, CIsoViewExt::PreTranslateMessageExt);
+}
+
+void CIsoViewExt::OnDraw()
+{
+    if (CMapData::MapNotLoaded)
+        return;
+
+    if (OverlayData::LastOverlayData)
+    {
+        OverlayData::LastOverlayData = nullptr;
+        return;
+    }
+
+    CFinalSunDlg::LastSucceededOperation = 100;
+    CMapData::Instance->UpdateCurrentDocument();
+
+    if (!this->lpDDPrimarySurface)
+        return;
+
+    if (this->IsInitializing || !CTileTypeClass::Instance || !*CTileTypeClass::Instance || !*CTileTypeClass::InstanceCount)
+        return;
+
+    if (this->lpDDPrimarySurface->IsLost())
+    {
+        this->PrimarySurfaceLost();
+        return;
+    }
+
+    if (!CMapData::Instance->MapWidthPlusHeight)
+        return;
+
+    DDBLTFX ddBltfx;
+    ZeroMemory(&ddBltfx, sizeof(ddBltfx));
+    ddBltfx.dwSize = sizeof(ddBltfx);
+    ddBltfx.dwFillColor = 0xFFFFFF;
+    this->lpDDBackBufferSurface->Blt(nullptr, nullptr, nullptr, DDBLT_COLORFILL, &ddBltfx);
+
+    RECT windowRect, clientRect;
+    this->GetWindowRect(&windowRect);
+    this->GetClientRect(&clientRect);
+
+    auto dX = this->ViewPosition.x - windowRect.left * ONE_SIXTH;
+    auto dY = this->ViewPosition.y - windowRect.top * ONE_THIRD;
+
+    RECT fullRect
+    {
+        clientRect.right + dX,
+        clientRect.top + dY,
+        windowRect.left + dX,
+        windowRect.bottom + dY
+    };
+
+    int Coord_X, Coord_Y;
+
+    this->CalculateViewBounds(fullRect.left, fullRect.top, Coord_X, Coord_Y);
+    this->CalculateViewBounds(fullRect.right, fullRect.bottom, Coord_X, Coord_Y);
+
+    int _right = Coord_X;
+    int _left = fullRect.left;
+    fullRect.right = windowRect.left + clientRect.right + dX;
+    fullRect.bottom = clientRect.bottom + windowRect.top + dY;
+    fullRect.top = clientRect.top + dY;
+    fullRect.left = clientRect.left + dX;
+
+    this->CalculateViewBounds(fullRect.left, fullRect.top, Coord_X, Coord_Y);
+    this->CalculateViewBounds(fullRect.right, fullRect.bottom, Coord_X, Coord_Y);
+
+    RECT finalRect{ _left - 2,fullRect.top - 2,_right + 2,fullRect.bottom + 2 };
+    if (finalRect.left < 0)
+        finalRect.left = 0;
+    if (finalRect.top < 0)
+        finalRect.top = 0;
+    if (finalRect.right > CMapData::Instance->MapWidthPlusHeight || finalRect.right < finalRect.left)
+        finalRect.right = CMapData::Instance->MapWidthPlusHeight;
+    if (finalRect.bottom > CMapData::Instance->MapWidthPlusHeight || finalRect.bottom < finalRect.top)
+        finalRect.bottom = CMapData::Instance->MapWidthPlusHeight;
+
+    int nHeightBase = CINI::CurrentTheater->GetInteger("General", "HeightBase");
+    int nHeightData = CMapData::Instance->HeightDatas[nHeightBase];
+    
+    int nMapWidth = CMapData::Instance->Size.right;
+    int nMapHeight = CMapData::Instance->Size.bottom;
+
+    DDSURFACEDESC2 ddsd;
+    ZeroMemory(&ddsd, sizeof(ddsd));
+    ddsd.dwSize = sizeof(ddsd);
+    ddsd.dwFlags = DDSD_WIDTH | DDSD_HEIGHT;
+
+    this->lpDDBackBufferSurface->GetSurfaceDesc(&ddsd);
+    this->lpDDBackBufferSurface->Lock(nullptr, &ddsd, DDLOCK_WAIT | DDLOCK_NOSYSLOCK, NULL);
+    
+    for (int i = finalRect.left; i < finalRect.right; ++i)
+    {
+        for (int j = finalRect.top; j < finalRect.bottom; ++j)
+        {
+            auto pCell = CMapData::Instance->TryGetCellAt(j, i);
+            int X = i, Y = j;
+            if (CFinalSunApp::Instance->FlatToGround)
+                this->MapCoord2ScreenCoord_Flat(X, Y);
+            else
+                this->MapCoord2ScreenCoord_Height(X, Y);
+            
+            X -= dX;
+            Y -= dY;
+
+            // Now X and Y is the center
+            // Left coord is X - 14, Y - 7
+        }
+    }
+    
+    this->lpDDBackBufferSurface->Unlock(nullptr);
+    this->lpDDTempBufferSurface->Blt(nullptr, this->lpDDBackBufferSurface, nullptr, NULL, nullptr);
+
+    this->lpDD7->WaitForVerticalBlank(DDWAITVB_BLOCKEND, NULL);
+    this->lpDDPrimarySurface->Blt(nullptr, this->lpDDBackBufferSurface, nullptr, NULL, nullptr);
+
+    CFinalSunDlg::LastSucceededOperation = 10100;
+}
+
+void CIsoViewExt::CalculateViewBounds(LONG& rect_X, LONG& rect_Y, int& Coord_X, int& Coord_Y)
+{
+    Coord_X = rect_X;
+    Coord_Y = rect_Y;
+    this->ScreenCoord2MapCoord(Coord_X, Coord_Y);
+
+    bool exit = false;
+    for (int k = 15; k > 0 && exit; --k)
+    {
+        for (int i = 0; i < 3; ++i)
+        {
+            int a = k + Coord_X;
+            int b = k + Coord_Y;
+            if (i == 1)
+                --a;
+            else if (i == 2)
+                --b;
+
+            int aa = a;
+            int bb = b;
+            if (a >= 0 && b >= 0 && a < CMapData::Instance->MapWidthPlusHeight && b < CMapData::Instance->MapWidthPlusHeight)
+            {
+                auto pCellData = CMapData::Instance->TryGetCellAt(b, a);
+                this->MapCoord2ScreenCoord_Height(a, b);
+
+                auto c = rect_X - a;
+                auto d = rect_Y - b - 15;
+
+                auto e = c * ONE_SIXTH;
+                auto f = d * ONE_THIRD;
+
+                if (!(f - e + 1) && !(e + f) || !CFinalSunDlg::ControlKeyIsDown && rect_Y - b > 30)
+                {
+                    rect_X = aa;
+                    rect_Y = bb;
+                    exit = true;
+                    break;
+                }
+            }
+        }
+    }
+    if (!exit)
+    {
+        rect_X = Coord_X;
+        rect_Y = Coord_Y;
+    }
 }
 
 void CIsoViewExt::DrawLockedCellOutline(int X, int Y, int W, int H, COLORREF color, bool bUseDot, bool bUsePrimary, LPDDSURFACEDESC2 lpDesc)
