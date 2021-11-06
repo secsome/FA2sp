@@ -135,8 +135,26 @@ void CIsoViewExt::OnDraw()
             X -= dX;
             Y -= dY;
 
-            // Now X and Y is the center
-            // Left coord is X - 14, Y - 7
+            Y -= 49;
+
+            // Now (X, Y) is just the center of a cell
+
+            if (pCell->CellTag != -1)
+            {
+                this->DrawCelltag(X, Y);
+                BGRStruct ddColor;
+                ddColor.R = 0;
+                ddColor.G = 0;
+                ddColor.B = 0xFF;
+
+                if (X > 0 && X < ddsd.dwWidth && Y > 0 && Y < ddsd.dwHeight)
+                {
+                    auto ptr = (unsigned char*)ddsd.lpSurface + ddsd.lPitch * Y + X * *(int*)0x72A8C0;
+                    memcpy(ptr, &ddColor, *(int*)0x72A8C0);
+                }
+
+                this->DrawLockedCellOutline(X - 30, Y + 15, 1, 1, 0xFF, false, false, &ddsd);
+            }
         }
     }
     
