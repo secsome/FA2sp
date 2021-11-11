@@ -6,6 +6,7 @@
 #include <array>
 #include <set>
 #include <map>
+#include <memory>
 
 #include <CPropertyBuilding.h>
 #include <CPropertyAircraft.h>
