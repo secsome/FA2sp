@@ -14,6 +14,8 @@ Compile Using C++ Standard Now: C++14
 ======================= Changes (2021-11-XX RELEASE 1.2.1) ==============================================================================================
 *) Remove a hook that might lead to some problem
 *) Adjust some rc file
+*) Fixed BrowserRedraw.SafeHouses not working correctly
+*) Now property brush handles mouse move too
 
 ======================= Changes (2021-11-04 RELEASE 1.2.0) ==============================================================================================
 +) New ObjectBrowser items: Property brushes (FALanguage has been updated)

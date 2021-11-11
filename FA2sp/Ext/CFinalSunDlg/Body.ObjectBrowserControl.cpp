@@ -181,35 +181,44 @@ void ObjectBrowserControlExt::Redraw_Owner()
     HTREEITEM& hOwner = ExtNodes[Root_Owner];
     if (hOwner == NULL)    return;
 
-    auto& doc = CINI::CurrentDocument();
-
-
-    if (CINI::CurrentDocument->GetBool("Basic", "MultiplayerOnly"))
+    if (ExtConfigs::BrowserRedraw_SafeHouses)
     {
-        auto& section = Variables::Rules.GetSection("Countries");
-        auto itr = section.begin();
-        for (size_t i = 0, sz = section.size(); i < sz; ++i, ++itr)
-            if (strcmp(itr->second, "Neutral") == 0 || strcmp(itr->second, "Special") == 0)
-                this->InsertString(itr->second, Const_House + i, hOwner);
-    }
-    else
-    {
-        if (ExtConfigs::BrowserRedraw_SafeHouses)
+        if (CMapData::Instance->IsMultiOnly())
+        {
+            auto& section = Variables::Rules.GetSection("Countries");
+            auto itr = section.begin();
+            for (size_t i = 0, sz = section.size(); i < sz; ++i, ++itr)
+                if (strcmp(itr->second, "Neutral") == 0 || strcmp(itr->second, "Special") == 0)
+                    this->InsertString(itr->second, Const_House + i, hOwner);
+        }
+        else
         {
             auto& section = Variables::Rules.ParseIndicies("Houses", true);
             for (size_t i = 0, sz = section.size(); i < sz; ++i)
                 this->InsertString(section[i], Const_House + i, hOwner);
         }
-        else
+    }
+    else
+    {
+        if (CMapData::Instance->IsMultiOnly())
         {
-            if (auto pSection = CINI::Rules->GetSection("Houses"))
+            if (auto pSection = CINI::Rules->GetSection("Countries"))
             {
                 auto& section = pSection->EntitiesDictionary;
                 size_t i = 0;
                 for (auto& itr : section)
                     this->InsertString(itr.second, Const_House + i++, hOwner);
             }
-           
+        }
+        else
+        {
+            if (auto pSection = CINI::CurrentDocument->GetSection("Houses"))
+            {
+                auto& section = pSection->EntitiesDictionary;
+                size_t i = 0;
+                for (auto& itr : section)
+                    this->InsertString(itr.second, Const_House + i++, hOwner);
+            }
         }
     }
 }
