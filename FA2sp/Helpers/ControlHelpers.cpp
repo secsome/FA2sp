@@ -3,6 +3,8 @@
 #include "STDHelpers.h"
 #include "MultimapHelper.h"
 
+#include "../FA2sp.h"
+
 #include <CMapData.h>
 
 namespace ControlHelpers
@@ -16,11 +18,7 @@ namespace ControlHelpers
     {
         ComboBox::Clear(combobox);
 
-        auto& doc = CINI::CurrentDocument();
-        MultimapHelper mmh;
-        mmh.AddINI(&doc);
-
-        auto& entries = mmh.ParseIndicies("Houses", true);
+        auto& entries = Variables::Rules.ParseIndicies("Houses", true);
         CString buffer;
         for (size_t i = 0, sz = entries.size(); i < sz; ++i)
         {
@@ -31,8 +29,7 @@ namespace ControlHelpers
             combobox.SetItemData(combobox.AddString(buffer), i);
         }
 
-        bool bMultiOnly = doc.GetBool("Basic", "MultiplayerOnly");
-        if (bMultiOnly)
+        if (CMapData::Instance->IsMultiOnly())
         {
             if (bShowIndex)
             {
@@ -63,18 +60,13 @@ namespace ControlHelpers
     {
         ComboBox::Clear(combobox);
         auto& doc = CINI::CurrentDocument();
-        bool bMultiOnly = doc.GetBool("Basic", "MultiplayerOnly");
-        if (bMultiOnly)
+        if (CMapData::Instance->IsMultiOnly())
         {
             ComboBox::LoadHouses(combobox, bShowIndex);
             return;
         }
 
-        MultimapHelper mmh;
-        mmh.AddINI(&CINI::Rules());
-        mmh.AddINI(&CINI::CurrentDocument());
-
-        auto& entries = mmh.ParseIndicies("Countries", true);
+        auto& entries = Variables::Rules.ParseIndicies("Countries", true);
         CString buffer;
         for (size_t i = 0, sz = entries.size(); i < sz; ++i)
         {
@@ -90,11 +82,7 @@ namespace ControlHelpers
     {
         ComboBox::Clear(combobox);
 
-        MultimapHelper mmh;
-        mmh.AddINI(&CINI::Rules());
-        mmh.AddINI(&CINI::CurrentDocument());
-
-        auto& entries = mmh.ParseIndicies(pSection, true);
+        auto& entries = Variables::Rules.ParseIndicies(pSection, true);
         CString buffer;
         for (size_t i = 0, sz = entries.size(); i < sz; ++i)
         {

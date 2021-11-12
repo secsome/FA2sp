@@ -30,10 +30,8 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         buffer.Format("%d", pINI->GetInteger("FA2spVersionControl", "Version") + 1);
         pINI->WriteString("FA2spVersionControl", "Version", buffer);
 
-        // Begin of Preprocesses
-
-        // Step 1 : Remove empty sections and keys
-        /*std::vector<ppmfc::CString> sectionsToRemove;
+        Logger::Debug("SaveMap : Now removing empty sections and keys.\n");
+        std::vector<ppmfc::CString> sectionsToRemove;
         for (auto& section_pair : pINI->Dict)
         {
             ppmfc::CString buffer;
@@ -58,17 +56,17 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
                 sectionsToRemove.push_back(section_pair.first);
         }
         for (auto& section : sectionsToRemove)
-            pINI->DeleteSection(section);*/
+            pINI->DeleteSection(section);
 
         if (bGeneratePreview)
         {
+            Logger::Debug("SaveMap : Now generating a hidden preview as vanilla FA2 does.\n");
             pINI->DeleteSection("Preview");
             pINI->DeleteSection("PreviewPack");
             pINI->WriteString("Preview", "Size", "0,0,106,61");
             pINI->WriteString("PreviewPack", "1", "yAsAIAXQ5PDQ5PDQ6JQATAEE6PDQ4PDI4JgBTAFEAkgAJyAATAG0AydEAEABpAJIA0wBVA");
             pINI->WriteString("PreviewPack", "2", "BIACcgAEwBtAMnRABAAaQCSANMAVQASAAnIABMAbQDJ0QAQAGkAkgDTAFUAEgAJyAATAG0");
         }
-        // End of Preprocesses
 
         if (ExtConfigs::SaveMap_OnlySaveMAP) 
         {
@@ -79,7 +77,7 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
                 filepath = filepath.Mid(0, nExtIndex) + ".map";
         }
 
-        Logger::Debug("Trying to save map to %s\n", filepath);
+        Logger::Debug("SaveMap : Trying to save map to %s.\n", filepath);
 
         std::ofstream fout;
         fout.open(filepath, std::ios::out | std::ios::trunc);
@@ -103,11 +101,15 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
                 fout << "\n";
             }
 
+            fout.flush();
             fout.close();
+
+            Logger::Debug("SaveMap : Successfully saved %d sections.\n", pINI->Dict.size());
         }
         else
         {
             FA2sp::Buffer.Format("Failed to create file %s.\n", filepath);
+            Logger::Warn("SaveMap : %s", FA2sp::Buffer);
             ::MessageBox(NULL, FA2sp::Buffer, "Error", MB_OK | MB_ICONERROR);
         }
 
@@ -202,7 +204,7 @@ public:
                     mapName.SetAt(i, '-');
 
             const auto ext = 
-                !ExtConfigs::SaveMap_OnlySaveMAP && CINI::CurrentDocument->GetBool("Basic", "MultiplayerOnly") ?
+                !ExtConfigs::SaveMap_OnlySaveMAP && CMapData::Instance->IsMultiOnly() ?
                 CLoading::HasMdFile() ?
                 "yrm" :
                 "mpr" :
@@ -268,7 +270,7 @@ public:
                 mapName.SetAt(i, '-');
 
         const auto ext = 
-            !ExtConfigs::SaveMap_OnlySaveMAP && CINI::CurrentDocument->GetBool("Basic", "MultiplayerOnly") ?
+            !ExtConfigs::SaveMap_OnlySaveMAP && CMapData::Instance->IsMultiOnly() ?
             CLoading::HasMdFile() ?
             "yrm" :
             "mpr" :
