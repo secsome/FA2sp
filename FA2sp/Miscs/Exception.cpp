@@ -1,4 +1,5 @@
 #include "Exception.h"
+#include "SaveMap.h"
 
 #include "../FA2sp.h"
 #include "../FA2sp.Constants.h"
@@ -8,6 +9,7 @@
 #include <CFinalSunApp.h>
 #include <CFinalSunDlg.h>
 #include <CLoading.h>
+#include <FA2PP.h>
 
 LONG CALLBACK Exception::ExceptionFilter(PEXCEPTION_POINTERS const pExs)
 {
@@ -122,9 +124,12 @@ LONG CALLBACK Exception::ExceptionFilter(PEXCEPTION_POINTERS const pExs)
 	Logger::Raw("Trying to save current map.\n");
 	ppmfc::CString fcrash_backup = CFinalSunApp::ExePath();
 	fcrash_backup += "\\fcrash_backup.map";
-	MessageBox(CFinalSunDlg::Instance->m_hWnd, "Current MapData has been saved as fcrash_backup.map.", "Fatal Error!", MB_OK | MB_ICONINFORMATION);
 
+	SaveMapExt::IsAutoSaving = true;
 	CFinalSunDlg::Instance->SaveMap(fcrash_backup);
+	SaveMapExt::IsAutoSaving = false;
+
+	MessageBox(CFinalSunDlg::Instance->m_hWnd, "Current MapData has been saved as fcrash_backup.map.", "Fatal Error!", MB_OK | MB_ICONINFORMATION);
 	CLoading::Instance->Release();
 
 	CINI::Rules->Release();
@@ -193,11 +198,22 @@ std::wstring Exception::FullDump(
 	ExitProcess(ExitCode);
 }
 
-//ifdef DUMP_EXTENSIVE
-//DEFINE_HOOK(434920, Exception_Handler, 7)
-//{
-//	//GET(int, code, ECX);s
-//	GET(LPEXCEPTION_POINTERS, pExs, EDX);
-//	Exception::ExceptionHandler(pExs);
-//}
-//endif
+DEFINE_HOOK(435270, CFinalSunDlg_DoModal, 8)
+{
+	GET(CFinalSunDlg*, pThis, ECX);
+
+	::SetUnhandledExceptionFilter(Exception::ExceptionFilter);
+	Logger::Info("FA2sp UnhandledExceptionFliter installed!\n");
+
+	if (DebugActiveProcessStop(GetCurrentProcessId()))
+	{
+		WinExec("taskkill /IM Syringe.exe /F", SW_HIDE);
+		Logger::Info("Syringe detached!\n");
+	}
+	else
+		Logger::Warn("Failed to detach Syringe! Error code = %X!\n", GetLastError());
+	
+	R->EAX(pThis->FA2CDialog::DoModal());
+
+	return 0x435286;
+}

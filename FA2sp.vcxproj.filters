@@ -144,6 +144,9 @@
     <ClInclude Include="FA2sp\Ext\CPropertyAircraft\Body.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2sp\Miscs\SaveMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">
@@ -302,7 +305,7 @@
     <ClCompile Include="FA2sp\Miscs\Exception.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Miscs\Hooks.SaveMap.cpp">
+    <ClCompile Include="FA2sp\Miscs\SaveMap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Ext\CAITriggerTypes\Body.cpp">

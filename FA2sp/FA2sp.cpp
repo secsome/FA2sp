@@ -199,12 +199,6 @@ DEFINE_HOOK(537129, ExeRun, 9)
 	}
 #endif
 
-	/*if (HINSTANCE handle = GetModuleHandle("kernel32.dll")) {
-		if (GetProcAddress(handle, "AddVectoredExceptionHandler")) {
-			FA2sp::pExceptionHandler = AddVectoredExceptionHandler(1, Exception::ExceptionFilter);
-		}
-	}*/
-
 	return 0;
 }
 
@@ -236,13 +230,6 @@ DEFINE_HOOK(537208, ExeTerminate, 9)
 #ifdef ENABLE_VISUAL_STYLE
 	::DeactivateActCtx(NULL, ulCookie);
 #endif
-
-	/*if (HINSTANCE handle = GetModuleHandle("kernel32.dll")) {
-		if (GetProcAddress(handle, "RemoveVectoredExceptionHandler")) {
-			RemoveVectoredExceptionHandler(FA2sp::pExceptionHandler);
-			FA2sp::pExceptionHandler = nullptr;
-		}
-	}*/
 
 	GET(UINT, result, EAX);
 	ExitProcess(result);

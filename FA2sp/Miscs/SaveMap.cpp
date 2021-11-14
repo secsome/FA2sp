@@ -1,3 +1,5 @@
+#include "SaveMap.h"
+
 #include <Helpers/Macro.h>
 
 #include <CINI.h>
@@ -151,111 +153,37 @@ DEFINE_HOOK(42B2EA, CFinalSunDlg_SaveMap_SkipStringDTOR, C)
     return ExtConfigs::SaveMap ? 0x42B30F : 0;
 }
 
-class SaveMapExt
+void SaveMapExt::ResetTimer()
 {
-private:
-    static UINT_PTR Timer;
-public:
-    static bool IsAutoSaving;
-    static ppmfc::CString FileName;
-
-    static void ResetTimer()
+    StopTimer();
+    if (ExtConfigs::SaveMap_AutoSave_Interval >= 30)
     {
-        StopTimer();
-        if (ExtConfigs::SaveMap_AutoSave_Interval >= 30)
-        {
-            if (Timer = SetTimer(NULL, NULL, 1000 * ExtConfigs::SaveMap_AutoSave_Interval, SaveMapCallback))
-                Logger::Debug("Successfully created timer with ID = %p.\n", Timer);
-            else
-                Logger::Debug("Failed to create timer! Auto-save is currently unable to use!\n");
-        }
+        if (Timer = SetTimer(NULL, NULL, 1000 * ExtConfigs::SaveMap_AutoSave_Interval, SaveMapCallback))
+            Logger::Debug("Successfully created timer with ID = %p.\n", Timer);
+        else
+            Logger::Debug("Failed to create timer! Auto-save is currently unable to use!\n");
     }
+}
 
-    static void StopTimer()
+void SaveMapExt::StopTimer()
+{
+    if (Timer != NULL)
     {
-        if (Timer != NULL)
-        {
-            KillTimer(NULL, Timer);
-            Timer = NULL;
-        }
+        KillTimer(NULL, Timer);
+        Timer = NULL;
     }
+}
 
-    static void RemoveEarlySaves()
+void SaveMapExt::RemoveEarlySaves()
+{
+    if (ExtConfigs::SaveMap_AutoSave_MaxCount != -1)
     {
-        if (ExtConfigs::SaveMap_AutoSave_MaxCount != -1)
+        struct FileTimeComparator
         {
-            struct FileTimeComparator
-            {
-                bool operator()(const FILETIME& a, const FILETIME& b) const { return CompareFileTime(&a, &b) == -1; }
-            };
+            bool operator()(const FILETIME& a, const FILETIME& b) const { return CompareFileTime(&a, &b) == -1; }
+        };
 
-            std::map<FILETIME, ppmfc::CString, FileTimeComparator> m;
-            auto mapName = CINI::CurrentDocument->GetString("Basic", "Name","No Name");
-
-            /*
-            * Fix : Windows file name cannot begin with space and cannot have following characters:
-            * \ / : * ? " < > |
-            */
-            for (int i = 0; i < mapName.GetLength(); ++i)
-                if (mapName[i] == '\\' || mapName[i] == '/' || mapName[i] == ':' ||
-                    mapName[i] == '*' || mapName[i] == '?' || mapName[i] == '"' ||
-                    mapName[i] == '<' || mapName[i] == '>' || mapName[i] == '|'
-                    )
-                    mapName.SetAt(i, '-');
-
-            const auto ext = 
-                !ExtConfigs::SaveMap_OnlySaveMAP && CMapData::Instance->IsMultiOnly() ?
-                CLoading::HasMdFile() ?
-                "yrm" :
-                "mpr" :
-                "map";
-
-            ppmfc::CString buffer;
-            buffer.Format("%s\\AutoSaves\\%s\\%s-*.%s", 
-                CFinalSunApp::ExePath(),
-                mapName,
-                mapName,
-                ext
-            );
-
-            WIN32_FIND_DATA Data;
-            auto hFindData = FindFirstFile(buffer, &Data);
-            while (hFindData != INVALID_HANDLE_VALUE)
-            {
-                m[Data.ftLastWriteTime] = Data.cFileName;
-                if (!FindNextFile(hFindData, &Data))
-                    break;
-            }
-
-            int count = m.size() - ExtConfigs::SaveMap_AutoSave_MaxCount;
-            if (count <= 0)
-                return;
-
-            auto& itr = m.begin();
-            while (count != 0)
-            {
-                buffer.Format("%s\\AutoSaves\\%s\\%s", CFinalSunApp::ExePath(), mapName, itr->second);
-                DeleteFile(buffer);
-                ++itr;
-                --count;
-            }
-        }
-    }
-
-    static void CALLBACK SaveMapCallback(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
-    {
-        Logger::Debug("SaveMapCallback called, trying to auto save map. hwnd = %08X, message = %d, iTimerID = %d, dwTime = %d.\n",
-            hwnd, message, iTimerID, dwTime);
-
-        if (!CMapData::Instance->MapWidthPlusHeight || !CMapData::Instance->FieldDataAllocated)
-        {
-            StopTimer();
-            return;
-        }
-
-        SYSTEMTIME time;
-        GetLocalTime(&time);
-
+        std::map<FILETIME, ppmfc::CString, FileTimeComparator> m;
         auto mapName = CINI::CurrentDocument->GetString("Basic", "Name", "No Name");
 
         /*
@@ -263,42 +191,107 @@ public:
         * \ / : * ? " < > |
         */
         for (int i = 0; i < mapName.GetLength(); ++i)
-            if (mapName[i] == '\\' || mapName[i] == '/' || mapName[i] == ':'||
+            if (mapName[i] == '\\' || mapName[i] == '/' || mapName[i] == ':' ||
                 mapName[i] == '*' || mapName[i] == '?' || mapName[i] == '"' ||
                 mapName[i] == '<' || mapName[i] == '>' || mapName[i] == '|'
                 )
                 mapName.SetAt(i, '-');
 
-        const auto ext = 
+        const auto ext =
             !ExtConfigs::SaveMap_OnlySaveMAP && CMapData::Instance->IsMultiOnly() ?
             CLoading::HasMdFile() ?
             "yrm" :
             "mpr" :
             "map";
 
-        ppmfc::CString buffer = CFinalSunApp::ExePath();
-        buffer += "\\AutoSaves\\";
-        CreateDirectory(buffer, nullptr);
-        buffer += mapName;
-        CreateDirectory(buffer, nullptr);
-
-        buffer.Format("%s\\AutoSaves\\%s\\%s-%04d%02d%02d-%02d%02d%02d-%03d.%s",
+        ppmfc::CString buffer;
+        buffer.Format("%s\\AutoSaves\\%s\\%s-*.%s",
             CFinalSunApp::ExePath(),
             mapName,
             mapName,
-            time.wYear, time.wMonth, time.wDay,
-            time.wHour, time.wMinute, time.wSecond,
-            time.wMilliseconds,
             ext
         );
 
-        IsAutoSaving = true;
-        CFinalSunDlg::Instance->SaveMap(buffer);
-        IsAutoSaving = false;
+        WIN32_FIND_DATA Data;
+        auto hFindData = FindFirstFile(buffer, &Data);
+        while (hFindData != INVALID_HANDLE_VALUE)
+        {
+            m[Data.ftLastWriteTime] = Data.cFileName;
+            if (!FindNextFile(hFindData, &Data))
+                break;
+        }
 
-        RemoveEarlySaves();
+        int count = m.size() - ExtConfigs::SaveMap_AutoSave_MaxCount;
+        if (count <= 0)
+            return;
+
+        auto& itr = m.begin();
+        while (count != 0)
+        {
+            buffer.Format("%s\\AutoSaves\\%s\\%s", CFinalSunApp::ExePath(), mapName, itr->second);
+            DeleteFile(buffer);
+            ++itr;
+            --count;
+        }
     }
-};
+}
+
+void CALLBACK SaveMapExt::SaveMapCallback(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
+{
+    Logger::Debug("SaveMapCallback called, trying to auto save map. hwnd = %08X, message = %d, iTimerID = %d, dwTime = %d.\n",
+        hwnd, message, iTimerID, dwTime);
+
+    if (!CMapData::Instance->MapWidthPlusHeight || !CMapData::Instance->FieldDataAllocated)
+    {
+        StopTimer();
+        return;
+    }
+
+    SYSTEMTIME time;
+    GetLocalTime(&time);
+
+    auto mapName = CINI::CurrentDocument->GetString("Basic", "Name", "No Name");
+
+    /*
+    * Fix : Windows file name cannot begin with space and cannot have following characters:
+    * \ / : * ? " < > |
+    */
+    for (int i = 0; i < mapName.GetLength(); ++i)
+        if (mapName[i] == '\\' || mapName[i] == '/' || mapName[i] == ':' ||
+            mapName[i] == '*' || mapName[i] == '?' || mapName[i] == '"' ||
+            mapName[i] == '<' || mapName[i] == '>' || mapName[i] == '|'
+            )
+            mapName.SetAt(i, '-');
+
+    const auto ext =
+        !ExtConfigs::SaveMap_OnlySaveMAP && CMapData::Instance->IsMultiOnly() ?
+        CLoading::HasMdFile() ?
+        "yrm" :
+        "mpr" :
+        "map";
+
+    ppmfc::CString buffer = CFinalSunApp::ExePath();
+    buffer += "\\AutoSaves\\";
+    CreateDirectory(buffer, nullptr);
+    buffer += mapName;
+    CreateDirectory(buffer, nullptr);
+
+    buffer.Format("%s\\AutoSaves\\%s\\%s-%04d%02d%02d-%02d%02d%02d-%03d.%s",
+        CFinalSunApp::ExePath(),
+        mapName,
+        mapName,
+        time.wYear, time.wMonth, time.wDay,
+        time.wHour, time.wMinute, time.wSecond,
+        time.wMilliseconds,
+        ext
+    );
+
+    IsAutoSaving = true;
+    CFinalSunDlg::Instance->SaveMap(buffer);
+    IsAutoSaving = false;
+
+    RemoveEarlySaves();
+}
 
 bool SaveMapExt::IsAutoSaving = false;
 UINT_PTR SaveMapExt::Timer = NULL;

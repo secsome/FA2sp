@@ -1,9 +1,9 @@
 #pragma once
 
-#include <CWndView.h>
+#include <CMinimap.h>
 #include "../FA2Expand.h"
 
-class NOVTABLE CMinimapExt : public CWndView
+class NOVTABLE CMinimapExt : public CMinimap
 {
 public:
 	typedef BOOL(*FuncT_PTM)(MSG* pMsg);
