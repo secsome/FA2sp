@@ -129,6 +129,7 @@
     <ClCompile Include="FA2pp\FunctionInit.cpp" />
     <ClCompile Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.cpp" />
     <ClCompile Include="FA2sp\Ext\CAITriggerTypes\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CCreateMap3A\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CEasterEgg\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Body.ObjectBrowserControl.cpp" />
@@ -143,6 +144,7 @@
     <ClCompile Include="FA2sp\Ext\CLoading\Body.LoadObjects.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Hooks.InitPalettes.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Hooks.LoadObjects.cpp" />
+    <ClCompile Include="FA2sp\Ext\CMapD\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyAircraft\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyBuilding\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyInfantry\Body.cpp" />

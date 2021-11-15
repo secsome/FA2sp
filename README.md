@@ -11,6 +11,11 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+======================= Changes (2021-11-XX RELEASE 1.2.2) ==============================================================================================
++) Now you can specify the display name of theaters.
+*) Minor fixes
+
 ======================= Changes (2021-11-12 RELEASE 1.2.1) ==============================================================================================
 *) Remove a hook that might lead to some problem
 *) Adjust some rc file
@@ -673,6 +678,12 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) PropertyBrushInfantry = TEXT
                 +) PropertyBrushVehicle = TEXT
                 +) PropertyBrushAircraft = TEXT
+                +) TheaterNameTem = TEXT
+                +) TheaterNameSno = TEXT
+                +) TheaterNameUrb = TEXT
+                +) TheaterNameUbn = TEXT
+                +) TheaterNameLun = TEXT
+                +) TheaterNameDes = TEXT
 
 - WRITE IN THE END
 This project was developed after FA2Copy with still many bugs to fix,
