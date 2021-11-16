@@ -13,7 +13,8 @@ Compile Using C++ Standard Now: C++14
 
 
 ======================= Changes (2021-11-XX RELEASE 1.2.2) ==============================================================================================
-+) Now you can specify the display name of theaters.
++) Now you can specify the display name of theaters
+*) ExtConfig : Stringtable tag has been removed, it will be forced to enable now
 *) Minor fixes
 
 ======================= Changes (2021-11-12 RELEASE 1.2.1) ==============================================================================================
@@ -197,11 +198,10 @@ COLORREF - R,G,B each of them is in [0,255]
             +) BrowserRedraw=BOOLEAN ; Enable refactored ObjectBrowserView
                 +) BrowserRedraw.GuessMode=0/1 ; Determines how FA2sp guess Technos' side, 0(Default) to Prerequisite, 1 to use first Owner 
                 +) BrowserRedraw.CleanUp=BOOLEAN ; Sides classification will clear empty items
-                +)  BrowserRedraw.SafeHouses=BOOLEAN ; Determines whether FA2sp will rearrangement the houses or not
+                +) BrowserRedraw.SafeHouses=BOOLEAN ; Determines whether FA2sp will rearrangement the houses or not
             +) AllowIncludes=BOOLEAN ; Read #include section for other ini (NOT RECOMMENDED) 
             +) AllowPlusEqual=BOOLEAN ; Read += (NOT RECOMMENDED)
-            +) Stringtables=BOOLEAN ; Read stringtableXX.csf
-                +) TutorialTexts.Fix=BOOLEAN ; Replace original process while loading texts to comboboxes
+            +) TutorialTexts.Fix=BOOLEAN ; Replace original process while loading texts to comboboxes
             +) TutorialTexts.Hide=BOOLEAN ; Reduce lags, for texts in combobox might be useless
             +) SortByTriggerName=BOOLEAN ; Enable this feature so we can sort the triggers by their names
             +) AdjustDropdownWidth = BOOLEAN ; Enable it so FA2 will adjust the param dropdown width automatically
