@@ -47,7 +47,7 @@ DEFINE_HOOK(441910, Miscs_LoadParams_TutorialTexts, 7)
         while (pComboBox->DeleteString(0) != CB_ERR);
         return 0x441A34;
     }
-    if (ExtConfigs::Stringtables && ExtConfigs::TutorialTexts_Fix)
+    if (ExtConfigs::TutorialTexts_Fix)
     {   
         while (pComboBox->DeleteString(0) != CB_ERR);
         for (auto x : FA2sp::TutorialTextsMap)

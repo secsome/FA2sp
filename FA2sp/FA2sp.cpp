@@ -21,7 +21,6 @@ bool ExtConfigs::BrowserRedraw_CleanUp;
 bool ExtConfigs::BrowserRedraw_SafeHouses;
 bool ExtConfigs::AllowIncludes;
 bool ExtConfigs::AllowPlusEqual;
-bool ExtConfigs::Stringtables;
 bool ExtConfigs::TutorialTexts_Hide;
 bool ExtConfigs::TutorialTexts_Fix;
 bool ExtConfigs::SortByTriggerName;
@@ -63,8 +62,7 @@ void FA2sp::ExtConfigsInitialize()
 	
 	ExtConfigs::AllowIncludes = fadata.GetBool("ExtConfigs", "AllowIncludes");
 	ExtConfigs::AllowPlusEqual = fadata.GetBool("ExtConfigs", "AllowPlusEqual");
-	
-	ExtConfigs::Stringtables = fadata.GetBool("ExtConfigs", "Stringtables");
+
 	ExtConfigs::TutorialTexts_Hide = fadata.GetBool("ExtConfigs", "TutorialTexts.Hide");
 	ExtConfigs::TutorialTexts_Fix = fadata.GetBool("ExtConfigs", "TutorialTexts.Fix");
 	

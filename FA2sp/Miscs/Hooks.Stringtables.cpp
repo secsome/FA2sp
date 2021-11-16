@@ -28,25 +28,21 @@ std::map<CString, CString> StringtableLoader::CSFFiles_Stringtable;
 
 DEFINE_HOOK(492D10, CSFFiles_Stringtables_Support_1, 5)
 {
-    if (ExtConfigs::Stringtables)
+    StringtableLoader::LoadCSFFiles();
+    StringtableLoader::bLoadRes = StringtableLoader::LoadToBuffer();
+    if (StringtableLoader::bLoadRes)
     {
-        StringtableLoader::LoadCSFFiles();
-        StringtableLoader::bLoadRes = StringtableLoader::LoadToBuffer();
-        if (StringtableLoader::bLoadRes)
-        {
-            R->EDI(StringtableLoader::pEDIBuffer);
-            return 0x49305F;
-        }
-        else
-            return 0;
+        R->EDI(StringtableLoader::pEDIBuffer);
+        return 0x49305F;
     }
-    return 0;
+    else
+        return 0;
 }
 
 DEFINE_HOOK(49433B, CSFFiles_Stringtables_Support_2, 6)
 {
     // Cleanning up
-    if (ExtConfigs::Stringtables && StringtableLoader::bLoadRes)
+    if (StringtableLoader::bLoadRes)
     {
         GameDelete(StringtableLoader::pEDIBuffer);
         char tmpCsfFile[0x400];
@@ -64,9 +60,9 @@ void StringtableLoader::LoadCSFFiles()
 {
     char nameBuffer[0x400];
     if (CLoading::HasMdFile())
-        strcpy_s(nameBuffer, "RA2MD.CSF");
+        strcpy_s(nameBuffer, CINI::FAData->GetString("Filenames", "CSFYR", "RA2MD.CSF"));
     else
-        strcpy_s(nameBuffer, "RA2.CSF");
+        strcpy_s(nameBuffer, CINI::FAData->GetString("Filenames", "CSF", "RA2.CSF"));
     LoadCSFFile(nameBuffer);
     char stringtable[20];
     for (int i = 1; i <= 99; ++i)
@@ -78,13 +74,7 @@ void StringtableLoader::LoadCSFFiles()
 }
 
 void StringtableLoader::LoadCSFFile(const char* pName)
-{
-    HANDLE hFile = INVALID_HANDLE_VALUE;
-    char directoryBuffer[0x400];
-    strcpy_s(directoryBuffer, CFinalSunApp::FilePath());
-    strcat_s(directoryBuffer, "\\");
-    strcat_s(directoryBuffer, pName);
-    
+{   
     DWORD dwSize;
     if (auto pBuffer = CLoading::Instance->ReadWholeFile(pName, &dwSize))
         if (ParseCSFFile((char*)pBuffer, dwSize))
@@ -151,23 +141,25 @@ bool StringtableLoader::ParseCSFFile(char* buffer, DWORD size)
             value[valueBufferSize - 1] = '\0';
 
             pos += (strLength << 1);
-            if (identifier == 0x53545257)
+            if (identifier == 0x53545257) // "WSTR"
             {
                 read_int(&strLength);
                 pos += strLength;
             }
+
             StringtableLoader::CSFFiles_Stringtable[labelstr] = CString(value);
             if (ExtConfigs::TutorialTexts_Fix)
                 FA2sp::TutorialTextsMap[labelstr] = value;
+
             delete[] labelstr;
             delete[] value;
 
-            for (int j = 1; j < numPairs; ++j)
+            for (int j = 1; j < numPairs; ++j) // Extra labels will be ignored here
             {
                 read_int(&identifier);
                 read_int(&strLength);
                 pos += (strLength << 1);
-                if (identifier == 0x53545257)
+                if (identifier == 0x53545257) // "WSTR"
                 {
                     read_int(&strLength);
                     pos += strLength;
@@ -204,7 +196,7 @@ void StringtableLoader::WriteCSFFile()
     write_int(3);
     write_int(StringtableLoader::CSFFiles_Stringtable.size());
     write_int(StringtableLoader::CSFFiles_Stringtable.size());
-    write_to_stream("sFA2"); // useless
+    write_to_stream("LMAO"); // useless
     write_int(0);
 
     // CSF labels
