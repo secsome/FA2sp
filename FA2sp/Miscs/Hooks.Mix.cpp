@@ -21,6 +21,7 @@ int extramix = 0;
 #include <CFinalSunApp.h>
 #include <CMixFile.h>
 #include <CLoading.h>
+#include <CFA2Logger.h>
 
 #include <set>
 
@@ -47,7 +48,10 @@ DEFINE_HOOK(48A1AD, CLoading_InitMixFiles_ExtraMix, 7)
 				path = CFinalSunApp::Instance->FilePath;
 			path += "\\" + pair.second;
 			if (auto id = CMixFile::Open(path, 0))
+			{
 				ExtraMixes.push_back(id);
+				CFA2Logger::Write("Successfully loaded extra mix file from %s\n", path);
+			}
 		}
 	}
 	
