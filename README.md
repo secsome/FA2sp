@@ -14,6 +14,7 @@ Compile Using C++ Standard Now: C++14
 
 ======================= Changes (2021-11-XX RELEASE 1.2.2) ==============================================================================================
 +) Now you can specify the display name of theaters
++) Support for ExtraMixes, will be read before any other mixes
 *) ExtConfig : Stringtable tag has been removed, it will be forced to enable now
 *) Minor fixes
 
@@ -248,6 +249,17 @@ COLORREF - R,G,B each of them is in [0,255]
             \\\ SENGINEER=1
             \\\ YENGINEER=2
             \\\ {A LOT OF WESTWOOD CIVILIAN VEHICLES WITH PREREQUISITE [NAWEAP] WILL BE GUESSED INTO SOVIETS, FIX THEM MANUALLY}
+            \\\
+        +) [ExtraMixes]
+            (Filename = ReadFromMapEditorPathInsteadOfGamePath)
+            \\\ e.g.
+            \\\ [ExtraConfigs]
+            \\\ buxu\123.mix=Yes
+            \\\ money.txt=No
+            \\\
+            \\\ This means FA2 takes {FA2PATH\buxu\123.mix} into consider, and if not found the file,
+            \\\ it will search the file in {GAMEPATH\money.txt}, if this one still doesn't have the file,
+            \\\ FA2 will try to find the file as it used to be.
             \\\
         +) [Filenames]
             +) EVA = FILENAME
