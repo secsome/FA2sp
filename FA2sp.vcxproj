@@ -164,7 +164,6 @@
     <ClCompile Include="FA2sp\Ext\CTriggerFrame\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerOption\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\FA2Expand.cpp" />
-    <ClCompile Include="FA2sp\Ext\Miscs\Hooks.LoadParams.cpp" />
     <ClCompile Include="FA2sp\Helpers\ControlHelpers.cpp" />
     <ClCompile Include="FA2sp\Helpers\MultimapHelper.cpp" />
     <ClCompile Include="FA2sp\Hooks.Debug.cpp" />
@@ -188,7 +187,7 @@
     <ClCompile Include="FA2sp\Miscs\Hooks.ExtWaypoints.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.FileNames.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.INI.cpp" />
-    <ClCompile Include="FA2sp\Miscs\Hooks.LoadParamToCombobox.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.LoadParams.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.Mix.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.Performance.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.RemapColor.cpp" />

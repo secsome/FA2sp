@@ -194,9 +194,6 @@
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Hooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Ext\Miscs\Hooks.LoadParams.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="FA2sp\Helpers\MutexHelper.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -236,7 +233,7 @@
     <ClCompile Include="FA2sp\ExtraWindow\CTileManager\CTileManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Miscs\Hooks.LoadParamToCombobox.cpp">
+    <ClCompile Include="FA2sp\Miscs\Hooks.LoadParams.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Miscs\Hooks.Performance.cpp">
