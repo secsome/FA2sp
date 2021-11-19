@@ -14,7 +14,7 @@ POPUP "File"
 	MENUITEM SEPARATOR
 	MENUITEM "Check map\tF12",  40025
 	MENUITEM SEPARATOR
-	MENUITEM "Run Tiberian Sun",  40017
+	// MENUITEM "Run Tiberian Sun",  40017
 	MENUITEM SEPARATOR
 	MENUITEM SEPARATOR
 	MENUITEM "Quit",  40003
@@ -80,12 +80,12 @@ POPUP "Map tools"
 	MENUITEM SEPARATOR
 	MENUITEM "Tool Scripts",  40135
 }
-POPUP "Online"
-{
-	MENUITEM "Westwood.com",  40078
-	MENUITEM "FinalAlert 2(tm) Fansite link",  40081
-	MENUITEM "FinalAlert 2(tm) Forum",  40119
-}
+//POPUP "Online"
+//{
+//	MENUITEM "Westwood.com",  40078
+//	MENUITEM "FinalAlert 2(tm) Fansite link",  40081
+//	MENUITEM "FinalAlert 2(tm) Forum",  40119
+//}
 POPUP "Options"
 {
 	MENUITEM "Settings",  40004
