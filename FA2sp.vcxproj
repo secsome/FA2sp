@@ -157,6 +157,7 @@
     <ClCompile Include="FA2sp\Ext\CTeamTypes\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTileSetBrowserFrame\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTileSetBrowserFrame\TabPages\TriggerSort.cpp" />
+    <ClCompile Include="FA2sp\Ext\CTileSetBrowserView\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerAction\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerAction\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerEvent\Body.cpp" />

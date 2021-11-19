@@ -15,6 +15,7 @@ Compile Using C++ Standard Now: C++14
 ======================= Changes (2021-11-XX RELEASE 1.2.2) ==============================================================================================
 +) Now you can specify the display name of theaters
 +) Support for ExtraMixes, will be read before any other mixes
++) Support for OverlayDisplayLimit, the frame after this number won't be displayed in the TilesetBrowserView, up to 60
 *) ExtConfig : Stringtable tag has been removed, it will be forced to enable now
 *) Minor fixes
 
@@ -261,6 +262,13 @@ COLORREF - R,G,B each of them is in [0,255]
             \\\ it will search the file in {GAMEPATH\money.txt}, if this one still doesn't have the file,
             \\\ FA2 will try to find the file as it used to be.
             \\\
+        +) [OverlayDisplayLimit]
+            (OverlayIndex = DisplayLimit) (DisplayLimit should be less than or equals to 60)
+            \\\ e.g.
+            \\\ [OverlayDisplayLimit]
+            \\\ 243=48
+            \\\
+            \\\ This means FA2 won't display overlay 243's frames after 48
         +) [Filenames]
             +) EVA = FILENAME
             +) EVAYR = FILENAME
