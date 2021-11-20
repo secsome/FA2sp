@@ -12,7 +12,7 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-======================= Changes (2021-11-XX RELEASE 1.2.2) ==============================================================================================
+======================= Changes (2021-11-20 RELEASE 1.2.2) ==============================================================================================
 +) Now you can add more ramps to be auto generated in FA2 by setting [THEATERInfo] in fadata.ini
 +) Now you can specify the display name of theaters
 +) Support for ExtraMixes, will be read before any other mixes

@@ -148,42 +148,42 @@ DEFINE_HOOK(45E7A6, CMapData_sub_45D090_TheaterInfo_2, 7)
 
 	return 0x45E801;
 }
-
-DEFINE_HOOK(46BB36, CMapData_sub_46AB30_TheaterInfo, A)
-{
-	GET(CTileTypeClass*, pTile, EBP);
-	GET(const int, nRampType, EBX);
-	GET(int, nRampIndex, EDI);
-	GET(const int, nIndex, ESI);
-
-	enum { LABEL_320 = 0x46BBC2 };
-
-	if (nRampType == -1)
-	{
-		for (auto& info : TheaterInfo::CurrentInfo)
-			if (info.Ramp == pTile->TileSet || info.Morphable == pTile->TileSet)
-			{
-				if (!pTile->Morphable)
-					return LABEL_320;
-				CMapData::Instance->sub_416550(nIndex, info.MorphableIndex);
-				break;
-			}
-	}
-
-	if (pTile->Morphable && nRampType != -1)
-	{
-		for (auto& info : TheaterInfo::CurrentInfo)
-			if (info.Ramp == pTile->TileSet || info.Morphable == pTile->TileSet)
-			{
-				nRampIndex = info.RampIndex;
-				break;
-			}
-
-		CMapData::Instance->sub_416550(nIndex, nRampIndex + nRampType - 1);
-	}
-
-	return LABEL_320;
-}
+//
+//DEFINE_HOOK(46BB36, CMapData_sub_46AB30_TheaterInfo, A)
+//{
+//	GET(CTileTypeClass*, pTile, EBP);
+//	GET(const int, nRampType, EBX);
+//	GET(int, nRampIndex, EDI);
+//	GET(const int, nIndex, ESI);
+//
+//	enum { LABEL_320 = 0x46BBC2 };
+//
+//	if (nRampType == -1)
+//	{
+//		for (auto& info : TheaterInfo::CurrentInfo)
+//			if (info.Ramp == pTile->TileSet || info.Morphable == pTile->TileSet)
+//			{
+//				if (!pTile->Morphable)
+//					return LABEL_320;
+//				CMapData::Instance->sub_416550(nIndex, info.MorphableIndex);
+//				break;
+//			}
+//	}
+//
+//	if (pTile->Morphable && nRampType != -1)
+//	{
+//		for (auto& info : TheaterInfo::CurrentInfo)
+//			if (info.Ramp == pTile->TileSet || info.Morphable == pTile->TileSet)
+//			{
+//				nRampIndex = info.RampIndex;
+//				break;
+//			}
+//
+//		CMapData::Instance->sub_416550(nIndex, nRampIndex + nRampType - 1);
+//	}
+//
+//	return LABEL_320;
+//}
 
 DEFINE_HOOK_AGAIN(4662E8, CIsoView_OnLButtonDown_TheaterInfo, 5)
 DEFINE_HOOK_AGAIN(465BBF, CIsoView_OnLButtonDown_TheaterInfo, 5)
