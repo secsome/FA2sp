@@ -13,6 +13,7 @@ Compile Using C++ Standard Now: C++14
 
 
 ======================= Changes (2021-11-XX RELEASE 1.2.2) ==============================================================================================
++) Now you can add more ramps to be auto generated in FA2 by setting [THEATERInfo] in fadata.ini
 +) Now you can specify the display name of theaters
 +) Support for ExtraMixes, will be read before any other mixes
 +) Support for OverlayDisplayLimit, the frame after this number won't be displayed in the TilesetBrowserView, up to 60
@@ -250,6 +251,18 @@ COLORREF - R,G,B each of them is in [0,255]
             \\\ SENGINEER=1
             \\\ YENGINEER=2
             \\\ {A LOT OF WESTWOOD CIVILIAN VEHICLES WITH PREREQUISITE [NAWEAP] WILL BE GUESSED INTO SOVIETS, FIX THEM MANUALLY}
+            \\\
+        +) [TheaterInfo] (TemperateInfo, SnowInfo, UrbanInfo, NewUrbanInfo, DesertInfo, LunarInfo)
+            Ramps=Tilesets
+            Morphables=Tilesets
+            \\\ All tilesets here should have Morphable=true
+            \\\ You don't need to write RampBase here, only other ramps need to be added here
+            \\\ The Ramps and Morphables should have the same length of tilesets, and those tilesets should be one-to-one correspondence
+            \\\ The old NewUrbanInfo's key Ramps2 and Morphable2 had been abandoned, so you need to add them manually
+            \\\ e.g.
+            \\\ [NewUrbanInfo]
+            \\\ Morphables=114,123
+            \\\ Ramps=117,193 
             \\\
         +) [ExtraMixes]
             (Filename = ReadFromMapEditorPathInsteadOfGamePath)
