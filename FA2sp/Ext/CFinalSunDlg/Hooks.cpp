@@ -83,16 +83,17 @@ DEFINE_HOOK(43209D, CFinalSunDlg_Update_TranslateMenuItems, A)
         }
     };
 
-    translateSubMenu(0, "Menu.File");
+    int i = 0;
+    translateSubMenu(i++, "Menu.File");
     translateMenuItem(57600, "Menu.File.New");
     translateMenuItem(40001, "Menu.File.Open");
     translateMenuItem(57603, "Menu.File.Save");
     translateMenuItem(40002, "Menu.File.SaveAs");
     translateMenuItem(40025, "Menu.File.CheckMap");
-    translateMenuItem(40017, "Menu.File.RunGame");
+    // translateMenuItem(40017, "Menu.File.RunGame");
     translateMenuItem(40003, "Menu.File.Quit");
 
-    translateSubMenu(1, "Menu.Edit");
+    translateSubMenu(i++, "Menu.Edit");
     translateMenuItem(57643, "Menu.Edit.Undo");
     translateMenuItem(57644, "Menu.Edit.Redo");
     translateMenuItem(57634, "Menu.Edit.Copy");
@@ -115,7 +116,7 @@ DEFINE_HOOK(43209D, CFinalSunDlg_Update_TranslateMenuItems, A)
     translateMenuItem(40037, "Menu.Edit.SingleplayerSettings");
     translateMenuItem(40049, "Menu.Edit.INIEditor");
 
-    translateSubMenu(2, "Menu.Terrain");
+    translateSubMenu(i++, "Menu.Terrain");
     translateMenuItem(40053, "Menu.Terrain.RaiseGround");
     translateMenuItem(40054, "Menu.Terrain.LowerGround");
     translateMenuItem(40064, "Menu.Terrain.FlattenGround");
@@ -126,7 +127,7 @@ DEFINE_HOOK(43209D, CFinalSunDlg_Update_TranslateMenuItems, A)
     translateMenuItem(40062, "Menu.Terrain.RaiseSingleTile");
     translateMenuItem(40063, "Menu.Terrain.LowerSingleTile");
 
-    translateSubMenu(3, "Menu.MapTools");
+    translateSubMenu(i++, "Menu.MapTools");
     translateMenuItem(40077, "Menu.MapTools.ChangeMapHeight");
     translateMenuItem(40096, "Menu.MapTools.AutoCreateShores");
     translateMenuItem(40085, "Menu.MapTools.AutoLevelUsingCliffs");
@@ -135,12 +136,15 @@ DEFINE_HOOK(43209D, CFinalSunDlg_Update_TranslateMenuItems, A)
     translateMenuItem(40133, "Menu.MapTools.SearchWaypoint");
     translateMenuItem(40135, "Menu.MapTools.ToolScripts");
 
-    translateSubMenu(4, "Menu.Online");
-    translateMenuItem(40078, "Menu.Online.Westwood");
-    translateMenuItem(40081, "Menu.Online.FA2Fansite");
-    translateMenuItem(40119, "Menu.Online.FA2Forum");
+    if (0)
+    {
+        translateSubMenu(i++, "Menu.Online");
+        translateMenuItem(40078, "Menu.Online.Westwood");
+        translateMenuItem(40081, "Menu.Online.FA2Fansite");
+        translateMenuItem(40119, "Menu.Online.FA2Forum");
+    }
 
-    translateSubMenu(5, "Menu.Options");
+    translateSubMenu(i++, "Menu.Options");
     translateMenuItem(40004, "Menu.Options.Settings");
     translateMenuItem(40024, "Menu.Options.ShowMinimap");
     translateMenuItem(40023, "Menu.Options.Easymode");
@@ -150,13 +154,13 @@ DEFINE_HOOK(43209D, CFinalSunDlg_Update_TranslateMenuItems, A)
     translateMenuItem(40105, "Menu.Options.DisableAutoLAT");
     translateMenuItem(40120, "Menu.Options.DisableSlopeCorrection");
 
-    translateSubMenu(6, "Menu.Help");
+    translateSubMenu(i++, "Menu.Help");
     translateMenuItem(57670, "Menu.Help.Manual");
     translateMenuItem(40006, "Menu.Help.Info");
     translateMenuItem(40075, "Menu.Help.Credits");
     translateMenuItem(40022, "Menu.Help.TipOfTheDay");
 
-    translateSubMenu(7, "Menu.Layers");
+    translateSubMenu(i++, "Menu.Layers");
     translateMenuItem(30000, "Menu.Layers.Structures");
     translateMenuItem(30001, "Menu.Layers.Infantries");
     translateMenuItem(30002, "Menu.Layers.Units");

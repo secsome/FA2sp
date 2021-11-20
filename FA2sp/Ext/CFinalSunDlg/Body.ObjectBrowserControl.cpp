@@ -572,7 +572,7 @@ void ObjectBrowserControlExt::Redraw_PlayerLocation()
 
     this->InsertTranslatedString("StartpointsDelete", 21, hPlayerLocation);
 
-    if (CINI::CurrentDocument->GetBool("Basic", "MultiplayerOnly"))
+    if (CMapData::Instance->IsMultiOnly())
     {
         for (int i = 0; i < 8; ++i)
         {

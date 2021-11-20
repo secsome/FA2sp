@@ -31,8 +31,8 @@ DEFINE_HOOK(4D2680, CMyViewFrame_OnCreateClient, 5)
                 pThis->pIsoView->pParent = pThis;
                 pThis->pTileSetBrowserFrame = (CTileSetBrowserFrame*)pThis->pRightFrame->CSplitter.FA2CSplitterWnd::GetPane(0, 1);
                 pThis->pObjectBrowserControl = (ObjectBrowserControl*)pThis->SplitterWnd.FA2CSplitterWnd::GetPane(0, 0);
-                pThis->Minimap.CWndView::CreateEx(0, nullptr, "Minimap", 0, &rect, nullptr, 0);
-                pThis->Minimap.CWndView::Update();
+                pThis->Minimap.CMinimap::CreateEx(0, nullptr, "Minimap", 0, &rect, nullptr, 0);
+                pThis->Minimap.CMinimap::Update();
                 if (bRes = pThis->StatusBar.FA2CStatusBar::Create(pThis, 0x900, 0x50008200u, 59393))
                 {
                     pThis->FA2CFrameWnd::OnCreateClient(lpcs, pContent);

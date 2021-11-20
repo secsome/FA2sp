@@ -11,6 +11,15 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+======================= Changes (2021-11-20 RELEASE 1.2.2) ==============================================================================================
++) Now you can add more ramps to be auto generated in FA2 by setting [THEATERInfo] in fadata.ini
++) Now you can specify the display name of theaters
++) Support for ExtraMixes, will be read before any other mixes
++) Support for OverlayDisplayLimit, the frame after this number won't be displayed in the TilesetBrowserView, up to 60
+*) ExtConfig : Stringtable tag has been removed, it will be forced to enable now
+*) Minor fixes
+
 ======================= Changes (2021-11-12 RELEASE 1.2.1) ==============================================================================================
 *) Remove a hook that might lead to some problem
 *) Adjust some rc file
@@ -192,11 +201,10 @@ COLORREF - R,G,B each of them is in [0,255]
             +) BrowserRedraw=BOOLEAN ; Enable refactored ObjectBrowserView
                 +) BrowserRedraw.GuessMode=0/1 ; Determines how FA2sp guess Technos' side, 0(Default) to Prerequisite, 1 to use first Owner 
                 +) BrowserRedraw.CleanUp=BOOLEAN ; Sides classification will clear empty items
-                +)  BrowserRedraw.SafeHouses=BOOLEAN ; Determines whether FA2sp will rearrangement the houses or not
+                +) BrowserRedraw.SafeHouses=BOOLEAN ; Determines whether FA2sp will rearrangement the houses or not
             +) AllowIncludes=BOOLEAN ; Read #include section for other ini (NOT RECOMMENDED) 
             +) AllowPlusEqual=BOOLEAN ; Read += (NOT RECOMMENDED)
-            +) Stringtables=BOOLEAN ; Read stringtableXX.csf
-                +) TutorialTexts.Fix=BOOLEAN ; Replace original process while loading texts to comboboxes
+            +) TutorialTexts.Fix=BOOLEAN ; Replace original process while loading texts to comboboxes
             +) TutorialTexts.Hide=BOOLEAN ; Reduce lags, for texts in combobox might be useless
             +) SortByTriggerName=BOOLEAN ; Enable this feature so we can sort the triggers by their names
             +) AdjustDropdownWidth = BOOLEAN ; Enable it so FA2 will adjust the param dropdown width automatically
@@ -244,6 +252,36 @@ COLORREF - R,G,B each of them is in [0,255]
             \\\ YENGINEER=2
             \\\ {A LOT OF WESTWOOD CIVILIAN VEHICLES WITH PREREQUISITE [NAWEAP] WILL BE GUESSED INTO SOVIETS, FIX THEM MANUALLY}
             \\\
+        +) [TheaterInfo] (TemperateInfo, SnowInfo, UrbanInfo, NewUrbanInfo, DesertInfo, LunarInfo)
+            Ramps=Tilesets
+            Morphables=Tilesets
+            \\\ All tilesets here should have Morphable=true
+            \\\ You don't need to write RampBase here, only other ramps need to be added here
+            \\\ The Ramps and Morphables should have the same length of tilesets, and those tilesets should be one-to-one correspondence
+            \\\ The old NewUrbanInfo's key Ramps2 and Morphable2 had been abandoned, so you need to add them manually
+            \\\ e.g.
+            \\\ [NewUrbanInfo]
+            \\\ Morphables=114,123
+            \\\ Ramps=117,193 
+            \\\
+        +) [ExtraMixes]
+            (Filename = ReadFromMapEditorPathInsteadOfGamePath)
+            \\\ e.g.
+            \\\ [ExtraConfigs]
+            \\\ buxu\123.mix=Yes
+            \\\ money.txt=No
+            \\\
+            \\\ This means FA2 takes {FA2PATH\buxu\123.mix} into consider, and if not found the file,
+            \\\ it will search the file in {GAMEPATH\money.txt}, if this one still doesn't have the file,
+            \\\ FA2 will try to find the file as it used to be.
+            \\\
+        +) [OverlayDisplayLimit]
+            (OverlayIndex = DisplayLimit) (DisplayLimit should be less than or equals to 60)
+            \\\ e.g.
+            \\\ [OverlayDisplayLimit]
+            \\\ 243=48
+            \\\
+            \\\ This means FA2 won't display overlay 243's frames after 48
         +) [Filenames]
             +) EVA = FILENAME
             +) EVAYR = FILENAME
@@ -673,6 +711,12 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) PropertyBrushInfantry = TEXT
                 +) PropertyBrushVehicle = TEXT
                 +) PropertyBrushAircraft = TEXT
+                +) TheaterNameTem = TEXT
+                +) TheaterNameSno = TEXT
+                +) TheaterNameUrb = TEXT
+                +) TheaterNameUbn = TEXT
+                +) TheaterNameLun = TEXT
+                +) TheaterNameDes = TEXT
 
 - WRITE IN THE END
 This project was developed after FA2Copy with still many bugs to fix,

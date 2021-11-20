@@ -31,7 +31,6 @@ public:
     static bool BrowserRedraw_SafeHouses;
     static bool AllowIncludes;
     static bool AllowPlusEqual;
-    static bool Stringtables;
     static bool TutorialTexts_Hide;
     static bool TutorialTexts_Fix;
     static bool SortByTriggerName;

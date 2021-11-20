@@ -39,6 +39,23 @@ DEFINE_HOOK(43D037, Miscs_LoadParams_AdjustComboboxDropdownWidth, C)
     return 0;
 }
 
+DEFINE_HOOK(43CFE4, Miscs_LoadParams_SpeechBubble, 6)
+{
+    auto AddString = [](HWND hComboBox, const char* lpString)
+    {
+        SendMessage(hComboBox, CB_ADDSTRING, NULL, (LPARAM)lpString);
+    };
+
+    GET(HWND, hComboBox, ECX);
+    while (SendMessage(hComboBox, CB_GETCOUNT, 0, NULL) > 0)
+        SendMessage(hComboBox, CB_DELETESTRING, 0, 0);
+    AddString(hComboBox, "0 - None");
+    AddString(hComboBox, "1 - Asterisk(*)");
+    AddString(hComboBox, "2 - Question mark(?)");
+    AddString(hComboBox, "3 - Exclamation mark(!)");
+    return 0x43D037;
+}
+
 DEFINE_HOOK(441910, Miscs_LoadParams_TutorialTexts, 7)
 {
     GET_STACK(CComboBox*, pComboBox, 0x4);
@@ -47,7 +64,7 @@ DEFINE_HOOK(441910, Miscs_LoadParams_TutorialTexts, 7)
         while (pComboBox->DeleteString(0) != CB_ERR);
         return 0x441A34;
     }
-    if (ExtConfigs::Stringtables && ExtConfigs::TutorialTexts_Fix)
+    if (ExtConfigs::TutorialTexts_Fix)
     {   
         while (pComboBox->DeleteString(0) != CB_ERR);
         for (auto x : FA2sp::TutorialTextsMap)

@@ -1,11 +1,24 @@
 #include <CTileSetBrowserView.h>
 #include <Helpers/Macro.h>
-#include <GlobalVars.h>
 
 #include <FA2PP.h>
 
 #include "../../FA2sp.h"
 
+DEFINE_HOOK(4F258B, CTileSetBrowserView_OnDraw_SetOverlayFrameToDisplay, 7)
+{
+    GET(CTileSetBrowserView*, pThis, ESI);
+    GET(const int, i, ECX);
+
+    ppmfc::CString ovlIdx;
+    ovlIdx.Format("%d", pThis->SelectedOverlayIndex);
+    int nDisplayLimit = CINI::FAData->GetInteger("OverlayDisplayLimit", ovlIdx, 60);
+    if (nDisplayLimit > 60)
+        nDisplayLimit = 60;
+
+    R->Stack(STACK_OFFS(0xDC, 0xB8), i);
+    return i < nDisplayLimit ? 0x4F2230 : 0x4F2598;
+}
 
 
 //DEFINE_HOOK(4F1D70, ASDG, 6)
