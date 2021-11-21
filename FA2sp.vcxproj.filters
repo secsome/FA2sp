@@ -144,6 +144,9 @@
     <ClInclude Include="FA2sp\Miscs\SaveMap.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2sp\Miscs\TheaterInfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">
@@ -350,7 +353,7 @@
     <ClCompile Include="FA2sp\Ext\CTileSetBrowserView\Hooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Miscs\Hooks.TheaterInfo.cpp">
+    <ClCompile Include="FA2sp\Miscs\TheaterInfo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

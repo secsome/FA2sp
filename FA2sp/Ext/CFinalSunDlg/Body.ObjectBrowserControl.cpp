@@ -3,11 +3,14 @@
 #include "../../Helpers/Translations.h"
 #include "../../Helpers/STDHelpers.h"
 
+#include "../../Miscs/TheaterInfo.h"
+
 #include "../../FA2sp.h"
 
 #include <CINI.h>
 #include <CMapData.h>
 #include <CIsoView.h>
+#include <CTileTypeClass.h>
 
 std::array<HTREEITEM, ObjectBrowserControlExt::Root_Count> ObjectBrowserControlExt::ExtNodes;
 std::set<ppmfc::CString> ObjectBrowserControlExt::IgnoreSet;
@@ -172,8 +175,23 @@ void ObjectBrowserControlExt::Redraw_Ground()
     this->InsertTranslatedString("GroundPaveObList"  + suffix, 66, hGround);
     this->InsertTranslatedString("GroundWaterObList", 64, hGround);
 
-    if(theater == "UBN")
-        this->InsertTranslatedString("GroundPave2ObListUBN", 67, hGround);
+    if (CINI::CurrentTheater)
+    {
+        int i = 67;
+        for (auto& morphables : TheaterInfo::CurrentInfo)
+        {
+            auto InsertTile = [&](int nTileset)
+            {
+                FA2sp::Buffer.Format("TileSet%04d", nTileset);
+                FA2sp::Buffer = CINI::CurrentTheater->GetString(FA2sp::Buffer, "SetName", FA2sp::Buffer);
+                ppmfc::CString buffer;
+                Translations::GetTranslationItem(FA2sp::Buffer, FA2sp::Buffer);
+                return this->InsertString(FA2sp::Buffer, i++, hGround, TVI_LAST);
+            };
+
+            InsertTile(morphables.Morphable);
+        }
+    }
 }
 
 void ObjectBrowserControlExt::Redraw_Owner()
@@ -913,6 +931,26 @@ void ObjectBrowserControlExt::OnExeTerminate()
 
 bool ObjectBrowserControlExt::UpdateEngine(int nData)
 {
+    do
+    {
+        int nMorphable = nData - 67;
+        if (nMorphable >= 0 && nMorphable < TheaterInfo::CurrentInfo.size())
+        {
+            int i;
+            for (i = 0; i < *CTileTypeClass::InstanceCount; ++i)
+                if ((*CTileTypeClass::Instance)[i].TileSet == TheaterInfo::CurrentInfo[nMorphable].Morphable)
+                {
+                    CIsoView::CurrentParam = 0;
+                    CIsoView::CurrentHeight = 0;
+                    CIsoView::CurrentType = i;
+                    CIsoView::CurrentCommand = FACurrentCommand::TileDraw;
+                    CBrushSize::UpdateBrushSize(i);
+                    return true;
+                }
+        }
+    } while (false);
+    
+
     int nCode = nData / 10000;
     nData %= 10000;
 
