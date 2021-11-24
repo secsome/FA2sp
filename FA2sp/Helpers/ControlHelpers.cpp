@@ -9,14 +9,9 @@
 
 namespace ControlHelpers
 {
-    void ComboBox::Clear(ppmfc::CComboBox& combobox)
-    {
-        while (combobox.DeleteString(0) != -1);
-    }
-
     void ComboBox::LoadHouses(ppmfc::CComboBox& combobox, bool bShowIndex)
     {
-        ComboBox::Clear(combobox);
+        combobox.DeleteAllStrings();
 
         auto& entries = Variables::Rules.ParseIndicies("Houses", true);
         CString buffer;
@@ -58,7 +53,7 @@ namespace ControlHelpers
 
     void ComboBox::LoadCountries(ppmfc::CComboBox& combobox, bool bShowIndex)
     {
-        ComboBox::Clear(combobox);
+        combobox.DeleteAllStrings();
         auto& doc = CINI::CurrentDocument();
         if (CMapData::Instance->IsMultiOnly())
         {
@@ -80,7 +75,7 @@ namespace ControlHelpers
 
     void ComboBox::LoadGenericList(ppmfc::CComboBox& combobox, const char* pSection, bool bShowRegName, bool bShowIndex)
     {
-        ComboBox::Clear(combobox);
+        combobox.DeleteAllStrings();
 
         auto& entries = Variables::Rules.ParseIndicies(pSection, true);
         CString buffer;

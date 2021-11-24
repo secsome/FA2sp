@@ -21,7 +21,7 @@ DEFINE_HOOK(4FA450, CTriggerFrame_Update, 7)
     if (nCurSel != CB_ERR)
         ID = reinterpret_cast<const char*>(pThis->CCBCurrentTrigger.GetItemDataPtr(nCurSel));
 
-    while (pThis->CCBCurrentTrigger.DeleteString(0) != CB_ERR);
+    pThis->CCBCurrentTrigger.DeleteAllStrings();
 
     pThis->CCBCurrentTrigger.SetWindowText("");
 

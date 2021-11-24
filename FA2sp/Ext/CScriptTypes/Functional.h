@@ -17,7 +17,7 @@ public:
 // negative
 static void CScriptTypes_LoadParams_TypeList(ppmfc::CComboBox& comboBox, int nID)
 {
-    while (comboBox.DeleteString(0) != -1);
+    comboBox.DeleteAllStrings();
 
     ppmfc::CString buffer;
     buffer.Format("%d", nID);
@@ -115,7 +115,7 @@ static void CScriptTypes_LoadParams_TypeList(ppmfc::CComboBox& comboBox, int nID
 // 1
 static void CScriptTypes_LoadParams_Target(ppmfc::CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
+    comboBox.DeleteAllStrings();
 
     comboBox.SetItemData(comboBox.AddString("0 - Not specified"), 0);
     comboBox.SetItemData(comboBox.AddString("1 - Anything (uses auto-targeting)"), 1);
@@ -133,7 +133,7 @@ static void CScriptTypes_LoadParams_Target(ppmfc::CComboBox& comboBox)
 // 2
 static void CScriptTypes_LoadParams_Waypoint(ppmfc::CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
+    comboBox.DeleteAllStrings();
 
     auto& doc = CINI::CurrentDocument();
     
@@ -192,7 +192,7 @@ static void CScriptTypes_LoadParams_ScriptLine(ppmfc::CComboBox& comboBox, ppmfc
     if (cnt > 50)
         cnt = 50;
 
-    while (comboBox.DeleteString(0) != -1);
+    comboBox.DeleteAllStrings();
 
     auto& doc = CINI::CurrentDocument();
 
@@ -218,7 +218,7 @@ static void CScriptTypes_LoadParams_ScriptLine(ppmfc::CComboBox& comboBox, ppmfc
 // 4
 static void CScriptTypes_LoadParams_SplitGroup(ppmfc::CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
+    comboBox.DeleteAllStrings();
     
     comboBox.SetItemData(comboBox.AddString("0 - Keep Transports, Keep Units"), 0);
     comboBox.SetItemData(comboBox.AddString("1 - Keep Transports, Lose Units"), 1);
@@ -229,7 +229,7 @@ static void CScriptTypes_LoadParams_SplitGroup(ppmfc::CComboBox& comboBox)
 // 5
 static void CScriptTypes_LoadParams_GlobalVariables(ppmfc::CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
+    comboBox.DeleteAllStrings();
 
     auto& rules = CINI::Rules();
     if (auto entities = rules.GetSection("VariableNames"))
@@ -250,7 +250,7 @@ static void CScriptTypes_LoadParams_GlobalVariables(ppmfc::CComboBox& comboBox)
 // 6
 static void CScriptTypes_LoadParams_ScriptTypes(ppmfc::CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
+    comboBox.DeleteAllStrings();
 
     auto& doc = CINI::CurrentDocument();
     if (auto entities = doc.GetSection("ScriptTypes"))
@@ -273,7 +273,7 @@ static void CScriptTypes_LoadParams_ScriptTypes(ppmfc::CComboBox& comboBox)
 // 7
 static void CScriptTypes_LoadParams_TeamTypes(ppmfc::CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
+    comboBox.DeleteAllStrings();
 
     auto& doc = CINI::CurrentDocument();
     if (auto entities = doc.GetSection("TeamTypes"))
@@ -302,7 +302,7 @@ static void CScriptTypes_LoadParams_Houses(ppmfc::CComboBox& comboBox)
 // 9
 static void CScriptTypes_LoadParams_Speechs(ppmfc::CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
+    comboBox.DeleteAllStrings();
 
     auto& eva = CINI::Eva();
     if (auto entities = eva.GetSection("DialogList"))
@@ -324,7 +324,7 @@ static void CScriptTypes_LoadParams_Speechs(ppmfc::CComboBox& comboBox)
 // 10
 static void CScriptTypes_LoadParams_Sounds(ppmfc::CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
+    comboBox.DeleteAllStrings();
 
     auto& sound = CINI::Sound();
     if (auto entities = sound.GetSection("SoundList"))
@@ -345,7 +345,7 @@ static void CScriptTypes_LoadParams_Sounds(ppmfc::CComboBox& comboBox)
 // 11
 static void CScriptTypes_LoadParams_Movies(ppmfc::CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
+    comboBox.DeleteAllStrings();
 
     auto& art = CINI::Art();
     if (auto entities = art.GetSection("Movies"))
@@ -366,7 +366,7 @@ static void CScriptTypes_LoadParams_Movies(ppmfc::CComboBox& comboBox)
 // 12
 static void CScriptTypes_LoadParams_Themes(ppmfc::CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
+    comboBox.DeleteAllStrings();
 
     auto& theme = CINI::Theme();
     if (auto entities = theme.GetSection("Themes"))
@@ -393,7 +393,7 @@ static void CScriptTypes_LoadParams_Countries(ppmfc::CComboBox& comboBox)
 // 14
 static void CScriptTypes_LoadParams_LocalVariables(ppmfc::CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
+    comboBox.DeleteAllStrings();
 
     auto& doc = CINI::CurrentDocument();
     if (auto entities = doc.GetSection("VariableNames"))
@@ -413,7 +413,7 @@ static void CScriptTypes_LoadParams_LocalVariables(ppmfc::CComboBox& comboBox)
 // 15
 static void CScriptTypes_LoadParams_Facing(ppmfc::CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
+    comboBox.DeleteAllStrings();
 
     comboBox.SetItemData(comboBox.AddString("0 - NE"), 0);
     comboBox.SetItemData(comboBox.AddString("1 - E"), 1);
@@ -440,7 +440,7 @@ static void CScriptTypes_LoadParams_Animations(ppmfc::CComboBox& comboBox)
 // 18
 static void CScriptTypes_LoadParams_TalkBubble(ppmfc::CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
+    comboBox.DeleteAllStrings();
 
     comboBox.SetItemData(comboBox.AddString("0 - None"), 0);
     comboBox.SetItemData(comboBox.AddString("1 - Asterisk(*)"), 1);
@@ -451,58 +451,47 @@ static void CScriptTypes_LoadParams_TalkBubble(ppmfc::CComboBox& comboBox)
 // 19
 static void CScriptTypes_LoadParams_Status(ppmfc::CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
+    comboBox.DeleteAllStrings();
 
-    const char* pStatus[] =
-    {
-        "Sleep",
-        "Attack nearest enemy",
-        "Move",
-        "QMove",
-        "Retreat home for R&R",
-        "Guard",
-        "Sticky (never recruit)",
-        "Enter object",
-        "Capture object",
-        "Move into & get eaten",
-        "Harvest",
-        "Area Guard",
-        "Return (to refinery)",
-        "Stop",
-        "Ambush (wait until discovered)",
-        "Hunt",
-        "Unload",
-        "Sabotage (move in & destroy)",
-        "Construction",
-        "Deconstruction",
-        "Repair",
-        "Rescue",
-        "Missile",
-        "Harmless",
-        "Open",
-        "Patrol",
-        "Paradrop approach drop zone",
-        "Paradrop overlay drop zone",
-        "Wait",
-        "Attack again",
-        "Spyplane approach",
-        "Spyplane overfly"
-    };
-
-    for (int i = 0; i < 32; ++i)
-    {
-        char buffer[0x40];
-        sprintf_s(buffer, "%u - %s", i, pStatus[i]);
-        int idx = comboBox.AddString(buffer);
-        if (idx >= 0)
-            comboBox.SetItemData(idx, i);
-    }
+    int i = 0;
+    comboBox.SetItemData(comboBox.AddString("0 - Sleep"), i++);
+    comboBox.SetItemData(comboBox.AddString("1 - Attack nearest enemy"), i++);
+    comboBox.SetItemData(comboBox.AddString("2 - Move"), i++);
+    comboBox.SetItemData(comboBox.AddString("3 - QMove"), i++);
+    comboBox.SetItemData(comboBox.AddString("4 - Retreat home for R&R"), i++);
+    comboBox.SetItemData(comboBox.AddString("5 - Guard"), i++);
+    comboBox.SetItemData(comboBox.AddString("6 - Sticky (never recruit)"), i++);
+    comboBox.SetItemData(comboBox.AddString("7 - Enter object"), i++);
+    comboBox.SetItemData(comboBox.AddString("8 - Capture object"), i++);
+    comboBox.SetItemData(comboBox.AddString("9 - Move into & get eaten"), i++);
+    comboBox.SetItemData(comboBox.AddString("10 - Harvest"), i++);
+    comboBox.SetItemData(comboBox.AddString("11 - Area Guard"), i++);
+    comboBox.SetItemData(comboBox.AddString("12 - Return (to refinery)"), i++);
+    comboBox.SetItemData(comboBox.AddString("13 - Stop"), i++);
+    comboBox.SetItemData(comboBox.AddString("14 - Ambush (wait until discovered)"), i++);
+    comboBox.SetItemData(comboBox.AddString("15 - Hunt"), i++);
+    comboBox.SetItemData(comboBox.AddString("16 - Unload"), i++);
+    comboBox.SetItemData(comboBox.AddString("17 - Sabotage (move in & destroy)"), i++);
+    comboBox.SetItemData(comboBox.AddString("18 - Construction"), i++);
+    comboBox.SetItemData(comboBox.AddString("19 - Deconstruction"), i++);
+    comboBox.SetItemData(comboBox.AddString("20 - Repair"), i++);
+    comboBox.SetItemData(comboBox.AddString("21 - Rescue"), i++);
+    comboBox.SetItemData(comboBox.AddString("22 - Missile"), i++);
+    comboBox.SetItemData(comboBox.AddString("23 - Harmless"), i++);
+    comboBox.SetItemData(comboBox.AddString("24 - Open"), i++);
+    comboBox.SetItemData(comboBox.AddString("25 - Patrol"), i++);
+    comboBox.SetItemData(comboBox.AddString("26 - Paradrop approach drop zone"), i++);
+    comboBox.SetItemData(comboBox.AddString("27 - Paradrop overlay drop zone"), i++);
+    comboBox.SetItemData(comboBox.AddString("28 - Wait"), i++);
+    comboBox.SetItemData(comboBox.AddString("29 - Attack again"), i++);
+    comboBox.SetItemData(comboBox.AddString("30 - Spyplane approach"), i++);
+    comboBox.SetItemData(comboBox.AddString("31 - Spyplane overfly"), i++);
 }
 
 // 20
 static void CScriptTypes_LoadParams_Boolean(ppmfc::CComboBox& comboBox)
 {
-    while (comboBox.DeleteString(0) != -1);
+    comboBox.DeleteAllStrings();
 
     comboBox.SetItemData(comboBox.AddString("0 - FALSE"), 0);
     comboBox.SetItemData(comboBox.AddString("1 - TRUE"), 1);

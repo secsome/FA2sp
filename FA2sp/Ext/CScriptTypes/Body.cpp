@@ -62,7 +62,7 @@ void CScriptTypesExt::UpdateParams(int actionIndex)
 	{
 	default:
 	case 0:
-		while (this->CCBScriptParameter.DeleteString(0) != -1);
+		this->CCBScriptParameter.DeleteAllStrings();
 		break;
 	case 1:
 		CScriptTypesFunctions::CScriptTypes_LoadParams_Target(this->CCBScriptParameter);
@@ -183,7 +183,7 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 	Translations::TranslateItem(this, 6305, "ScriptTypesMoveUp");
 	Translations::TranslateItem(this, 6306, "ScriptTypesMoveDown");
 
-	while (CCBCurrentAction.DeleteString(0) != -1);
+	this->CCBCurrentAction.DeleteAllStrings();
 
 	// Initialize defaults
 	/*const char** pNames = reinterpret_cast<const char**>(0x5D035C);
@@ -269,7 +269,7 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 	}
 
 	auto pCBExtra = (ppmfc::CComboBox*)this->GetDlgItem(6304);
-	while (pCBExtra->DeleteString(0) != CB_ERR);
+	pCBExtra->DeleteAllStrings();
 
 	ExtCurrentScript = new CurrentScript;
 	ExtCurrentScript->Unset();
@@ -283,7 +283,7 @@ void CScriptTypesExt::UpdateDialog()
 	this->CCBCurrentScript.GetWindowText(currentID);
 	STDHelpers::TrimIndex(currentID);
 
-	while (this->CCBCurrentScript.DeleteString(0) != CB_ERR);
+	this->CCBCurrentScript.DeleteAllStrings();
 
 	auto& ini = CINI::CurrentDocument();
 

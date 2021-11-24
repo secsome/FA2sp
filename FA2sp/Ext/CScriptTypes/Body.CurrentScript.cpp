@@ -190,7 +190,7 @@ bool CurrentScript::IsExtraParamEnabledAtLine(int line)
 
 void CurrentScript::LoadExtraParamBox(ppmfc::CComboBox& comboBox, int actionIndex)
 {
-	while (comboBox.DeleteString(0) != CB_ERR);
+	comboBox.DeleteAllStrings();
 
 	if (actionIndex == 46 || actionIndex == 47 || actionIndex == 56 || actionIndex == 58)
 	{
