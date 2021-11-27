@@ -121,7 +121,7 @@ DEFINE_HOOK(43CE8D, Miscs_LoadParamToCombobox, 9)
         pComboBox->AddString("3 - Units");
         break;
     case 39: // SuperWeaponTypes (ID)
-        ControlHelpers::ComboBox::LoadGenericList(*pComboBox, "SuperWeaponTypes", true, true);
+        ControlHelpers::ComboBox::LoadGenericList(*pComboBox, "SuperWeaponTypes", true, false, true);
         break;
     default: // Not a valid param
         break;
