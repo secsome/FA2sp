@@ -248,11 +248,15 @@ void CIsoViewExt::DrawCelltag(int X, int Y)
     this->BltToBackBuffer(ImageDataMapHelper::GetImageDataFromMap("CELLTAG")->lpSurface, X, Y, -1, -1);
 }
 
-void CIsoViewExt::DrawWaypoint(int WPIndex, int X, int Y)
+void CIsoViewExt::DrawWaypointID(int WPIndex, int X, int Y)
 {
-    this->BltToBackBuffer(ImageDataMapHelper::GetImageDataFromMap("FLAG")->lpSurface, X, Y - 2, -1, -1);
     if (auto pSection = CINI::CurrentDocument->GetSection("Waypoints"))
         this->DrawText(X + 15, Y + 7, *pSection->GetKeyAt(WPIndex), ExtConfigs::Waypoint_Color);
+}
+
+void CIsoViewExt::DrawWaypointFlag(int X, int Y)
+{
+    this->BltToBackBuffer(ImageDataMapHelper::GetImageDataFromMap("FLAG")->lpSurface, X, Y - 2, -1, -1);
 }
 
 void CIsoViewExt::DrawTube(CellData* pData, int X, int Y)

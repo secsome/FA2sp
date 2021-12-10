@@ -109,20 +109,6 @@ DEFINE_HOOK(45ADD0, CIsoView_Draw_CursorSelectionBoundHeightColor, 6)
 //	return 0x474A67;
 //}
 
-DEFINE_HOOK(4685EA, CIsoView_DrawText, 9)
-{
-	if (ExtConfigs::Waypoint_Background)
-	{
-		GET(HDC, hdc, EDX);
-
-		SetBkColor(hdc, ExtConfigs::Waypoint_Background_Color);
-		SetBkMode(hdc, OPAQUE);
-
-		return 0x4685F3;
-	}
-	return 0;
-}
-
 DEFINE_HOOK(470194, CIsoView_Draw_LayerVisible_Overlay, 8)
 {
 	return CIsoViewExt::DrawOverlays ? 0 : 0x470772;
@@ -354,7 +340,7 @@ DEFINE_HOOK(474B9D, CIsoView_Draw_DrawCelltagAndWaypointAndTube_DrawStuff, 9)
 	if (CIsoViewExt::DrawCelltags && celldata.CellTag != -1)
 		pThis->DrawCelltag(X, Y);
 	if (CIsoViewExt::DrawWaypoints && celldata.Waypoint != -1)
-		pThis->DrawWaypoint(celldata.Waypoint, X, Y);
+		pThis->DrawWaypointFlag(X, Y);
 	if (CIsoViewExt::DrawTubes && celldata.Tube != -1)
 		pThis->DrawTube(&celldata, X, Y);
 
@@ -371,26 +357,53 @@ DEFINE_HOOK(474DB7, CIsoView_Draw_DrawCelltagAndWaypointAndTube_SkipOriginUnlock
 	return 0x474DCE;
 }
 
-#if 0
-// No same random, abandoned.
-DEFINE_HOOK(46BD0C, CISoView_DrawMouseAttachedStuff_RandomTerrain, 5)
+DEFINE_HOOK(474DDF, CIsoView_Draw_WaypointTexts, 5)
 {
-	GET(int, size, ESI);
+	if (CIsoViewExt::DrawWaypoints)
+	{
+		GET(CIsoViewExt*, pThis, EBX);
 
-	static int nLastRand = -1;
+		GET_STACK(HDC, hDC, STACK_OFFS(0xD18, 0xC68));
+		GET_STACK(int, jMin, STACK_OFFS(0xD18, 0xC10));
+		GET_STACK(int, iMin, STACK_OFFS(0xD18, 0xCBC));
+		GET_STACK(const int, jMax, STACK_OFFS(0xD18, 0xC64));
+		GET_STACK(const int, iMax, STACK_OFFS(0xD18, 0xC18));
 
-	// srand(time(nullptr));
+		SetTextColor(hDC, ExtConfigs::Waypoint_Color);
+		if (ExtConfigs::Waypoint_Background)
+		{
+			SetBkMode(hDC, OPAQUE);
+			SetBkColor(hDC, ExtConfigs::Waypoint_Background_Color);
+		}
+		else
+			SetBkMode(hDC, TRANSPARENT);
+		SetTextAlign(hDC, TA_CENTER);
 
-	int nResult = rand() % size;
-	if (size != 1)
-		while (nResult == nLastRand)
-			nResult = rand() % size;
+		auto pSection = CINI::CurrentDocument->GetSection("Waypoints");
+		for (int j = jMin; j < jMax; ++j)
+		{
+			for (int i = iMin; i < iMax; ++i)
+			{
+				int Y = j, X = i;
 
-	nLastRand = nResult;
+				pThis->MapCoord2ScreenCoord(Y, X);
+				auto pCell = CMapData::Instance->TryGetCellAt(i, j);
 
-	R->ECX(nResult);
-	R->EDX(R->EAX());
+				int drawX = Y - R->Stack<float>(STACK_OFFS(0xD18, 0xCB0)) + 24;
+				int drawY = X - R->Stack<float>(STACK_OFFS(0xD18, 0xCB8)) - 15;
 
-	return 0x46BD2C;
+				if (pCell->Waypoint != -1)
+				{
+					auto pWP = *pSection->GetKeyAt(pCell->Waypoint);
+					TextOut(hDC, drawX, drawY, pWP, strlen(pWP));
+				}
+
+			}
+		}
+
+		SetTextAlign(hDC, TA_LEFT);
+		SetTextColor(hDC, RGB(0, 0, 0));
+	}
+
+	return 0;
 }
-#endif
