@@ -45,9 +45,6 @@
     <ClInclude Include="FA2sp\Helpers\Parser.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="FA2sp\Helpers\INIParser.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="FA2sp\Helpers\MutexHelper.h">
       <Filter>头文件</Filter>
     </ClInclude>
