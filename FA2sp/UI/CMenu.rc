@@ -121,4 +121,11 @@ POPUP "Layers"
 	MENUITEM "Tubes", 30011
 	MENUITEM "Bounds", 30012
 }
+POPUP "Lighting"
+{
+	MENUITEM "No Lighting", 31000
+	MENUITEM "Normal", 31001
+	MENUITEM "Lightning Storm", 31002
+	MENUITEM "Dominator", 31003
+}
 }

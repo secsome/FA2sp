@@ -3,10 +3,11 @@
 #include <Helpers/Macro.h>
 
 #include <CFinalSunApp.h>
+#include <CMapData.h>
 
 #include "../CIsoView/Body.h"
 
-DEFINE_HOOK(424654, CFinalSunDlg_OnInitDialog_EnableLayersByDefault, 7)
+DEFINE_HOOK(424654, CFinalSunDlg_OnInitDialog_SetMenuItemStateByDefault, 7)
 {
     GET(CFinalSunDlg*, pThis, ESI);
 
@@ -25,6 +26,8 @@ DEFINE_HOOK(424654, CFinalSunDlg_OnInitDialog_EnableLayersByDefault, 7)
     pMenu->CheckMenuItem(30010, MF_CHECKED);
     pMenu->CheckMenuItem(30011, MF_CHECKED);
     pMenu->CheckMenuItem(30012, MF_CHECKED);
+
+    pMenu->CheckMenuRadioItem(31000, 31003, CFinalSunDlgExt::CurrentLighting, MF_CHECKED);
 
     return 0;
 }
@@ -52,6 +55,8 @@ DEFINE_HOOK(432304, CFinalSunDlg_Update_LayersVisibility, 5)
     SetItemCheckStatus(30011, CIsoViewExt::DrawTubes);
     SetItemCheckStatus(30012, CIsoViewExt::DrawBounds);
 
+    pMenu->CheckMenuRadioItem(31000, 31003, CFinalSunDlgExt::CurrentLighting, MF_CHECKED);
+
     return 0;
 }
 
@@ -61,7 +66,7 @@ DEFINE_HOOK(43209D, CFinalSunDlg_Update_TranslateMenuItems, A)
 {
     // GET_STACK(CFinalSunDlg*, pThis, STACK_OFFS(0x60, 0x3C));
     // auto pMenu = pThis->GetMenu();
-    
+
     GET(CMenu*, pMenu, ESI);
 
     auto translateMenuItem = [&pMenu](int id, ppmfc::CString pSrcName)
@@ -174,6 +179,12 @@ DEFINE_HOOK(43209D, CFinalSunDlg_Update_TranslateMenuItems, A)
     translateMenuItem(30010, "Menu.Layers.Smudges");
     translateMenuItem(30011, "Menu.Layers.Tubes");
     translateMenuItem(30012, "Menu.Layers.Bounds");
+
+    translateSubMenu(i++, "Menu.Lighting");
+    translateMenuItem(31000, "Menu.Lighting.None");
+    translateMenuItem(31001, "Menu.Lighting.Normal");
+    translateMenuItem(31002, "Menu.Lighting.Lightning");
+    translateMenuItem(31003, "Menu.Lighting.Dominator");
 
     return 0x432304;
 }

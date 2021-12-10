@@ -18,6 +18,8 @@ class NOVTABLE CFinalSunDlgExt : CFinalSunDlg
 public:
     static void ProgramStartupInit();
 
+    static int CurrentLighting;
+
     BOOL PreTranslateMessageExt(MSG* pMsg);
     BOOL OnCommandExt(WPARAM wParam, LPARAM lParam);
 };
