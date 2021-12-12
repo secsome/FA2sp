@@ -11,6 +11,11 @@ Compile Using C++ Standard Now: C++14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-12-XX RELEASE 1.2.3) ==============================================================================================
++) Experimental Lighting, only for preview, not correct
++) Added more internal param codes
+*) Reimplement waypoint drawing, reduce lag
+*) Minor adjustments
 
 ======================= Changes (2021-11-20 RELEASE 1.2.2) ==============================================================================================
 +) Now you can add more ramps to be auto generated in FA2 by setting [THEATERInfo] in fadata.ini
@@ -554,6 +559,11 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) Menu.Layers.Smudges = TEXT
                 +) Menu.Layers.Tubes = TEXT
                 +) Menu.Layers.Bounds = TEXT
+                +) Menu.Lighting = TEXT
+                +) Menu.Lighting.None = TEXT
+                +) Menu.Lighting.Normal = TEXT
+                +) Menu.Lighting.Lightning = TEXT
+                +) Menu.Lighting.Dominator = TEXT
                 +) AITriggerTitle = TEXT
                 +) AITriggerList = TEXT
                 +) AITriggerName = TEXT

@@ -119,7 +119,7 @@ Palette* PalettesManager::GetPalette(Palette* pPal, BGRStruct& color, bool remap
         return itr->second.GetPalette();
 
     auto& p = PalettesManager::CalculatedPaletteFiles[pPal].emplace(
-        std::pair(std::make_pair(color, lighting), LightingPalette(*pPal))
+        std::make_pair(std::make_pair(color, lighting), LightingPalette(*pPal))
     ).first->second;
 
     if (remap)
@@ -214,6 +214,34 @@ void LightingPalette::RemapColors(BGRStruct color)
     }
 }
 
+namespace std
+{
+    template<class _Ty,
+        class _Pr>
+        _NODISCARD constexpr const _Ty& clamp(const _Ty& _Val, const _Ty& _Min_val, const _Ty& _Max_val, _Pr _Pred)
+    {	// returns _Val constrained to [_Min_val, _Max_val] ordered by _Pred
+#if _ITERATOR_DEBUG_LEVEL == 2
+        if (_DEBUG_LT_PRED(_Pred, _Max_val, _Min_val))
+        {
+            _STL_REPORT_ERROR("invalid bounds arguments passed to std::clamp");
+            return (_Val);
+        }
+#endif /* _ITERATOR_DEBUG_LEVEL == 2 */
+
+        return (_DEBUG_LT_PRED(_Pred, _Max_val, _Val)
+            ? _Max_val
+            : _DEBUG_LT_PRED(_Pred, _Val, _Min_val)
+            ? _Min_val
+            : _Val);
+    }
+
+    template<class _Ty>
+    _NODISCARD constexpr const _Ty& clamp(const _Ty& _Val, const _Ty& _Min_val, const _Ty& _Max_val)
+    {	// returns _Val constrained to [_Min_val, _Max_val]
+        return (_STD clamp(_Val, _Min_val, _Max_val, less<>()));
+    }
+}
+
 void LightingPalette::TintColors(bool isObject)
 {
     this->RedMult = std::clamp(this->RedMult, 0.0f, 2.0f);
@@ -224,6 +252,7 @@ void LightingPalette::TintColors(bool isObject)
     auto rmult = this->AmbientMult * this->RedMult;
     auto gmult = this->AmbientMult * this->GreenMult;
     auto bmult = this->AmbientMult * this->BlueMult;
+
     for (int i = 0; i < 240; ++i)
     {
         this->Colors[i].R = (unsigned char)std::min(this->Colors[i].R * rmult, 255.0f);

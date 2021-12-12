@@ -254,7 +254,7 @@
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Body.CurrentScript.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Miscs\Hooks.RemapColor.cpp">
+    <ClCompile Include="FA2sp\Miscs\Hooks.Palette.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2pp\FunctionInit.cpp">

@@ -74,7 +74,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalOptions>-DISOLATION_AWARE_ENABLED %(AdditionalOptions)</AdditionalOptions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <EnableModules>false</EnableModules>
       <Optimization>MaxSpeed</Optimization>
     </ClCompile>
@@ -109,7 +109,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalOptions>-DISOLATION_AWARE_ENABLED %(AdditionalOptions)</AdditionalOptions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <EnableModules>false</EnableModules>
       <Optimization>Disabled</Optimization>
     </ClCompile>
@@ -190,7 +190,7 @@
     <ClCompile Include="FA2sp\Miscs\Hooks.LoadParams.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.Mix.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.Performance.cpp" />
-    <ClCompile Include="FA2sp\Miscs\Hooks.RemapColor.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.Palette.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.Stringtables.cpp" />
     <ClCompile Include="FA2sp\Helpers\MutexHelper.cpp" />
     <ClCompile Include="FA2sp\Helpers\Translations.cpp" />
