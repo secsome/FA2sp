@@ -11,6 +11,7 @@
 #include <clocale>
 
 HANDLE FA2sp::hInstance;
+std::string FA2sp::STDBuffer;
 ppmfc::CString FA2sp::Buffer;
 std::map<ppmfc::CString, ppmfc::CString> FA2sp::TutorialTextsMap;
 void* FA2sp::pExceptionHandler = nullptr;
