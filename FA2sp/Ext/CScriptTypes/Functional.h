@@ -100,7 +100,7 @@ static void CScriptTypes_LoadParams_TypeList(ppmfc::CComboBox& comboBox, int nID
     else
     {
         if (auto pSection = CINI::FAData->GetSection(buffer))
-            for (auto& pair : pSection->EntitiesDictionary)
+            for (auto& pair : pSection->GetEntities())
             {
                 int data;
                 if (sscanf_s(pair.first, "%d", &data) == 1)
@@ -142,7 +142,7 @@ static void CScriptTypes_LoadParams_Waypoint(ppmfc::CComboBox& comboBox)
         int waypoints[702];
         memset(waypoints, -1, sizeof waypoints);
         if (auto entries = doc.GetSection("Waypoints"))
-            for (auto& x : entries->EntitiesDictionary)
+            for (auto& x : entries->GetEntities())
                 if (x.first != "Name" && !STDHelpers::IsNullOrEmpty(x.second))
                 {
                     int l = atoi(x.first);
@@ -164,7 +164,7 @@ static void CScriptTypes_LoadParams_Waypoint(ppmfc::CComboBox& comboBox)
     {
         std::map<int, int> waypoints;
         if (auto entries = doc.GetSection("Waypoints"))
-            for (auto& x : entries->EntitiesDictionary)
+            for (auto& x : entries->GetEntities())
                 if (x.first != "Name" && !STDHelpers::IsNullOrEmpty(x.second))
                 {
                     int l = atoi(x.first);
@@ -235,7 +235,7 @@ static void CScriptTypes_LoadParams_GlobalVariables(ppmfc::CComboBox& comboBox)
     if (auto entities = rules.GetSection("VariableNames"))
     {
         CString text;
-        for (auto& x : entities->EntitiesDictionary)
+        for (auto& x : entities->GetEntities())
         {
             if (x.first != "Name" && !STDHelpers::IsNullOrEmpty(x.first))
             {
@@ -256,7 +256,7 @@ static void CScriptTypes_LoadParams_ScriptTypes(ppmfc::CComboBox& comboBox)
     if (auto entities = doc.GetSection("ScriptTypes"))
     {
         CString text, finaltext = "";
-        for (auto& ent : entities->EntitiesDictionary)
+        for (auto& ent : entities->GetEntities())
         {
             if (doc.SectionExists(ent.second) && !STDHelpers::IsNullOrEmpty(ent.second))
             {
@@ -279,7 +279,7 @@ static void CScriptTypes_LoadParams_TeamTypes(ppmfc::CComboBox& comboBox)
     if (auto entities = doc.GetSection("TeamTypes"))
     {
         CString text, finaltext = "";
-        for (auto& ent : entities->EntitiesDictionary)
+        for (auto& ent : entities->GetEntities())
         {
             if (doc.SectionExists(ent.second) && !STDHelpers::IsNullOrEmpty(ent.second))
             {
@@ -308,7 +308,7 @@ static void CScriptTypes_LoadParams_Speechs(ppmfc::CComboBox& comboBox)
     if (auto entities = eva.GetSection("DialogList"))
     {
         CString text;
-        for (auto& ent : entities->EntitiesDictionary)
+        for (auto& ent : entities->GetEntities())
         {
             if (eva.SectionExists(ent.second))
             {
@@ -330,7 +330,7 @@ static void CScriptTypes_LoadParams_Sounds(ppmfc::CComboBox& comboBox)
     if (auto entities = sound.GetSection("SoundList"))
     {
         CString text;
-        for (auto& ent : entities->EntitiesDictionary)
+        for (auto& ent : entities->GetEntities())
         {
             if (sound.SectionExists(ent.second) && !STDHelpers::IsNullOrEmpty(ent.second))
             {
@@ -351,7 +351,7 @@ static void CScriptTypes_LoadParams_Movies(ppmfc::CComboBox& comboBox)
     if (auto entities = art.GetSection("Movies"))
     {
         CString text;
-        for (auto& ent : entities->EntitiesDictionary)
+        for (auto& ent : entities->GetEntities())
         {
             if (ent.first != "Name")
             {
@@ -372,7 +372,7 @@ static void CScriptTypes_LoadParams_Themes(ppmfc::CComboBox& comboBox)
     if (auto entities = theme.GetSection("Themes"))
     {
         CString text;
-        for (auto& ent : entities->EntitiesDictionary)
+        for (auto& ent : entities->GetEntities())
         {
             if (theme.SectionExists(ent.second) && !STDHelpers::IsNullOrEmpty(ent.second))
             {
@@ -399,7 +399,7 @@ static void CScriptTypes_LoadParams_LocalVariables(ppmfc::CComboBox& comboBox)
     if (auto entities = doc.GetSection("VariableNames"))
     {
         CString text;
-        for (auto& x : entities->EntitiesDictionary)
+        for (auto& x : entities->GetEntities())
         {
             if (STDHelpers::IsNullOrEmpty(x.first) || x.first == "Name")
                 continue;

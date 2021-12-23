@@ -127,7 +127,7 @@ std::map<ppmfc::CString, ppmfc::CString, INISectionEntriesComparator> MultimapHe
         if (pINI)
             if (auto section = pINI->GetSection(pSection))
             {
-                for (auto& pair : section->EntitiesDictionary)
+                for (auto& pair : section->GetEntities())
                 {
                     if (STDHelpers::IsNullOrEmpty(pair.first) ||
                         STDHelpers::IsNullOrEmpty(pair.second) ||

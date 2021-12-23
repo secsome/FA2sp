@@ -4,14 +4,15 @@ I've decided to make this repository public so that more developers can help me 
 For now it had implemented all features that FA2Ext has and extended more logics than it.
 The codes might be a messy, so I'd appreciate it if someone could help me to make them better arranged.
 
-SDK: Visual Studio 2017 - Windows XP (v141_xp)
-Compile Using C++ Standard Now: C++14
+SDK: Visual Studio 2022 (v143)
+Compile Using C++ Standard Now: /std:c++latest
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-======================= Changes (2021-12-XX RELEASE 1.2.3) ==============================================================================================
+======================= Changes (2021-12-31 RELEASE 1.3.0) ==============================================================================================
+***) The project now compiles under v143+/std:c++latest, Windows XP may not be able to use this dll
 +) Experimental Lighting, only for preview, not correct
 +) Added more internal param codes
 *) Reimplement waypoint drawing, reduce lag

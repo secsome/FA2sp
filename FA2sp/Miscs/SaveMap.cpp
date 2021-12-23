@@ -39,11 +39,11 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
             ppmfc::CString buffer;
             buffer = section_pair.first;
             buffer.Trim();
-            if (buffer.GetLength() == 0 || section_pair.second.EntitiesDictionary.size() == 0)
+            if (buffer.GetLength() == 0 || section_pair.second.GetEntities().size() == 0)
                 sectionsToRemove.push_back(section_pair.first);
 
             std::vector<ppmfc::CString> keysToRemove;
-            for (auto& key_pair : section_pair.second.EntitiesDictionary)
+            for (auto& key_pair : section_pair.second.GetEntities())
             {
                 buffer = key_pair.first;
                 buffer.Trim();
@@ -54,7 +54,7 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
             for (auto& key : keysToRemove)
                 pINI->DeleteKey(section_pair.first, key);
 
-            if (section_pair.second.EntitiesDictionary.size() == 0)
+            if (section_pair.second.GetEntities().size() == 0)
                 sectionsToRemove.push_back(section_pair.first);
         }
         for (auto& section : sectionsToRemove)
@@ -98,7 +98,7 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
             for (auto& section : pINI->Dict)
             {
                 fout << "[" << section.first << "]\n";
-                for (auto& pair : section.second.EntitiesDictionary)
+                for (auto& pair : section.second.GetEntities())
                     fout << pair.first << "=" << pair.second << "\n";
                 fout << "\n";
             }

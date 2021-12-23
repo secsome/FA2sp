@@ -204,7 +204,7 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 	if (auto entities = fadata.GetSection("ScriptParams"))
 	{
 		char* pParseBuffer[2];
-		for (auto& pair : entities->EntitiesDictionary)
+		for (auto& pair : entities->GetEntities())
 		{
 			int id = atoi(pair.first);
 			if (id < 0) continue;
@@ -228,7 +228,7 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 	if (auto entities = fadata.GetSection("ScriptsRA2"))
 	{
 		char* pParseBuffer[5];
-		for (auto& pair : entities->EntitiesDictionary)
+		for (auto& pair : entities->GetEntities())
 		{
 			int id = atoi(pair.first);
 			if (id < 0) continue;
@@ -288,7 +288,7 @@ void CScriptTypesExt::UpdateDialog()
 	auto& ini = CINI::CurrentDocument();
 
 	if (auto pSection = ini.GetSection("ScriptTypes"))
-		for (auto& pair : pSection->EntitiesDictionary)
+		for (auto& pair : pSection->GetEntities())
 			if (auto pName = ini.TryGetString(pair.second, "Name"))
 			{
 				FA2sp::Buffer.Format("%s (%s)", pair.second, *pName);
@@ -516,7 +516,7 @@ void CScriptTypesExt::OnBNDeleteScriptClicked()
 		CINI::CurrentDocument->DeleteSection(this->ExtCurrentScript->ID);
 		if (auto pScripts = CINI::CurrentDocument->GetSection("ScriptTypes"))
 		{
-			for (auto& pairs : pScripts->EntitiesDictionary)
+			for (auto& pairs : pScripts->GetEntities())
 				if (strcmp(pairs.second, this->ExtCurrentScript->ID) == 0)
 					CINI::CurrentDocument->DeleteKey("ScriptTypes", pairs.first);
 		}

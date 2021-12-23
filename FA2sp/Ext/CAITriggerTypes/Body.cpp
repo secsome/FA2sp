@@ -54,7 +54,7 @@ BOOL CAITriggerTypesExt::OnInitDialogExt()
 	int i = 1;
 	if (auto sides = CINI::FAData->GetSection("Sides"))
 	{
-		for (auto& itr : sides->EntitiesDictionary)
+		for (auto& itr : sides->GetEntities())
 		{
 			ppmfc::CString buffer;
 			buffer.Format("%d - %s", i++, itr.second);

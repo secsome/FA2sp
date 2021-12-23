@@ -112,7 +112,7 @@ void ObjectBrowserControlExt::Redraw_Initialize()
 
     if (auto knownSection = fadata.GetSection("ForceSides"))
     {
-        for (auto& item : knownSection->EntitiesDictionary)
+        for (auto& item : knownSection->GetEntities())
         {
             int sideIndex = STDHelpers::ParseToInt(item.second, -1);
             if (sideIndex >= fadata.GetKeyCount("Sides"))
@@ -124,11 +124,11 @@ void ObjectBrowserControlExt::Redraw_Initialize()
     }
 
     if (auto ignores = fadata.GetSection("IgnoreRA2"))
-        for (auto& item : ignores->EntitiesDictionary)
+        for (auto& item : ignores->GetEntities())
             IgnoreSet.insert(item.second);
 
     if (auto forcenames = fadata.GetSection("ForceName"))
-        for (auto& item : forcenames->EntitiesDictionary)
+        for (auto& item : forcenames->GetEntities())
             ForceName.insert(item.second);
 
 }
@@ -222,7 +222,7 @@ void ObjectBrowserControlExt::Redraw_Owner()
         {
             if (auto pSection = CINI::Rules->GetSection("Countries"))
             {
-                auto& section = pSection->EntitiesDictionary;
+                auto& section = pSection->GetEntities();
                 size_t i = 0;
                 for (auto& itr : section)
                     this->InsertString(itr.second, Const_House + i++, hOwner);
@@ -232,7 +232,7 @@ void ObjectBrowserControlExt::Redraw_Owner()
         {
             if (auto pSection = CINI::CurrentDocument->GetSection("Houses"))
             {
-                auto& section = pSection->EntitiesDictionary;
+                auto& section = pSection->GetEntities();
                 size_t i = 0;
                 for (auto& itr : section)
                     this->InsertString(itr.second, Const_House + i++, hOwner);
@@ -252,7 +252,7 @@ void ObjectBrowserControlExt::Redraw_Infantry()
 
     int i = 0;
     if (auto sides = fadata.GetSection("Sides"))
-        for (auto& itr : sides->EntitiesDictionary)
+        for (auto& itr : sides->GetEntities())
             subNodes[i++] = this->InsertString(itr.second, -1, hInfantry);
     else
     {
@@ -301,7 +301,7 @@ void ObjectBrowserControlExt::Redraw_Vehicle()
 
     int i = 0;
     if (auto sides = fadata.GetSection("Sides"))
-        for (auto& itr : sides->EntitiesDictionary)
+        for (auto& itr : sides->GetEntities())
             subNodes[i++] = this->InsertString(itr.second, -1, hVehicle);
     else
     {
@@ -351,7 +351,7 @@ void ObjectBrowserControlExt::Redraw_Aircraft()
 
     int i = 0;
     if (auto sides = fadata.GetSection("Sides"))
-        for (auto& itr : sides->EntitiesDictionary)
+        for (auto& itr : sides->GetEntities())
             subNodes[i++] = this->InsertString(itr.second, -1, hAircraft);
     else
     {
@@ -401,7 +401,7 @@ void ObjectBrowserControlExt::Redraw_Building()
 
     int i = 0;
     if (auto sides = fadata.GetSection("Sides"))
-        for (auto& itr : sides->EntitiesDictionary)
+        for (auto& itr : sides->GetEntities())
             subNodes[i++] = this->InsertString(itr.second, -1, hBuilding);
     else
     {

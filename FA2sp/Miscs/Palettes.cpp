@@ -5,6 +5,8 @@
 #include <CMixFile.h>
 #include <CLoading.h>
 
+#include <algorithm>
+
 #include "../Ext/CFinalSunDlg/Body.h"
 
 const LightingStruct LightingStruct::NoLighting = { -1,-1,-1,-1,-1,-1 };
@@ -211,34 +213,6 @@ void LightingPalette::RemapColors(BGRStruct color)
         RGBClass result = hsv_remap;
 
         this->Colors[i] = { result.B,result.G,result.R };
-    }
-}
-
-namespace std
-{
-    template<class _Ty,
-        class _Pr>
-        _NODISCARD constexpr const _Ty& clamp(const _Ty& _Val, const _Ty& _Min_val, const _Ty& _Max_val, _Pr _Pred)
-    {	// returns _Val constrained to [_Min_val, _Max_val] ordered by _Pred
-#if _ITERATOR_DEBUG_LEVEL == 2
-        if (_DEBUG_LT_PRED(_Pred, _Max_val, _Min_val))
-        {
-            _STL_REPORT_ERROR("invalid bounds arguments passed to std::clamp");
-            return (_Val);
-        }
-#endif /* _ITERATOR_DEBUG_LEVEL == 2 */
-
-        return (_DEBUG_LT_PRED(_Pred, _Max_val, _Val)
-            ? _Max_val
-            : _DEBUG_LT_PRED(_Pred, _Val, _Min_val)
-            ? _Min_val
-            : _Val);
-    }
-
-    template<class _Ty>
-    _NODISCARD constexpr const _Ty& clamp(const _Ty& _Val, const _Ty& _Min_val, const _Ty& _Max_val)
-    {	// returns _Val constrained to [_Min_val, _Max_val]
-        return (_STD clamp(_Val, _Min_val, _Max_val, less<>()));
     }
 }
 

@@ -15,7 +15,7 @@ void TriggerSort::LoadAllTriggers()
     // Optimisze the efficiency
     if (auto pSection = CINI::CurrentDocument->GetSection("Triggers"))
     {
-        for (auto& pair : pSection->EntitiesDictionary)
+        for (auto& pair : pSection->GetEntities())
         {
             this->AddTrigger(pair.first);
         }

@@ -198,7 +198,7 @@ DEFINE_HOOK(441A40, Miscs_LoadParams_Triggers, 6)
         
         if (auto const pSection = pINI->GetSection("Triggers"))
         {
-            for (auto pair : pSection->EntitiesDictionary)
+            for (auto pair : pSection->GetEntities())
             {
                 auto splits = STDHelpers::SplitString(pair.second, 2);
                 ppmfc::CString buffer(pair.first);
@@ -216,7 +216,7 @@ DEFINE_HOOK(441A40, Miscs_LoadParams_Triggers, 6)
     {
         if (auto pSection = pINI->GetSection("Triggers"))
         {
-            for (auto& pair : pSection->EntitiesDictionary)
+            for (auto& pair : pSection->GetEntities())
             {
                 auto splits = STDHelpers::SplitString(pair.second, 2);
                 ppmfc::CString buffer = pair.first;

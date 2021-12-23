@@ -106,8 +106,8 @@ void CurrentScript::Set(ppmfc::CString id)
 		for (int i = 0; i < 50; ++i)
 		{
 			key.Format("%d", i);
-			auto itr = pSection->EntitiesDictionary.find(key);
-			if (itr != pSection->EntitiesDictionary.end())
+			auto itr = pSection->GetEntities().find(key);
+			if (itr != pSection->GetEntities().end())
 			{
 				key = itr->second;
 				if (sscanf_s(key, "%d,%d", &this->Actions[count].Type, &this->Actions[count].Param) == 2)
@@ -291,7 +291,7 @@ void CurrentScript::LoadExtraParamBox(ppmfc::CComboBox& comboBox, int actionInde
 			else
 			{
 				if (auto pSection = CINI::FAData->GetSection(buffer))
-					for (auto& pair : pSection->EntitiesDictionary)
+					for (auto& pair : pSection->GetEntities())
 					{
 						int data;
 						if (sscanf_s(pair.first, "%d", &data) == 1)

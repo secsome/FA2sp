@@ -33,7 +33,7 @@ DEFINE_HOOK(48A1AD, CLoading_InitMixFiles_ExtraMix, 7)
 	{
 		std::map<int, ppmfc::CString> collector;
 
-		for (auto& pair : pSection->IndicesDictionary)
+		for (auto& pair : pSection->GetIndices())
 			collector[pair.second] = pair.first;
 
 		ppmfc::CString path;
