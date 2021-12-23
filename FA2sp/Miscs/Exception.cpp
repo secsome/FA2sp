@@ -198,6 +198,50 @@ std::wstring Exception::FullDump(
 	ExitProcess(ExitCode);
 }
 
+#pragma comment(lib, "ntdll.lib")
+#include <winternl.h> // Read my comments when you are free!
+
+EXTERN_C
+NTSYSCALLAPI
+NTSTATUS
+NTAPI
+NtRemoveProcessDebug(
+	_In_ HANDLE ProcessHandle,
+	_In_ HANDLE DebugObjectHandle
+);
+
+EXTERN_C
+NTSYSCALLAPI
+NTSTATUS
+NTAPI
+NtSetInformationDebugObject(
+	_In_ HANDLE DebugObjectHandle,
+	_In_ ULONG DebugObjectInformationClass,
+	_In_ PVOID DebugInformation,
+	_In_ ULONG DebugInformationLength,
+	_Out_opt_ PULONG ReturnLength
+);
+
+#include <tlhelp32.h>
+DWORD GetDebuggerProcessId(DWORD dwSelfProcessId)
+{
+	DWORD dwParentProcessId = -1;
+	HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+	PROCESSENTRY32 pe32;
+	pe32.dwSize = sizeof(PROCESSENTRY32);
+	Process32First(hSnapshot, &pe32);
+	do
+	{
+		if (pe32.th32ProcessID == dwSelfProcessId)
+		{
+			dwParentProcessId = pe32.th32ParentProcessID;
+			break;
+		}
+	} while (Process32Next(hSnapshot, &pe32));
+	CloseHandle(hSnapshot);
+	return dwParentProcessId;
+}
+
 DEFINE_HOOK(435270, CFinalSunDlg_DoModal, 8)
 {
 	GET(CFinalSunDlg*, pThis, ECX);
@@ -205,13 +249,33 @@ DEFINE_HOOK(435270, CFinalSunDlg_DoModal, 8)
 	::SetUnhandledExceptionFilter(Exception::ExceptionFilter);
 	Logger::Info("FA2sp UnhandledExceptionFliter installed!\n");
 
-	if (DebugActiveProcessStop(GetCurrentProcessId()))
+	// https://stackoverflow.com/questions/70458828
+	// Thanks StackOverflow
+	HANDLE hDebug;
+	HANDLE hCurrentProcess = GetCurrentProcess();
+	NTSTATUS status = NtQueryInformationProcess(hCurrentProcess,
+		(PROCESSINFOCLASS)30, &hDebug, sizeof(HANDLE), 0);
+	if (0 <= status)
 	{
-		WinExec("taskkill /IM Syringe.exe /F", SW_HIDE);
+		ULONG killProcessOnExit = FALSE;
+		status = NtSetInformationDebugObject(
+			hDebug,
+			1,
+			&killProcessOnExit,
+			sizeof(ULONG),
+			NULL
+		);
+		NtClose(hDebug);
+	}
+
+	if (0 <= status)
+	{
+		const auto pid = GetDebuggerProcessId(GetProcessId(hCurrentProcess));
+		WinExec(std::format("taskkill /F /PID {}", pid).c_str(), SW_HIDE);
 		Logger::Info("Syringe detached!\n");
 	}
 	else
-		Logger::Warn("Failed to detach Syringe! Error code = %X!\n", GetLastError());
+		Logger::Warn("Failed to detach Syringe!\n");
 	
 	R->EAX(pThis->FA2CDialog::DoModal());
 
