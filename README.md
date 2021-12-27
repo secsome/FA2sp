@@ -13,6 +13,7 @@ Compile Using C++ Standard Now: /std:c++latest
 
 ======================= Changes (2021-12-31 RELEASE 1.3.0) ==============================================================================================
 ***) The project now compiles under v143+/std:c++latest, Windows XP may not be able to use this dll
++) New ExtConfig: FastResize = BOOLEAN, enable it so resizing the map will be much more faster when expanding
 +) Experimental Lighting, only for preview, not correct
 +) Added more internal param codes
 *) Reimplement waypoint drawing, reduce lag
@@ -231,6 +232,7 @@ COLORREF - R,G,B each of them is in [0,255]
                     +) SaveMap.AutoSave.MaxCount = INTERGER ; How many saving should FA2 keep, set to -1 will disable the auto cleanning, defaults to 10
             +) SaveMap.OnlySaveMAP = BOOLEAN ; Determines if FA2 will only save map with .map file extension
             +) VerticalLayout = BOOLEAN ; Determines if FA2 will make the bottom view go to the right side
+            +) FastResize = BOOLEAN ; Determines if FA2 will expanding the map more rapidly
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.

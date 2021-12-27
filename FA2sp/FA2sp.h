@@ -53,6 +53,7 @@ public:
     static int SaveMap_AutoSave_MaxCount;
     static bool SaveMap_OnlySaveMAP;
     static bool VerticalLayout;
+    static bool FastResize;
 };
 
 class Variables

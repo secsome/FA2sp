@@ -18,7 +18,6 @@ public:
 
     void DrawLockedCellOutline(int X, int Y, int W, int H, COLORREF color, bool bUseDot, bool bUsePrimary, LPDDSURFACEDESC2 lpDesc);
     void DrawCelltag(int X, int Y);
-    void DrawWaypointID(int WPIndex, int X, int Y);
     void DrawWaypointFlag(int X, int Y);
     void DrawTube(CellData* pData, int X, int Y);
 
