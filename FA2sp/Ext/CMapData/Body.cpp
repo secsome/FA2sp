@@ -153,9 +153,9 @@ bool CMapDataExt::ResizeMapExt(MapRect* const pRect)
                             {
                                 x += coordToMove.X;
                                 y += coordToMove.Y;
-                                if (!this->IsCoordInMap(x, y))
+                                /*if (!this->IsCoordInMap(x, y))
                                     itemsToRemove.push_back(pair.first);
-                                else
+                                else*/
                                 {
                                     midpart.Format("%d,%d", x, y);
                                     pair.second = prefix + midpart + suffix;
@@ -194,7 +194,7 @@ bool CMapDataExt::ResizeMapExt(MapRect* const pRect)
                 buffer.X += coordToMove.X;
                 buffer.Y += coordToMove.Y;
 
-                if(this->IsCoordInMap(buffer.X, buffer.Y))
+                //if(this->IsCoordInMap(buffer.X, buffer.Y))
                     values[buffer] = pair.second.m_pchData;
             }
         }
@@ -226,9 +226,9 @@ bool CMapDataExt::ResizeMapExt(MapRect* const pRect)
             value.X += coordToMove.X;
             value.Y += coordToMove.Y;
 
-            if (!this->IsCoordInMap(value.X, value.Y))
+            /*if (!this->IsCoordInMap(value.X, value.Y))
                 itemsToRemove.push_back(pair.first);
-            else
+            else*/
                 pair.second.Format("%d", value.X + value.Y * 1000);
         }
 
