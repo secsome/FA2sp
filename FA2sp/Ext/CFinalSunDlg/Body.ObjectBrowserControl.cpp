@@ -576,7 +576,7 @@ void ObjectBrowserControlExt::Redraw_Tunnel()
     HTREEITEM& hTunnel = ExtNodes[Root_Tunnel];
     if (hTunnel == NULL)   return;
 
-    if (CINI::FAData().GetBool("Debug", "AllowTunnels"))
+    if (CINI::FAData->GetBool("Debug", "AllowTunnels"))
     {
         this->InsertTranslatedString("NewTunnelObList", 50, hTunnel);
         this->InsertTranslatedString("DelTunnelObList", 51, hTunnel);
