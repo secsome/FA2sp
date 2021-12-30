@@ -148,9 +148,13 @@
     <ClCompile Include="FA2sp\Ext\CMapData\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CMapD\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyAircraft\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CPropertyAircraft\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyBuilding\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CPropertyBuilding\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyInfantry\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CPropertyInfantry\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyUnit\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CPropertyUnit\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Body.CurrentScript.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CSingleplayerSettings\Body.cpp" />

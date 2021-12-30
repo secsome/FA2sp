@@ -27,6 +27,7 @@ bool ObjectBrowserControlExt::BuildingBrushBools[14];
 bool ObjectBrowserControlExt::InfantryBrushBools[10];
 bool ObjectBrowserControlExt::VehicleBrushBools[11];
 bool ObjectBrowserControlExt::AircraftBrushBools[9];
+bool ObjectBrowserControlExt::InitPropertyDlgFromProperty{ false };
 
 HTREEITEM ObjectBrowserControlExt::InsertString(const char* pString, DWORD dwItemData,
     HTREEITEM hParent, HTREEITEM hInsertAfter)
@@ -958,6 +959,8 @@ bool ObjectBrowserControlExt::UpdateEngine(int nData)
     {
         if (nData == Set_Building)
         {
+            ObjectBrowserControlExt::InitPropertyDlgFromProperty = true;
+
             if (this->DoPropertyBrush_Building())
             {
                 CIsoView::CurrentCommand = 0x17; // PropertyBrush
@@ -965,10 +968,15 @@ bool ObjectBrowserControlExt::UpdateEngine(int nData)
             }
             else
                 CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+
+            ObjectBrowserControlExt::InitPropertyDlgFromProperty = false;
+
             return true;
         }
         else if (nData == Set_Infantry)
         {
+            ObjectBrowserControlExt::InitPropertyDlgFromProperty = true;
+
             if (this->DoPropertyBrush_Infantry())
             {
                 CIsoView::CurrentCommand = 0x17;
@@ -976,10 +984,15 @@ bool ObjectBrowserControlExt::UpdateEngine(int nData)
             }
             else
                 CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+
+            ObjectBrowserControlExt::InitPropertyDlgFromProperty = false;
+
             return true;
         }
         else if (nData == Set_Vehicle)
         {
+            ObjectBrowserControlExt::InitPropertyDlgFromProperty = true;
+
             if (this->DoPropertyBrush_Vehicle())
             {
                 CIsoView::CurrentCommand = 0x17;
@@ -987,10 +1000,15 @@ bool ObjectBrowserControlExt::UpdateEngine(int nData)
             }
             else
                 CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+
+            ObjectBrowserControlExt::InitPropertyDlgFromProperty = false;
+
             return true;
         }
         else if (nData == Set_Aircraft)
         {
+            ObjectBrowserControlExt::InitPropertyDlgFromProperty = true;
+
             if (this->DoPropertyBrush_Aircraft())
             {
                 CIsoView::CurrentCommand = 0x17;
@@ -998,6 +1016,9 @@ bool ObjectBrowserControlExt::UpdateEngine(int nData)
             }
             else
                 CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+
+            ObjectBrowserControlExt::InitPropertyDlgFromProperty = false;
+
             return true;
         }
     }
