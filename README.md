@@ -15,6 +15,7 @@ Compile Using C++ Standard Now: /std:c++latest
 ***) The project now compiles under v143+/std:c++latest, Windows XP may not be able to use this dll
 +) New ExtConfig: FastResize = BOOLEAN, enable it so resizing the map will be much more faster when expanding
 +) Experimental Lighting, only for preview, not correct
++) More localization support
 +) Added more internal param codes
 *) Reimplement waypoint drawing, reduce lag
 *) Minor adjustments
@@ -730,6 +731,12 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) TheaterNameUbn = TEXT
                 +) TheaterNameLun = TEXT
                 +) TheaterNameDes = TEXT
+                +) AllieEditorTitle = TEXT
+                +) AllieEditorEnemies = TEXT
+                +) AllieEditorAllies = TEXT
+                +) AllieEditorOK = TEXT
+                +) AllieEditorCancel = TEXT
+                +) TileManagerTitle = TEXT
 
 - WRITE IN THE END
 This project was developed after FA2Copy with still many bugs to fix,
