@@ -17,6 +17,7 @@ Compile Using C++ Standard Now: /std:c++latest
 +) Experimental Lighting, only for preview, not correct
 +) More localization support
 +) Added more internal param codes
+*) You can now customize tile manager by regex
 *) Reimplement waypoint drawing, reduce lag
 *) Minor adjustments
 
@@ -260,6 +261,24 @@ COLORREF - R,G,B each of them is in [0,255]
             \\\ SENGINEER=1
             \\\ YENGINEER=2
             \\\ {A LOT OF WESTWOOD CIVILIAN VEHICLES WITH PREREQUISITE [NAWEAP] WILL BE GUESSED INTO SOVIETS, FIX THEM MANUALLY}
+            \\\
+        +) [TileManagerDataXXX] (TEM, SNO, URB, UBN, LUN, DES)
+            DisplayName={Regex expression}
+            \\\ e.g.
+            \\\ [TileManagerDataTEM]
+            \\\ Cliff=cliff
+            \\\ Water=water
+            \\\ Ramp=ramp|slope
+            \\\ Bridge=bridge
+            \\\ Road=road|highway
+            \\\ Feature=feature|farm
+            \\\ Railway=rail|train
+            \\\ Tunnel=tunnel|tube
+            \\\ Ramp=ramp|slope
+            \\\ Shore=shore
+            \\\ Pavement=pave
+            \\\ Fix=fix
+            \\\ LAT=lat
             \\\
         +) [TheaterInfo] (TemperateInfo, SnowInfo, UrbanInfo, NewUrbanInfo, DesertInfo, LunarInfo)
             Ramps=Tilesets
