@@ -3,27 +3,14 @@
 #include "../../FA2sp.h"
 #include "../../Helpers/Translations.h"
 #include "../../Helpers/STDHelpers.h"
+#include "../../Helpers/MultimapHelper.h"
+
+#include <CLoading.h>
 
 HWND CTileManager::m_hwnd;
 CTileSetBrowserFrame* CTileManager::m_parent;
-
-CTileManager::node_type CTileManager::Nodes = {
-    "Cliff",
-    "Water",
-    "Ramp",
-    "Bridge",
-    "Road",
-    "Feature",
-    "Rail",
-    "Tunnel",
-    "Shore",
-    "Pavement",
-    "Fix",
-    "LAT",
-    "Other"
-};
-
-CTileManager::data_type CTileManager::Datas;
+std::vector<std::pair<std::string, std::regex>> CTileManager::Nodes;
+std::vector<std::vector<int>> CTileManager::Datas;
 
 void CTileManager::Create(CTileSetBrowserFrame* pWnd)
 {
@@ -46,21 +33,54 @@ void CTileManager::Create(CTileSetBrowserFrame* pWnd)
 
 void CTileManager::Initialize(HWND& hWnd)
 {
+    ppmfc::CString buffer;
+    if (Translations::GetTranslationItem("TileManagerTitle", buffer))
+        SetWindowText(hWnd, buffer);
+
     HWND hTileTypes = GetDlgItem(hWnd, 6100); 
 
-    for (auto& x : CTileManager::Nodes)
-        SendMessage(hTileTypes, LB_ADDSTRING, NULL, (LPARAM)x);
+    InitNodes();
 
+    for (auto& x : CTileManager::Nodes)
+        SendMessage(hTileTypes, LB_ADDSTRING, NULL, (LPARAM)x.first.c_str());
+    
     UpdateTypes(hWnd);
+}
+
+void CTileManager::InitNodes()
+{
+    CTileManager::Nodes.clear();
+
+    ppmfc::CString lpKey = "TileManagerData";
+    lpKey += CLoading::Instance->GetTheaterSuffix();
+
+    MultimapHelper mmh;
+    mmh.AddINI(&CINI::FAData);
+    auto const pKeys = mmh.ParseIndicies(lpKey);
+
+    for (auto& key : pKeys)
+    {
+        CTileManager::Nodes.push_back(
+            std::make_pair<std::string, std::regex>(key.m_pchData, std::regex(mmh.GetString(lpKey, key), std::regex::icase))
+        );
+    }
+
+    if (!Translations::GetTranslationItem("TileManagerOthers", lpKey))
+        lpKey = "Others";
+    
+    CTileManager::Nodes.push_back(std::make_pair<std::string, std::regex>(lpKey.m_pchData, std::regex("")));
+
+    CTileManager::Datas.resize(CTileManager::Nodes.size());
 }
 
 void CTileManager::Close(HWND& hWnd)
 {
     EndDialog(hWnd, NULL);
+
     CTileManager::m_hwnd = NULL;
     CTileManager::m_parent = NULL;
-    for (auto& vec : CTileManager::Datas)
-        vec.clear();
+    CTileManager::Nodes.clear();
+    CTileManager::Datas.clear();
 }
 
 BOOL CALLBACK CTileManager::DlgProc(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam)
@@ -164,32 +184,16 @@ void CTileManager::UpdateTypes(HWND hWnd)
         tile.Format("TileSet%04d", nTile);
         tile = CINI::CurrentTheater->GetString(tile, "SetName", "NO NAME");
         bool other = true;
-        if (STDHelpers::Contains(tile, "cliff", true))
-            { CTileManager::Datas[Nodes_Cliff].push_back(idx); other = false; }
-        if (STDHelpers::Contains(tile, "water", true))
-            { CTileManager::Datas[Nodes_Water].push_back(idx); other = false; }
-        if (STDHelpers::Contains(tile, "ramp", true) || STDHelpers::Contains(tile, "slope", true))
-            { CTileManager::Datas[Nodes_Ramp].push_back(idx); other = false; }
-        if (STDHelpers::Contains(tile, "bridge", true))
-            { CTileManager::Datas[Nodes_Bridge].push_back(idx); other = false; }
-        if (STDHelpers::Contains(tile, "road", true) || STDHelpers::Contains(tile, "highway", true))
-            { CTileManager::Datas[Nodes_Road].push_back(idx); other = false; }
-        if (STDHelpers::Contains(tile, "feature", true) || STDHelpers::Contains(tile, "farm", true))
-            { CTileManager::Datas[Nodes_Feature].push_back(idx); other = false; }
-        if (STDHelpers::Contains(tile, "rail", true) || STDHelpers::Contains(tile, "train", true))
-            { CTileManager::Datas[Nodes_Rail].push_back(idx); other = false; }
-        if (STDHelpers::Contains(tile, "tunnel", true))
-            { CTileManager::Datas[Nodes_Tunnel].push_back(idx); other = false; }
-        if (STDHelpers::Contains(tile, "shore", true))
-            { CTileManager::Datas[Nodes_Shore].push_back(idx); other = false; }
-        if (STDHelpers::Contains(tile, "pave", true))
-            { CTileManager::Datas[Nodes_Pave].push_back(idx); other = false; }
-        if (STDHelpers::Contains(tile, "fix", true))
-            { CTileManager::Datas[Nodes_Fix].push_back(idx); other = false; }
-        if (STDHelpers::Contains(tile, "lat", true))
-            { CTileManager::Datas[Nodes_LAT].push_back(idx); other = false; }
-        if(other)
-            CTileManager::Datas[Nodes_Other].push_back(idx);
+        for (size_t i = 0; i < CTileManager::Nodes.size() - 1; ++i)
+        {
+            if (std::regex_search((std::string)tile.m_pchData, CTileManager::Nodes[i].second))
+            {
+                CTileManager::Datas[i].push_back(idx); 
+                other = false;
+            }
+        }
+        if (other)
+            CTileManager::Datas[CTileManager::Nodes.size() - 1].push_back(idx);
     }
 
     CTileManager::UpdateDetails(hWnd);
@@ -201,7 +205,7 @@ void CTileManager::UpdateDetails(HWND hWnd, int kNode)
     HWND hTileComboBox = GetDlgItem(hParent, 1366);
     HWND hTileDetails = GetDlgItem(hWnd, 6101);
     while (SendMessage(hTileDetails, LB_DELETESTRING, 0, NULL) != LB_ERR);
-    if (kNode == Nodes_RemoveFlag)
+    if (kNode == -1)
         return;
     else
     {

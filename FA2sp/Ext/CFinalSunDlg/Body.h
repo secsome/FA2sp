@@ -18,6 +18,8 @@ class NOVTABLE CFinalSunDlgExt : CFinalSunDlg
 public:
     static void ProgramStartupInit();
 
+    static int CurrentLighting;
+
     BOOL PreTranslateMessageExt(MSG* pMsg);
     BOOL OnCommandExt(WPARAM wParam, LPARAM lParam);
 };
@@ -85,6 +87,7 @@ public:
     static bool InfantryBrushBools[10];
     static bool VehicleBrushBools[11];
     static bool AircraftBrushBools[9];
+    static bool InitPropertyDlgFromProperty;
 
     void Redraw();
     bool UpdateEngine(int nData);

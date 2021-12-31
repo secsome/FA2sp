@@ -4,13 +4,22 @@ I've decided to make this repository public so that more developers can help me 
 For now it had implemented all features that FA2Ext has and extended more logics than it.
 The codes might be a messy, so I'd appreciate it if someone could help me to make them better arranged.
 
-SDK: Visual Studio 2017 - Windows XP (v141_xp)
-Compile Using C++ Standard Now: C++14
+SDK: Visual Studio 2022 (v143)
+Compile Using C++ Standard Now: /std:c++latest
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2021-12-31 RELEASE 1.3.0) ==============================================================================================
+***) The project now compiles under v143+/std:c++latest, Windows XP may not be able to use this dll
++) New ExtConfig: FastResize = BOOLEAN, enable it so resizing the map will be much more faster when expanding
++) Experimental Lighting, only for preview, not correct
++) More localization support
++) Added more internal param codes
+*) You can now customize tile manager by regex
+*) Reimplement waypoint drawing, reduce lag
+*) Minor adjustments
 
 ======================= Changes (2021-11-20 RELEASE 1.2.2) ==============================================================================================
 +) Now you can add more ramps to be auto generated in FA2 by setting [THEATERInfo] in fadata.ini
@@ -225,6 +234,7 @@ COLORREF - R,G,B each of them is in [0,255]
                     +) SaveMap.AutoSave.MaxCount = INTERGER ; How many saving should FA2 keep, set to -1 will disable the auto cleanning, defaults to 10
             +) SaveMap.OnlySaveMAP = BOOLEAN ; Determines if FA2 will only save map with .map file extension
             +) VerticalLayout = BOOLEAN ; Determines if FA2 will make the bottom view go to the right side
+            +) FastResize = BOOLEAN ; Determines if FA2 will expanding the map more rapidly
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.
@@ -251,6 +261,24 @@ COLORREF - R,G,B each of them is in [0,255]
             \\\ SENGINEER=1
             \\\ YENGINEER=2
             \\\ {A LOT OF WESTWOOD CIVILIAN VEHICLES WITH PREREQUISITE [NAWEAP] WILL BE GUESSED INTO SOVIETS, FIX THEM MANUALLY}
+            \\\
+        +) [TileManagerDataXXX] (TEM, SNO, URB, UBN, LUN, DES)
+            DisplayName={Regex expression}
+            \\\ e.g.
+            \\\ [TileManagerDataTEM]
+            \\\ Cliff=cliff
+            \\\ Water=water
+            \\\ Ramp=ramp|slope
+            \\\ Bridge=bridge
+            \\\ Road=road|highway
+            \\\ Feature=feature|farm
+            \\\ Railway=rail|train
+            \\\ Tunnel=tunnel|tube
+            \\\ Ramp=ramp|slope
+            \\\ Shore=shore
+            \\\ Pavement=pave
+            \\\ Fix=fix
+            \\\ LAT=lat
             \\\
         +) [TheaterInfo] (TemperateInfo, SnowInfo, UrbanInfo, NewUrbanInfo, DesertInfo, LunarInfo)
             Ramps=Tilesets
@@ -554,6 +582,11 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) Menu.Layers.Smudges = TEXT
                 +) Menu.Layers.Tubes = TEXT
                 +) Menu.Layers.Bounds = TEXT
+                +) Menu.Lighting = TEXT
+                +) Menu.Lighting.None = TEXT
+                +) Menu.Lighting.Normal = TEXT
+                +) Menu.Lighting.Lightning = TEXT
+                +) Menu.Lighting.Dominator = TEXT
                 +) AITriggerTitle = TEXT
                 +) AITriggerList = TEXT
                 +) AITriggerName = TEXT
@@ -717,6 +750,12 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) TheaterNameUbn = TEXT
                 +) TheaterNameLun = TEXT
                 +) TheaterNameDes = TEXT
+                +) AllieEditorTitle = TEXT
+                +) AllieEditorEnemies = TEXT
+                +) AllieEditorAllies = TEXT
+                +) AllieEditorOK = TEXT
+                +) AllieEditorCancel = TEXT
+                +) TileManagerTitle = TEXT
 
 - WRITE IN THE END
 This project was developed after FA2Copy with still many bugs to fix,

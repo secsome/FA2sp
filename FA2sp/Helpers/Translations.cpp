@@ -44,8 +44,8 @@ bool Translations::GetTranslationItem(const char* pLabelName, ppmfc::CString& re
     for(const auto& language : Translations::pLanguage)
         if (auto section = falanguage.GetSection(language))
         {
-            auto itr = section->EntitiesDictionary.find(pLabelName);
-            if (itr != section->EntitiesDictionary.end())
+            auto itr = section->GetEntities().find(pLabelName);
+            if (itr != section->GetEntities().end())
             {
                 ret = itr->second;
                 return true;

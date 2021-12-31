@@ -13,10 +13,10 @@ void CHousesExt::ProgramStartupInit()
 
 void CHousesExt::UpdateComboboxContents()
 {
-	while (this->CCBColor.DeleteString(0) != -1);
-	while (this->CCBCountry.DeleteString(0) != -1);
-	while (this->CCBHouses.DeleteString(0) != -1);
-	while (this->CCBHumanHouse.DeleteString(0) != -1);
+	this->CCBColor.DeleteAllStrings();
+	this->CCBCountry.DeleteAllStrings();
+	this->CCBHouses.DeleteAllStrings();
+	this->CCBHumanHouse.DeleteAllStrings();
 
 	auto& doc = CINI::CurrentDocument();
 	

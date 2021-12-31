@@ -45,9 +45,6 @@
     <ClInclude Include="FA2sp\Helpers\Parser.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="FA2sp\Helpers\INIParser.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="FA2sp\Helpers\MutexHelper.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -142,6 +139,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FA2sp\Miscs\SaveMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\Miscs\TheaterInfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\Ext\CMapData\Body.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -254,7 +257,7 @@
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Body.CurrentScript.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Miscs\Hooks.RemapColor.cpp">
+    <ClCompile Include="FA2sp\Miscs\Hooks.Palette.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2pp\FunctionInit.cpp">
@@ -350,7 +353,25 @@
     <ClCompile Include="FA2sp\Ext\CTileSetBrowserView\Hooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Miscs\Hooks.TheaterInfo.cpp">
+    <ClCompile Include="FA2sp\Miscs\TheaterInfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CMapData\Body.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CMapData\Hooks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CPropertyBuilding\Hooks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CPropertyAircraft\Hooks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CPropertyUnit\Hooks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CPropertyInfantry\Hooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

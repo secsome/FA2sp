@@ -3,6 +3,7 @@
 #include <set>
 
 #include "../../Helpers/STDHelpers.h"
+#include "../../Helpers/Translations.h"
 
 #include "../../FA2sp.h"
 
@@ -47,6 +48,23 @@ BOOL CALLBACK CAllieEditor::DlgProc(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM l
 		}
 
 		SetWindowText(hETCurrent, currentCountry);
+
+		// Translate
+		auto translateItem = [&](int nID, const char* lpKey)
+		{
+			ppmfc::CString buf;
+			if (Translations::GetTranslationItem(lpKey, buf))
+				SetWindowText(GetDlgItem(hwnd, nID), buf);
+		};
+		
+		translateItem(6305, "AllieEditorEnemies");
+		translateItem(6306, "AllieEditorAllies");
+		translateItem(IDOK, "AllieEditorOK");
+		translateItem(IDCANCEL, "AllieEditorCancel");
+
+		ppmfc::CString buf;
+		if (Translations::GetTranslationItem("AllieEditorTitle", buf))
+			SetWindowText(hwnd, buf);
 
 		return TRUE;
 	}

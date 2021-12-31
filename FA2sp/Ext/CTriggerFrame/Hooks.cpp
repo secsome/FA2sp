@@ -21,13 +21,13 @@ DEFINE_HOOK(4FA450, CTriggerFrame_Update, 7)
     if (nCurSel != CB_ERR)
         ID = reinterpret_cast<const char*>(pThis->CCBCurrentTrigger.GetItemDataPtr(nCurSel));
 
-    while (pThis->CCBCurrentTrigger.DeleteString(0) != CB_ERR);
+    pThis->CCBCurrentTrigger.DeleteAllStrings();
 
     pThis->CCBCurrentTrigger.SetWindowText("");
 
     if (auto pSection = CINI::CurrentDocument->GetSection("Triggers"))
     {
-        for (auto& pair : pSection->EntitiesDictionary)
+        for (auto& pair : pSection->GetEntities())
         {
             auto splits = STDHelpers::SplitString(pair.second, 2);
             int nIdx = pThis->CCBCurrentTrigger.AddString(splits[2]);
@@ -141,7 +141,7 @@ DEFINE_HOOK(4FB1B0, CTriggerFrame_OnBNDelTriggerClicked, 6)
                     if (auto pTagsSection = CINI::CurrentDocument->GetSection("Tags"))
                     {
                         std::set<ppmfc::CString> TagsToRemove;
-                        for (auto& pair : pTagsSection->EntitiesDictionary)
+                        for (auto& pair : pTagsSection->GetEntities())
                         {
                             auto splits = STDHelpers::SplitString(pair.second, 2);
                             if (strcmp(splits[2], ID) == 0)
@@ -153,7 +153,7 @@ DEFINE_HOOK(4FB1B0, CTriggerFrame_OnBNDelTriggerClicked, 6)
                         if (auto pCellTagsSection = CINI::CurrentDocument->GetSection("CellTags"))
                         {
                             std::vector<ppmfc::CString> CellTagsToRemove;
-                            for (auto& pair : pCellTagsSection->EntitiesDictionary)
+                            for (auto& pair : pCellTagsSection->GetEntities())
                             {
                                 if (TagsToRemove.find(pair.second) != TagsToRemove.end())
                                     CellTagsToRemove.push_back(pair.first);
@@ -194,7 +194,7 @@ DEFINE_HOOK(4FBD10, CTriggerFrame_OnBNPlaceOnMapClicked, 6)
         {
             if (auto pTagsSection = CINI::CurrentDocument->GetSection("Tags"))
             {
-                for (auto& pair : pTagsSection->EntitiesDictionary)
+                for (auto& pair : pTagsSection->GetEntities())
                 {
                     auto splits = STDHelpers::SplitString(pair.second, 2);
                     if (strcmp(splits[2], ID) == 0)

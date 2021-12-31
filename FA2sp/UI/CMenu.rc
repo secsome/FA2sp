@@ -16,7 +16,7 @@ POPUP "File"
 	// MENUITEM SEPARATOR
 	// MENUITEM "Run Tiberian Sun",  40017
 	MENUITEM SEPARATOR
-	MENUITEM SEPARATOR
+	// MENUITEM SEPARATOR
 	MENUITEM "Quit",  40003
 }
 POPUP "Edit"
@@ -120,5 +120,12 @@ POPUP "Layers"
 	MENUITEM "Smudges", 30010
 	MENUITEM "Tubes", 30011
 	MENUITEM "Bounds", 30012
+}
+POPUP "Lighting"
+{
+	MENUITEM "No Lighting", 31000
+	MENUITEM "Normal", 31001
+	MENUITEM "Lightning Storm", 31002
+	MENUITEM "Dominator", 31003
 }
 }

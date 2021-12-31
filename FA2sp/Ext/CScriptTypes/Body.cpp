@@ -62,7 +62,7 @@ void CScriptTypesExt::UpdateParams(int actionIndex)
 	{
 	default:
 	case 0:
-		while (this->CCBScriptParameter.DeleteString(0) != -1);
+		this->CCBScriptParameter.DeleteAllStrings();
 		break;
 	case 1:
 		CScriptTypesFunctions::CScriptTypes_LoadParams_Target(this->CCBScriptParameter);
@@ -183,7 +183,7 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 	Translations::TranslateItem(this, 6305, "ScriptTypesMoveUp");
 	Translations::TranslateItem(this, 6306, "ScriptTypesMoveDown");
 
-	while (CCBCurrentAction.DeleteString(0) != -1);
+	this->CCBCurrentAction.DeleteAllStrings();
 
 	// Initialize defaults
 	/*const char** pNames = reinterpret_cast<const char**>(0x5D035C);
@@ -204,7 +204,7 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 	if (auto entities = fadata.GetSection("ScriptParams"))
 	{
 		char* pParseBuffer[2];
-		for (auto& pair : entities->EntitiesDictionary)
+		for (auto& pair : entities->GetEntities())
 		{
 			int id = atoi(pair.first);
 			if (id < 0) continue;
@@ -228,7 +228,7 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 	if (auto entities = fadata.GetSection("ScriptsRA2"))
 	{
 		char* pParseBuffer[5];
-		for (auto& pair : entities->EntitiesDictionary)
+		for (auto& pair : entities->GetEntities())
 		{
 			int id = atoi(pair.first);
 			if (id < 0) continue;
@@ -269,7 +269,7 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 	}
 
 	auto pCBExtra = (ppmfc::CComboBox*)this->GetDlgItem(6304);
-	while (pCBExtra->DeleteString(0) != CB_ERR);
+	pCBExtra->DeleteAllStrings();
 
 	ExtCurrentScript = new CurrentScript;
 	ExtCurrentScript->Unset();
@@ -283,12 +283,12 @@ void CScriptTypesExt::UpdateDialog()
 	this->CCBCurrentScript.GetWindowText(currentID);
 	STDHelpers::TrimIndex(currentID);
 
-	while (this->CCBCurrentScript.DeleteString(0) != CB_ERR);
+	this->CCBCurrentScript.DeleteAllStrings();
 
 	auto& ini = CINI::CurrentDocument();
 
 	if (auto pSection = ini.GetSection("ScriptTypes"))
-		for (auto& pair : pSection->EntitiesDictionary)
+		for (auto& pair : pSection->GetEntities())
 			if (auto pName = ini.TryGetString(pair.second, "Name"))
 			{
 				FA2sp::Buffer.Format("%s (%s)", pair.second, *pName);
@@ -516,7 +516,7 @@ void CScriptTypesExt::OnBNDeleteScriptClicked()
 		CINI::CurrentDocument->DeleteSection(this->ExtCurrentScript->ID);
 		if (auto pScripts = CINI::CurrentDocument->GetSection("ScriptTypes"))
 		{
-			for (auto& pairs : pScripts->EntitiesDictionary)
+			for (auto& pairs : pScripts->GetEntities())
 				if (strcmp(pairs.second, this->ExtCurrentScript->ID) == 0)
 					CINI::CurrentDocument->DeleteKey("ScriptTypes", pairs.first);
 		}

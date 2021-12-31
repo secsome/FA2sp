@@ -3,6 +3,10 @@
 #include "../../FA2sp.h"
 #include "../CIsoView/Body.h"
 
+#include <CLoading.h>
+#include "../../Miscs/Palettes.h"
+
+int CFinalSunDlgExt::CurrentLighting = 31000;
 
 void CFinalSunDlgExt::ProgramStartupInit()
 {
@@ -16,7 +20,7 @@ BOOL CFinalSunDlgExt::OnCommandExt(WPARAM wParam, LPARAM lParam)
 	WORD wmMsg = HIWORD(wParam);
 
 	HMENU hMenu = *this->GetMenu();
-	auto SetMenuStatus = [this, &hMenu](int id, bool& param)
+	auto SetLayerStatus = [this, &hMenu](int id, bool& param)
 	{
 		if (GetMenuState(hMenu, id, MF_BYCOMMAND) & MF_CHECKED)
 		{
@@ -31,47 +35,71 @@ BOOL CFinalSunDlgExt::OnCommandExt(WPARAM wParam, LPARAM lParam)
 		this->MyViewFrame.RedrawWindow(nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW);
 	};
 
+	auto SetLightingStatus = [this, &hMenu](int id)
+	{
+		CheckMenuRadioItem(hMenu, 31000, 31003, id, MF_UNCHECKED);
+		if (CFinalSunDlgExt::CurrentLighting != id)
+		{
+			CFinalSunDlgExt::CurrentLighting = id;
+
+			PalettesManager::ManualReloadTMP = true;
+			PalettesManager::CacheAndTintCurrentIso();
+			CLoading::Instance->FreeTMPs();
+			CLoading::Instance->InitTMPs();
+			PalettesManager::RestoreCurrentIso();
+			PalettesManager::ManualReloadTMP = false;
+
+			this->MyViewFrame.RedrawWindow(nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW);
+		}
+	};
+
 	switch (wmID)
 	{
 	case 30000:
-		SetMenuStatus(30000, CIsoViewExt::DrawStructures);
+		SetLayerStatus(30000, CIsoViewExt::DrawStructures);
 		return TRUE;
 	case 30001:
-		SetMenuStatus(30001, CIsoViewExt::DrawInfantries);
+		SetLayerStatus(30001, CIsoViewExt::DrawInfantries);
 		return TRUE;
 	case 30002:
-		SetMenuStatus(30002, CIsoViewExt::DrawUnits);
+		SetLayerStatus(30002, CIsoViewExt::DrawUnits);
 		return TRUE;
 	case 30003:
-		SetMenuStatus(30003, CIsoViewExt::DrawAircrafts);
+		SetLayerStatus(30003, CIsoViewExt::DrawAircrafts);
 		return TRUE;
 	case 30004:
-		SetMenuStatus(30004, CIsoViewExt::DrawBasenodes);
+		SetLayerStatus(30004, CIsoViewExt::DrawBasenodes);
 		return TRUE;
 	case 30005:
-		SetMenuStatus(30005, CIsoViewExt::DrawWaypoints);
+		SetLayerStatus(30005, CIsoViewExt::DrawWaypoints);
 		return TRUE;
 	case 30006:
-		SetMenuStatus(30006, CIsoViewExt::DrawCelltags);
+		SetLayerStatus(30006, CIsoViewExt::DrawCelltags);
 		return TRUE;
 	case 30007:
-		SetMenuStatus(30007, CIsoViewExt::DrawMoneyOnMap);
+		SetLayerStatus(30007, CIsoViewExt::DrawMoneyOnMap);
 		return TRUE;
 	case 30008:
-		SetMenuStatus(30008, CIsoViewExt::DrawOverlays);
+		SetLayerStatus(30008, CIsoViewExt::DrawOverlays);
 		return TRUE;
 	case 30009:
-		SetMenuStatus(30009, CIsoViewExt::DrawTerrains);
+		SetLayerStatus(30009, CIsoViewExt::DrawTerrains);
 		return TRUE;
 	case 30010:
-		SetMenuStatus(30010, CIsoViewExt::DrawSmudges);
+		SetLayerStatus(30010, CIsoViewExt::DrawSmudges);
 		return TRUE;
 	case 30011:
-		SetMenuStatus(30011, CIsoViewExt::DrawTubes);
+		SetLayerStatus(30011, CIsoViewExt::DrawTubes);
 		return TRUE;
 	case 30012:
-		SetMenuStatus(30012, CIsoViewExt::DrawBounds);
+		SetLayerStatus(30012, CIsoViewExt::DrawBounds);
 		return TRUE;
+	case 31000:
+	case 31001:
+	case 31002:
+	case 31003:
+		SetLightingStatus(wmID);
+		break;
 	default:
 		break;
 	}

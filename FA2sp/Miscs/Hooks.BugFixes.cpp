@@ -6,6 +6,8 @@
 #include <CMapData.h>
 #include <CPalette.h>
 #include <CObjectDatas.h>
+#include <CTileTypeClass.h>
+#include <CIsoView.h>
 
 #include <MFC/ppmfc_cstring.h>
 
@@ -114,14 +116,37 @@ DEFINE_HOOK(473E66, CIsoView_Draw_InfantrySubcell, B)
 	return 0x473E8C;
 }
 
-DEFINE_HOOK(4C61C5, CMapData_ResizeMap_PositionFix, 5)
+// Fix the bug that up&down&left&right vk doesn't update the TileSetBrowserView
+DEFINE_HOOK(422EA4, CFinalSunApp_ProcessMessageFilter_UpdateTileSetBrowserView_UpAndDown, 8)
 {
-	GET(CellData*, pCell, EAX);
-	auto const pSrc = CONTAINING_RECORD(R->ECX(), CellData, Flag);
-
-	pCell->Smudge = pSrc->Smudge;
-	pCell->SmudgeType = pSrc->SmudgeType;
-	pCell->BaseNode = pSrc->BaseNode;
+	CFinalSunDlg::Instance->MyViewFrame.pTileSetBrowserFrame->View.SelectTileSet(
+		(*CTileTypeClass::CurrentTileType)[CIsoView::CurrentType].TileSet,
+		false
+	);
 
 	return 0;
 }
+
+DEFINE_HOOK_AGAIN(422BF6, CFinalSunApp_ProcessMessageFilter_UpdateTileSetBrowserView_LeftAndRight, 7) // VirtualKey_Right
+DEFINE_HOOK(422B95, CFinalSunApp_ProcessMessageFilter_UpdateTileSetBrowserView_LeftAndRight, 7) // VirtualKey_Left
+{
+	CFinalSunDlg::Instance->MyViewFrame.pTileSetBrowserFrame->View.RedrawWindow(
+		nullptr, nullptr, 
+		RDW_INVALIDATE | RDW_ERASE | RDW_UPDATENOW
+	);
+
+	return 0;
+}
+
+//
+//DEFINE_HOOK(4C61C5, CMapData_ResizeMap_PositionFix, 5)
+//{
+//	GET(CellData*, pCell, EAX);
+//	auto const pSrc = CONTAINING_RECORD(R->ECX(), CellData, Flag);
+//
+//	pCell->Smudge = pSrc->Smudge;
+//	pCell->SmudgeType = pSrc->SmudgeType;
+//	pCell->BaseNode = pSrc->BaseNode;
+//
+//	return 0;
+//}

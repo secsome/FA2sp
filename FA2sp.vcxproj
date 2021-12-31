@@ -15,20 +15,20 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{3bbea2d2-97da-4b96-9516-36a6c8d3b4a3}</ProjectGuid>
     <RootNamespace>FA2sp</RootNamespace>
-    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141_xp</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141_xp</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -66,7 +66,7 @@
       <BufferSecurityCheck>
       </BufferSecurityCheck>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
-      <DisableSpecificWarnings>4065;4530;4731;4244;4114;4172;4018;4390;4091</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4065;4530;4731;4244;4114;4172;4018;4390;4091;6269;28159;26812;28251;26495;</DisableSpecificWarnings>
       <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MinimalRebuild>
@@ -74,7 +74,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalOptions>-DISOLATION_AWARE_ENABLED %(AdditionalOptions)</AdditionalOptions>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <EnableModules>false</EnableModules>
       <Optimization>MaxSpeed</Optimization>
     </ClCompile>
@@ -101,7 +101,7 @@
       <BufferSecurityCheck>
       </BufferSecurityCheck>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
-      <DisableSpecificWarnings>4065;4530;4731;4244;4114;4172;4018;4390;4091</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4065;4530;4731;4244;4114;4172;4018;4390;4091;6269;28159;26812;28251;26495;</DisableSpecificWarnings>
       <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MinimalRebuild>
@@ -109,7 +109,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalOptions>-DISOLATION_AWARE_ENABLED %(AdditionalOptions)</AdditionalOptions>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <EnableModules>false</EnableModules>
       <Optimization>Disabled</Optimization>
     </ClCompile>
@@ -144,11 +144,17 @@
     <ClCompile Include="FA2sp\Ext\CLoading\Body.LoadObjects.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Hooks.InitPalettes.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Hooks.LoadObjects.cpp" />
+    <ClCompile Include="FA2sp\Ext\CMapData\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CMapData\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CMapD\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyAircraft\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CPropertyAircraft\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyBuilding\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CPropertyBuilding\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyInfantry\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CPropertyInfantry\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyUnit\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CPropertyUnit\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Body.CurrentScript.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CSingleplayerSettings\Body.cpp" />
@@ -170,7 +176,7 @@
     <ClCompile Include="FA2sp\MFCWindow\Hooks.cpp" />
     <ClCompile Include="FA2sp\Miscs\DrawStuff.cpp" />
     <ClCompile Include="FA2sp\Miscs\Exception.cpp" />
-    <ClCompile Include="FA2sp\Miscs\Hooks.TheaterInfo.cpp" />
+    <ClCompile Include="FA2sp\Miscs\TheaterInfo.cpp" />
     <ClCompile Include="FA2sp\Miscs\SaveMap.cpp" />
     <ClCompile Include="FA2sp\Miscs\Palettes.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.BugFixes.cpp" />
@@ -190,7 +196,7 @@
     <ClCompile Include="FA2sp\Miscs\Hooks.LoadParams.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.Mix.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.Performance.cpp" />
-    <ClCompile Include="FA2sp\Miscs\Hooks.RemapColor.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.Palette.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.Stringtables.cpp" />
     <ClCompile Include="FA2sp\Helpers\MutexHelper.cpp" />
     <ClCompile Include="FA2sp\Helpers\Translations.cpp" />
@@ -204,6 +210,7 @@
     <ClInclude Include="FA2sp\Ext\CIsoView\Body.h" />
     <ClInclude Include="FA2sp\Ext\CLighting\Body.h" />
     <ClInclude Include="FA2sp\Ext\CLoading\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CMapData\Body.h" />
     <ClInclude Include="FA2sp\Ext\CPropertyAircraft\Body.h" />
     <ClInclude Include="FA2sp\Ext\CPropertyBuilding\Body.h" />
     <ClInclude Include="FA2sp\Ext\CPropertyInfantry\Body.h" />
@@ -224,7 +231,6 @@
     <ClInclude Include="FA2sp\FA2sp.Constants.h" />
     <ClInclude Include="FA2sp\Helpers\ControlHelpers.h" />
     <ClInclude Include="FA2sp\Helpers\Helper.h" />
-    <ClInclude Include="FA2sp\Helpers\INIParser.h" />
     <ClInclude Include="FA2sp\Helpers\MultimapHelper.h" />
     <ClInclude Include="FA2sp\Helpers\Parser.h" />
     <ClInclude Include="FA2sp\Helpers\STDHelpers.h" />
@@ -234,6 +240,7 @@
     <ClInclude Include="FA2sp\Miscs\Exception.h" />
     <ClInclude Include="FA2sp\Miscs\Palettes.h" />
     <ClInclude Include="FA2sp\Miscs\SaveMap.h" />
+    <ClInclude Include="FA2sp\Miscs\TheaterInfo.h" />
     <ClInclude Include="FA2sp\resource.h" />
     <ClInclude Include="FA2sp\RunTime.h" />
     <ClInclude Include="FA2sp\Helpers\MutexHelper.h" />

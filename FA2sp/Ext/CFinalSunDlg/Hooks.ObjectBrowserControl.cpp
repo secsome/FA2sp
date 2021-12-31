@@ -4,7 +4,10 @@
 #include <Helpers/Macro.h>
 
 #include "../../FA2sp.h"
+#include "../../Miscs/TheaterInfo.h"
 
+#include <CBrushSize.h>
+#include <CTileTypeClass.h>
 #include <CIsoView.h>
 
 DEFINE_HOOK(51CD20, ObjectBrowserControl_Redraw, 7)

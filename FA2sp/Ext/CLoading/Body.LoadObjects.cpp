@@ -356,7 +356,7 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 
 					UnionSHP_GetAndClear(pImage, &width1, &height1);
 					DictName.Format("%s%d", ImageID, i);
-					SetImageData(pImage, DictName, width1, height1, Palettes::LoadPalette(PaletteName));
+					SetImageData(pImage, DictName, width1, height1, PalettesManager::LoadPalette(PaletteName));
 				}
 
 				GameDeleteArray(pBuffer, width * height);
@@ -381,7 +381,7 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 					UnionSHP_GetAndClear(pImage, &width1, &height1);
 
 					DictName.Format("%s%d", ImageID, i);
-					SetImageData(pImage, DictName, width1, height1, Palettes::LoadPalette(PaletteName));
+					SetImageData(pImage, DictName, width1, height1, PalettesManager::LoadPalette(PaletteName));
 				}
 				GameDelete(pBuffer);
 			}
@@ -389,7 +389,7 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 		else // No turret
 		{
 			DictName.Format("%s%d", ImageID, 0);
-			SetImageData(pBuffer, DictName, width, height, Palettes::LoadPalette(PaletteName));
+			SetImageData(pBuffer, DictName, width, height, PalettesManager::LoadPalette(PaletteName));
 		}
 	}
 }
@@ -422,7 +422,7 @@ void CLoadingExt::LoadInfantry(ppmfc::CString ID)
 			DictName.Format("%s%d", ImageID, i);
 			ppmfc::CString PaletteName = CINI::Art->GetString(ArtID, "Palette", "unit");
 			GetFullPaletteName(PaletteName);
-			SetImageData(FramesBuffers, DictName, header.Width, header.Height, Palettes::LoadPalette(PaletteName));
+			SetImageData(FramesBuffers, DictName, header.Width, header.Height, PalettesManager::LoadPalette(PaletteName));
 		}
 	}
 }
@@ -444,7 +444,7 @@ void CLoadingExt::LoadTerrainOrSmudge(ppmfc::CString ID)
 		DictName.Format("%s%d", ImageID, 0);
 		ppmfc::CString PaletteName = CINI::Art->GetString(ArtID, "Palette", "iso");
 		GetFullPaletteName(PaletteName);
-		SetImageData(FramesBuffers[0], DictName, header.Width, header.Height, Palettes::LoadPalette(PaletteName));
+		SetImageData(FramesBuffers[0], DictName, header.Width, header.Height, PalettesManager::LoadPalette(PaletteName));
 	}
 }
 
@@ -553,7 +553,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 
 				VXL_GetAndClear(outBuffer, &outW, &outH);
 
-				SetImageData(outBuffer, DictName, outW, outH, Palettes::LoadPalette(PaletteName));
+				SetImageData(outBuffer, DictName, outW, outH, PalettesManager::LoadPalette(PaletteName));
 			}
 		}
 		else
@@ -570,7 +570,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 				delete[] pImage[i];
 				VXL_GetAndClear(outBuffer, &outW, &outH);
 
-				SetImageData(outBuffer, DictName, outW, outH, Palettes::LoadPalette(PaletteName));
+				SetImageData(outBuffer, DictName, outW, outH, PalettesManager::LoadPalette(PaletteName));
 			}
 		}
 	}
@@ -630,10 +630,10 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 					int outW, outH;
 					UnionSHP_GetAndClear(outBuffer, &outW, &outH);
 					
-					SetImageData(outBuffer, DictName, outW, outH, Palettes::LoadPalette(PaletteName));
+					SetImageData(outBuffer, DictName, outW, outH, PalettesManager::LoadPalette(PaletteName));
 				}
 				else
-					SetImageData(FramesBuffers[0], DictName, header.Width, header.Height, Palettes::LoadPalette(PaletteName));
+					SetImageData(FramesBuffers[0], DictName, header.Width, header.Height, PalettesManager::LoadPalette(PaletteName));
 			}
 		}
 	}

@@ -3,11 +3,14 @@
 #include "../../Helpers/Translations.h"
 #include "../../Helpers/STDHelpers.h"
 
+#include "../../Miscs/TheaterInfo.h"
+
 #include "../../FA2sp.h"
 
 #include <CINI.h>
 #include <CMapData.h>
 #include <CIsoView.h>
+#include <CTileTypeClass.h>
 
 std::array<HTREEITEM, ObjectBrowserControlExt::Root_Count> ObjectBrowserControlExt::ExtNodes;
 std::set<ppmfc::CString> ObjectBrowserControlExt::IgnoreSet;
@@ -24,6 +27,7 @@ bool ObjectBrowserControlExt::BuildingBrushBools[14];
 bool ObjectBrowserControlExt::InfantryBrushBools[10];
 bool ObjectBrowserControlExt::VehicleBrushBools[11];
 bool ObjectBrowserControlExt::AircraftBrushBools[9];
+bool ObjectBrowserControlExt::InitPropertyDlgFromProperty{ false };
 
 HTREEITEM ObjectBrowserControlExt::InsertString(const char* pString, DWORD dwItemData,
     HTREEITEM hParent, HTREEITEM hInsertAfter)
@@ -109,7 +113,7 @@ void ObjectBrowserControlExt::Redraw_Initialize()
 
     if (auto knownSection = fadata.GetSection("ForceSides"))
     {
-        for (auto& item : knownSection->EntitiesDictionary)
+        for (auto& item : knownSection->GetEntities())
         {
             int sideIndex = STDHelpers::ParseToInt(item.second, -1);
             if (sideIndex >= fadata.GetKeyCount("Sides"))
@@ -121,11 +125,11 @@ void ObjectBrowserControlExt::Redraw_Initialize()
     }
 
     if (auto ignores = fadata.GetSection("IgnoreRA2"))
-        for (auto& item : ignores->EntitiesDictionary)
+        for (auto& item : ignores->GetEntities())
             IgnoreSet.insert(item.second);
 
     if (auto forcenames = fadata.GetSection("ForceName"))
-        for (auto& item : forcenames->EntitiesDictionary)
+        for (auto& item : forcenames->GetEntities())
             ForceName.insert(item.second);
 
 }
@@ -172,8 +176,23 @@ void ObjectBrowserControlExt::Redraw_Ground()
     this->InsertTranslatedString("GroundPaveObList"  + suffix, 66, hGround);
     this->InsertTranslatedString("GroundWaterObList", 64, hGround);
 
-    if(theater == "UBN")
-        this->InsertTranslatedString("GroundPave2ObListUBN", 67, hGround);
+    if (CINI::CurrentTheater)
+    {
+        int i = 67;
+        for (auto& morphables : TheaterInfo::CurrentInfo)
+        {
+            auto InsertTile = [&](int nTileset)
+            {
+                FA2sp::Buffer.Format("TileSet%04d", nTileset);
+                FA2sp::Buffer = CINI::CurrentTheater->GetString(FA2sp::Buffer, "SetName", FA2sp::Buffer);
+                ppmfc::CString buffer;
+                Translations::GetTranslationItem(FA2sp::Buffer, FA2sp::Buffer);
+                return this->InsertString(FA2sp::Buffer, i++, hGround, TVI_LAST);
+            };
+
+            InsertTile(morphables.Morphable);
+        }
+    }
 }
 
 void ObjectBrowserControlExt::Redraw_Owner()
@@ -204,7 +223,7 @@ void ObjectBrowserControlExt::Redraw_Owner()
         {
             if (auto pSection = CINI::Rules->GetSection("Countries"))
             {
-                auto& section = pSection->EntitiesDictionary;
+                auto& section = pSection->GetEntities();
                 size_t i = 0;
                 for (auto& itr : section)
                     this->InsertString(itr.second, Const_House + i++, hOwner);
@@ -214,7 +233,7 @@ void ObjectBrowserControlExt::Redraw_Owner()
         {
             if (auto pSection = CINI::CurrentDocument->GetSection("Houses"))
             {
-                auto& section = pSection->EntitiesDictionary;
+                auto& section = pSection->GetEntities();
                 size_t i = 0;
                 for (auto& itr : section)
                     this->InsertString(itr.second, Const_House + i++, hOwner);
@@ -234,7 +253,7 @@ void ObjectBrowserControlExt::Redraw_Infantry()
 
     int i = 0;
     if (auto sides = fadata.GetSection("Sides"))
-        for (auto& itr : sides->EntitiesDictionary)
+        for (auto& itr : sides->GetEntities())
             subNodes[i++] = this->InsertString(itr.second, -1, hInfantry);
     else
     {
@@ -283,7 +302,7 @@ void ObjectBrowserControlExt::Redraw_Vehicle()
 
     int i = 0;
     if (auto sides = fadata.GetSection("Sides"))
-        for (auto& itr : sides->EntitiesDictionary)
+        for (auto& itr : sides->GetEntities())
             subNodes[i++] = this->InsertString(itr.second, -1, hVehicle);
     else
     {
@@ -333,7 +352,7 @@ void ObjectBrowserControlExt::Redraw_Aircraft()
 
     int i = 0;
     if (auto sides = fadata.GetSection("Sides"))
-        for (auto& itr : sides->EntitiesDictionary)
+        for (auto& itr : sides->GetEntities())
             subNodes[i++] = this->InsertString(itr.second, -1, hAircraft);
     else
     {
@@ -383,7 +402,7 @@ void ObjectBrowserControlExt::Redraw_Building()
 
     int i = 0;
     if (auto sides = fadata.GetSection("Sides"))
-        for (auto& itr : sides->EntitiesDictionary)
+        for (auto& itr : sides->GetEntities())
             subNodes[i++] = this->InsertString(itr.second, -1, hBuilding);
     else
     {
@@ -558,7 +577,7 @@ void ObjectBrowserControlExt::Redraw_Tunnel()
     HTREEITEM& hTunnel = ExtNodes[Root_Tunnel];
     if (hTunnel == NULL)   return;
 
-    if (CINI::FAData().GetBool("Debug", "AllowTunnels"))
+    if (CINI::FAData->GetBool("Debug", "AllowTunnels"))
     {
         this->InsertTranslatedString("NewTunnelObList", 50, hTunnel);
         this->InsertTranslatedString("DelTunnelObList", 51, hTunnel);
@@ -913,6 +932,26 @@ void ObjectBrowserControlExt::OnExeTerminate()
 
 bool ObjectBrowserControlExt::UpdateEngine(int nData)
 {
+    do
+    {
+        int nMorphable = nData - 67;
+        if (nMorphable >= 0 && nMorphable < TheaterInfo::CurrentInfo.size())
+        {
+            int i;
+            for (i = 0; i < *CTileTypeClass::InstanceCount; ++i)
+                if ((*CTileTypeClass::Instance)[i].TileSet == TheaterInfo::CurrentInfo[nMorphable].Morphable)
+                {
+                    CIsoView::CurrentParam = 0;
+                    CIsoView::CurrentHeight = 0;
+                    CIsoView::CurrentType = i;
+                    CIsoView::CurrentCommand = FACurrentCommand::TileDraw;
+                    CBrushSize::UpdateBrushSize(i);
+                    return true;
+                }
+        }
+    } while (false);
+    
+
     int nCode = nData / 10000;
     nData %= 10000;
 
@@ -920,6 +959,8 @@ bool ObjectBrowserControlExt::UpdateEngine(int nData)
     {
         if (nData == Set_Building)
         {
+            ObjectBrowserControlExt::InitPropertyDlgFromProperty = true;
+
             if (this->DoPropertyBrush_Building())
             {
                 CIsoView::CurrentCommand = 0x17; // PropertyBrush
@@ -927,10 +968,15 @@ bool ObjectBrowserControlExt::UpdateEngine(int nData)
             }
             else
                 CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+
+            ObjectBrowserControlExt::InitPropertyDlgFromProperty = false;
+
             return true;
         }
         else if (nData == Set_Infantry)
         {
+            ObjectBrowserControlExt::InitPropertyDlgFromProperty = true;
+
             if (this->DoPropertyBrush_Infantry())
             {
                 CIsoView::CurrentCommand = 0x17;
@@ -938,10 +984,15 @@ bool ObjectBrowserControlExt::UpdateEngine(int nData)
             }
             else
                 CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+
+            ObjectBrowserControlExt::InitPropertyDlgFromProperty = false;
+
             return true;
         }
         else if (nData == Set_Vehicle)
         {
+            ObjectBrowserControlExt::InitPropertyDlgFromProperty = true;
+
             if (this->DoPropertyBrush_Vehicle())
             {
                 CIsoView::CurrentCommand = 0x17;
@@ -949,10 +1000,15 @@ bool ObjectBrowserControlExt::UpdateEngine(int nData)
             }
             else
                 CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+
+            ObjectBrowserControlExt::InitPropertyDlgFromProperty = false;
+
             return true;
         }
         else if (nData == Set_Aircraft)
         {
+            ObjectBrowserControlExt::InitPropertyDlgFromProperty = true;
+
             if (this->DoPropertyBrush_Aircraft())
             {
                 CIsoView::CurrentCommand = 0x17;
@@ -960,6 +1016,9 @@ bool ObjectBrowserControlExt::UpdateEngine(int nData)
             }
             else
                 CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+
+            ObjectBrowserControlExt::InitPropertyDlgFromProperty = false;
+
             return true;
         }
     }

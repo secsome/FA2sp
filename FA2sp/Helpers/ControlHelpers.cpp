@@ -9,14 +9,9 @@
 
 namespace ControlHelpers
 {
-    void ComboBox::Clear(ppmfc::CComboBox& combobox)
-    {
-        while (combobox.DeleteString(0) != -1);
-    }
-
     void ComboBox::LoadHouses(ppmfc::CComboBox& combobox, bool bShowIndex)
     {
-        ComboBox::Clear(combobox);
+        combobox.DeleteAllStrings();
 
         auto& entries = Variables::Rules.ParseIndicies("Houses", true);
         CString buffer;
@@ -58,7 +53,7 @@ namespace ControlHelpers
 
     void ComboBox::LoadCountries(ppmfc::CComboBox& combobox, bool bShowIndex)
     {
-        ComboBox::Clear(combobox);
+        combobox.DeleteAllStrings();
         auto& doc = CINI::CurrentDocument();
         if (CMapData::Instance->IsMultiOnly())
         {
@@ -78,18 +73,28 @@ namespace ControlHelpers
         }
     }
 
-    void ComboBox::LoadGenericList(ppmfc::CComboBox& combobox, const char* pSection, bool bShowRegName, bool bShowIndex)
+    void ComboBox::LoadGenericList(ppmfc::CComboBox& combobox, const char* pSection, bool bShowRegName, bool bShowIndex, bool bRegNameFirst)
     {
-        ComboBox::Clear(combobox);
+        combobox.DeleteAllStrings();
 
         auto& entries = Variables::Rules.ParseIndicies(pSection, true);
         CString buffer;
         for (size_t i = 0, sz = entries.size(); i < sz; ++i)
         {
-            if (bShowIndex)
-                buffer.Format("%u - %s", i, CMapData::GetUIName(entries[i]));
+            if (!bRegNameFirst)
+            {
+                if (bShowIndex)
+                    buffer.Format("%u - %s", i, CMapData::GetUIName(entries[i]));
+                else
+                    buffer = CMapData::GetUIName(entries[i]);
+            }
             else
-                buffer = CMapData::GetUIName(entries[i]);
+            {
+                if (bShowIndex)
+                    buffer.Format("%u - %s", i, entries[i]);
+                else
+                    buffer = entries[i];
+            }
             if (bShowRegName)
                 buffer += (" - " + entries[i]);
             combobox.SetItemData(combobox.AddString(buffer), i);

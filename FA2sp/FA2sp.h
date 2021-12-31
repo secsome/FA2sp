@@ -15,6 +15,7 @@ class FA2sp
 {
 public:
     static HANDLE hInstance;
+    static std::string STDBuffer;
     static ppmfc::CString Buffer;
     static std::map<ppmfc::CString, ppmfc::CString> TutorialTextsMap;
     static void* pExceptionHandler;
@@ -52,6 +53,7 @@ public:
     static int SaveMap_AutoSave_MaxCount;
     static bool SaveMap_OnlySaveMAP;
     static bool VerticalLayout;
+    static bool FastResize;
 };
 
 class Variables

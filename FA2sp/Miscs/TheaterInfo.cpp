@@ -1,3 +1,5 @@
+#include "TheaterInfo.h"
+
 #include <Helpers/Macro.h>
 
 #include <CTileTypeClass.h>
@@ -9,63 +11,49 @@
 
 #include "../Helpers/STDHelpers.h"
 
-struct InfoStruct
+const char* TheaterInfo::GetInfoSection()
 {
-	unsigned short Ramp;
-	unsigned short Morphable;
-	unsigned short RampIndex;
-	unsigned short MorphableIndex;
-};
-
-class TheaterInfo
-{
-public:
-	static const char* GetInfoSection()
+	switch (CLoading::Instance->TheaterIdentifier)
 	{
-		switch (CLoading::Instance->TheaterIdentifier)
-		{
-		case 'A':
-			return "SnowInfo";
-		case 'U':
-			return "UrbanInfo";
-		case 'D':
-			return "DesertInfo";
-		case 'L':
-			return "LunarInfo";
-		case 'N':
-			return "NewUrbanInfo";
-		case 'T':
-		default:
-			return "TemperateInfo";
-		}
+	case 'A':
+		return "SnowInfo";
+	case 'U':
+		return "UrbanInfo";
+	case 'D':
+		return "DesertInfo";
+	case 'L':
+		return "LunarInfo";
+	case 'N':
+		return "NewUrbanInfo";
+	case 'T':
+	default:
+		return "TemperateInfo";
+	}
+}
+
+void TheaterInfo::UpdateTheaterInfo()
+{
+	CurrentInfo.clear();
+	auto const pSection = GetInfoSection();
+	ppmfc::CString buffer = CINI::FAData->GetString(pSection, "Morphables");
+	buffer.Trim();
+	for (auto& str : STDHelpers::SplitString(buffer))
+	{
+		CurrentInfo.emplace_back(InfoStruct());
+		CurrentInfo.back().Morphable = atoi(str);
+		CurrentInfo.back().MorphableIndex = CTileTypeClass::GetTileIndex(CurrentInfo.back().Morphable);
+	}
+	buffer = CINI::FAData->GetString(pSection, "Ramps");
+	buffer.Trim();
+	int i = 0;
+	for (auto& str : STDHelpers::SplitString(buffer))
+	{
+		CurrentInfo[i].Ramp = atoi(str);
+		CurrentInfo[i].RampIndex = CTileTypeClass::GetTileIndex(CurrentInfo[i].Ramp);
+		++i;
 	}
 
-	static void UpdateTheaterInfo()
-	{
-		CurrentInfo.clear();
-		auto const pSection = GetInfoSection();
-		ppmfc::CString buffer = CINI::FAData->GetString(pSection, "Morphables");
-		buffer.Trim();
-		for (auto& str : STDHelpers::SplitString(buffer))
-		{
-			CurrentInfo.emplace_back(InfoStruct());
-			CurrentInfo.back().Morphable = atoi(str);
-			CurrentInfo.back().MorphableIndex = CTileTypeClass::GetTileIndex(CurrentInfo.back().Morphable);
-		}
-		buffer = CINI::FAData->GetString(pSection, "Ramps");
-		buffer.Trim();
-		int i = 0;
-		for (auto& str : STDHelpers::SplitString(buffer))
-		{
-			CurrentInfo[i].Ramp = atoi(str);
-			CurrentInfo[i].RampIndex = CTileTypeClass::GetTileIndex(CurrentInfo[i].Ramp);
-			++i;
-		}
-	}
-
-	static std::vector<InfoStruct> CurrentInfo;
-};
-
+}
 std::vector<InfoStruct> TheaterInfo::CurrentInfo;
 
 DEFINE_HOOK(49D121, CMapData_UpdateINIFile_UpdateTheaterInfos, 7)

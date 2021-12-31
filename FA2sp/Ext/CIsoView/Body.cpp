@@ -133,16 +133,16 @@ void CIsoViewExt::DrawLockedCellOutline(int X, int Y, int W, int H, COLORREF col
         auto encode = [&rect](int x, int y)
         {
             int c = 0;
-            if (x < rect.left) c = c | 0b1;
-            else if (x > rect.right) c = c | 0b10;
-            if (y > rect.bottom) c = c | 0b100;
-            else if (y < rect.top) c = c | 0b1000;
+            if (x < rect.left) c = c | 0x1;
+            else if (x > rect.right) c = c | 0x2;
+            if (y > rect.bottom) c = c | 0x4;
+            else if (y < rect.top) c = c | 0x8;
             return c;
         };
         auto clip = [&rect, encode](int& X1, int& Y1, int& X2, int& Y2) -> bool
         {
             int code1, code2, code;
-            int x, y;
+            int x = 0, y = 0;
             code1 = encode(X1, Y1);
             code2 = encode(X2, Y2);
             while (code1 != 0 || code2 != 0)
@@ -248,11 +248,9 @@ void CIsoViewExt::DrawCelltag(int X, int Y)
     this->BltToBackBuffer(ImageDataMapHelper::GetImageDataFromMap("CELLTAG")->lpSurface, X, Y, -1, -1);
 }
 
-void CIsoViewExt::DrawWaypoint(int WPIndex, int X, int Y)
+void CIsoViewExt::DrawWaypointFlag(int X, int Y)
 {
-    this->BltToBackBuffer(ImageDataMapHelper::GetImageDataFromMap("FLAG")->lpSurface, X, Y - 2, -1, -1);
-    if (auto pSection = CINI::CurrentDocument->GetSection("Waypoints"))
-        this->DrawText(X + 15, Y + 7, *pSection->GetKeyAt(WPIndex), ExtConfigs::Waypoint_Color);
+    this->BltToBackBuffer(ImageDataMapHelper::GetImageDataFromMap("FLAG")->lpSurface, X + 5, Y, -1, -1);
 }
 
 void CIsoViewExt::DrawTube(CellData* pData, int X, int Y)
@@ -261,7 +259,7 @@ void CIsoViewExt::DrawTube(CellData* pData, int X, int Y)
     {
         auto suffix = pData->TubeDataIndex;
         if (pData->TubeDataIndex >= 2)
-            suffix = pTubeData->Data[pData->TubeDataIndex] + 2;
+            suffix = pTubeData->Directions[pData->TubeDataIndex - 2] + 2;
         FA2sp::Buffer.Format("TUBE%d", suffix);
         if (auto lpSurface = ImageDataMapHelper::GetImageDataFromMap(FA2sp::Buffer)->lpSurface)
             this->BltToBackBuffer(lpSurface, X + 7, Y + 1, -1, -1);

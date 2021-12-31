@@ -13,6 +13,7 @@
 
 #include <map>
 #include <fstream>
+#include <format>
 
 // FA2 SaveMap is almost O(N^4), who wrote that?
 DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
@@ -32,18 +33,18 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         buffer.Format("%d", pINI->GetInteger("FA2spVersionControl", "Version") + 1);
         pINI->WriteString("FA2spVersionControl", "Version", buffer);
 
-        Logger::Debug("SaveMap : Now removing empty sections and keys.\n");
+        Logger::Raw("SaveMap : Now removing empty sections and keys.\n");
         std::vector<ppmfc::CString> sectionsToRemove;
         for (auto& section_pair : pINI->Dict)
         {
             ppmfc::CString buffer;
             buffer = section_pair.first;
             buffer.Trim();
-            if (buffer.GetLength() == 0 || section_pair.second.EntitiesDictionary.size() == 0)
+            if (buffer.GetLength() == 0 || section_pair.second.GetEntities().size() == 0)
                 sectionsToRemove.push_back(section_pair.first);
 
             std::vector<ppmfc::CString> keysToRemove;
-            for (auto& key_pair : section_pair.second.EntitiesDictionary)
+            for (auto& key_pair : section_pair.second.GetEntities())
             {
                 buffer = key_pair.first;
                 buffer.Trim();
@@ -54,7 +55,7 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
             for (auto& key : keysToRemove)
                 pINI->DeleteKey(section_pair.first, key);
 
-            if (section_pair.second.EntitiesDictionary.size() == 0)
+            if (section_pair.second.GetEntities().size() == 0)
                 sectionsToRemove.push_back(section_pair.first);
         }
         for (auto& section : sectionsToRemove)
@@ -62,7 +63,7 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
 
         if (bGeneratePreview)
         {
-            Logger::Debug("SaveMap : Now generating a hidden preview as vanilla FA2 does.\n");
+            Logger::Raw("SaveMap : Now generating a hidden preview as vanilla FA2 does.\n");
             pINI->DeleteSection("Preview");
             pINI->DeleteSection("PreviewPack");
             pINI->WriteString("Preview", "Size", "0,0,106,61");
@@ -79,7 +80,7 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
                 filepath = filepath.Mid(0, nExtIndex) + ".map";
         }
 
-        Logger::Debug("SaveMap : Trying to save map to %s.\n", filepath);
+        Logger::FormatLog("SaveMap : Trying to save map to {}.\n", filepath);
 
         std::ofstream fout;
         fout.open(filepath, std::ios::out | std::ios::trunc);
@@ -98,7 +99,7 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
             for (auto& section : pINI->Dict)
             {
                 fout << "[" << section.first << "]\n";
-                for (auto& pair : section.second.EntitiesDictionary)
+                for (auto& pair : section.second.GetEntities())
                     fout << pair.first << "=" << pair.second << "\n";
                 fout << "\n";
             }
@@ -106,13 +107,13 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
             fout.flush();
             fout.close();
 
-            Logger::Debug("SaveMap : Successfully saved %d sections.\n", pINI->Dict.size());
+            Logger::FormatLog("SaveMap : Successfully saved {} sections.\n", pINI->Dict.size());
         }
         else
         {
-            FA2sp::Buffer.Format("Failed to create file %s.\n", filepath);
-            Logger::Warn("SaveMap : %s", FA2sp::Buffer);
-            ::MessageBox(NULL, FA2sp::Buffer, "Error", MB_OK | MB_ICONERROR);
+            auto buffer = std::format("Failed to create file {}.\n", filepath);
+            Logger::Raw(buffer.c_str());
+            ::MessageBox(NULL, buffer.c_str(), "Error", MB_OK | MB_ICONERROR);
         }
 
         return 0x42A859;
