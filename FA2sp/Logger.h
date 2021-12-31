@@ -17,12 +17,13 @@ public:
     static void Warn(const char*, ...);
     static void Error(const char*, ...);
     static void Raw(const char*, ...);
+    static void Put(const char*);
     static void Time(char*);
     static void Wrap(unsigned int cnt = 1);
 
     template <class... _Types>
     static void FormatLog(const std::string_view _Fmt, const _Types&... _Args) {
-        Logger::Raw(std::format(_Fmt, _Args...).c_str());
+        Logger::Put(std::format(_Fmt, _Args...).c_str());
     }
 
 private:

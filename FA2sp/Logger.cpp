@@ -88,6 +88,13 @@ void Logger::Raw(const char* format, ...) {
 	va_end(format);
 }
 
+void Logger::Put(const char* pBuffer) {
+	if (bInitialized) {
+		fputs(pBuffer, pFile);
+		fflush(pFile);
+	}
+}
+
 void Logger::Time(char* ret) {
 	SYSTEMTIME Sys;
 	GetLocalTime(&Sys);
