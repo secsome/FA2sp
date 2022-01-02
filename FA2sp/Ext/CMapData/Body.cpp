@@ -275,7 +275,7 @@ bool CMapDataExt::ResizeMapExt(MapRect* const pRect)
     this->UpdateMapFieldData_Celltag(false);
     this->UpdateMapFieldData_Tube(false);
     this->UpdateMapFieldData_Smudge(false);
-    this->UpdateMapFieldData(SaveMapFlag::UpdatePreview);
+    this->UpdateINIFile(SaveMapFlag::UpdatePreview);
 
     // Update the preview map manually
     // Now we use a slow way because I didn't find how to update it... for now

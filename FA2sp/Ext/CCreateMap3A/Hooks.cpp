@@ -30,3 +30,17 @@ DEFINE_HOOK(4D2E80, CCreateMap3A_OnInitDialog, 5)
 
     return 0x4D2F3D;
 }
+
+DEFINE_HOOK(4D2F40, CCreateMap3A_OnOK, 5)
+{
+    GET(CCreateMap3A*, pThis, ECX);
+
+    pThis->UpdateData();
+
+    if (pThis->MapWidth >= 256 || pThis->MapWidth < 16 || pThis->MapHeight >= 256 || pThis->MapHeight < 16)
+        ::MessageBox(NULL, "Width and Height must both be between 16 and 255.", "Error", MB_OK);
+    else
+        pThis->FA2CDialog::OnOK();
+
+    return 0x4D2FA7;
+}

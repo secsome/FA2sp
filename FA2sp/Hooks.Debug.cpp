@@ -1,10 +1,55 @@
+#ifdef _DEBUG
+
 #include <CMapData.h>
 #include <CFinalSunDlg.h>
 #include <CIsoView.h>
 #include <CPalette.h>
 #include <Drawing.h>
+#include <CTileTypeClass.h>
 
 #include "Logger.h"
+
+//DEFINE_HOOK(49C2B8, CMapData_UpdateINIFile_LoadFromINI, 7)
+//{
+//    CMapData::Instance->UpdateSize();
+//    CMapData::Instance->InitMinimap();
+//
+//    CMapData::Instance->SlopeSetPieces = CINI::CurrentTheater->GetInteger("General", "SlopeSetPieces");
+//    CMapData::Instance->RampBase = CINI::CurrentTheater->GetInteger("General", "RampBase");
+//    CMapData::Instance->RampSmooth = CINI::CurrentTheater->GetInteger("General", "RampSmooth");
+//    CMapData::Instance->CliffSet = CINI::CurrentTheater->GetInteger("General", "CliffSet");
+//    CMapData::Instance->WaterSet = CINI::CurrentTheater->GetInteger("General", "WaterSet");
+//    CMapData::Instance->ShorePieces = CINI::CurrentTheater->GetInteger("General", "ShorePieces");
+//    CMapData::Instance->RampBase = CINI::CurrentTheater->GetInteger("General", "RampBase");
+//    CMapData::Instance->Ramps2 = CINI::CurrentTheater->GetInteger("NewUrbanInfo", "Ramps2");
+//    CMapData::Instance->Morphable2= CINI::CurrentTheater->GetInteger("NewUrbanInfo", "Morphable2");
+//    CMapData::Instance->Cliff2 = CINI::CurrentTheater->GetInteger("NewUrbanInfo", "Cliffs2");
+//    CMapData::Instance->CliffWaters2= CINI::CurrentTheater->GetInteger("NewUrbanInfo", "CliffsWaters");
+//
+//    CMapData::Instance->CliffSetCount = CTileTypeClass::GetTileIndex(CMapData::Instance->CliffSet, 0);
+//    CMapData::Instance->RampBaseCount = CTileTypeClass::GetTileIndex(CMapData::Instance->RampBase, 0);
+//    CMapData::Instance->Ramps2Count = CTileTypeClass::GetTileIndex(CMapData::Instance->Ramps2, 0);
+//    CMapData::Instance->Morphable2Count = CTileTypeClass::GetTileIndex(CMapData::Instance->Morphable2, 0);
+//    CMapData::Instance->Cliffs2Count = CTileTypeClass::GetTileIndex(CMapData::Instance->Cliff2, 0);
+//    
+//
+//    CMapData::Instance->TypesInit_4AD930();
+//    CMapData::Instance->InitializeBuildingTypes(nullptr);
+//    CMapData::Instance->InitializeTerrainTypes(nullptr);
+//    CMapData::Instance->InitializeSmudges(nullptr);
+//    CMapData::Instance->UpdateMapFieldData_Field(false);
+//    CMapData::Instance->UpdateMapFieldData_Aircraft(false);
+//
+//    R->EBP(R->Stack32(STACK_OFFS(0x110, 0x74)));
+//
+//    return 0x49D121;
+//}
+
+//DEFINE_HOOK(4B9C39, CMapData_UpdateIniFile_Debug, 5)
+//{
+//    return 0;
+//}
+
 //
 //DEFINE_HOOK(438DB0, CrashMePlease, 6)
 //{
@@ -145,3 +190,5 @@
 //
 //    return 0x438E4E;
 //}
+
+#endif

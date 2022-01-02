@@ -717,7 +717,7 @@ void ObjectBrowserControlExt::ApplyPropertyBrush_Building(int nIndex)
     ApplyValue(1313, BuildingBrushDlg->CString_Tag, data.Tag);
 
     CMapData::Instance->DeleteStructureData(nIndex);
-    CMapData::Instance->SetStructureData(data, nullptr, nullptr, 0, "");
+    CMapData::Instance->SetStructureData(&data, nullptr, nullptr, 0, "");
 
     ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
 }
@@ -748,7 +748,7 @@ void ObjectBrowserControlExt::ApplyPropertyBrush_Infantry(int nIndex)
     ApplyValue(1309, InfantryBrushDlg->CString_Tag, data.Tag);
 
     CMapData::Instance->DeleteInfantryData(nIndex);
-    CMapData::Instance->SetInfantryData(data, nullptr, nullptr, 0, -1);
+    CMapData::Instance->SetInfantryData(&data, nullptr, nullptr, 0, -1);
 
     ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
 }
@@ -778,7 +778,7 @@ void ObjectBrowserControlExt::ApplyPropertyBrush_Aircraft(int nIndex)
     ApplyValue(1308, AircraftBrushDlg->CString_Tag, data.Tag);
 
     CMapData::Instance->DeleteAircraftData(nIndex);
-    CMapData::Instance->SetAircraftData(data, nullptr, nullptr, 0, "");
+    CMapData::Instance->SetAircraftData(&data, nullptr, nullptr, 0, "");
 
     ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
 }
@@ -810,7 +810,7 @@ void ObjectBrowserControlExt::ApplyPropertyBrush_Vehicle(int nIndex)
     ApplyValue(1310, VehicleBrushDlg->CString_Tag, data.Tag);
 
     CMapData::Instance->DeleteUnitData(nIndex);
-    CMapData::Instance->SetUnitData(data, nullptr, nullptr, 0, "");
+    CMapData::Instance->SetUnitData(&data, nullptr, nullptr, 0, "");
 
     ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
 }

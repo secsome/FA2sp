@@ -11,6 +11,10 @@ Compile Using C++ Standard Now: /std:c++latest
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+======================= Changes (2022-01-XX RELEASE 1.3.1) ==============================================================================================
++) Now you can create a map with size up to 255*255
+*) Optimized mouse attached building drawing
+
 ======================= Changes (2021-12-31 RELEASE 1.3.0) ==============================================================================================
 ***) The project now compiles under v143+/std:c++latest, Windows XP may not be able to use this dll
 +) New ExtConfig: FastResize = BOOLEAN, enable it so resizing the map will be much more faster when expanding

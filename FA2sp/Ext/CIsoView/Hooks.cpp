@@ -407,3 +407,16 @@ DEFINE_HOOK(474DDF, CIsoView_Draw_WaypointTexts, 5)
 
 	return 0;
 }
+
+DEFINE_HOOK(46BDFA, CIsoView_DrawMouseAttachedStuff_Structure, 5)
+{
+	GET_STACK(const int, X, STACK_OFFS(0x94, -0x8));
+	GET_STACK(const int, Y, STACK_OFFS(0x94, -0x4));
+
+	const int nMapCoord = CMapData::Instance->GetCoordIndex(X, Y);
+	const auto& cell = CMapData::Instance->CellDatas[nMapCoord];
+	if (cell.Structure < 0)
+		CMapData::Instance->SetStructureData(nullptr, CIsoView::CurrentObjectID(), CIsoView::CurrentHouse(), nMapCoord, "");
+
+	return 0x46BF98;
+}

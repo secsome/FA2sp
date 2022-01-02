@@ -176,6 +176,7 @@
     <ClCompile Include="FA2sp\MFCWindow\Hooks.cpp" />
     <ClCompile Include="FA2sp\Miscs\DrawStuff.cpp" />
     <ClCompile Include="FA2sp\Miscs\Exception.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.PreviewFix.cpp" />
     <ClCompile Include="FA2sp\Miscs\TheaterInfo.cpp" />
     <ClCompile Include="FA2sp\Miscs\SaveMap.cpp" />
     <ClCompile Include="FA2sp\Miscs\Palettes.cpp" />
