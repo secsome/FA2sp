@@ -37,8 +37,8 @@ DEFINE_HOOK(4D2F40, CCreateMap3A_OnOK, 5)
 
     pThis->UpdateData();
 
-    if (pThis->MapWidth > 255 || pThis->MapWidth < 1 || pThis->MapHeight > 255 || pThis->MapHeight < 1)
-        ::MessageBox(NULL, "Width and Height must both be between 1 and 255.", "Error", MB_OK);
+    if (pThis->MapWidth > 256 || pThis->MapWidth < 1 || pThis->MapHeight > 256 || pThis->MapHeight < 1)
+        ::MessageBox(NULL, "Width and Height must both be between 1 and 256.", "Error", MB_OK);
     else
         pThis->FA2CDialog::OnOK();
 

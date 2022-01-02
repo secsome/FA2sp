@@ -26,9 +26,9 @@ DEFINE_HOOK(499D56, CMapD_OnBNChangeMapSizeClicked_ValidCheck, 7)
     GET(CMapD*, pThis, ESI);
     REF_STACK(CChangeMapSize, cms, STACK_OFFS(0xB0, 0xAC));
 
-    if (cms.INT_Width < 1 || cms.INT_Width > 255 || cms.INT_Height < 1 || cms.INT_Height > 255)
+    if (cms.INT_Width < 1 || cms.INT_Width > 256 || cms.INT_Height < 1 || cms.INT_Height > 256)
     {
-        R->ESI<FA2CDialog*>()->MessageBox("Width and Height must be between 1 and 255!");   
+        R->ESI<FA2CDialog*>()->MessageBox("Width and Height must be between 1 and 256!");   
     }
     else
     {
