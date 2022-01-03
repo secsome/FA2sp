@@ -24,7 +24,7 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         GET_STACK(CFinalSunDlg*, pThis, STACK_OFFS(0x3F4, 0x36C));
         REF_STACK(ppmfc::CString, filepath, STACK_OFFS(0x3F4, -0x4));
 
-        GET_STACK(bool, bGeneratePreview, STACK_OFFS(0x3F8, 0x3C8));
+        // GET_STACK(bool, bGeneratePreview, STACK_OFFS(0x3F8, 0x3C8));
 
         pThis->MyViewFrame.StatusBar.SetWindowText("Saving...");
         pThis->MyViewFrame.StatusBar.UpdateWindow();
@@ -61,7 +61,7 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         for (auto& section : sectionsToRemove)
             pINI->DeleteSection(section);
 
-        if (bGeneratePreview)
+        /*if (bGeneratePreview)
         {
             Logger::Raw("SaveMap : Now generating a hidden preview as vanilla FA2 does.\n");
             pINI->DeleteSection("Preview");
@@ -69,6 +69,13 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
             pINI->WriteString("Preview", "Size", "0,0,106,61");
             pINI->WriteString("PreviewPack", "1", "yAsAIAXQ5PDQ5PDQ6JQATAEE6PDQ4PDI4JgBTAFEAkgAJyAATAG0AydEAEABpAJIA0wBVA");
             pINI->WriteString("PreviewPack", "2", "BIACcgAEwBtAMnRABAAaQCSANMAVQASAAnIABMAbQDJ0QAQAGkAkgDTAFUAEgAJyAATAG0");
+        }*/
+        pINI->DeleteSection("Preview");
+        pINI->DeleteSection("PreviewPack");
+        if (CMapData::Instance->IsMultiOnly())
+        {
+            Logger::Put("Generating map preview for multiplayer map now...");
+            CMapData::Instance->UpdateINIFile(SaveMapFlag::UpdatePreview);
         }
 
         if (ExtConfigs::SaveMap_OnlySaveMAP) 

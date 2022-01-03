@@ -420,3 +420,35 @@ DEFINE_HOOK(46BDFA, CIsoView_DrawMouseAttachedStuff_Structure, 5)
 
 	return 0x46BF98;
 }
+
+DEFINE_HOOK(4676CB, CIsoView_OnLeftButtonUp_AddTube, 6)
+{
+	GET(CIsoViewExt*, pThis, ESI);
+	GET(const int, nDestX, EDI);
+	GET(const int, nDestY, EBX);
+
+	pThis->AddTube(pThis->StartCellX, pThis->StartCellY, nDestX, nDestY);
+
+	return 0x468548;
+}
+
+DEFINE_HOOK(4BB04C, CMapData_AddTube_IgnoreUselessNegativeOne, 5)
+{
+	GET(TubeData*, pTubeData, ESI);
+	GET(const int, i, EBX);
+	REF_STACK(ppmfc::CString, lpBuffer, STACK_OFFS(0x134, 0x124));
+
+	enum { Continue = 0x4BB04C, Break = 0x4BB083 };
+
+	if (pTubeData->Directions[i] == -1)
+	{
+		lpBuffer += ",-1";
+		return Break;
+	}
+	else
+	{
+		lpBuffer += std::format(",{0:d}", pTubeData->Directions[i]).c_str();
+		R->EBX(i + 1);
+		return Continue;
+	}
+}
