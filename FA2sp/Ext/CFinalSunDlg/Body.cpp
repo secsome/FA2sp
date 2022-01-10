@@ -2,6 +2,7 @@
 
 #include "../../FA2sp.h"
 #include "../CIsoView/Body.h"
+#include "../CFinalSunApp/Body.h"
 
 #include <CLoading.h>
 #include "../../Miscs/Palettes.h"
@@ -102,6 +103,13 @@ BOOL CFinalSunDlgExt::OnCommandExt(WPARAM wParam, LPARAM lParam)
 		break;
 	default:
 		break;
+	}
+
+	if (wmID >= 40140 && wmID < 40149)
+	{
+		auto& file = CFinalSunAppExt::RecentFilesExt[wmID - 40140];
+		if (CLoading::IsFileExists(file.c_str()))
+			this->LoadMap(file.c_str());
 	}
 
 	return this->FA2CDialog::OnCommand(wParam, lParam);

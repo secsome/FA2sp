@@ -661,12 +661,12 @@ void ObjectBrowserControlExt::ApplyPropertyBrush(int X, int Y)
     int nIndex = CMapData::Instance->GetCoordIndex(X, Y);
     const auto& CellData = CMapData::Instance->CellDatas[nIndex];
 
-    if (CIsoView::CurrentType == Set_Building)
+    if (CIsoView::CurrentCommand->Type == Set_Building)
     {
         if (CellData.Structure != -1)
             ApplyPropertyBrush_Building(CellData.Structure);
     }
-    else if (CIsoView::CurrentType == Set_Infantry)
+    else if (CIsoView::CurrentCommand->Type == Set_Infantry)
     {
         if (CellData.Infantry[0] != -1)
             ApplyPropertyBrush_Infantry(CellData.Infantry[0]);
@@ -675,12 +675,12 @@ void ObjectBrowserControlExt::ApplyPropertyBrush(int X, int Y)
         if (CellData.Infantry[2] != -1)
             ApplyPropertyBrush_Infantry(CellData.Infantry[2]);
     }
-    else if (CIsoView::CurrentType == Set_Vehicle)
+    else if (CIsoView::CurrentCommand->Type == Set_Vehicle)
     {
         if (CellData.Unit != -1)
             ApplyPropertyBrush_Vehicle(CellData.Unit);
     }
-    else if (CIsoView::CurrentType == Set_Aircraft)
+    else if (CIsoView::CurrentCommand->Type == Set_Aircraft)
     {
         if (CellData.Aircraft != -1)
             ApplyPropertyBrush_Aircraft(CellData.Aircraft);
@@ -941,10 +941,10 @@ bool ObjectBrowserControlExt::UpdateEngine(int nData)
             for (i = 0; i < *CTileTypeClass::InstanceCount; ++i)
                 if ((*CTileTypeClass::Instance)[i].TileSet == TheaterInfo::CurrentInfo[nMorphable].Morphable)
                 {
-                    CIsoView::CurrentParam = 0;
-                    CIsoView::CurrentHeight = 0;
-                    CIsoView::CurrentType = i;
-                    CIsoView::CurrentCommand = FACurrentCommand::TileDraw;
+                    CIsoView::CurrentCommand->Param = 0;
+                    CIsoView::CurrentCommand->Height = 0;
+                    CIsoView::CurrentCommand->Type = i;
+                    CIsoView::CurrentCommand->Command = FACurrentCommand::TileDraw;
                     CBrushSize::UpdateBrushSize(i);
                     return true;
                 }
@@ -963,11 +963,11 @@ bool ObjectBrowserControlExt::UpdateEngine(int nData)
 
             if (this->DoPropertyBrush_Building())
             {
-                CIsoView::CurrentCommand = 0x17; // PropertyBrush
-                CIsoView::CurrentType = Set_Building;
+                CIsoView::CurrentCommand->Command = 0x17; // PropertyBrush
+                CIsoView::CurrentCommand->Type = Set_Building;
             }
             else
-                CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+                CIsoView::CurrentCommand->Command = FACurrentCommand::Nothing;
 
             ObjectBrowserControlExt::InitPropertyDlgFromProperty = false;
 
@@ -979,11 +979,11 @@ bool ObjectBrowserControlExt::UpdateEngine(int nData)
 
             if (this->DoPropertyBrush_Infantry())
             {
-                CIsoView::CurrentCommand = 0x17;
-                CIsoView::CurrentType = Set_Infantry;
+                CIsoView::CurrentCommand->Command = 0x17;
+                CIsoView::CurrentCommand->Type = Set_Infantry;
             }
             else
-                CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+                CIsoView::CurrentCommand->Command = FACurrentCommand::Nothing;
 
             ObjectBrowserControlExt::InitPropertyDlgFromProperty = false;
 
@@ -995,11 +995,11 @@ bool ObjectBrowserControlExt::UpdateEngine(int nData)
 
             if (this->DoPropertyBrush_Vehicle())
             {
-                CIsoView::CurrentCommand = 0x17;
-                CIsoView::CurrentType = Set_Vehicle;
+                CIsoView::CurrentCommand->Command = 0x17;
+                CIsoView::CurrentCommand->Type = Set_Vehicle;
             }
             else
-                CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+                CIsoView::CurrentCommand->Command = FACurrentCommand::Nothing;
 
             ObjectBrowserControlExt::InitPropertyDlgFromProperty = false;
 
@@ -1011,11 +1011,11 @@ bool ObjectBrowserControlExt::UpdateEngine(int nData)
 
             if (this->DoPropertyBrush_Aircraft())
             {
-                CIsoView::CurrentCommand = 0x17;
-                CIsoView::CurrentType = Set_Aircraft;
+                CIsoView::CurrentCommand->Command = 0x17;
+                CIsoView::CurrentCommand->Type = Set_Aircraft;
             }
             else
-                CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+                CIsoView::CurrentCommand->Command = FACurrentCommand::Nothing;
 
             ObjectBrowserControlExt::InitPropertyDlgFromProperty = false;
 

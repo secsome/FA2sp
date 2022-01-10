@@ -13,6 +13,7 @@ Compile Using C++ Standard Now: /std:c++latest
 
 ======================= Changes (2022-01-XX RELEASE 1.3.1) ==============================================================================================
 +) Now you can create a map with size up to 255*255
++) New ExtConfig: RecentFileLimit = INTEGER, defaults to 6, should be a integer between 4 and 9 
 *) Optimized mouse attached building drawing
 +) Reimplemented tube generation
 
@@ -240,6 +241,7 @@ COLORREF - R,G,B each of them is in [0,255]
             +) SaveMap.OnlySaveMAP = BOOLEAN ; Determines if FA2 will only save map with .map file extension
             +) VerticalLayout = BOOLEAN ; Determines if FA2 will make the bottom view go to the right side
             +) FastResize = BOOLEAN ; Determines if FA2 will expanding the map more rapidly
+            +) RecentFileLimit = INTEGER ; How many recent files should I keep? ranges from 4 to 9
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.

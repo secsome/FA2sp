@@ -199,9 +199,9 @@ DEFINE_HOOK(4FBD10, CTriggerFrame_OnBNPlaceOnMapClicked, 6)
                     auto splits = STDHelpers::SplitString(pair.second, 2);
                     if (strcmp(splits[2], ID) == 0)
                     {
-                        CIsoView::CurrentCommand = 4;
-                        CIsoView::CurrentType = 4;
-                        CIsoView::CurrentObjectID.get() = pair.first;
+                        CIsoView::CurrentCommand->Command = 4;
+                        CIsoView::CurrentCommand->Type = 4;
+                        CIsoView::CurrentCommand->ObjectID = pair.first;
                         break;
                     }
                 }

@@ -416,7 +416,7 @@ DEFINE_HOOK(46BDFA, CIsoView_DrawMouseAttachedStuff_Structure, 5)
 	const int nMapCoord = CMapData::Instance->GetCoordIndex(X, Y);
 	const auto& cell = CMapData::Instance->CellDatas[nMapCoord];
 	if (cell.Structure < 0)
-		CMapData::Instance->SetStructureData(nullptr, CIsoView::CurrentObjectID(), CIsoView::CurrentHouse(), nMapCoord, "");
+		CMapData::Instance->SetStructureData(nullptr, CIsoView::CurrentCommand->ObjectID, CIsoView::CurrentHouse(), nMapCoord, "");
 
 	return 0x46BF98;
 }

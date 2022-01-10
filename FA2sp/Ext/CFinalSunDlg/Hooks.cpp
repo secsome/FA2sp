@@ -5,6 +5,8 @@
 #include <CFinalSunApp.h>
 #include <CMapData.h>
 
+#include <algorithm>
+
 #include "../CIsoView/Body.h"
 
 DEFINE_HOOK(424654, CFinalSunDlg_OnInitDialog_SetMenuItemStateByDefault, 7)
@@ -58,6 +60,23 @@ DEFINE_HOOK(432304, CFinalSunDlg_Update_LayersVisibility, 5)
     pMenu->CheckMenuRadioItem(31000, 31003, CFinalSunDlgExt::CurrentLighting, MF_CHECKED);
 
     return 0;
+}
+
+#include "../CFinalSunApp/Body.h"
+
+DEFINE_HOOK(432380, CFinalSunDlg_Update_RecentFiles, A)
+{
+    GET(CMenu*, pMenu, ESI);
+
+    for (size_t i = 0; i < CFinalSunAppExt::RecentFilesExt.size(); ++i)
+    {
+        if (CFinalSunAppExt::RecentFilesExt[i].length())
+            pMenu->GetSubMenu(0)->InsertMenu(10 + i, MF_BYPOSITION, 40140 + i, CFinalSunAppExt::RecentFilesExt[i].c_str());
+    }
+
+    R->EDI(::CheckMenuItem);
+
+    return 0x432442;
 }
 
 #include "../../Helpers/Translations.h"
@@ -193,4 +212,49 @@ DEFINE_HOOK(432010, CFinalSunDlg_Update_NoFuckingEasyMode, 7)
 {
     CFinalSunApp::Instance->EasyMode = false;
     return 0;
+}
+
+#pragma warning(disable : 4834)
+
+DEFINE_HOOK(436EE0, CFinalSunDlg_AddToRecentFile, 7)
+{
+    REF_STACK(ppmfc::CString, lpPath, 0x4);
+
+    std::string filepath = lpPath;
+    auto& recentfiles = CFinalSunAppExt::RecentFilesExt;
+    std::vector<std::string> sortedrecentfiles;
+    auto itr = std::find_if(recentfiles.begin(), recentfiles.end(),
+        [filepath](std::string& s) {return _strcmpi(s.c_str(), filepath.c_str()) == 0; }
+    );
+    if (itr == recentfiles.end()) // doesn't have this file
+    {
+        sortedrecentfiles.push_back(filepath);
+        for (auto& file : recentfiles)
+        {
+            if (file.length() > 0)
+                sortedrecentfiles.push_back(file);
+        }
+        std::unique(sortedrecentfiles.begin(), sortedrecentfiles.end(), 
+            [](std::string& a, std::string b) {return _strcmpi(a.c_str(), b.c_str()) == 0; });
+        sortedrecentfiles.shrink_to_fit();
+
+        size_t sz = recentfiles.size();
+        size_t cnt = std::min(sz, sortedrecentfiles.size());
+        recentfiles.clear();
+        recentfiles.resize(sz);
+
+        for (size_t i = 0; i < cnt; ++i)
+            recentfiles[i] = sortedrecentfiles[i];
+
+        CINI ini;
+        std::string path = CFinalSunApp::Instance->ExePath + "\\FinalAlert.ini";
+        ini.ClearAndLoad(path.c_str());
+
+        for (size_t i = 0; i < recentfiles.size(); ++i)
+            ini.WriteString("Files", std::format("{0:d}", i).c_str(), recentfiles[i].c_str());
+
+        ini.WriteToFile(path.c_str());
+    }
+
+    return 0x437453;
 }

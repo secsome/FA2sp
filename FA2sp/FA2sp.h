@@ -54,6 +54,7 @@ public:
     static bool SaveMap_OnlySaveMAP;
     static bool VerticalLayout;
     static bool FastResize;
+    static int RecentFileLimit;
 };
 
 class Variables

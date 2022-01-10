@@ -33,7 +33,7 @@ DEFINE_HOOK(51AF40, ObjectBrowserControl_OnSelectChanged, 7)
 
 DEFINE_HOOK(461766, CIsoView_OnLButtonDown_PropertyBrush, 5)
 {
-    if (CIsoView::CurrentCommand == 0x17)
+    if (CIsoView::CurrentCommand->Command == 0x17)
     {
         GET(const int, Y, EDI);
         GET(const int, X, ESI);
@@ -48,7 +48,7 @@ DEFINE_HOOK(461766, CIsoView_OnLButtonDown_PropertyBrush, 5)
 
 DEFINE_HOOK(45BF73, CIsoView_OnMouseMove_PropertyBrush, 9)
 {
-    if (CIsoView::CurrentCommand == 0x17)
+    if (CIsoView::CurrentCommand->Command == 0x17)
     {
         GET(const int, Y, EDI);
         GET(const int, X, EBX);
@@ -57,7 +57,7 @@ DEFINE_HOOK(45BF73, CIsoView_OnMouseMove_PropertyBrush, 9)
 
         return 0x45CD6D;
     }
-    return CIsoView::CurrentCommand == FACurrentCommand::WaypointHandle ? 0x45BF7C : 0x45C168;
+    return CIsoView::CurrentCommand->Command == FACurrentCommand::WaypointHandle ? 0x45BF7C : 0x45C168;
 }
 
 // Add a house won't update indices, so there might be hidden risks if not reloading the map.

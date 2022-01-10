@@ -51,6 +51,7 @@ void PalettesManager::Release()
             pair.second != Palette::PALETTE_LIB)
             GameDelete(pair.second);
 
+    PalettesManager::OriginPaletteFiles.clear();
     PalettesManager::CalculatedPaletteFiles.clear();
 
     PalettesManager::RestoreCurrentIso();

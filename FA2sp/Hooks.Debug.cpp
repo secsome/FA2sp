@@ -1,13 +1,75 @@
-#ifdef _DEBUG
+#ifndef NDEBUG
 
 #include <CMapData.h>
 #include <CFinalSunDlg.h>
 #include <CIsoView.h>
 #include <CPalette.h>
+#include <CLoading.h>
 #include <Drawing.h>
 #include <CTileTypeClass.h>
 
 #include "Logger.h"
+
+//DEFINE_HOOK(48EE60, CLoading_DrawOverlay, 7)
+//{
+//    GET(CLoading*, pThis, ECX);
+//    GET_STACK(LPCSTR, ID, 0x4);
+//    GET_STACK(int, nOverlayIndex, 0x8);
+//
+//    CFinalSunDlg::LastSucceededOperation = 11;
+//
+//    ppmfc::CString id = ID;
+//    id.Trim();
+//
+//    int nPal = pThis->GetPaletteISO();
+//    if (
+//        CINI::Rules->GetBool(id, "IsVeinholeMonster") ||
+//        CINI::Rules->GetBool(id, "Tiberium") ||
+//        CINI::Rules->GetBool(id, "IsVeins")
+//        )
+//    {
+//        nPal = pThis->PAL_TEMPERAT;
+//    }
+//
+//    if (auto ppStr = CINI::Rules->TryGetString(id, "Image"))
+//        id = *ppStr;
+//
+//    ppmfc::CString imageName = id;
+//    if (auto ppStr = CINI::Art->TryGetString(id, "Image"))
+//        imageName = *ppStr;
+//
+//    // Now id holds Art section name, imageName holds assert's name
+//
+//
+//
+//    return 0x4909FE;
+//}
+
+//DEFINE_HOOK(4C37E7, CopyDataTest, 6)
+//{
+//    GET_STACK(CopyPasteDataHeader*, pHeader, STACK_OFFS(0x54, 0x3C));
+//    pHeader = &pHeader[-1];
+//
+//    CopyPasteData* pDatas = (CopyPasteData*)(&pHeader[1]);
+//
+//    Logger::FormatLog("CopyPasteData Width = {}, Height = {}\n", pHeader->Width, pHeader->Height);
+//    for (int i = 0; i < pHeader->Width; ++i)
+//        for (int j = 0; j < pHeader->Height; ++j)
+//        {
+//            int idx = i * pHeader->Height + j;
+//            Logger::FormatLog(
+//                "Data {0:d}: ({1:d}, {2:d})\n"
+//                "IgnoreAltImages = {3:d}\n"
+//                "Overlay, Data = {4:d}, {5:d}\n"
+//                "TileIndex = {6:d}, Short30 = {7:d}, TilesubIndex= {8:d}, Height = {9:d}\n"
+//                "IceGrowth = {10:d}, Unknown_C = {11:d}, TileSet = {12:d}, NthTileSetFile = {13:d}\n\n"
+//                , idx, i, j, pDatas[idx].IgnoreAltImages, pDatas[idx].Overlay, pDatas[idx].OverlayData,
+//                pDatas[idx].TileIndex, pDatas[idx]._8_Short_30, pDatas[idx].TileSubIndex, pDatas[idx].Height,
+//                pDatas[idx].IceGrowth, pDatas[idx].Unknown_D, pDatas[idx].TileSet, pDatas[idx].NthTileSetFile);
+//        }
+//
+//    return 0;
+//}
 
 //DEFINE_HOOK(49C2B8, CMapData_UpdateINIFile_LoadFromINI, 7)
 //{

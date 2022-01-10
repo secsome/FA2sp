@@ -9,6 +9,7 @@
 #include <CINI.h>
 
 #include <clocale>
+#include <algorithm>
 
 HANDLE FA2sp::hInstance;
 std::string FA2sp::STDBuffer;
@@ -44,14 +45,9 @@ int ExtConfigs::SaveMap_AutoSave_MaxCount;
 bool ExtConfigs::SaveMap_OnlySaveMAP;
 bool ExtConfigs::VerticalLayout;
 bool ExtConfigs::FastResize;
+int ExtConfigs::RecentFileLimit;
 
 MultimapHelper Variables::Rules = { &CINI::Rules(), &CINI::CurrentDocument() };
-
-DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
-{
-	FA2sp::ExtConfigsInitialize();
-	return 0;
-}
 
 void FA2sp::ExtConfigsInitialize()
 {
@@ -108,6 +104,8 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::VerticalLayout = fadata.GetBool("ExtConfigs", "VerticalLayout");
 
 	ExtConfigs::FastResize = fadata.GetBool("ExtConfigs", "FastResize");
+
+	ExtConfigs::RecentFileLimit = std::clamp(fadata.GetInteger("ExtConfigs", "RecentFileLimit"), 4, 9);
 }
 
 // DllMain
@@ -152,8 +150,7 @@ DEFINE_HOOK(537129, ExeRun, 9)
 	else
 		Logger::Warn("Failed to detach Syringe!\n");
 
-#ifdef _DEBUG
-	// system("taskkill /IM Syringe.exe /F");
+#ifndef NDEBUG
 	MessageBox(NULL, APPLY_INFO, PRODUCT_NAME, MB_OK);
 	
 #endif

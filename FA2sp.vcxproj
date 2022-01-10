@@ -60,7 +60,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <ExceptionHandling>false</ExceptionHandling>
       <BufferSecurityCheck>
@@ -95,7 +95,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;WIN32;_CRT_SECURE_NO_WARNINGS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <ExceptionHandling>false</ExceptionHandling>
       <BufferSecurityCheck>
@@ -132,6 +132,8 @@
     <ClCompile Include="FA2sp\Ext\CChangeMapSize\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CCreateMap3A\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CEasterEgg\Hooks.cpp" />
+    <ClCompile Include="FA2sp\Ext\CFinalSunApp\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CFinalSunApp\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Body.ObjectBrowserControl.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Hooks.cpp" />
@@ -208,6 +210,7 @@
   <ItemGroup>
     <ClInclude Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.h" />
     <ClInclude Include="FA2sp\Ext\CAITriggerTypes\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CFinalSunApp\Body.h" />
     <ClInclude Include="FA2sp\Ext\CFinalSunDlg\Body.h" />
     <ClInclude Include="FA2sp\Ext\CHouses\Body.h" />
     <ClInclude Include="FA2sp\Ext\CIsoView\Body.h" />
