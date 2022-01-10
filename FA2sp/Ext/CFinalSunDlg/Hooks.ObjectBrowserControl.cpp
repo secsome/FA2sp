@@ -10,23 +10,23 @@
 #include <CTileTypeClass.h>
 #include <CIsoView.h>
 
-DEFINE_HOOK(51CD20, ObjectBrowserControl_Redraw, 7)
+DEFINE_HOOK(51CD20, CViewObjects_Redraw, 7)
 {
     if (ExtConfigs::BrowserRedraw)
     {
-        GET(ObjectBrowserControlExt*, pThis, ECX);
+        GET(CViewObjectsExt*, pThis, ECX);
         pThis->Redraw();
         return 0x523173;
     }
     return 0;
 }
 
-DEFINE_HOOK(51AF40, ObjectBrowserControl_OnSelectChanged, 7)
+DEFINE_HOOK(51AF40, CViewObjects_OnSelectChanged, 7)
 {
     GET_STACK(LPNMTREEVIEW, pNM, 0x4);
 
     return
-        ((ObjectBrowserControlExt*)&CFinalSunDlg::Instance->ObjectBrowserView)->UpdateEngine(pNM->itemNew.lParam) ?
+        ((CViewObjectsExt*)&CFinalSunDlg::Instance->ViewObjects)->UpdateEngine(pNM->itemNew.lParam) ?
         0x51CC8B :
         0;
 }
@@ -38,7 +38,7 @@ DEFINE_HOOK(461766, CIsoView_OnLButtonDown_PropertyBrush, 5)
         GET(const int, Y, EDI);
         GET(const int, X, ESI);
 
-        ObjectBrowserControlExt::ApplyPropertyBrush(X, Y);
+        CViewObjectsExt::ApplyPropertyBrush(X, Y);
 
         return 0x466860;
     }
@@ -53,7 +53,7 @@ DEFINE_HOOK(45BF73, CIsoView_OnMouseMove_PropertyBrush, 9)
         GET(const int, Y, EDI);
         GET(const int, X, EBX);
 
-        ObjectBrowserControlExt::ApplyPropertyBrush(X, Y);
+        CViewObjectsExt::ApplyPropertyBrush(X, Y);
 
         return 0x45CD6D;
     }

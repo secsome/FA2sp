@@ -10,6 +10,7 @@
 
 #include "Logger.h"
 
+
 //DEFINE_HOOK(48EE60, CLoading_DrawOverlay, 7)
 //{
 //    GET(CLoading*, pThis, ECX);

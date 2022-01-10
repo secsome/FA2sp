@@ -24,7 +24,7 @@ public:
     BOOL OnCommandExt(WPARAM wParam, LPARAM lParam);
 };
 
-class ObjectBrowserControlExt : public ObjectBrowserControl
+class CViewObjectsExt : public CViewObjects
 {
     enum {
         Root_Nothing = 0, Root_Ground, Root_Owner, Root_Infantry, Root_Vehicle,

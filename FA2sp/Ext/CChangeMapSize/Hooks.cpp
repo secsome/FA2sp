@@ -45,6 +45,5 @@ DEFINE_HOOK(499D56, CMapD_OnBNChangeMapSizeClicked_ValidCheck, 7)
         pThis->UpdateData(FALSE);
     }
 
-    
     return 0x499E30;
 }
