@@ -64,7 +64,7 @@ BOOL CTileSetBrowserFrameExt::PreTranslateMessageExt(MSG* pMsg)
 	}
 	
 
-	return this->FA2CFrameWnd::PreTranslateMessage(pMsg);
+	return this->PreTranslateMessage(pMsg);
 }
 
 BOOL CTileSetBrowserFrameExt::OnNotifyExt(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
@@ -104,12 +104,12 @@ BOOL CTileSetBrowserFrameExt::OnNotifyExt(WPARAM wParam, LPARAM lParam, LRESULT*
 	else if (lpNmhdr->hwndFrom == TriggerSort::Instance)
 		if (TriggerSort::Instance.OnNotify(reinterpret_cast<LPNMTREEVIEW>(lpNmhdr)))
 			return TRUE;
-	return this->FA2CFrameWnd::OnNotify(wParam, lParam, pResult);
+	return this->OnNotify(wParam, lParam, pResult);
 }
 
 BOOL CTileSetBrowserFrameExt::OnCommandExt(WPARAM wParam, LPARAM lParam)
 {
-	return FA2CFrameWnd::OnCommand(wParam, lParam);
+	return this->OnCommand(wParam, lParam);
 }
 
 void CTileSetBrowserFrameExt::InitTabControl()
