@@ -36,7 +36,7 @@ DEFINE_HOOK(4D2680, CMyViewFrame_OnCreateClient, 5)
                 pThis->Minimap.Update();
                 if (bRes = pThis->StatusBar.CreateEx(pThis, 0x900))
                 {
-                    pThis->OnCreateClient(lpcs, pContent);
+                    pThis->ppmfc::CFrameWnd::OnCreateClient(lpcs, pContent);
                 }
             }
         }
@@ -68,7 +68,7 @@ DEFINE_HOOK(4D3E50, CRightFrame_OnClientCreate, 5)
                 auto const oct = GetSystemMetrics(SM_CXFULLSCREEN) / 8;
                 pThis->CSplitter.SetColumnInfo(0, 5 * oct, 20);
                 pThis->CSplitter.SetColumnInfo(1, 3 * oct, 10);
-                pThis->OnCreateClient(lpcs, pContent);
+                pThis->ppmfc::CFrameWnd::OnCreateClient(lpcs, pContent);
             }
         }
     }

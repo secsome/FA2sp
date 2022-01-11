@@ -18,10 +18,10 @@ DEFINE_HOOK(4F1A40, CTileSetBrowserFrame_CreateContent, 5)
     pThis->GetClientRect(&rect);
     pThis->DialogBar.Create(pTab, (LPCSTR)0xE3, 0x2800, 5);
     pThis->View.Create(nullptr, nullptr, 0x50300000, rect, pTab, 1, nullptr);
-    pThis->RecalcLayout();
+    pThis->ppmfc::CFrameWnd::RecalcLayout();
     SIZE sz{ rect.right, pThis->View.ScrollWidth };
     pThis->View.SetScrollSizes(1, sz);
-    R->EAX(pThis->OnCreateClient(lpcs, pContent));
+    R->EAX(pThis->ppmfc::CFrameWnd::OnCreateClient(lpcs, pContent));
 
     return 0x4F1AF6;
 }
