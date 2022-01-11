@@ -620,7 +620,7 @@ bool CViewObjectsExt::DoPropertyBrush_Building()
     for (auto& v : this->BuildingBrushBools)
         v = false;
 
-    return this->BuildingBrushDlg->FA2CDialog::DoModal() == IDOK;
+    return this->BuildingBrushDlg->ppmfc::CDialog::DoModal() == IDOK;
 }
 
 bool CViewObjectsExt::DoPropertyBrush_Aircraft()
@@ -631,7 +631,7 @@ bool CViewObjectsExt::DoPropertyBrush_Aircraft()
     for (auto& v : this->AircraftBrushBools)
         v = false;
 
-    return this->AircraftBrushDlg->FA2CDialog::DoModal() == IDOK;
+    return this->AircraftBrushDlg->ppmfc::CDialog::DoModal() == IDOK;
 }
 
 bool CViewObjectsExt::DoPropertyBrush_Vehicle()
@@ -642,7 +642,7 @@ bool CViewObjectsExt::DoPropertyBrush_Vehicle()
     for (auto& v : this->VehicleBrushBools)
         v = false;
 
-    return this->VehicleBrushDlg->FA2CDialog::DoModal() == IDOK;
+    return this->VehicleBrushDlg->ppmfc::CDialog::DoModal() == IDOK;
 }
 
 bool CViewObjectsExt::DoPropertyBrush_Infantry()
@@ -653,7 +653,7 @@ bool CViewObjectsExt::DoPropertyBrush_Infantry()
     for (auto& v : this->InfantryBrushBools)
         v = false;
 
-    return this->InfantryBrushDlg->FA2CDialog::DoModal() == IDOK;
+    return this->InfantryBrushDlg->ppmfc::CDialog::DoModal() == IDOK;
 }
 
 void CViewObjectsExt::ApplyPropertyBrush(int X, int Y)

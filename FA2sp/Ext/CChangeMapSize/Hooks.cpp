@@ -28,7 +28,7 @@ DEFINE_HOOK(499D56, CMapD_OnBNChangeMapSizeClicked_ValidCheck, 7)
 
     if (cms.INT_Width < 1 || cms.INT_Width > 256 || cms.INT_Height < 1 || cms.INT_Height > 256)
     {
-        R->ESI<FA2CDialog*>()->MessageBox("Width and Height must be between 1 and 256!");   
+        R->ESI<ppmfc::CDialog*>()->MessageBox("Width and Height must be between 1 and 256!");   
     }
     else
     {

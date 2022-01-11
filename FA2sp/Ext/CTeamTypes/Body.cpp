@@ -31,7 +31,7 @@ BOOL CTeamTypesExt::PreTranslateMessageExt(MSG* pMsg)
 			this->OnBNCloneClicked();
 	}
 
-	return this->FA2CDialog::PreTranslateMessage(pMsg);
+	return this->ppmfc::CDialog::PreTranslateMessage(pMsg);
 }
 
 BOOL CTeamTypesExt::OnInitDialogExt()

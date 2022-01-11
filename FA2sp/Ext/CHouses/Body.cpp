@@ -27,11 +27,11 @@ BOOL CHousesExt::PreTranslateMessageExt(MSG* pMsg)
 	switch (pMsg->message) {
 	case WM_LBUTTONUP:
 	{
-		if (pMsg->hwnd == this->GetDlgItem(1145)->GetSafeHwnd())
+		if (pMsg->hwnd == this->GetDlgItem(1145)->m_hWnd)
 			CAllieEditor::Create();
 	}
 	default:
 		break;
 	}
-	return this->FA2CDialog::PreTranslateMessage(pMsg);
+	return this->ppmfc::CDialog::PreTranslateMessage(pMsg);
 }

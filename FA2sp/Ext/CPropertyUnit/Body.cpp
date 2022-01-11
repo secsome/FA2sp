@@ -33,5 +33,5 @@ if(pMsg->hwnd == this->GetDlgItem(id)->GetSafeHwnd()) \
 
 #undef DECLARE_BST
 
-	return this->FA2CDialog::PreTranslateMessage(pMsg);
+	return this->ppmfc::CDialog::PreTranslateMessage(pMsg);
 }

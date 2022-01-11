@@ -18,6 +18,8 @@ public:
     static bool GetTranslationItem(const char* pLabelName, ppmfc::CString& ret);
     static void TranslateItem(CWnd* pWnd, int nSubID, const char* lpKey);
     static void TranslateItem(CWnd* pWnd, const char* lpKey);
+    static void TranslateItem(ppmfc::CWnd* pWnd, int nSubID, const char* lpKey) { TranslateItem((CWnd*)pWnd, nSubID, lpKey); }
+    static void TranslateItem(ppmfc::CWnd* pWnd, const char* lpKey) { TranslateItem((CWnd*)pWnd, lpKey); };
     static char pLanguage[4][0x400];
 };
 

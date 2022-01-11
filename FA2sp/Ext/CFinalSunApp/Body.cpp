@@ -116,7 +116,7 @@ BOOL CFinalSunAppExt::InitInstanceExt()
 	this->Loading = &loading;
 	
 	CFinalSunDlg dlg(nullptr);
-	this->m_pMainWnd = &dlg;
+	this->m_pMainWnd = (CWnd*)&dlg;
 
 	dlg.DoModal();
 

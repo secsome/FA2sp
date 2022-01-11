@@ -112,7 +112,7 @@ BOOL CFinalSunDlgExt::OnCommandExt(WPARAM wParam, LPARAM lParam)
 			this->LoadMap(file.c_str());
 	}
 
-	return this->FA2CDialog::OnCommand(wParam, lParam);
+	return this->ppmfc::CDialog::OnCommand(wParam, lParam);
 }
 
 BOOL CFinalSunDlgExt::PreTranslateMessageExt(MSG* pMsg)
@@ -123,5 +123,5 @@ BOOL CFinalSunDlgExt::PreTranslateMessageExt(MSG* pMsg)
 		;
 		///*SetWindowTheme(*this, L"DarkMode_Explorer", NULL);*/
 	}
-	return FA2CDialog::PreTranslateMessage(pMsg);
+	return ppmfc::CDialog::PreTranslateMessage(pMsg);
 }

@@ -9,7 +9,7 @@ DEFINE_HOOK(4D2E80, CCreateMap3A_OnInitDialog, 5)
 {
     GET(CCreateMap3A*, pThis, ECX);
 
-    pThis->FA2CDialog::OnInitDialog();
+    pThis->ppmfc::CDialog::OnInitDialog();
     auto pCBTheater = (ppmfc::CComboBox*)pThis->GetDlgItem(1046);
     pCBTheater->AddString(Translations::GetTranslationItem("TheaterNameTem", FA2sp::Buffer) ? FA2sp::Buffer : "TEMPERATE");
     pCBTheater->AddString(Translations::GetTranslationItem("TheaterNameSno", FA2sp::Buffer) ? FA2sp::Buffer : "SNOW");
@@ -24,7 +24,7 @@ DEFINE_HOOK(4D2E80, CCreateMap3A_OnInitDialog, 5)
     pThis->DefaultHeight = 0;
     pThis->MapWidth = pThis->MapHeight = 80;
 
-    pThis->FA2CDialog::UpdateData(false);
+    pThis->ppmfc::CDialog::UpdateData(false);
 
     R->AL(true);
 
@@ -40,7 +40,7 @@ DEFINE_HOOK(4D2F40, CCreateMap3A_OnOK, 5)
     if (pThis->MapWidth > 256 || pThis->MapWidth < 1 || pThis->MapHeight > 256 || pThis->MapHeight < 1)
         ::MessageBox(NULL, "Width and Height must both be between 1 and 256.", "Error", MB_OK);
     else
-        pThis->FA2CDialog::OnOK();
+        pThis->ppmfc::CDialog::OnOK();
 
     return 0x4D2FA7;
 }

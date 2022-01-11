@@ -14,7 +14,7 @@ DEFINE_HOOK(417F40, CPropertyBuilding_OnInitDialog, 7)
 {
     GET(CPropertyBuilding*, pThis, ECX);
 
-    pThis->FA2CDialog::OnInitDialog();
+    pThis->ppmfc::CDialog::OnInitDialog();
 
     CMapData::Instance->UpdateCurrentDocument();
 

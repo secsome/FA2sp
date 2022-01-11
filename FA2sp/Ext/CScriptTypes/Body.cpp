@@ -19,7 +19,7 @@ BOOL CScriptTypesExt::OnCommandExt(WPARAM wParam, LPARAM lParam)
 			this->OnCBExtraParamSelectChanged();
 	
 
-	return this->FA2CDialog::OnCommand(wParam, lParam);
+	return this->ppmfc::CDialog::OnCommand(wParam, lParam);
 }
 
 BOOL CScriptTypesExt::PreTranslateMessageExt(MSG* pMsg)
@@ -41,7 +41,7 @@ BOOL CScriptTypesExt::PreTranslateMessageExt(MSG* pMsg)
 			this->OnBNMoveDownClicked();
 	}
 
-	return this->FA2CDialog::PreTranslateMessage(pMsg);
+	return this->ppmfc::CDialog::PreTranslateMessage(pMsg);
 }
 
 void CScriptTypesExt::ProgramStartupInit()
@@ -158,7 +158,7 @@ std::map<int, CScriptTypeParam> CScriptTypeParam::ExtParams;
 std::map<int, int> CScriptTypesExt::RealScriptID;
 BOOL CScriptTypesExt::OnInitDialogExt()
 {
-	BOOL ret = FA2CDialog::OnInitDialog();
+	BOOL ret = ppmfc::CDialog::OnInitDialog();
 	if (!ret)
 		return FALSE;
 

@@ -39,7 +39,7 @@ BOOL CTriggerActionExt::PreTranslateMessageExt(MSG* pMsg)
 			this->OnBNCloneActionClicked();
 
 	}
-	return this->FA2CDialog::PreTranslateMessage(pMsg);
+	return this->ppmfc::CDialog::PreTranslateMessage(pMsg);
 }
 
 void CTriggerActionExt::OnBNCloneActionClicked()

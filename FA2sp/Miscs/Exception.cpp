@@ -205,7 +205,7 @@ DEFINE_HOOK(435270, CFinalSunDlg_DoModal, 8)
 	::SetUnhandledExceptionFilter(Exception::ExceptionFilter);
 	Logger::Info("FA2sp UnhandledExceptionFliter installed!\n");
 	
-	R->EAX(pThis->FA2CDialog::DoModal());
+	R->EAX(pThis->ppmfc::CDialog::DoModal());
 
 	return 0x435286;
 }

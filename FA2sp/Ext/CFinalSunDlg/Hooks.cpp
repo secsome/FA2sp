@@ -36,7 +36,7 @@ DEFINE_HOOK(424654, CFinalSunDlg_OnInitDialog_SetMenuItemStateByDefault, 7)
 
 DEFINE_HOOK(432304, CFinalSunDlg_Update_LayersVisibility, 5)
 {
-    GET(CMenu*, pMenu, ESI);
+    GET(ppmfc::CMenu*, pMenu, ESI);
 
     auto SetItemCheckStatus = [&pMenu](int id, bool& param)
     {
