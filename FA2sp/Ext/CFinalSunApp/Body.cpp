@@ -59,7 +59,7 @@ BOOL CFinalSunAppExt::InitInstanceExt()
 	{
 		this->FileSearchLikeTS = TRUE;
 		*reinterpret_cast<int*>(0x7EE07C) = TRUE; // Settings::NoNeedForRestart
-		this->GetDlg()->Settings();
+		this->GetDialog()->Settings();
 		*reinterpret_cast<int*>(0x7EE07C) = FALSE;
 	}
 	else
@@ -116,7 +116,7 @@ BOOL CFinalSunAppExt::InitInstanceExt()
 	this->Loading = &loading;
 	
 	CFinalSunDlg dlg(nullptr);
-	this->m_pMainWnd = (CWnd*)&dlg;
+	this->m_pMainWnd = &dlg;
 
 	dlg.DoModal();
 

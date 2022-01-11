@@ -8,6 +8,8 @@
 class NOVTABLE CFinalSunAppExt : public CFinalSunApp
 {
 public:
+    CFinalSunAppExt() = delete;
+
     static CFinalSunAppExt* GetInstance();
 
     BOOL InitInstanceExt();
