@@ -509,6 +509,8 @@ COLORREF - R,G,B each of them is in [0,255]
             [CURRENTLANGUAGE-Strings]
             [CURRENTLANGUAGE-TranslationsRA2]
             [CURRENTLANGUAGE-Translations]
+                +) TabPages.TilePlacement = TEXT
+                +) TabPages.TriggerSort = TEXT
                 +) Menu.File = TEXT
                 +) Menu.File.New = TEXT
                 +) Menu.File.Open = TEXT
@@ -594,6 +596,9 @@ COLORREF - R,G,B each of them is in [0,255]
                 +) Menu.Lighting.Normal = TEXT
                 +) Menu.Lighting.Lightning = TEXT
                 +) Menu.Lighting.Dominator = TEXT
+                +) DialogBar.TileManager = TEXT
+                +) DialogBar.TerrainOrGround = TEXT
+                +) DialogBar.OverlayAndSpecial = TEXT
                 +) AITriggerTitle = TEXT
                 +) AITriggerList = TEXT
                 +) AITriggerName = TEXT

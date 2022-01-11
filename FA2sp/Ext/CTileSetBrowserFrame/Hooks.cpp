@@ -4,6 +4,8 @@
 
 #include "TabPages/TriggerSort.h"
 
+#include "../../Helpers/Translations.h"
+
 DEFINE_HOOK(4F1A40, CTileSetBrowserFrame_CreateContent, 5)
 {
     GET(CTileSetBrowserFrameExt*, pThis, ECX);
@@ -17,6 +19,11 @@ DEFINE_HOOK(4F1A40, CTileSetBrowserFrame_CreateContent, 5)
     RECT rect;
     pThis->GetClientRect(&rect);
     pThis->DialogBar.Create(pTab, (LPCSTR)0xE3, 0x2800, 5);
+
+    Translations::TranslateItem(&pThis->DialogBar, 6102, "DialogBar.TileManager");
+    Translations::TranslateItem(&pThis->DialogBar, 1368, "DialogBar.TerrainOrGround");
+    Translations::TranslateItem(&pThis->DialogBar, 1369, "DialogBar.OverlayAndSpecial");
+
     pThis->View.Create(nullptr, nullptr, 0x50300000, rect, pTab, 1, nullptr);
     pThis->ppmfc::CFrameWnd::RecalcLayout();
     SIZE sz{ rect.right, pThis->View.ScrollWidth };
