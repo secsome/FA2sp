@@ -10,73 +10,89 @@
 #include "../CLoading/Body.h"
 #include "../../Helpers/STDHelpers.h"
 
-DEFINE_HOOK(45AF03, CIsoView_StatusBar_YXTOXY_YToX_1, 7)
+DEFINE_HOOK(45AEFF, CIsoView_OnMouseMove_UpdateCoordinateYXToXY, B)
 {
 	GET_STACK(int, nPointX, 0x30);
-	R->EDI(nPointX);
-	R->ECX(R->lea_Stack<DWORD>(0x458));
-	return 0x45AF0A;
-}
-
-DEFINE_HOOK(45AF21, CIsoView_StatusBar_YXTOXY_YToX_2, 7)
-{
 	GET_STACK(int, nPointY, 0x38);
-	R->EDI(nPointY);
-	return 0;
-}
+	REF_STACK(ppmfc::CString, lpBuffer, STACK_OFFS(0x3D540, 0x3D4FC));
 
-DEFINE_HOOK(45AF44, CIsoView_StatusBar_YXTOXY_XToY_1, 7)
-{
-	GET_STACK(int, nPointY, 0x38);
-	R->EBX(nPointY);
-	R->EAX(R->lea_Stack<DWORD>(0x458));
-	return 0x45AF4B;
-}
+	lpBuffer.Format("%d / %d - ", nPointX, nPointY);
 
-DEFINE_HOOK(45AF57, CIsoView_StatusBar_YXTOXY_XToY_2, 7)
-{
-	GET_STACK(int, nPointX, 0x30);
 	R->EBX(nPointX);
-	return 0;
+	R->EDI(nPointY);
+
+	return 0x45AF76;
 }
+
+//DEFINE_HOOK(45AF03, CIsoView_StatusBar_YXTOXY_YToX_1, 7)
+//{
+//	GET_STACK(int, nPointX, 0x30);
+//	R->EDI(nPointX);
+//	R->ECX(R->lea_Stack<DWORD>(0x458));
+//	return 0x45AF0A;
+//}
+//
+//DEFINE_HOOK(45AF21, CIsoView_StatusBar_YXTOXY_YToX_2, 7)
+//{
+//	GET_STACK(int, nPointY, 0x38);
+//	R->EDI(nPointY);
+//	return 0;
+//}
+//
+//DEFINE_HOOK(45AF44, CIsoView_StatusBar_YXTOXY_XToY_1, 7)
+//{
+//	GET_STACK(int, nPointY, 0x38);
+//	R->EBX(nPointY);
+//	R->EAX(R->lea_Stack<DWORD>(0x458));
+//	return 0x45AF4B;
+//}
+//
+//DEFINE_HOOK(45AF57, CIsoView_StatusBar_YXTOXY_XToY_2, 7)
+//{
+//	GET_STACK(int, nPointX, 0x30);
+//	R->EBX(nPointX);
+//	return 0;
+//}
 
 // Fix on wrong infantry facing
 DEFINE_HOOK(473E46, CIsoView_UpdatePaint_InfantryFacing, 9)
 {
-	GET(int, Facing, EAX);
-	R->EAX(7 - Facing / 32);
+	GET(const int, nFacing, EAX);
+	R->EAX(7 - nFacing / 32);
 	R->ECX(R->lea_Stack<DWORD>(0x590));
 	return 0x473E52;
 }
 
-DEFINE_HOOK(46CB96, CIsoView_UpdateOverlay_AutoConnect_1, 5)
+DEFINE_HOOK(46CB96, CIsoView_DrawMouseAttachedStuff_OverlayAutoConnectionFix, 5)
 {
-	// static int __stdcall sub_469B20(int Y, int X);
-	int X = R->EBX();
-	int Y = R->EBP();
-	PUSH_VAR32(X);
-	PUSH_VAR32(Y);
-	CALL(0x469B20);
-	return 0x46CBD3;
+	GET_STACK(CIsoView*, pThis, STACK_OFFS(0x94, 0x84));
+
+	pThis->AutoConnectOverlayAt(R->EBP(), R->EBX());
+
+	return 0x46CC86;
 }
 
-DEFINE_HOOK(469A69, CIsoView_UpdateOverlay_AutoConnect_2, 8)
+DEFINE_HOOK(469A69, CIsoView_CalculateOverlayConnection_OverlayAutoConnectionFix, 8)
 {
 	GET(unsigned char, nOverlayIndex, ESI);
 	GET(bool, bConnectAsWall, ECX);
+
+	enum { CanConnect = 0x469A71, NotAWall = 0x469B07 };
+
 	if (bConnectAsWall)
-		return 0x469A71;
-	if (nOverlayIndex >= 0 && nOverlayIndex <= 255)
+		return CanConnect;
+
+	if (nOverlayIndex >= 0 && nOverlayIndex < 255)
 	{
-		auto& rules = CINI::Rules();
-		ppmfc::CString key;
-		key.Format("%d", nOverlayIndex);
-		auto pRegName = rules.GetString("OverlayTypes", key, "");
-		bool bWall = rules.GetBool(pRegName, "Wall", false);
+		char lpKey[4];
+		_itoa(nOverlayIndex, lpKey, 10);
+		auto pRegName = CINI::Rules->GetString("OverlayTypes", lpKey, "");
+		bool bWall = CINI::Rules->GetBool(pRegName, "Wall", false);
 		if (bWall)
-			return 0x469A71;
+			return CanConnect;
 	}
-	return 0x469B07;
+
+	return NotAWall;
 }
 
 DEFINE_HOOK(459F4F, CIsoView_Draw_CopySelectionBoundColor, 6)
@@ -432,23 +448,22 @@ DEFINE_HOOK(4676CB, CIsoView_OnLeftButtonUp_AddTube, 6)
 	return 0x468548;
 }
 
-DEFINE_HOOK(4BB04C, CMapData_AddTube_IgnoreUselessNegativeOne, 5)
+DEFINE_HOOK(4BB04A, CMapData_AddTube_IgnoreUselessNegativeOne, 7)
 {
 	GET(TubeData*, pTubeData, ESI);
-	GET(const int, i, EBX);
 	REF_STACK(ppmfc::CString, lpBuffer, STACK_OFFS(0x134, 0x124));
 
-	enum { Continue = 0x4BB04C, Break = 0x4BB083 };
+	for (int i = 0; i < 100; ++i)
+	{
+		if (pTubeData->Directions[i] == -1)
+		{
+			lpBuffer += ",-1";
+			break;
+		}
 
-	if (pTubeData->Directions[i] == -1)
-	{
-		lpBuffer += ",-1";
-		return Break;
+		lpBuffer += ',';
+		lpBuffer += pTubeData->Directions[i] + '0';
 	}
-	else
-	{
-		lpBuffer += std::format(",{0:d}", pTubeData->Directions[i]).c_str();
-		R->EBX(i + 1);
-		return Continue;
-	}
+
+	return 0x4BB083;
 }

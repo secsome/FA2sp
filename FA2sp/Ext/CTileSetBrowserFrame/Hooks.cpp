@@ -18,7 +18,7 @@ DEFINE_HOOK(4F1A40, CTileSetBrowserFrame_CreateContent, 5)
 
     RECT rect;
     pThis->GetClientRect(&rect);
-    pThis->DialogBar.Create(pTab, (LPCSTR)0xE3, 0x2800, 5);
+    pThis->DialogBar.Create(pTab, MAKEINTRESOURCE(0xE3), 0x2800, 5);
 
     Translations::TranslateItem(&pThis->DialogBar, 6102, "DialogBar.TileManager");
     Translations::TranslateItem(&pThis->DialogBar, 1368, "DialogBar.TerrainOrGround");
