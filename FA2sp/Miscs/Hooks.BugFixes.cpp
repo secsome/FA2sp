@@ -8,6 +8,7 @@
 #include <CObjectDatas.h>
 #include <CTileTypeClass.h>
 #include <CIsoView.h>
+#include <CInputMessageBox.h>
 
 #include <MFC/ppmfc_cstring.h>
 
@@ -123,6 +124,20 @@ DEFINE_HOOK(422B95, CFinalSunApp_ProcessMessageFilter_UpdateTileSetBrowserView_L
 	);
 
 	return 0;
+}
+
+// The original implement will lead to memory leak
+DEFINE_HOOK(4564F0, CInputMessageBox_OnOK, 7)
+{
+	static ppmfc::CString ReturnBuffer;
+
+	GET(CInputMessageBox*, pThis, ECX);
+
+	pThis->GetDlgItem(1047)->GetWindowText(ReturnBuffer);
+	
+	pThis->EndDialog(ReturnBuffer.GetLength() ? (int)ReturnBuffer.m_pchData : (int)nullptr);
+
+	return 0x4565A5;
 }
 
 //
