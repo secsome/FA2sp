@@ -32,17 +32,25 @@ DEFINE_HOOK(499D56, CMapD_OnBNChangeMapSizeClicked_ValidCheck, 7)
     }
     else
     {
-        CMapData::Instance->ResizeMap(
-            cms.INT_Left,
-            cms.INT_Top,
-            cms.INT_Width,
-            cms.INT_Height
-        );
-        CFinalSunDlg::Instance->MyViewFrame.pIsoView->RedrawWindow(nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW);
-        CFinalSunDlg::Instance->MyViewFrame.Minimap.Update();
-        pThis->CString_Width.Format("%d", cms.INT_Width);
-        pThis->CString_Height.Format("%d", cms.INT_Height);
-        pThis->UpdateData(FALSE);
+        if (R->ESI<ppmfc::CDialog*>()->MessageBox(
+            "It is highly recommended that you should use Starkku's MapTool to resize your map rather than"
+            "Use FinalAlert2's map resizing, are you sure you want to continue?",
+            "Warning",
+            MB_YESNO | MB_ICONINFORMATION
+        ) == IDYES)
+        {
+            CMapData::Instance->ResizeMap(
+                cms.INT_Left,
+                cms.INT_Top,
+                cms.INT_Width,
+                cms.INT_Height
+            );
+            CFinalSunDlg::Instance->MyViewFrame.pIsoView->RedrawWindow(nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW);
+            CFinalSunDlg::Instance->MyViewFrame.Minimap.Update();
+            pThis->CString_Width.Format("%d", cms.INT_Width);
+            pThis->CString_Height.Format("%d", cms.INT_Height);
+            pThis->UpdateData(FALSE);
+        }
     }
 
     return 0x499E30;

@@ -2,6 +2,7 @@
 
 #include <Helpers/Macro.h>
 
+#include <CInputMessageBox.h>
 #include <CFinalSunApp.h>
 #include <CMapData.h>
 
@@ -257,4 +258,59 @@ DEFINE_HOOK(436EE0, CFinalSunDlg_AddToRecentFile, 7)
     }
 
     return 0x437453;
+}
+
+DEFINE_HOOK(4340F0, CFinalSunDlg_Tools_ChangeMapHeight, 7)
+{
+    GET(CFinalSunDlg*, pThis, ECX);
+
+    if (CMapData::Instance->MapWidthPlusHeight)
+    {
+        pThis->PlaySound(CFinalSunDlg::FASoundType::Normal);
+
+        ppmfc::CString lpTitle = "StrChangeHeightCap";
+        ppmfc::CString lpMessage = "StrChangeHeight";
+        Translations::GetTranslationItem(lpTitle, lpTitle);
+        Translations::GetTranslationItem(lpMessage, lpMessage);
+        lpMessage.Replace("%1", "-14");
+        lpMessage.Replace("%2", "14");
+
+        int nDelta = 0;
+        if (sscanf_s(CInputMessageBox::GetString(lpMessage, lpTitle), "%d", &nDelta) == 1 && nDelta >= -14 && nDelta <= 14)
+        {
+            auto changeHeight = [nDelta](int X, int Y)
+            {
+                auto pCell = CMapData::Instance->GetCellAt(X, Y);
+                pCell->Height = std::clamp(pCell->Height + nDelta, 0, 14);
+            };
+
+            const int nWidth = CMapData::Instance->Size.Width;
+            const int nHeight = CMapData::Instance->Size.Height;
+
+            for (int i = 1; i <= nWidth; ++i)
+            {
+                if (i != nWidth)
+                {
+                    for (int j = 1; j <= nHeight; ++j)
+                    {
+                        changeHeight(nWidth - i + j, i + j - 1);
+                        changeHeight(nWidth - i + j, i + j);
+                    }
+                }
+                else // Last specific column
+                {
+                    for (int j = 1; j <= nHeight; ++j)
+                        changeHeight(nWidth - i + j, i + j - 1);
+                }
+            }
+
+            pThis->MyViewFrame.pIsoView->RedrawWindow(nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW);
+        }
+        else
+            pThis->PlaySound(CFinalSunDlg::FASoundType::Error);
+    }
+    else
+        pThis->PlaySound(CFinalSunDlg::FASoundType::Error);
+
+    return 0x434135;
 }
