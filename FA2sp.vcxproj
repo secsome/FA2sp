@@ -181,6 +181,7 @@
     <ClCompile Include="FA2sp\Miscs\DrawStuff.cpp" />
     <ClCompile Include="FA2sp\Miscs\Exception.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.PreviewFix.cpp" />
+    <ClCompile Include="FA2sp\Miscs\MultiSelection.cpp" />
     <ClCompile Include="FA2sp\Miscs\TheaterInfo.cpp" />
     <ClCompile Include="FA2sp\Miscs\SaveMap.cpp" />
     <ClCompile Include="FA2sp\Miscs\Palettes.cpp" />
@@ -244,6 +245,7 @@
     <ClInclude Include="FA2sp\Logger.h" />
     <ClInclude Include="FA2sp\Miscs\DrawStuff.h" />
     <ClInclude Include="FA2sp\Miscs\Exception.h" />
+    <ClInclude Include="FA2sp\Miscs\MultiSelection.h" />
     <ClInclude Include="FA2sp\Miscs\Palettes.h" />
     <ClInclude Include="FA2sp\Miscs\SaveMap.h" />
     <ClInclude Include="FA2sp\Miscs\TheaterInfo.h" />
