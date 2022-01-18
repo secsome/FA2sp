@@ -11,11 +11,12 @@ Compile Using C++ Standard Now: /std:c++latest
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-======================= Changes (2022-01-XX RELEASE 1.3.1) ==============================================================================================
+======================= Changes (2022-01-XX RELEASE 1.4.0) ==============================================================================================
 +) Now you can create a map with size up to 255*255
 +) New ExtConfig: RecentFileLimit = INTEGER, defaults to 6, should be a integer between 4 and 9 
 *) Optimized mouse attached building drawing
 +) Reimplemented tube generation
++) Support for multi-selection, the detailed usage can be looked up in the document below
 
 ======================= Changes (2021-12-31 RELEASE 1.3.0) ==============================================================================================
 ***) The project now compiles under v143+/std:c++latest, Windows XP may not be able to use this dll
@@ -199,11 +200,15 @@ Compile Using C++ Standard Now: /std:c++latest
 - GETTING START
 Just like Ares, FA2sp needs Syringe to work properly, so you can just take Ares as a reference.
 
-What you need to know is that FA2sp requires Original FinalAlert 2 1.02 version, any modified version may occur unexpected errors!
+What you need to know is that FA2sp requires Vanilla FinalAlert 2 1.02, any modified version may lead to unexpected errors!
 Before you launch it for the first time, write the ini files below properly, especially for essential ones (marked by **)
 
 If you still have any problem about it or something wrong occured while using it, please contact me directly or mail me at 3179369262@qq.com
 For now, I cannot ensure the stability of it, so save your maps frequently before heavy loss! XD
+
+The multiple selection function is now available. Press Ctrl key to select tiles and press Ctrl+Shift key to deselect them. Ctrl+D can clear all selected tiles.
+Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "Single" anymore) and calucate selected area ore value.
+NOTICE THAT UNDO&REDO HASN'T BEEN SUPPORTED YET!
 
 - BASIC TYPES
 INTERGER - [-2147483648,2147483647]
@@ -821,4 +826,4 @@ FA2Copy在当年的5月6号迎来了最后一个版本，当时我放弃FA2Copy�
 作为一个开源项目，当然也欢迎有实力的开发者来开几个PR玩玩，需要idb的也可以联系我，我也会提供（里面肯定很多BUG就是了）。
 
 某书纪， 写于2021/08/20，19:03，1.0.4版本发布前夕
-||这个写英文太麻烦了，就中文吧||
+(这个写英文太麻烦了，就中文吧)

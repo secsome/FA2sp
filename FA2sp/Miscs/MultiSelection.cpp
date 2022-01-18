@@ -147,8 +147,8 @@ DEFINE_HOOK(470710, CIsoView_Draw_MultiSelect, 7)
         GET(int, nCount, ECX);
 
         static constexpr unsigned char BKColor_R = 0;
-        static constexpr unsigned char BKColor_G = 0;
-        static constexpr unsigned char BKColor_B = 255;
+        static constexpr unsigned char BKColor_G = 255;
+        static constexpr unsigned char BKColor_B = 0;
 
         for (int i = 0; i < nCount; ++i)
         {
