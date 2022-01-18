@@ -3,7 +3,8 @@
 #include <CFinalSunDlg.h>
 #include <CIsoView.h>
 #include <Helpers/Macro.h>
-#include "../Logger.h"
+
+#include "../Ext/CMapData/Body.h"
 
 std::set<MapCoord> MultiSelection::SelectedCoords;
 bool MultiSelection::ShiftKeyIsDown = false;
@@ -231,6 +232,39 @@ DEFINE_HOOK(433D30, CFinalSunDlg_Tools_LowerSingleTile, 5)
         pThis->PlaySound(CFinalSunDlg::FASoundType::Error);
 
     return 0x433D47;
+}
+
+DEFINE_HOOK(474FF4, CIsoView_Draw_MoneyOnMap_SetBKColor, 9)
+{
+    GET(HDC, hDC, ECX);
+
+    ::SetBkMode(hDC, OPAQUE);
+    ::SetBkColor(hDC, RGB(0xFF, 0xFF, 0xFF));
+
+    return 0x474FFD;
+}
+
+DEFINE_HOOK(4750AC, CIsoView_Draw_MultiSelectionMoney, 7)
+{
+    if (MultiSelection::GetCount())
+    {
+        GET_STACK(HDC, hDC, STACK_OFFS(0xD18, 0xC68));
+        REF_STACK(RECT, rect, STACK_OFFS(0xD18, 0xCCC));
+
+        int nCount = 0;
+        auto pExt = CMapDataExt::GetExtension();
+        pExt->InitOreValue();
+        MultiSelection::ApplyForEach(
+            [&nCount, pExt](CellData& cell) {
+                nCount += pExt->GetOreValueAt(cell);
+            }
+        );
+
+        ppmfc::CString buffer;
+        buffer.Format("Selected money: %d", nCount);
+        ::TextOut(hDC, rect.left + 10, rect.top + 30, buffer, buffer.GetLength());
+    }
+    return 0;
 }
 
 DEFINE_HOOK(4B9F7A, CreateMap_ClearUp_MultiSelection, 5)

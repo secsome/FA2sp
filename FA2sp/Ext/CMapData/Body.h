@@ -11,4 +11,10 @@ public:
     }
 
     bool ResizeMapExt(MapRect* const pRect);
+    
+    enum OreType { Riparius = 0, Cruentus, Vinifera, Aboreus };
+    int GetOreValueAt(CellData& cell);
+    void InitOreValue();
+
+    static int OreValue[4];
 };

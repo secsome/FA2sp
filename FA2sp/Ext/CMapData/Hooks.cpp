@@ -15,3 +15,18 @@ DEFINE_HOOK(4C45F0, CMapData_ResizeMap, 6)
 
     return 0;
 }
+
+DEFINE_HOOK(4C3E20, CMapData_CalculateMoneyCount, 7)
+{
+    auto pExt = CMapDataExt::GetExtension();
+
+    int nCount = 0;
+
+    pExt->InitOreValue();
+    for (int i = 0; i < pExt->CellDataCount; ++i)
+        nCount += pExt->GetOreValueAt(pExt->CellDatas[i]);
+
+    R->EAX(nCount);
+
+    return 0x4C4460;
+}
