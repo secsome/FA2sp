@@ -201,7 +201,7 @@ DEFINE_HOOK(43209D, CFinalSunDlg_Update_TranslateMenuItems, A)
     translateMenuItem(30012, "Menu.Layers.Bounds");
 
     translateSubMenu(i++, "Menu.Lighting");
-    translateMenuItem(31000, "Menu.Lighting.    ");
+    translateMenuItem(31000, "Menu.Lighting.None");
     translateMenuItem(31001, "Menu.Lighting.Normal");
     translateMenuItem(31002, "Menu.Lighting.Lightning");
     translateMenuItem(31003, "Menu.Lighting.Dominator");
@@ -216,6 +216,7 @@ DEFINE_HOOK(432010, CFinalSunDlg_Update_NoFuckingEasyMode, 7)
 }
 
 #pragma warning(disable : 4834)
+#pragma warning(disable : 6031)
 
 DEFINE_HOOK(436EE0, CFinalSunDlg_AddToRecentFile, 7)
 {

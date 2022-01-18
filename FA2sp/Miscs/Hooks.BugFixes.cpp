@@ -140,8 +140,7 @@ DEFINE_HOOK(4564F0, CInputMessageBox_OnOK, 7)
 	return 0x4565A5;
 }
 
-//
-//DEFINE_HOOK(4C61C5, CMapData_ResizeMap_PositionFix, 5)
+//DEFINE_HOOK(4C61C5, CMapData_ResizeMap_PositionFix_MoveOnField, 5)
 //{
 //	GET(CellData*, pCell, EAX);
 //	auto const pSrc = CONTAINING_RECORD(R->ECX(), CellData, Flag);
@@ -149,6 +148,14 @@ DEFINE_HOOK(4564F0, CInputMessageBox_OnOK, 7)
 //	pCell->Smudge = pSrc->Smudge;
 //	pCell->SmudgeType = pSrc->SmudgeType;
 //	pCell->BaseNode = pSrc->BaseNode;
+//
+//	return 0;
+//}
+//
+//DEFINE_HOOK(4C76C6, CMapData_ResizeMap_PositionFix_SyncToINI, 5)
+//{
+//	CMapData::Instance->UpdateMapFieldData_Smudge(true);
+//	CMapData::Instance->UpdateMapFieldData_House(true);
 //
 //	return 0;
 //}

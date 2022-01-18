@@ -5,6 +5,13 @@
 
 #include "Palettes.h"
 
+DEFINE_HOOK(4B9F7A, CreateMap_ClearUp, 5)
+{
+	PalettesManager::Release();
+
+	return 0;
+}
+
 DEFINE_HOOK(49D2C0, LoadMap_ClearUp, 5)
 {
 	PalettesManager::Release();

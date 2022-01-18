@@ -266,15 +266,15 @@ bool CMapDataExt::ResizeMapExt(MapRect* const pRect)
     // need further investigation
     this->InitMinimap();
 
-    this->UpdateMapFieldData_Aircraft(false);
-    this->UpdateMapFieldData_Infantry(false);
-    this->UpdateMapFieldData_Structure(false);
-    this->UpdateMapFieldData_Terrain(false);
-    this->UpdateMapFieldData_Unit(false);
-    this->UpdateMapFieldData_Waypoint(false);
-    this->UpdateMapFieldData_Celltag(false);
-    this->UpdateMapFieldData_Tube(false);
-    this->UpdateMapFieldData_Smudge(false);
+    this->UpdateFieldAircraftData(false);
+    this->UpdateFieldInfantryData(false);
+    this->UpdateFieldStructureData(false);
+    this->UpdateFieldTerrainData(false);
+    this->UpdateFieldUnitData(false);
+    this->UpdateFieldWaypointData(false);
+    this->UpdateFieldCelltagData(false);
+    this->UpdateFieldTubeData(false);
+    this->UpdateFieldSmudgeData(false);
     this->UpdateINIFile(SaveMapFlag::UpdatePreview);
 
     // Update the preview map manually
