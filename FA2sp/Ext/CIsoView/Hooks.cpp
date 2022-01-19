@@ -154,11 +154,6 @@ DEFINE_HOOK(474DDF, CIsoView_Draw_LayerVisible_Bounds, 5)
 	return CIsoViewExt::DrawBounds ? 0 : 0x474FE0;
 }
 
-DEFINE_HOOK(474FE0, CIsoView_Draw_LayerVisible_MoneyOnMap, 7)
-{
-	return CIsoViewExt::DrawMoneyOnMap ? 0 : 0x4750B0;
-}
-
 DEFINE_HOOK(471162, CIsoView_Draw_PowerUp1Loc_PosFix, 5)
 {
 	REF_STACK(const ppmfc::CString, ID, STACK_OFFS(0xD18, 0xBFC));
