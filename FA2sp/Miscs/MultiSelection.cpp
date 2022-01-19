@@ -14,6 +14,9 @@ MapCoord MultiSelection::CurrentCoord;
 
 bool MultiSelection::AddCoord(int X, int Y)
 {
+    if (X == -1 || Y == -1)
+        return false;
+
     MapCoord coord{ X,Y };
     auto itr = SelectedCoords.find(coord);
     if (itr == SelectedCoords.end())
@@ -26,6 +29,9 @@ bool MultiSelection::AddCoord(int X, int Y)
 
 bool MultiSelection::RemoveCoord(int X, int Y)
 {
+    if (X == -1 || Y == -1)
+        return false;
+
     MapCoord coord{ X,Y };
     auto itr = SelectedCoords.find(coord);
     if (itr != SelectedCoords.end())

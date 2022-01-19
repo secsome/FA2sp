@@ -3,6 +3,7 @@
 #include <CMapData.h>
 
 #include <set>
+#include <concepts>
 
 class MultiSelection
 {
@@ -14,7 +15,7 @@ public:
     inline static void ReverseStatus(int X, int Y);
     inline static bool IsSelected(int X, int Y);
 
-    template<typename _Fn>
+    template<typename _Fn> requires std::invocable<_Fn, CellData&>
     static void ApplyForEach(_Fn _Func)
     {
         for (auto& coord : SelectedCoords)
