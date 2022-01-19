@@ -10,6 +10,7 @@
 #include <format>
 
 int CMapDataExt::OreValue[4] { -1,-1,-1,-1 };
+std::vector<OverlayTypeData> CMapDataExt::OverlayTypeDatas;
 
 bool CMapDataExt::ResizeMapExt(MapRect* const pRect)
 {

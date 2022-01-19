@@ -2,6 +2,13 @@
 
 #include <CMapData.h>
 
+#include <vector>
+
+struct OverlayTypeData
+{
+    bool Rock;
+};
+
 class CMapDataExt : public CMapData
 {
 public:
@@ -16,5 +23,6 @@ public:
     int GetOreValueAt(CellData& cell);
     void InitOreValue();
 
+    static std::vector<OverlayTypeData> OverlayTypeDatas;
     static int OreValue[4];
 };

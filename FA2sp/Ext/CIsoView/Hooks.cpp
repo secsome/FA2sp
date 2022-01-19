@@ -6,8 +6,10 @@
 #include <CMapData.h>
 
 #include "../../Miscs/MultiSelection.h"
-#include "../CLoading/Body.h"
 #include "../../Helpers/STDHelpers.h"
+
+#include "../CLoading/Body.h"
+#include "../CMapData/Body.h"
 
 DEFINE_HOOK(45AEFF, CIsoView_OnMouseMove_UpdateCoordinateYXToXY, B)
 {
@@ -412,22 +414,44 @@ DEFINE_HOOK(4676CB, CIsoView_OnLeftButtonUp_AddTube, 6)
 	return 0x468548;
 }
 
-DEFINE_HOOK(4BB04A, CMapData_AddTube_IgnoreUselessNegativeOne, 7)
+
+DEFINE_HOOK(470502, CIsoView_Draw_OverlayOffset, 5)
 {
-	GET(TubeData*, pTubeData, ESI);
-	REF_STACK(ppmfc::CString, lpBuffer, STACK_OFFS(0x134, 0x124));
+	REF_STACK(const CellData, cell, STACK_OFFS(0xD18, 0xC60));
+	GET(int, nOffset, EAX);
 
-	for (int i = 0; i < 100; ++i)
+	const int nOverlay = cell.Overlay;
+	const unsigned char nOverlayData = cell.OverlayData;
+
+	if (nOverlay == 0xA7)
+		nOffset -= 45;
+	else if (
+		nOverlay != 0x18 && nOverlay != 0x19 && // BRIDGE1, BRIDGE2
+		nOverlay != 0x3B && nOverlay != 0x3C && // RAILBRDG1, RAILBRDG2
+		nOverlay != 0xED && nOverlay != 0xEE // BRIDGEB1, BRIDGEB2
+		)
 	{
-		if (pTubeData->Directions[i] == -1)
+		if (nOverlay >= 0x27 && nOverlay <= 0x36) // Tracks
+			nOffset += 15;
+		else if (nOverlay >= 0x4A && nOverlay <= 0x65) // LOBRDG 1-28
+			nOffset += 15;
+		else if (nOverlay >= 0xCD && nOverlay <= 0xEC) // LOBRDGB 1-4
+			nOffset += 15;
+		else if (nOverlay < CMapDataExt::OverlayTypeDatas.size())
 		{
-			lpBuffer += ",-1";
-			break;
+			if (CMapDataExt::OverlayTypeDatas[nOverlay].Rock)
+				nOffset += 15;
 		}
-
-		lpBuffer += ',';
-		lpBuffer += pTubeData->Directions[i] + '0';
+	}
+	else
+	{
+		if (nOverlayData >= 0x9 && nOverlayData <= 0x11)
+			nOffset -= 16;
+		else
+			nOffset -= 1;
 	}
 
-	return 0x4BB083;
+	R->EAX(nOffset);
+
+	return 0x470574;
 }
