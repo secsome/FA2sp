@@ -242,6 +242,32 @@ DEFINE_HOOK(433D30, CFinalSunDlg_Tools_LowerSingleTile, 5)
     return 0x433D47;
 }
 
+DEFINE_HOOK(433F70, CFinalSunDlg_Tools_HideSingleField, 5)
+{
+    GET(CFinalSunDlg*, pThis, ECX);
+
+    if (CMapData::Instance->MapWidthPlusHeight)
+    {
+        if (MultiSelection::GetCount())
+        {
+            MultiSelection::ApplyForEach(
+                [](CellData& cell) {
+                    cell.Flag.IsHiddenCell = true;
+                }
+            );
+            pThis->MyViewFrame.pIsoView->RedrawWindow(nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW);
+        }
+        else
+            CIsoView::CurrentCommand->Command = FACurrentCommand::HideSingleField;
+
+        pThis->PlaySound(CFinalSunDlg::FASoundType::Normal);
+    }
+    else
+        pThis->PlaySound(CFinalSunDlg::FASoundType::Error);
+
+    return 0x433F83;
+}
+
 DEFINE_HOOK(474FE0, CIsoView_Draw_MultiSelectionMoney, 5)
 {
     if (CIsoViewExt::DrawMoneyOnMap)
