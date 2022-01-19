@@ -3,9 +3,12 @@
 #include <CFinalSunDlg.h>
 #include <CIsoView.h>
 #include <Helpers/Macro.h>
+#include <Drawing.h>
 
 #include "../Ext/CIsoView/Body.h"
 #include "../Ext/CMapData/Body.h"
+
+#include "../FA2sp.h"
 
 std::set<MapCoord> MultiSelection::SelectedCoords;
 bool MultiSelection::ShiftKeyIsDown = false;
@@ -160,15 +163,14 @@ DEFINE_HOOK(470710, CIsoView_Draw_MultiSelect, 7)
         GET(BGRStruct*, pColors, ESI);
         GET(int, nCount, ECX);
 
-        static constexpr unsigned char BKColor_R = 0;
-        static constexpr unsigned char BKColor_G = 255;
-        static constexpr unsigned char BKColor_B = 0;
-
         for (int i = 0; i < nCount; ++i)
         {
-            MultiSelection::ColorHolder[i].R = (pColors[i].R + BKColor_R) / 2;
-            MultiSelection::ColorHolder[i].G = (pColors[i].G + BKColor_G) / 2;
-            MultiSelection::ColorHolder[i].B = (pColors[i].B + BKColor_B) / 2;
+            MultiSelection::ColorHolder[i].R = 
+                (pColors[i].R + reinterpret_cast<RGBClass*>(&ExtConfigs::MultiSelectionColor)->R) / 2;
+            MultiSelection::ColorHolder[i].G = 
+                (pColors[i].G + reinterpret_cast<RGBClass*>(&ExtConfigs::MultiSelectionColor)->G) / 2;
+            MultiSelection::ColorHolder[i].B = 
+                (pColors[i].B + reinterpret_cast<RGBClass*>(&ExtConfigs::MultiSelectionColor)->B) / 2;
 
         }
 

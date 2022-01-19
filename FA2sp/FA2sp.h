@@ -55,6 +55,7 @@ public:
     static bool VerticalLayout;
     static bool FastResize;
     static int RecentFileLimit;
+    static int MultiSelectionColor;
 };
 
 class Variables

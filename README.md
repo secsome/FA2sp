@@ -17,6 +17,7 @@ Compile Using C++ Standard Now: /std:c++latest
 *) Optimized mouse attached building drawing
 +) Reimplemented tube generation
 +) Support for multi-selection, the detailed usage can be looked up in the document below
++) New ExtConfig : MultiSelectionColor = COLORREF, back color of selected tiles
 
 ======================= Changes (2021-12-31 RELEASE 1.3.0) ==============================================================================================
 ***) The project now compiles under v143+/std:c++latest, Windows XP may not be able to use this dll
@@ -247,6 +248,7 @@ COLORREF - R,G,B each of them is in [0,255]
             +) VerticalLayout = BOOLEAN ; Determines if FA2 will make the bottom view go to the right side
             +) FastResize = BOOLEAN ; Determines if FA2 will expanding the map more rapidly
             +) RecentFileLimit = INTEGER ; How many recent files should I keep? ranges from 4 to 9
+            +) MultiSelectionColor = COLORREF ; Determines the back color of selected tiles
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.
