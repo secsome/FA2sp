@@ -276,6 +276,33 @@ DEFINE_HOOK(433F70, CFinalSunDlg_Tools_HideSingleField, 5)
     return 0x433F83;
 }
 
+//DEFINE_HOOK(435F10, CFinalSunDlg_Tools_Copy, 7)
+//{
+//    GET(CFinalSunDlg*, pThis, ECX);
+//
+//    pThis->PlaySound(CFinalSunDlg::FASoundType::Normal);
+//
+//    if (MultiSelection::GetCount())
+//    {
+//
+//    }
+//    else
+//        CIsoView::CurrentCommand->Command = FACurrentCommand::TileCopy;
+//
+//    return 0x435F24;
+//}
+//
+//DEFINE_HOOK(4C3850, CMapData_PasteAt, 8)
+//{
+//    GET_STACK(const int, X, 0x4);
+//    GET_STACK(const int, Y, 0x8);
+//    GET_STACK(const char, nBaseHeight, 0xC);
+//
+//
+//
+//    return 0x4C388B;
+//}
+
 DEFINE_HOOK(474FE0, CIsoView_Draw_MultiSelectionMoney, 5)
 {
     if (CIsoViewExt::DrawMoneyOnMap)
