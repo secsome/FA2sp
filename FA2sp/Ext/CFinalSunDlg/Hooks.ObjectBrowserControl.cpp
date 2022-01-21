@@ -35,8 +35,8 @@ DEFINE_HOOK(461766, CIsoView_OnLButtonDown_PropertyBrush, 5)
 {
     if (CIsoView::CurrentCommand->Command == 0x17)
     {
-        GET(const int, Y, EDI);
-        GET(const int, X, ESI);
+        GET(const int, X, EDI);
+        GET(const int, Y, ESI);
 
         CViewObjectsExt::ApplyPropertyBrush(X, Y);
 
@@ -50,8 +50,8 @@ DEFINE_HOOK(45BF73, CIsoView_OnMouseMove_PropertyBrush, 9)
 {
     if (CIsoView::CurrentCommand->Command == 0x17)
     {
-        GET(const int, Y, EDI);
-        GET(const int, X, EBX);
+        GET(const int, X, EDI);
+        GET(const int, Y, EBX);
 
         CViewObjectsExt::ApplyPropertyBrush(X, Y);
 

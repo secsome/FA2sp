@@ -193,6 +193,7 @@
     <ClCompile Include="FA2sp\Ext\CTriggerFrame\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerOption\Body.cpp" />
     <ClCompile Include="FA2sp\FA2sp.cpp" />
+    <ClCompile Include="FA2sp\Source\CIsoView.cpp" />
     <ClCompile Include="FA2sp\UI\Hooks.cpp" />
     <ClCompile Include="FA2sp\Logger.cpp" />
     <ClCompile Include="FA2sp\RunTime.cpp" />
@@ -254,6 +255,7 @@
     <ClInclude Include="FA2sp\Helpers\MutexHelper.h" />
     <ClInclude Include="FA2sp\Helpers\Translations.h" />
     <ClInclude Include="FA2sp\ExtraWindow\CTileManager\CTileManager.h" />
+    <ClInclude Include="FA2sp\Source\CIsoView.h" />
     <ClInclude Include="FA2sp\vxl_drawing_lib.h" />
   </ItemGroup>
   <ItemGroup>

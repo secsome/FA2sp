@@ -153,6 +153,9 @@
     <ClInclude Include="FA2sp\Miscs\MultiSelection.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2sp\Source\CIsoView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">
@@ -396,6 +399,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Miscs\MultiSelection.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Source\CIsoView.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -8,6 +8,8 @@
 #include "../Ext/CIsoView/Body.h"
 #include "../Ext/CMapData/Body.h"
 
+#include "../Source/CIsoView.h"
+
 #include "../FA2sp.h"
 
 std::set<MapCoord> MultiSelection::SelectedCoords;
@@ -79,7 +81,7 @@ DEFINE_HOOK(456EFC, CIsoView_OnMouseMove_MultiSelect_ReverseStatus, 6)
     {
         if (CIsoView::ControlKeyIsDown && (eFlags & MK_LBUTTON))
         {
-            auto coord = CIsoView::GetInstance()->GetCurrentMapCoord(point);
+            auto coord = reinterpret_cast<CIsoViewImpl*>(CIsoView::GetInstance())->GetCurrentMapCoord(point);
             if (MultiSelection::ShiftKeyIsDown ?
                 MultiSelection::RemoveCoord(coord.X, coord.Y) :
                 MultiSelection::AddCoord(coord.X, coord.Y))
@@ -136,15 +138,15 @@ DEFINE_HOOK(46BC30, CIsoView_OnKeyUp, 5)
 
 DEFINE_HOOK(46EAFA, CIsoView_Draw_TileCurrentCoord_1, 5)
 {
-    MultiSelection::CurrentCoord.X = R->EBX();
-    MultiSelection::CurrentCoord.Y = R->EBP();
+    MultiSelection::CurrentCoord.X = R->EBP();
+    MultiSelection::CurrentCoord.Y = R->EBX();
     return 0;
 }
 
 DEFINE_HOOK(46F680, CIsoView_Draw_TileCurrentCoord_2, 5)
 {
-    MultiSelection::CurrentCoord.X = R->EBP();
-    MultiSelection::CurrentCoord.Y = R->EDI();
+    MultiSelection::CurrentCoord.X = R->EDI();
+    MultiSelection::CurrentCoord.Y = R->EBP();
     return 0;
 }
 

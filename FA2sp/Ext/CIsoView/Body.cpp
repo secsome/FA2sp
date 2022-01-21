@@ -45,49 +45,49 @@ void CIsoViewExt::AddTube(int EnterX, int EnterY, int ExitX, int ExitY)
     MapCoord coordToMove = { tube.EnterX - tube.ExitX,tube.EnterY - tube.ExitY };
     while (true)
     {
-        if (coordToMove.X < 0 && coordToMove.Y < 0)
+        if (coordToMove.Y < 0 && coordToMove.X < 0)
         {
             coordToMove += MapCoord::Facings[FACING_SOUTH];
             tube.Directions[nTubeSteps++] = FACING_SOUTH;
         }
-        else if (coordToMove.X < 0 && coordToMove.Y > 0)
+        else if (coordToMove.Y < 0 && coordToMove.X > 0)
         {
             coordToMove += MapCoord::Facings[FACING_EAST];
             tube.Directions[nTubeSteps++] = FACING_EAST;
         }
-        else if (coordToMove.X < 0 && coordToMove.Y == 0)
+        else if (coordToMove.Y < 0 && coordToMove.X == 0)
         {
             coordToMove += MapCoord::Facings[FACING_SOUTHEAST];
             tube.Directions[nTubeSteps++] = FACING_SOUTHEAST;
         }
-        else if (coordToMove.X > 0 && coordToMove.Y < 0)
+        else if (coordToMove.Y > 0 && coordToMove.X < 0)
         {
             coordToMove += MapCoord::Facings[FACING_WEST];
             tube.Directions[nTubeSteps++] = FACING_WEST;
         }
-        else if (coordToMove.X > 0 && coordToMove.Y > 0)
+        else if (coordToMove.Y > 0 && coordToMove.X > 0)
         {
             coordToMove += MapCoord::Facings[FACING_NORTH];
             tube.Directions[nTubeSteps++] = FACING_NORTH;
         }
-        else if (coordToMove.X > 0 && coordToMove.Y == 0)
+        else if (coordToMove.Y > 0 && coordToMove.X == 0)
         {
             coordToMove += MapCoord::Facings[FACING_NORTHWEST];
             tube.Directions[nTubeSteps++] = FACING_NORTHWEST;
         }
-        else if (coordToMove.X == 0 && coordToMove.Y < 0)
+        else if (coordToMove.Y == 0 && coordToMove.X < 0)
         {
             coordToMove += MapCoord::Facings[FACING_SOUTHWEST];
             tube.Directions[nTubeSteps++] = FACING_WEST;
         }
-        else if (coordToMove.X == 0 && coordToMove.Y > 0)
+        else if (coordToMove.Y == 0 && coordToMove.X > 0)
         {
             coordToMove += MapCoord::Facings[FACING_NORTHEAST];
             tube.Directions[nTubeSteps++] = FACING_NORTHEAST;
         }
         else
         {
-            // coordToMove.X == 0 && coordToMove.Y == 0
+            // coordToMove.Y == 0 && coordToMove.X == 0
             break;
         }
 

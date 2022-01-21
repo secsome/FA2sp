@@ -11,6 +11,14 @@
 #include "../CLoading/Body.h"
 #include "../CMapData/Body.h"
 
+#include "../../Source/CIsoView.h"
+
+/*
+* FinalAlert 2 coordinate system just reversed the game's one
+* Which means game's (X, Y) is (Y, X) in FinalAlert 2.
+* Therefore we just replace the display function here but
+* keep use FinalAlert's coordinate system in our codes.
+*/
 DEFINE_HOOK(45AEFF, CIsoView_OnMouseMove_UpdateCoordinateYXToXY, B)
 {
 	GET_STACK(int, nPointX, 0x30);
@@ -84,18 +92,6 @@ DEFINE_HOOK(45ADD0, CIsoView_Draw_CursorSelectionBoundHeightColor, 6)
 	return 0;
 }
 
-//DEFINE_HOOK(474A49, CIsoView_Draw_WaypointColor, 5)
-//{
-//	GET(CIsoView*, pThis, EBP);
-//	GET(int, X, ESI);
-//	GET(int, Y, EDI);
-//	REF_STACK(ppmfc::CString, str, STACK_OFFS(0xD18, 0xCE4));
-//
-//	pThis->DrawText(X + 15, Y + 7, str, ExtConfigs::Waypoint_Color);
-//
-//	return 0x474A67;
-//}
-
 DEFINE_HOOK(470194, CIsoView_Draw_LayerVisible_Overlay, 8)
 {
 	return CIsoViewExt::DrawOverlays ? 0 : 0x470772;
@@ -135,21 +131,6 @@ DEFINE_HOOK(474563, CIsoView_Draw_LayerVisible_Smudges, 9)
 {
 	return CIsoViewExt::DrawSmudges ? 0 : 0x4748DC;
 }
-
-//DEFINE_HOOK(4748DC, CIsoView_Draw_LayerVisible_Celltags, 9)
-//{
-//	return CIsoViewExt::DrawCelltags ? 0 : 0x474986;
-//}
-//
-//DEFINE_HOOK(474986, CIsoView_Draw_LayerVisible_Waypoints, 9)
-//{
-//	return CIsoViewExt::DrawWaypoints ? 0 : 0x474A91;
-//}
-//
-//DEFINE_HOOK(474B9D, CIsoView_Draw_LayerVisible_Tubes, 9)
-//{
-//	return CIsoViewExt::DrawTubes ? 0 : 0x474D64;
-//}
 
 DEFINE_HOOK(474DDF, CIsoView_Draw_LayerVisible_Bounds, 5)
 {
@@ -339,62 +320,62 @@ DEFINE_HOOK(474DB7, CIsoView_Draw_DrawCelltagAndWaypointAndTube_SkipOriginUnlock
 	return 0x474DCE;
 }
 
-DEFINE_HOOK(474DDF, CIsoView_Draw_WaypointTexts, 5)
-{
-	if (CIsoViewExt::DrawWaypoints)
-	{
-		GET(CIsoViewExt*, pThis, EBX);
-
-		GET_STACK(HDC, hDC, STACK_OFFS(0xD18, 0xC68));
-		GET_STACK(int, jMin, STACK_OFFS(0xD18, 0xC10));
-		GET_STACK(int, iMin, STACK_OFFS(0xD18, 0xCBC));
-		GET_STACK(const int, jMax, STACK_OFFS(0xD18, 0xC64));
-		GET_STACK(const int, iMax, STACK_OFFS(0xD18, 0xC18));
-
-		SetTextColor(hDC, ExtConfigs::Waypoint_Color);
-		if (ExtConfigs::Waypoint_Background)
-		{
-			SetBkMode(hDC, OPAQUE);
-			SetBkColor(hDC, ExtConfigs::Waypoint_Background_Color);
-		}
-		else
-			SetBkMode(hDC, TRANSPARENT);
-		SetTextAlign(hDC, TA_CENTER);
-
-		auto pSection = CINI::CurrentDocument->GetSection("Waypoints");
-		for (int j = jMin; j < jMax; ++j)
-		{
-			for (int i = iMin; i < iMax; ++i)
-			{
-				int Y = j, X = i;
-
-				pThis->MapCoord2ScreenCoord(Y, X);
-				auto pCell = CMapData::Instance->TryGetCellAt(i, j);
-
-				int drawX = Y - R->Stack<float>(STACK_OFFS(0xD18, 0xCB0)) + 30;
-				int drawY = X - R->Stack<float>(STACK_OFFS(0xD18, 0xCB8)) - 15;
-
-				if (pCell->Waypoint != -1)
-				{
-					auto pWP = *pSection->GetKeyAt(pCell->Waypoint);
-					TextOut(hDC, drawX, drawY, pWP, strlen(pWP));
-				}
-
-			}
-		}
-
-		SetTextAlign(hDC, TA_LEFT);
-		SetTextColor(hDC, RGB(0, 0, 0));
-	}
-
-	return 0;
-}
+//DEFINE_HOOK(474DDF, CIsoView_Draw_WaypointTexts, 5)
+//{
+//	if (CIsoViewExt::DrawWaypoints)
+//	{
+//		GET(CIsoViewExt*, pThis, EBX);
+//
+//		GET_STACK(HDC, hDC, STACK_OFFS(0xD18, 0xC68));
+//		GET_STACK(int, jMin, STACK_OFFS(0xD18, 0xC10));
+//		GET_STACK(int, iMin, STACK_OFFS(0xD18, 0xCBC));
+//		GET_STACK(const int, jMax, STACK_OFFS(0xD18, 0xC64));
+//		GET_STACK(const int, iMax, STACK_OFFS(0xD18, 0xC18));
+//
+//		SetTextColor(hDC, ExtConfigs::Waypoint_Color);
+//		if (ExtConfigs::Waypoint_Background)
+//		{
+//			SetBkMode(hDC, OPAQUE);
+//			SetBkColor(hDC, ExtConfigs::Waypoint_Background_Color);
+//		}
+//		else
+//			SetBkMode(hDC, TRANSPARENT);
+//		SetTextAlign(hDC, TA_CENTER);
+//
+//		auto pSection = CINI::CurrentDocument->GetSection("Waypoints");
+//		for (int j = jMin; j < jMax; ++j)
+//		{
+//			for (int i = iMin; i < iMax; ++i)
+//			{
+//				int X = j, Y = i;
+//
+//				CIsoViewImpl::MapCoord2ScreenCoord(X, Y);
+//				auto pCell = CMapData::Instance->TryGetCellAt(i, j);
+//
+//				int drawX = X - R->Stack<float>(STACK_OFFS(0xD18, 0xCB0)) + 30;
+//				int drawY = Y - R->Stack<float>(STACK_OFFS(0xD18, 0xCB8)) - 15;
+//
+//				if (pCell->Waypoint != -1)
+//				{
+//					auto pWP = *pSection->GetKeyAt(pCell->Waypoint);
+//					TextOut(hDC, drawX, drawY, pWP, strlen(pWP));
+//				}
+//
+//			}
+//		}
+//
+//		SetTextAlign(hDC, TA_LEFT);
+//		SetTextColor(hDC, RGB(0, 0, 0));
+//	}
+//
+//	return 0;
+//}
 
 DEFINE_HOOK(46BDFA, CIsoView_DrawMouseAttachedStuff_Structure, 5)
 {
-	GET_STACK(const int, X, STACK_OFFS(0x94, -0x8));
-	GET_STACK(const int, Y, STACK_OFFS(0x94, -0x4));
-
+	GET_STACK(const int, X, STACK_OFFS(0x94, -0x4));
+	GET_STACK(const int, Y, STACK_OFFS(0x94, -0x8));
+	
 	const int nMapCoord = CMapData::Instance->GetCoordIndex(X, Y);
 	const auto& cell = CMapData::Instance->CellDatas[nMapCoord];
 	if (cell.Structure < 0)
@@ -406,10 +387,10 @@ DEFINE_HOOK(46BDFA, CIsoView_DrawMouseAttachedStuff_Structure, 5)
 DEFINE_HOOK(4676CB, CIsoView_OnLeftButtonUp_AddTube, 6)
 {
 	GET(CIsoViewExt*, pThis, ESI);
-	GET(const int, nDestX, EDI);
-	GET(const int, nDestY, EBX);
+	GET(const int, nDestX, EBX);
+	GET(const int, nDestY, EDI);
 
-	pThis->AddTube(pThis->StartCellX, pThis->StartCellY, nDestX, nDestY);
+	pThis->AddTube(pThis->StartCell.X, pThis->StartCell.Y, nDestX, nDestY);
 
 	return 0x468548;
 }
