@@ -210,7 +210,7 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 			if (!CMixFile::HasFile(file, nMix))
 			{
 				file = name + ".SHP";
-				int nMix = SearchFile(file);
+				nMix = SearchFile(file);
 				if (!CMixFile::HasFile(file, nMix))
 					return false;
 			}
