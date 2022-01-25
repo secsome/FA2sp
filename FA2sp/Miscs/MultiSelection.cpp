@@ -8,7 +8,7 @@
 #include "../Ext/CIsoView/Body.h"
 #include "../Ext/CMapData/Body.h"
 
-#include "../Source/CIsoView.h"
+// #include "../Source/CIsoView.h"
 
 #include "../FA2sp.h"
 
@@ -81,7 +81,7 @@ DEFINE_HOOK(456EFC, CIsoView_OnMouseMove_MultiSelect_ReverseStatus, 6)
     {
         if (CIsoView::ControlKeyIsDown && (eFlags & MK_LBUTTON))
         {
-            auto coord = reinterpret_cast<CIsoViewImpl*>(CIsoView::GetInstance())->GetCurrentMapCoord(point);
+            auto coord = CIsoView::GetInstance()->GetCurrentMapCoord(point);
             if (MultiSelection::ShiftKeyIsDown ?
                 MultiSelection::RemoveCoord(coord.X, coord.Y) :
                 MultiSelection::AddCoord(coord.X, coord.Y))
