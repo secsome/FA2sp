@@ -18,6 +18,7 @@ Compile Using C++ Standard Now: /std:c++latest
 +) Reimplemented tube generation
 +) Support for multi-selection, the detailed usage can be looked up in the document below
 +) New ExtConfig : MultiSelectionColor = COLORREF, back color of selected tiles
++) Theater order in dropdown is now customizable and theaters can be disabled
 
 ======================= Changes (2021-12-31 RELEASE 1.3.0) ==============================================================================================
 ***) The project now compiles under v143+/std:c++latest, Windows XP may not be able to use this dll
@@ -258,6 +259,17 @@ COLORREF - R,G,B each of them is in [0,255]
             \\\ 2=Yuri
             \\\ 3=Neutral
             \\\ 4=Special
+            \\\
+        +) [Theaters]
+            {Contains a list of theater names, only the existing 6 names are valid. If not listed then all default 6 theaters are used and displayed in order shown below}
+            \\\ e.g.
+            \\\ [Theaters]
+            \\\ 0=TEMPERATE
+            \\\ 1=SNOW
+            \\\ 2=URBAN
+            \\\ 3=NEWURBAN
+            \\\ 4=LUNAR
+            \\\ 5=DESERT
             \\\
         +) [ForceName]
             (xxx = Objecttype)

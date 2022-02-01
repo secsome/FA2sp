@@ -1,6 +1,8 @@
 #include "Body.h"
 
 #include <Helpers/Macro.h>
+#include "../../Helpers/Translations.h"
+#include "../../Helpers/TheaterHelpers.h"
 
 #include <CInputMessageBox.h>
 #include <CFinalSunApp.h>
@@ -79,8 +81,6 @@ DEFINE_HOOK(432380, CFinalSunDlg_Update_RecentFiles, A)
 
     return 0x432442;
 }
-
-#include "../../Helpers/Translations.h"
 
 DEFINE_HOOK(43209D, CFinalSunDlg_Update_TranslateMenuItems, A)
 {
@@ -294,4 +294,18 @@ DEFINE_HOOK(4340F0, CFinalSunDlg_Tools_ChangeMapHeight, 7)
         pThis->PlaySound(CFinalSunDlg::FASoundType::Error);
 
     return 0x434135;
+}
+
+DEFINE_HOOK(42D736, CFinalSunDlg_NewMap_Theater, 5)
+{
+    GET_STACK(int, theaterIndex, STACK_OFFS(0x161C, 0x15D4));
+
+    auto theaters = TheaterHelpers::GetEnabledTheaterNames();
+    auto theaterName = ppmfc::CString(theaterIndex < theaters.size() ? theaters.at(theaterIndex) : "");
+    char* pBuffer = new char[theaterName.GetLength() + 1];
+    strcpy(pBuffer, theaterName);
+
+    R->ECX(pBuffer);
+
+    return 0;
 }
