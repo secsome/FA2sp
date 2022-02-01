@@ -132,11 +132,6 @@ DEFINE_HOOK(474563, CIsoView_Draw_LayerVisible_Smudges, 9)
 	return CIsoViewExt::DrawSmudges ? 0 : 0x4748DC;
 }
 
-DEFINE_HOOK(474DDF, CIsoView_Draw_LayerVisible_Bounds, 5)
-{
-	return CIsoViewExt::DrawBounds ? 0 : 0x474FE0;
-}
-
 DEFINE_HOOK(471162, CIsoView_Draw_PowerUp1Loc_PosFix, 5)
 {
 	REF_STACK(const ppmfc::CString, ID, STACK_OFFS(0xD18, 0xBFC));
@@ -320,56 +315,56 @@ DEFINE_HOOK(474DB7, CIsoView_Draw_DrawCelltagAndWaypointAndTube_SkipOriginUnlock
 	return 0x474DCE;
 }
 
-//DEFINE_HOOK(474DDF, CIsoView_Draw_WaypointTexts, 5)
-//{
-//	if (CIsoViewExt::DrawWaypoints)
-//	{
-//		GET(CIsoViewExt*, pThis, EBX);
-//
-//		GET_STACK(HDC, hDC, STACK_OFFS(0xD18, 0xC68));
-//		GET_STACK(int, jMin, STACK_OFFS(0xD18, 0xC10));
-//		GET_STACK(int, iMin, STACK_OFFS(0xD18, 0xCBC));
-//		GET_STACK(const int, jMax, STACK_OFFS(0xD18, 0xC64));
-//		GET_STACK(const int, iMax, STACK_OFFS(0xD18, 0xC18));
-//
-//		SetTextColor(hDC, ExtConfigs::Waypoint_Color);
-//		if (ExtConfigs::Waypoint_Background)
-//		{
-//			SetBkMode(hDC, OPAQUE);
-//			SetBkColor(hDC, ExtConfigs::Waypoint_Background_Color);
-//		}
-//		else
-//			SetBkMode(hDC, TRANSPARENT);
-//		SetTextAlign(hDC, TA_CENTER);
-//
-//		auto pSection = CINI::CurrentDocument->GetSection("Waypoints");
-//		for (int j = jMin; j < jMax; ++j)
-//		{
-//			for (int i = iMin; i < iMax; ++i)
-//			{
-//				int X = j, Y = i;
-//
-//				CIsoViewImpl::MapCoord2ScreenCoord(X, Y);
-//				auto pCell = CMapData::Instance->TryGetCellAt(i, j);
-//
-//				int drawX = X - R->Stack<float>(STACK_OFFS(0xD18, 0xCB0)) + 30;
-//				int drawY = Y - R->Stack<float>(STACK_OFFS(0xD18, 0xCB8)) - 15;
-//
-//				if (pCell->Waypoint != -1)
-//				{
-//					auto pWP = *pSection->GetKeyAt(pCell->Waypoint);
-//					TextOut(hDC, drawX, drawY, pWP, strlen(pWP));
-//				}
-//
-//			}
-//		}
-//
-//		SetTextAlign(hDC, TA_LEFT);
-//		SetTextColor(hDC, RGB(0, 0, 0));
-//	}
-//
-//	return 0;
-//}
+DEFINE_HOOK(474DDF, CIsoView_Draw_WaypointTexts, 5)
+{
+	if (CIsoViewExt::DrawWaypoints)
+	{
+		GET(CIsoViewExt*, pThis, EBX);
+
+		GET_STACK(HDC, hDC, STACK_OFFS(0xD18, 0xC68));
+		GET_STACK(int, jMin, STACK_OFFS(0xD18, 0xC10));
+		GET_STACK(int, iMin, STACK_OFFS(0xD18, 0xCBC));
+		GET_STACK(const int, jMax, STACK_OFFS(0xD18, 0xC64));
+		GET_STACK(const int, iMax, STACK_OFFS(0xD18, 0xC18));
+
+		SetTextColor(hDC, ExtConfigs::Waypoint_Color);
+		if (ExtConfigs::Waypoint_Background)
+		{
+			SetBkMode(hDC, OPAQUE);
+			SetBkColor(hDC, ExtConfigs::Waypoint_Background_Color);
+		}
+		else
+			SetBkMode(hDC, TRANSPARENT);
+		SetTextAlign(hDC, TA_CENTER);
+
+		auto pSection = CINI::CurrentDocument->GetSection("Waypoints");
+		for (int j = jMin; j < jMax; ++j)
+		{
+			for (int i = iMin; i < iMax; ++i)
+			{
+				int X = j, Y = i;
+
+				CIsoView::MapCoord2ScreenCoord(X, Y);
+				auto pCell = CMapData::Instance->TryGetCellAt(j, i);
+
+				int drawX = X - R->Stack<float>(STACK_OFFS(0xD18, 0xCB0)) + 30;
+				int drawY = Y - R->Stack<float>(STACK_OFFS(0xD18, 0xCB8)) - 15;
+
+				if (pCell->Waypoint != -1)
+				{
+					auto pWP = *pSection->GetKeyAt(pCell->Waypoint);
+					TextOut(hDC, drawX, drawY, pWP, strlen(pWP));
+				}
+
+			}
+		}
+
+		SetTextAlign(hDC, TA_LEFT);
+		SetTextColor(hDC, RGB(0, 0, 0));
+	}
+
+	return CIsoViewExt::DrawBounds ? 0 : 0x474FE0;
+}
 
 DEFINE_HOOK(46BDFA, CIsoView_DrawMouseAttachedStuff_Structure, 5)
 {
