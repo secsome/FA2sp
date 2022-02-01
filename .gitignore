@@ -1,5 +1,6 @@
 #Don't always push resource temp file OK?
 *.aps
+*.user
 /VC5
 /MFC42
 /Debug
@@ -15,3 +16,4 @@
 !/Debug/vxl_drawing_lib.lib
 !/Release/vxl_drawing_lib.lib
 /.vs/FA2sp/project-colors.json
+
