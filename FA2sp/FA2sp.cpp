@@ -47,6 +47,8 @@ bool ExtConfigs::VerticalLayout;
 bool ExtConfigs::FastResize;
 int ExtConfigs::RecentFileLimit;
 int ExtConfigs::MultiSelectionColor;
+int ExtConfigs::DefaultPreviewOptionMP;
+int ExtConfigs::DefaultPreviewOptionSP;
 
 MultimapHelper Variables::Rules = { &CINI::Rules(), &CINI::CurrentDocument() };
 
@@ -107,6 +109,9 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::RecentFileLimit = std::clamp(CINI::FAData->GetInteger("ExtConfigs", "RecentFileLimit"), 4, 9);
 
 	ExtConfigs::MultiSelectionColor = CINI::FAData->GetColor("ExtConfigs", "MultiSelectionColor", 0x00FF00);
+
+	ExtConfigs::DefaultPreviewOptionMP = CINI::FAData->GetInteger("ExtConfigs", "DefaultPreviewOptionMP", 0);
+	ExtConfigs::DefaultPreviewOptionSP = CINI::FAData->GetInteger("ExtConfigs", "DefaultPreviewOptionSP", 1);
 }
 
 // DllMain

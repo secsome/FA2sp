@@ -56,6 +56,8 @@ public:
     static bool FastResize;
     static int RecentFileLimit;
     static int MultiSelectionColor;
+    static int DefaultPreviewOptionMP;
+    static int DefaultPreviewOptionSP;
 };
 
 class Variables

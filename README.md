@@ -19,6 +19,7 @@ Compile Using C++ Standard Now: /std:c++latest
 +) Support for multi-selection, the detailed usage can be looked up in the document below
 +) New ExtConfig : MultiSelectionColor = COLORREF, back color of selected tiles
 +) Theater order in dropdown is now customizable and theaters can be disabled
++) Customizable default option for preview generation for both MP & SP maps
 
 ======================= Changes (2021-12-31 RELEASE 1.3.0) ==============================================================================================
 ***) The project now compiles under v143+/std:c++latest, Windows XP may not be able to use this dll
@@ -250,6 +251,8 @@ COLORREF - R,G,B each of them is in [0,255]
             +) FastResize = BOOLEAN ; Determines if FA2 will expanding the map more rapidly
             +) RecentFileLimit = INTEGER ; How many recent files should I keep? ranges from 4 to 9
             +) MultiSelectionColor = COLORREF ; Determines the back color of selected tiles
+            +) DefaultPreviewOptionMP = INTEGER ; Default radio option button for preview generation when saving multiplayer maps. 0 = Always generate new preview, 1 = Do no generate new preview, 2 = Always generate hidden preview, defaults to 0.
+            +) DefaultPreviewOptionSP = INTEGER ; Default radio option button for preview generation when saving singleplayer maps. 0 = Always generate new preview, 1 = Do no generate new preview, 2 = Always generate hidden preview, defaults to 1.
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.
