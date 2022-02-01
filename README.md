@@ -20,6 +20,7 @@ Compile Using C++ Standard Now: /std:c++latest
 +) New ExtConfig : MultiSelectionColor = COLORREF, back color of selected tiles
 +) Theater order in dropdown is now customizable and theaters can be disabled
 +) Customizable default option for preview generation for both MP & SP maps
++) Customizable waypoint text offset
 
 ======================= Changes (2021-12-31 RELEASE 1.3.0) ==============================================================================================
 ***) The project now compiles under v143+/std:c++latest, Windows XP may not be able to use this dll
@@ -239,6 +240,8 @@ COLORREF - R,G,B each of them is in [0,255]
             +) Waypoint.Color = COLORREF ; Determines the color of waypoint texts, default to 0,0,255
             +) Waypoint.Background = BOOLEAN ; Determines whether draw a rectangle background for waypoints or not. defaults to false
                 +) Waypoint.Background.Color = COLORREF ; Determines the color of the waypoint background, defaults to 255,255,255
+            +) Waypoint.Text.ExtraOffset.X = INTEGER ; Additional X-axis offset for waypoint text, defaults to 0
+            +) Waypoint.Text.ExtraOffset.Y = INTEGER ; Additional Y-axis offset for waypoint text, defaults to 0
             +) ExtWaypoints = BOOLEAN ; Determines if FA2sp supports unlimited count of waypoints, defaults to false (Phobos required)
             +) UndoRedoLimit = INTEGER ; Determines the maximun step of undo/redo, defaults to 16
             +) UseRGBHouseColor = BOOLEAN ; Determines if House colors are recognized as RGB color instead of HSV, defaults to false 
