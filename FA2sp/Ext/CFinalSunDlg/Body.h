@@ -98,7 +98,7 @@ public:
     static void ApplyPropertyBrush_Aircraft(int nIndex);
     static void ApplyPropertyBrush_Vehicle(int nIndex);
     
-    ppmfc::CString QueryUIName(const char* pRegName);
+    ppmfc::CString QueryUIName(const char* pRegName, bool bOnlyOneLine = true);
 
 public:
     /// <summary>

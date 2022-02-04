@@ -43,12 +43,25 @@ HTREEITEM CViewObjectsExt::InsertTranslatedString(const char* pOriginString, DWO
     return InsertString(result ? buffer : pOriginString, dwItemData, hParent, hInsertAfter);
 }
 
-ppmfc::CString CViewObjectsExt::QueryUIName(const char* pRegName)
+ppmfc::CString CViewObjectsExt::QueryUIName(const char* pRegName, bool bOnlyOneLine)
 {
+    if (!bOnlyOneLine)
+    {
+        if (ForceName.find(pRegName) != ForceName.end())
+            return Variables::Rules.GetString(pRegName, "Name", pRegName);
+        else
+            return CMapData::GetUIName(pRegName);
+    }
+    
+    ppmfc::CString buffer;
+
     if (ForceName.find(pRegName) != ForceName.end())
-        return Variables::Rules.GetString(pRegName, "Name", pRegName);
+        buffer = Variables::Rules.GetString(pRegName, "Name", pRegName);
     else
-        return CMapData::GetUIName(pRegName);
+        buffer = CMapData::GetUIName(pRegName);
+
+    int idx = buffer.Find('\n');
+    return idx == -1 ? buffer : buffer.Mid(0, idx);
 }
 
 void CViewObjectsExt::Redraw()
