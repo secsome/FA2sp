@@ -44,6 +44,8 @@ public:
     static int Waypoint_Color;
     static bool Waypoint_Background;
     static int Waypoint_Background_Color;
+    static int Waypoint_Text_ExtraOffset_X;
+    static int Waypoint_Text_ExtraOffset_Y;
     static bool ExtWaypoints;
     static int UndoRedoLimit;
     static bool UseRGBHouseColor;
@@ -56,6 +58,8 @@ public:
     static bool FastResize;
     static int RecentFileLimit;
     static int MultiSelectionColor;
+    static int DefaultPreviewOptionMP;
+    static int DefaultPreviewOptionSP;
 };
 
 class Variables

@@ -18,6 +18,9 @@ Compile Using C++ Standard Now: /std:c++latest
 +) Reimplemented tube generation
 +) Support for multi-selection, the detailed usage can be looked up in the document below
 +) New ExtConfig : MultiSelectionColor = COLORREF, back color of selected tiles
++) Theater order in dropdown is now customizable and theaters can be disabled
++) Customizable default option for preview generation for both MP & SP maps
++) Customizable waypoint text offset
 
 ======================= Changes (2021-12-31 RELEASE 1.3.0) ==============================================================================================
 ***) The project now compiles under v143+/std:c++latest, Windows XP may not be able to use this dll
@@ -165,8 +168,8 @@ Compile Using C++ Standard Now: /std:c++latest
 ======================= Changes (2021-05-07) ==============================================================================================
 +) New ExtConfig: SortByTriggerName = BOOLEAN, enable it so FA2 will sort the triggers dropdown and sort them by their name instead of ID
 +) New ExtConfig: AdjustDropdownWidth = BOOLEAN, enable it so FA2 will adjust the param dropdown width automatically
-    +) New ExtConfig: AdjustDropdownWidth.Factor = INTERGER, determines how long is a single char takes, defaults to 8
-    +) New ExtConfig: AdjustDropdownWidth.Max = INTERGER, determines the max length of the combobox, defaults to 360
+    +) New ExtConfig: AdjustDropdownWidth.Factor = INTEGER, determines how long is a single char takes, defaults to 8
+    +) New ExtConfig: AdjustDropdownWidth.Max = INTEGER, determines the max length of the combobox, defaults to 360
 -) Remove ExtConfig: OverlayFilter, enable it always.
 
 ======================= Changes (2021-03-22) ==============================================================================================
@@ -212,7 +215,7 @@ Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "
 NOTICE THAT UNDO&REDO HASN'T BEEN SUPPORTED YET!
 
 - BASIC TYPES
-INTERGER - [-2147483648,2147483647]
+INTEGER - [-2147483648,2147483647]
 BOOLEAN - Yes/No ; True/False ; 1/0
 COLORREF - R,G,B each of them is in [0,255]
 
@@ -229,26 +232,30 @@ COLORREF - R,G,B each of them is in [0,255]
             +) TutorialTexts.Hide=BOOLEAN ; Reduce lags, for texts in combobox might be useless
             +) SortByTriggerName=BOOLEAN ; Enable this feature so we can sort the triggers by their names
             +) AdjustDropdownWidth = BOOLEAN ; Enable it so FA2 will adjust the param dropdown width automatically
-                +) AdjustDropdownWidth.Factor = INTERGER ; Determines how long is a single char takes, defaults to 8
-                +) AdjustDropdownWidth.Max = INTERGER ; Determines the max length of the combobox, defaults to 360
+                +) AdjustDropdownWidth.Factor = INTEGER ; Determines how long is a single char takes, defaults to 8
+                +) AdjustDropdownWidth.Max = INTEGER ; Determines the max length of the combobox, defaults to 360
             +) CopySelectionBound.Color = COLORREF ; Determines the color of the selection boundary while copying, defaults to 255,0,0
             +) CursorSelectionBound.Color = COLORREF ; Determines the color of the boundary for current cell, defaults to 60,160,60
             +) HeightIndicatorColor.Color = COLORREF ; Determines the color of the height indicator for current cell, defaults to 60,60,60
             +) Waypoint.Color = COLORREF ; Determines the color of waypoint texts, default to 0,0,255
             +) Waypoint.Background = BOOLEAN ; Determines whether draw a rectangle background for waypoints or not. defaults to false
                 +) Waypoint.Background.Color = COLORREF ; Determines the color of the waypoint background, defaults to 255,255,255
+            +) Waypoint.Text.ExtraOffset.X = INTEGER ; Additional X-axis offset for waypoint text, defaults to 0
+            +) Waypoint.Text.ExtraOffset.Y = INTEGER ; Additional Y-axis offset for waypoint text, defaults to 0
             +) ExtWaypoints = BOOLEAN ; Determines if FA2sp supports unlimited count of waypoints, defaults to false (Phobos required)
             +) UndoRedoLimit = INTEGER ; Determines the maximun step of undo/redo, defaults to 16
             +) UseRGBHouseColor = BOOLEAN ; Determines if House colors are recognized as RGB color instead of HSV, defaults to false 
             +) SaveMap = BOOLEAN ; Determines if FA2 will save map using a faster method
                 +) SaveMap.AutoSave = BOOLEAN ; Determines if FA2 will save map automatically
-                    +) SaveMap.AutoSave.Interval = INTERGER ; Should be greater than or equal to 30, defaults to 300, determines how many seconds should we wait during the two auto saving
-                    +) SaveMap.AutoSave.MaxCount = INTERGER ; How many saving should FA2 keep, set to -1 will disable the auto cleanning, defaults to 10
+                    +) SaveMap.AutoSave.Interval = INTEGER ; Should be greater than or equal to 30, defaults to 300, determines how many seconds should we wait during the two auto saving
+                    +) SaveMap.AutoSave.MaxCount = INTEGER ; How many saving should FA2 keep, set to -1 will disable the auto cleanning, defaults to 10
             +) SaveMap.OnlySaveMAP = BOOLEAN ; Determines if FA2 will only save map with .map file extension
             +) VerticalLayout = BOOLEAN ; Determines if FA2 will make the bottom view go to the right side
             +) FastResize = BOOLEAN ; Determines if FA2 will expanding the map more rapidly
             +) RecentFileLimit = INTEGER ; How many recent files should I keep? ranges from 4 to 9
             +) MultiSelectionColor = COLORREF ; Determines the back color of selected tiles
+            +) DefaultPreviewOptionMP = INTEGER ; Default radio option button for preview generation when saving multiplayer maps. 0 = Always generate new preview, 1 = Do no generate new preview, 2 = Always generate hidden preview, defaults to 0.
+            +) DefaultPreviewOptionSP = INTEGER ; Default radio option button for preview generation when saving singleplayer maps. 0 = Always generate new preview, 1 = Do no generate new preview, 2 = Always generate hidden preview, defaults to 1.
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.
@@ -258,6 +265,17 @@ COLORREF - R,G,B each of them is in [0,255]
             \\\ 2=Yuri
             \\\ 3=Neutral
             \\\ 4=Special
+            \\\
+        +) [Theaters]
+            {Contains a list of theater names, only the existing 6 names are valid. If not listed then all default 6 theaters are used and displayed in order shown below}
+            \\\ e.g.
+            \\\ [Theaters]
+            \\\ 0=TEMPERATE
+            \\\ 1=SNOW
+            \\\ 2=URBAN
+            \\\ 3=NEWURBAN
+            \\\ 4=LUNAR
+            \\\ 5=DESERT
             \\\
         +) [ForceName]
             (xxx = Objecttype)
@@ -364,7 +382,7 @@ COLORREF - R,G,B each of them is in [0,255]
             \\\ 
         +) [ScriptTypeLists]
             {Contains a list of param type lists}
-            \\\ NOTICE THAT KEY BEGINS FROM 1 AND HAS TO BE INTERGER
+            \\\ NOTICE THAT KEY BEGINS FROM 1 AND HAS TO BE INTEGER
             \\\ 
             \\\ X=TypeListName
         +) [TypeListName]
@@ -429,7 +447,7 @@ COLORREF - R,G,B each of them is in [0,255]
             \\\ 17=Animation,17
             \\\ 18=Talk Bubble,18
             \\\ 19=Enter Status,19
-            \\\ 20=Interger,0
+            \\\ 20=Integer,0
             \\\ 21=Boolean,20
             \\\ 
         +) [ScriptsRA2] **

@@ -3,6 +3,7 @@
 #include <Helpers/Macro.h>
 
 #include "../../FA2sp.h"
+#include "../../Helpers/TheaterHelpers.h"
 
 DEFINE_HOOK(4C3E20, CMapData_CalculateMoneyCount, 7)
 {
@@ -50,4 +51,18 @@ DEFINE_HOOK(47AB50, CLoading_InitPics_InitOverlayTypeDatas, 7)
     }
 
     return 0;
+}
+
+
+DEFINE_HOOK(49DFB4, CMapData_LoadMap_InvalidTheater, 6)
+{
+    GET(char*, theaterName, EDI);
+
+    for (auto& str : TheaterHelpers::GetEnabledTheaterNames()) 
+    {
+        if (strcmp(str, theaterName) == 0)
+            return 0;
+    }
+
+    return 0x49EDD9;
 }

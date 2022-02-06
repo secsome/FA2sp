@@ -15,6 +15,16 @@
 #include <fstream>
 #include <format>
 
+DEFINE_HOOK(4D5505, CFinalSunDlg_SaveMap_PreviewRadioButtonDefaults, 0)
+{
+    if (CMapData::Instance->IsMultiOnly())
+        R->EBX(std::min(std::max(ExtConfigs::DefaultPreviewOptionMP, 0), 2));
+    else
+        R->EBX(std::min(std::max(ExtConfigs::DefaultPreviewOptionSP, 0), 2));
+
+    return 0x4D550E;
+}
+
 // FA2 SaveMap is almost O(N^4), who wrote that?
 DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
 {
@@ -24,7 +34,7 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         GET_STACK(CFinalSunDlg*, pThis, STACK_OFFS(0x3F4, 0x36C));
         REF_STACK(ppmfc::CString, filepath, STACK_OFFS(0x3F4, -0x4));
 
-        // GET_STACK(bool, bGeneratePreview, STACK_OFFS(0x3F8, 0x3C8));
+        GET_STACK(int, previewOption, STACK_OFFS(0x3F4, 0x1AC));
 
         pThis->MyViewFrame.StatusBar.SetWindowText("Saving...");
         pThis->MyViewFrame.StatusBar.UpdateWindow();
@@ -61,21 +71,26 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         for (auto& section : sectionsToRemove)
             pINI->DeleteSection(section);
 
-        /*if (bGeneratePreview)
+        if (previewOption == 2)
         {
-            Logger::Raw("SaveMap : Now generating a hidden preview as vanilla FA2 does.\n");
+            // No preview / hidden preview.
+            Logger::Raw("SaveMap : Generating a hidden map preview.\n");
             pINI->DeleteSection("Preview");
             pINI->DeleteSection("PreviewPack");
             pINI->WriteString("Preview", "Size", "0,0,106,61");
-            pINI->WriteString("PreviewPack", "1", "yAsAIAXQ5PDQ5PDQ6JQATAEE6PDQ4PDI4JgBTAFEAkgAJyAATAG0AydEAEABpAJIA0wBVA");
-            pINI->WriteString("PreviewPack", "2", "BIACcgAEwBtAMnRABAAaQCSANMAVQASAAnIABMAbQDJ0QAQAGkAkgDTAFUAEgAJyAATAG0");
-        }*/
-        pINI->DeleteSection("Preview");
-        pINI->DeleteSection("PreviewPack");
-        if (CMapData::Instance->IsMultiOnly())
+            pINI->WriteString("PreviewPack", "1", "BIACcgAEwBtAMnRABAAaQCSANMAVQASAAnIABMAbQDJ0QAQAGkAkgDTAFUAEgAJyAATAG0");
+            pINI->WriteString("PreviewPack", "2", "yAsAIAXQ5PDQ5PDQ6JQATAEE6PDQ4PDI4JgBTAFEAkgAJyAATAG0AydEAEABpAJIA0wBVA");
+        }
+        else if (previewOption == 0)
         {
-            Logger::Put("Generating map preview for multiplayer map now...");
+            // Generate new preview.
+            Logger::Raw("SaveMap : Generating a new map preview.\n");
             CMapData::Instance->UpdateINIFile(SaveMapFlag::UpdatePreview);
+        }
+        else
+        {
+            // Do not update preview.
+            Logger::Raw("SaveMap : Retaining current map preview.\n");
         }
 
         if (ExtConfigs::SaveMap_OnlySaveMAP) 

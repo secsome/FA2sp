@@ -35,6 +35,8 @@ int ExtConfigs::CursorSelectionBound_HeightColor;
 int ExtConfigs::Waypoint_Color;
 bool ExtConfigs::Waypoint_Background;
 int ExtConfigs::Waypoint_Background_Color;
+int ExtConfigs::Waypoint_Text_ExtraOffset_X;
+int ExtConfigs::Waypoint_Text_ExtraOffset_Y;
 bool ExtConfigs::ExtWaypoints;
 int ExtConfigs::UndoRedoLimit;
 bool ExtConfigs::UseRGBHouseColor;
@@ -47,6 +49,8 @@ bool ExtConfigs::VerticalLayout;
 bool ExtConfigs::FastResize;
 int ExtConfigs::RecentFileLimit;
 int ExtConfigs::MultiSelectionColor;
+int ExtConfigs::DefaultPreviewOptionMP;
+int ExtConfigs::DefaultPreviewOptionSP;
 
 MultimapHelper Variables::Rules = { &CINI::Rules(), &CINI::CurrentDocument() };
 
@@ -80,6 +84,9 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::Waypoint_Background = CINI::FAData->GetBool("ExtConfigs", "Waypoint.Background");
 	ExtConfigs::Waypoint_Background_Color = CINI::FAData->GetColor("ExtConfigs", "Waypoint.Background.Color", 0xFFFFFF);
 
+	ExtConfigs::Waypoint_Text_ExtraOffset_X = CINI::FAData->GetInteger("ExtConfigs", "Waypoint.Text.ExtraOffset.X", 0);
+	ExtConfigs::Waypoint_Text_ExtraOffset_Y = CINI::FAData->GetInteger("ExtConfigs", "Waypoint.Text.ExtraOffset.Y", 0);
+
 	ExtConfigs::ExtWaypoints = CINI::FAData->GetBool("ExtConfigs", "ExtWaypoints");
 
 	ExtConfigs::UndoRedoLimit = CINI::FAData->GetInteger("ExtConfigs", "UndoRedoLimit", 16);
@@ -107,6 +114,9 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::RecentFileLimit = std::clamp(CINI::FAData->GetInteger("ExtConfigs", "RecentFileLimit"), 4, 9);
 
 	ExtConfigs::MultiSelectionColor = CINI::FAData->GetColor("ExtConfigs", "MultiSelectionColor", 0x00FF00);
+
+	ExtConfigs::DefaultPreviewOptionMP = CINI::FAData->GetInteger("ExtConfigs", "DefaultPreviewOptionMP", 0);
+	ExtConfigs::DefaultPreviewOptionSP = CINI::FAData->GetInteger("ExtConfigs", "DefaultPreviewOptionSP", 1);
 }
 
 // DllMain
