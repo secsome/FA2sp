@@ -11,17 +11,20 @@
 #include "../FA2sp.h"
 #include "../FA2sp.Constants.h"
 
+#include <algorithm>
 #include <map>
 #include <fstream>
 #include <format>
 
-DEFINE_HOOK(4D5505, CFinalSunDlg_SaveMap_PreviewRadioButtonDefaults, 0)
+DEFINE_HOOK(4D5505, CSaveOption_CTOR_DefaultValue, 0)
 {
-    if (CMapData::Instance->IsMultiOnly())
-        R->EBX(std::min(std::max(ExtConfigs::DefaultPreviewOptionMP, 0), 2));
-    else
-        R->EBX(std::min(std::max(ExtConfigs::DefaultPreviewOptionSP, 0), 2));
+    int nValue = CMapData::Instance->IsMultiOnly() ? 
+        ExtConfigs::DefaultPreviewOptionMP : 
+        ExtConfigs::DefaultPreviewOptionSP
+        ;
 
+    R->EBX(std::clamp(nValue, 0, 2));
+    
     return 0x4D550E;
 }
 
