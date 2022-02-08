@@ -287,7 +287,7 @@ void CViewObjectsExt::Redraw_Infantry()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            QueryUIName(inf.second),
+            QueryUIName(inf.second) + "(" + inf.second + ")",
             Const_Infantry + index,
             subNodes[side]
         );
@@ -336,7 +336,7 @@ void CViewObjectsExt::Redraw_Vehicle()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            QueryUIName(veh.second),
+            QueryUIName(veh.second) + "(" + veh.second + ")",
             Const_Vehicle + index,
             subNodes[side]
         );
@@ -386,7 +386,7 @@ void CViewObjectsExt::Redraw_Aircraft()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            QueryUIName(air.second),
+            QueryUIName(air.second) + "(" + air.second + ")",
             Const_Aircraft + index,
             subNodes[side]
         );
@@ -436,7 +436,7 @@ void CViewObjectsExt::Redraw_Building()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            QueryUIName(bud.second),
+            QueryUIName(bud.second) + "(" + bud.second + ")",
             Const_Building + index,
             subNodes[side]
         );
@@ -458,31 +458,47 @@ void CViewObjectsExt::Redraw_Terrain()
     HTREEITEM& hTerrain = ExtNodes[Root_Terrain];
     if (hTerrain == NULL)   return;
 
-    auto& terrains = Variables::Rules.ParseIndicies("TerrainTypes", true);
+    std::vector<std::pair<HTREEITEM, ppmfc::CString>> nodes;
 
-    HTREEITEM hTree, hTrff, hSign, hLight, hOther;
-    
-    hTree = this->InsertTranslatedString("TreesObList", -1, hTerrain);
-    hTrff = this->InsertTranslatedString("TrafficLightsObList", -1, hTerrain);
-    hSign = this->InsertTranslatedString("SignsObList", -1, hTerrain);
-    hLight = this->InsertTranslatedString("LightPostsObList", -1, hTerrain);
-    hOther = this->InsertTranslatedString("OthObList", -1, hTerrain);
-    
-    this->InsertTranslatedString("RndTreeObList", 50999, hTree);
-
-    for (size_t i = 0, sz = terrains.size(); i < sz; ++i)
+    if (auto pSection = CINI::FAData->GetSection("ObjectBrowser.TerrainTypes"))
     {
-        FA2sp::Buffer = QueryUIName(terrains[i]);
-        FA2sp::Buffer += "(" + terrains[i] + ")";
-        if (IgnoreSet.find(terrains[i]) == IgnoreSet.end())
+        std::map<int, ppmfc::CString> collector;
+
+        for (auto& pair : pSection->GetIndices())
+            collector[pair.second] = pair.first;
+
+        for (auto& pair : collector)
         {
-            if (terrains[i].Find("TREE") >= 0)  this->InsertString(FA2sp::Buffer, Const_Terrain + i, hTree);
-            else if (terrains[i].Find("TRFF") >= 0)  this->InsertString(FA2sp::Buffer, Const_Terrain + i, hTrff);
-            else if (terrains[i].Find("SIGN") >= 0)  this->InsertString(FA2sp::Buffer, Const_Terrain + i, hSign);
-            else if (terrains[i].Find("LT") >= 0)  this->InsertString(FA2sp::Buffer, Const_Terrain + i, hLight);
-            else this->InsertString(FA2sp::Buffer, Const_Terrain + i, hOther);
+            const auto& contains = pair.second;
+            const auto translation = pSection->GetEntities().find(contains)->second;
+
+            nodes.push_back(std::make_pair(this->InsertTranslatedString(translation, -1, hTerrain), contains));
         }
     }
+    HTREEITEM hOther = this->InsertTranslatedString("OthObList", -1, hTerrain);
+
+    auto& terrains = Variables::Rules.ParseIndicies("TerrainTypes", true);
+    for (size_t i = 0, sz = terrains.size(); i < sz; ++i)
+    {
+        if (IgnoreSet.find(terrains[i]) == IgnoreSet.end())
+        {
+            FA2sp::Buffer = QueryUIName(terrains[i]);
+            FA2sp::Buffer += "(" + terrains[i] + ")";
+            bool bNotOther = false;
+            for (const auto& node : nodes)
+            {
+                if (terrains[i].Find(node.second) >= 0)
+                {
+                    this->InsertString(FA2sp::Buffer, Const_Terrain + i, node.first);
+                    bNotOther = true;
+                }
+            }
+            if (!bNotOther)
+                this->InsertString(FA2sp::Buffer, Const_Terrain + i, hOther);
+        }
+    }
+
+    this->InsertTranslatedString("RndTreeObList", 50999, hTerrain);
 }
 
 void CViewObjectsExt::Redraw_Smudge()
@@ -490,11 +506,42 @@ void CViewObjectsExt::Redraw_Smudge()
     HTREEITEM& hSmudge = ExtNodes[Root_Smudge];
     if (hSmudge == NULL)   return;
 
+    std::vector<std::pair<HTREEITEM, ppmfc::CString>> nodes;
+
+    if (auto pSection = CINI::FAData->GetSection("ObjectBrowser.SmudgeTypes"))
+    {
+        std::map<int, ppmfc::CString> collector;
+
+        for (auto& pair : pSection->GetIndices())
+            collector[pair.second] = pair.first;
+
+        for (auto& pair : collector)
+        {
+            const auto& contains = pair.second;
+            const auto translation = pSection->GetEntities().find(contains)->second;
+
+            nodes.push_back(std::make_pair(this->InsertTranslatedString(translation, -1, hSmudge), contains));
+        }
+    }
+    HTREEITEM hOther = this->InsertTranslatedString("OthObList", -1, hSmudge);
+
     auto& smudges = Variables::Rules.ParseIndicies("SmudgeTypes", true);
     for (size_t i = 0, sz = smudges.size(); i < sz; ++i)
     {
         if (IgnoreSet.find(smudges[i]) == IgnoreSet.end())
-            this->InsertString(smudges[i], Const_Smudge + i, hSmudge);
+        {
+            bool bNotOther = false;
+            for (const auto& node : nodes)
+            {
+                if (smudges[i].Find(node.second) >= 0)
+                {
+                    this->InsertString(smudges[i], Const_Smudge + i, node.first);
+                    bNotOther = true;
+                }
+            }
+            if (!bNotOther)
+                this->InsertString(smudges[i], Const_Smudge + i, hOther);
+        }
     }
 }
 

@@ -44,8 +44,7 @@ public:
     static int Waypoint_Color;
     static bool Waypoint_Background;
     static int Waypoint_Background_Color;
-    static int Waypoint_Text_ExtraOffset_X;
-    static int Waypoint_Text_ExtraOffset_Y;
+    static CPoint Waypoint_Text_ExtraOffset;
     static bool ExtWaypoints;
     static int UndoRedoLimit;
     static bool UseRGBHouseColor;
@@ -66,4 +65,5 @@ class Variables
 {
 public:
     static MultimapHelper Rules;
+    static MultimapHelper FAData;
 };

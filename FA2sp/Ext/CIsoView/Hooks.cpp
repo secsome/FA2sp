@@ -347,8 +347,8 @@ DEFINE_HOOK(474DDF, CIsoView_Draw_WaypointTexts, 5)
 				CIsoView::MapCoord2ScreenCoord(X, Y);
 				auto pCell = CMapData::Instance->TryGetCellAt(j, i);
 
-				int drawX = X - R->Stack<float>(STACK_OFFS(0xD18, 0xCB0)) + 30 + ExtConfigs::Waypoint_Text_ExtraOffset_X;
-				int drawY = Y - R->Stack<float>(STACK_OFFS(0xD18, 0xCB8)) - 15 + ExtConfigs::Waypoint_Text_ExtraOffset_Y;
+				int drawX = X - R->Stack<float>(STACK_OFFS(0xD18, 0xCB0)) + 30 + ExtConfigs::Waypoint_Text_ExtraOffset.x;
+				int drawY = Y - R->Stack<float>(STACK_OFFS(0xD18, 0xCB8)) - 15 + ExtConfigs::Waypoint_Text_ExtraOffset.y;
 
 				if (pCell->Waypoint != -1)
 				{
