@@ -5,19 +5,48 @@
 #include "../../FA2sp.h"
 #include "../../Helpers/TheaterHelpers.h"
 
+DEFINE_HOOK(424421, CFinalSunDlg_OnInitDialog_InitOreValue, 5)
+{
+    CMapDataExt::GetExtension()->InitOreValue();
+    return 0;
+}
+
 DEFINE_HOOK(4C3E20, CMapData_CalculateMoneyCount, 7)
 {
     auto pExt = CMapDataExt::GetExtension();
 
     int nCount = 0;
 
-    pExt->InitOreValue();
     for (int i = 0; i < pExt->CellDataCount; ++i)
         nCount += pExt->GetOreValueAt(pExt->CellDatas[i]);
 
     R->EAX(nCount);
 
     return 0x4C4460;
+}
+
+DEFINE_HOOK(4A1DB0, CMapData_AddTiberium, 6)
+{
+    auto pExt = CMapDataExt::GetExtension();
+
+    GET_STACK(unsigned char, nOverlay, 0x4);
+    GET_STACK(unsigned char, nOverlayData, 0x8);
+    
+    pExt->MoneyCount += CMapDataExt::GetExtension()->GetOreValue(nOverlay, nOverlayData);
+
+    return 0x4A238E;
+}
+
+DEFINE_HOOK(4A17C0, CMapData_DeleteTiberium, 6)
+{
+    auto pExt = CMapDataExt::GetExtension();
+
+    GET_STACK(unsigned char, nOverlay, 0x4);
+    GET_STACK(unsigned char, nOverlayData, 0x8);
+
+    pExt->MoneyCount -= CMapDataExt::GetExtension()->GetOreValue(nOverlay, nOverlayData);
+
+    return 0x4A1D9E;
 }
 
 DEFINE_HOOK(4BB04A, CMapData_AddTube_IgnoreUselessNegativeOne, 7)
