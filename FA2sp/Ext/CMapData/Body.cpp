@@ -12,17 +12,23 @@
 int CMapDataExt::OreValue[4] { -1,-1,-1,-1 };
 std::vector<OverlayTypeData> CMapDataExt::OverlayTypeDatas;
 
+int CMapDataExt::GetOreValue(unsigned char nOverlay, unsigned char nOverlayData)
+{
+    if (nOverlay >= 0x66 && nOverlay <= 0x79)
+        return (nOverlayData + 1) * OreValue[OreType::Riparius];
+    else if (nOverlay >= 0x1B && nOverlay <= 0x26)
+        return (nOverlayData + 1) * OreValue[OreType::Cruentus];
+    else if (nOverlay >= 0x7F && nOverlay <= 0x92)
+        return (nOverlayData + 1) * OreValue[OreType::Vinifera];
+    else if (nOverlay >= 0x93 && nOverlay <= 0xA6)
+        return (nOverlayData + 1) * OreValue[OreType::Aboreus];
+    else
+        return 0;
+}
+
 int CMapDataExt::GetOreValueAt(CellData& cell)
 {
-    if (cell.Overlay >= 0x66 && cell.Overlay <= 0x79)
-        return OreValue[OreType::Riparius];
-    if (cell.Overlay >= 0x1B && cell.Overlay <= 0x26)
-        return OreValue[OreType::Cruentus];
-    if (cell.Overlay >= 0x7F && cell.Overlay <= 0x92)
-        return OreValue[OreType::Vinifera];
-    if (cell.Overlay >= 0x93 && cell.Overlay <= 0xA6)
-        return OreValue[OreType::Aboreus];
-    return 0;
+    return GetOreValue(cell.Overlay, cell.OverlayData);
 }
 
 void CMapDataExt::InitOreValue()
