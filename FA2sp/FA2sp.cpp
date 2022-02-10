@@ -39,17 +39,16 @@ CPoint ExtConfigs::Waypoint_Text_ExtraOffset;
 bool ExtConfigs::ExtWaypoints;
 int ExtConfigs::UndoRedoLimit;
 bool ExtConfigs::UseRGBHouseColor;
-bool ExtConfigs::SaveMap;
 bool ExtConfigs::SaveMap_AutoSave;
 int ExtConfigs::SaveMap_AutoSave_Interval;
 int ExtConfigs::SaveMap_AutoSave_MaxCount;
 bool ExtConfigs::SaveMap_OnlySaveMAP;
+int ExtConfigs::SaveMap_DefaultPreviewOptionMP;
+int ExtConfigs::SaveMap_DefaultPreviewOptionSP;
 bool ExtConfigs::VerticalLayout;
 bool ExtConfigs::FastResize;
 int ExtConfigs::RecentFileLimit;
 int ExtConfigs::MultiSelectionColor;
-int ExtConfigs::DefaultPreviewOptionMP;
-int ExtConfigs::DefaultPreviewOptionSP;
 
 MultimapHelper Variables::Rules = { &CINI::Rules(), &CINI::CurrentDocument() };
 MultimapHelper Variables::FAData = { &CINI::FAData() };
@@ -92,20 +91,19 @@ void FA2sp::ExtConfigsInitialize()
 
 	ExtConfigs::UseRGBHouseColor = CINI::FAData->GetBool("ExtConfigs", "UseRGBHouseColor");
 
-	if (ExtConfigs::SaveMap = CINI::FAData->GetBool("ExtConfigs", "SaveMap"))
+	if (ExtConfigs::SaveMap_AutoSave = CINI::FAData->GetBool("ExtConfigs", "SaveMap.AutoSave"))
 	{
-		if (ExtConfigs::SaveMap_AutoSave = CINI::FAData->GetBool("ExtConfigs", "SaveMap.AutoSave"))
-		{
-			ExtConfigs::SaveMap_AutoSave_Interval = CINI::FAData->GetInteger("ExtConfigs", "SaveMap.AutoSave.Interval", 300);
-			ExtConfigs::SaveMap_AutoSave_MaxCount = CINI::FAData->GetInteger("ExtConfigs", "SaveMap.AutoSave.MaxCount", 10);
-		}
-		else
-		{
-			ExtConfigs::SaveMap_AutoSave_Interval = -1;
-		}
+		ExtConfigs::SaveMap_AutoSave_Interval = CINI::FAData->GetInteger("ExtConfigs", "SaveMap.AutoSave.Interval", 300);
+		ExtConfigs::SaveMap_AutoSave_MaxCount = CINI::FAData->GetInteger("ExtConfigs", "SaveMap.AutoSave.MaxCount", 10);
+	}
+	else
+	{
+		ExtConfigs::SaveMap_AutoSave_Interval = -1;
 	}
 	ExtConfigs::SaveMap_OnlySaveMAP = CINI::FAData->GetBool("ExtConfigs", "SaveMap.OnlySaveMAP");
-	
+	ExtConfigs::SaveMap_DefaultPreviewOptionMP = CINI::FAData->GetInteger("ExtConfigs", "SaveMap.DefaultPreviewOptionMP", 0);
+	ExtConfigs::SaveMap_DefaultPreviewOptionSP = CINI::FAData->GetInteger("ExtConfigs", "SaveMap.DefaultPreviewOptionSP", 1);
+
 	ExtConfigs::VerticalLayout = CINI::FAData->GetBool("ExtConfigs", "VerticalLayout");
 
 	ExtConfigs::FastResize = CINI::FAData->GetBool("ExtConfigs", "FastResize");
@@ -113,9 +111,6 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::RecentFileLimit = std::clamp(CINI::FAData->GetInteger("ExtConfigs", "RecentFileLimit"), 4, 9);
 
 	ExtConfigs::MultiSelectionColor = CINI::FAData->GetColor("ExtConfigs", "MultiSelectionColor", 0x00FF00);
-
-	ExtConfigs::DefaultPreviewOptionMP = CINI::FAData->GetInteger("ExtConfigs", "DefaultPreviewOptionMP", 0);
-	ExtConfigs::DefaultPreviewOptionSP = CINI::FAData->GetInteger("ExtConfigs", "DefaultPreviewOptionSP", 1);
 }
 
 // DllMain

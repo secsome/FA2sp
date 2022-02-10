@@ -11,7 +11,7 @@ Compile Using C++ Standard Now: /std:c++latest
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~////////// FINALALERT2 - SP CHANGELOG //////////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\//////////////////////////////////////\\\\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-======================= Changes (2022-01-XX RELEASE 1.4.0) ==============================================================================================
+======================= Changes (2022-02-10 RELEASE 1.4.0) ==============================================================================================
 +) Now you can create a map with size up to 255*255
 +) New ExtConfig: RecentFileLimit = INTEGER, defaults to 6, should be a integer between 4 and 9 
 *) Optimized mouse attached building drawing
@@ -20,8 +20,8 @@ Compile Using C++ Standard Now: /std:c++latest
 +) New ExtConfig : MultiSelectionColor = COLORREF, back color of selected tiles
 +) Theater order in dropdown is now customizable and theaters can be disabled
 +) New ExtConfig : Waypoint.Text.ExtraOffset = POINT, WP text offsets
-+) New ExtConfig : MultiSelectionColor = COLORREF, back color of selected tiles
-+) New ExtConfig : DefaultPreviewOptionMP = INTEGER, DefaultPreviewOptionSP = INTEGER, read the doc below
++) New ExtConfig : SaveMap.DefaultPreviewOptionMP = INTEGER, SaveMap.DefaultPreviewOptionSP = INTEGER, read the doc below
+*) ExtConfig : SaveMap tag has been removed, it will be forced to enable now
 
 ======================= Changes (2021-12-31 RELEASE 1.3.0) ==============================================================================================
 ***) The project now compiles under v143+/std:c++latest, Windows XP may not be able to use this dll
@@ -213,7 +213,7 @@ For now, I cannot ensure the stability of it, so save your maps frequently befor
 
 The multiple selection function is now available. Press Ctrl key to select tiles and press Ctrl+Shift key to deselect them. Ctrl+D can clear all selected tiles.
 Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "Single" anymore) and calucate selected area ore value.
-NOTICE THAT UNDO&REDO HASN'T BEEN SUPPORTED YET!
+NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!
 
 - BASIC TYPES
 INTEGER - [-2147483648,2147483647]
@@ -246,17 +246,16 @@ COLORREF - R,G,B each of them is in [0,255]
             +) ExtWaypoints = BOOLEAN ; Determines if FA2sp supports unlimited count of waypoints, defaults to false (Phobos required)
             +) UndoRedoLimit = INTEGER ; Determines the maximun step of undo/redo, defaults to 16
             +) UseRGBHouseColor = BOOLEAN ; Determines if House colors are recognized as RGB color instead of HSV, defaults to false 
-            +) SaveMap = BOOLEAN ; Determines if FA2 will save map using a faster method
-                +) SaveMap.AutoSave = BOOLEAN ; Determines if FA2 will save map automatically
-                    +) SaveMap.AutoSave.Interval = INTEGER ; Should be greater than or equal to 30, defaults to 300, determines how many seconds should we wait during the two auto saving
-                    +) SaveMap.AutoSave.MaxCount = INTEGER ; How many saving should FA2 keep, set to -1 will disable the auto cleanning, defaults to 10
+            +) SaveMap.AutoSave = BOOLEAN ; Determines if FA2 will save map automatically
+                +) SaveMap.AutoSave.Interval = INTEGER ; Should be greater than or equal to 30, defaults to 300, determines how many seconds should we wait during the two auto saving
+                +) SaveMap.AutoSave.MaxCount = INTEGER ; How many saving should FA2 keep, set to -1 will disable the auto cleanning, defaults to 10
             +) SaveMap.OnlySaveMAP = BOOLEAN ; Determines if FA2 will only save map with .map file extension
+            +) SaveMap.DefaultPreviewOptionMP = INTEGER ; Default radio option button for preview generation when saving multiplayer maps. 0 = Always generate new preview, 1 = Do no generate new preview, 2 = Always generate hidden preview, defaults to 0.
+            +) SaveMap.DefaultPreviewOptionSP = INTEGER ; Same as the MP one but for SP maps, defaults to 1.
             +) VerticalLayout = BOOLEAN ; Determines if FA2 will make the bottom view go to the right side
             +) FastResize = BOOLEAN ; Determines if FA2 will expanding the map more rapidly
             +) RecentFileLimit = INTEGER ; How many recent files should I keep? ranges from 4 to 9
             +) MultiSelectionColor = COLORREF ; Determines the back color of selected tiles
-            +) DefaultPreviewOptionMP = INTEGER ; Default radio option button for preview generation when saving multiplayer maps. 0 = Always generate new preview, 1 = Do no generate new preview, 2 = Always generate hidden preview, defaults to 0.
-            +) DefaultPreviewOptionSP = INTEGER ; Default radio option button for preview generation when saving singleplayer maps. 0 = Always generate new preview, 1 = Do no generate new preview, 2 = Always generate hidden preview, defaults to 1.
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
             {Contains a list of sides registered in rules}
             \\\ e.g.
