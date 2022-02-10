@@ -60,7 +60,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <ExceptionHandling>false</ExceptionHandling>
       <BufferSecurityCheck>
@@ -95,7 +95,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;WIN32;_CRT_SECURE_NO_WARNINGS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <ExceptionHandling>false</ExceptionHandling>
       <BufferSecurityCheck>
@@ -129,8 +129,11 @@
     <ClCompile Include="FA2pp\FunctionInit.cpp" />
     <ClCompile Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.cpp" />
     <ClCompile Include="FA2sp\Ext\CAITriggerTypes\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CChangeMapSize\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CCreateMap3A\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CEasterEgg\Hooks.cpp" />
+    <ClCompile Include="FA2sp\Ext\CFinalSunApp\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CFinalSunApp\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Body.ObjectBrowserControl.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Hooks.cpp" />
@@ -147,6 +150,7 @@
     <ClCompile Include="FA2sp\Ext\CMapData\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CMapData\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CMapD\Hooks.cpp" />
+    <ClCompile Include="FA2sp\Ext\CMinimap\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyAircraft\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyAircraft\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyBuilding\Body.cpp" />
@@ -176,6 +180,8 @@
     <ClCompile Include="FA2sp\MFCWindow\Hooks.cpp" />
     <ClCompile Include="FA2sp\Miscs\DrawStuff.cpp" />
     <ClCompile Include="FA2sp\Miscs\Exception.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.PreviewFix.cpp" />
+    <ClCompile Include="FA2sp\Miscs\MultiSelection.cpp" />
     <ClCompile Include="FA2sp\Miscs\TheaterInfo.cpp" />
     <ClCompile Include="FA2sp\Miscs\SaveMap.cpp" />
     <ClCompile Include="FA2sp\Miscs\Palettes.cpp" />
@@ -187,6 +193,7 @@
     <ClCompile Include="FA2sp\Ext\CTriggerFrame\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerOption\Body.cpp" />
     <ClCompile Include="FA2sp\FA2sp.cpp" />
+    <ClCompile Include="FA2sp\Source\CIsoView.cpp" />
     <ClCompile Include="FA2sp\UI\Hooks.cpp" />
     <ClCompile Include="FA2sp\Logger.cpp" />
     <ClCompile Include="FA2sp\RunTime.cpp" />
@@ -205,6 +212,7 @@
   <ItemGroup>
     <ClInclude Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.h" />
     <ClInclude Include="FA2sp\Ext\CAITriggerTypes\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CFinalSunApp\Body.h" />
     <ClInclude Include="FA2sp\Ext\CFinalSunDlg\Body.h" />
     <ClInclude Include="FA2sp\Ext\CHouses\Body.h" />
     <ClInclude Include="FA2sp\Ext\CIsoView\Body.h" />
@@ -234,10 +242,12 @@
     <ClInclude Include="FA2sp\Helpers\MultimapHelper.h" />
     <ClInclude Include="FA2sp\Helpers\Parser.h" />
     <ClInclude Include="FA2sp\Helpers\STDHelpers.h" />
+	<ClInclude Include="FA2sp\Helpers\TheaterHelpers.h" />
     <ClInclude Include="FA2sp\Helpers\Templates.hpp" />
     <ClInclude Include="FA2sp\Logger.h" />
     <ClInclude Include="FA2sp\Miscs\DrawStuff.h" />
     <ClInclude Include="FA2sp\Miscs\Exception.h" />
+    <ClInclude Include="FA2sp\Miscs\MultiSelection.h" />
     <ClInclude Include="FA2sp\Miscs\Palettes.h" />
     <ClInclude Include="FA2sp\Miscs\SaveMap.h" />
     <ClInclude Include="FA2sp\Miscs\TheaterInfo.h" />
@@ -246,6 +256,7 @@
     <ClInclude Include="FA2sp\Helpers\MutexHelper.h" />
     <ClInclude Include="FA2sp\Helpers\Translations.h" />
     <ClInclude Include="FA2sp\ExtraWindow\CTileManager\CTileManager.h" />
+    <ClInclude Include="FA2sp\Source\CIsoView.h" />
     <ClInclude Include="FA2sp\vxl_drawing_lib.h" />
   </ItemGroup>
   <ItemGroup>

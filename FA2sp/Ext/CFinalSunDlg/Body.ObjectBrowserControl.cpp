@@ -12,30 +12,30 @@
 #include <CIsoView.h>
 #include <CTileTypeClass.h>
 
-std::array<HTREEITEM, ObjectBrowserControlExt::Root_Count> ObjectBrowserControlExt::ExtNodes;
-std::set<ppmfc::CString> ObjectBrowserControlExt::IgnoreSet;
-std::set<ppmfc::CString> ObjectBrowserControlExt::ForceName;
-std::set<ppmfc::CString> ObjectBrowserControlExt::ExtSets[Set_Count];
-std::map<ppmfc::CString, int> ObjectBrowserControlExt::KnownItem;
-std::map<ppmfc::CString, int> ObjectBrowserControlExt::Owners;
+std::array<HTREEITEM, CViewObjectsExt::Root_Count> CViewObjectsExt::ExtNodes;
+std::set<ppmfc::CString> CViewObjectsExt::IgnoreSet;
+std::set<ppmfc::CString> CViewObjectsExt::ForceName;
+std::set<ppmfc::CString> CViewObjectsExt::ExtSets[Set_Count];
+std::map<ppmfc::CString, int> CViewObjectsExt::KnownItem;
+std::map<ppmfc::CString, int> CViewObjectsExt::Owners;
 
-std::unique_ptr<CPropertyBuilding> ObjectBrowserControlExt::BuildingBrushDlg;
-std::unique_ptr<CPropertyInfantry> ObjectBrowserControlExt::InfantryBrushDlg;
-std::unique_ptr<CPropertyUnit> ObjectBrowserControlExt::VehicleBrushDlg;
-std::unique_ptr<CPropertyAircraft> ObjectBrowserControlExt::AircraftBrushDlg;
-bool ObjectBrowserControlExt::BuildingBrushBools[14];
-bool ObjectBrowserControlExt::InfantryBrushBools[10];
-bool ObjectBrowserControlExt::VehicleBrushBools[11];
-bool ObjectBrowserControlExt::AircraftBrushBools[9];
-bool ObjectBrowserControlExt::InitPropertyDlgFromProperty{ false };
+std::unique_ptr<CPropertyBuilding> CViewObjectsExt::BuildingBrushDlg;
+std::unique_ptr<CPropertyInfantry> CViewObjectsExt::InfantryBrushDlg;
+std::unique_ptr<CPropertyUnit> CViewObjectsExt::VehicleBrushDlg;
+std::unique_ptr<CPropertyAircraft> CViewObjectsExt::AircraftBrushDlg;
+bool CViewObjectsExt::BuildingBrushBools[14];
+bool CViewObjectsExt::InfantryBrushBools[10];
+bool CViewObjectsExt::VehicleBrushBools[11];
+bool CViewObjectsExt::AircraftBrushBools[9];
+bool CViewObjectsExt::InitPropertyDlgFromProperty{ false };
 
-HTREEITEM ObjectBrowserControlExt::InsertString(const char* pString, DWORD dwItemData,
+HTREEITEM CViewObjectsExt::InsertString(const char* pString, DWORD dwItemData,
     HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
     return this->InsertItem(5, pString, 0, 0, 0, 0, dwItemData, hParent, hInsertAfter);
 }
 
-HTREEITEM ObjectBrowserControlExt::InsertTranslatedString(const char* pOriginString, DWORD dwItemData,
+HTREEITEM CViewObjectsExt::InsertTranslatedString(const char* pOriginString, DWORD dwItemData,
     HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
     ppmfc::CString buffer;
@@ -43,15 +43,28 @@ HTREEITEM ObjectBrowserControlExt::InsertTranslatedString(const char* pOriginStr
     return InsertString(result ? buffer : pOriginString, dwItemData, hParent, hInsertAfter);
 }
 
-ppmfc::CString ObjectBrowserControlExt::QueryUIName(const char* pRegName)
+ppmfc::CString CViewObjectsExt::QueryUIName(const char* pRegName, bool bOnlyOneLine)
 {
+    if (!bOnlyOneLine)
+    {
+        if (ForceName.find(pRegName) != ForceName.end())
+            return Variables::Rules.GetString(pRegName, "Name", pRegName);
+        else
+            return CMapData::GetUIName(pRegName);
+    }
+    
+    ppmfc::CString buffer;
+
     if (ForceName.find(pRegName) != ForceName.end())
-        return Variables::Rules.GetString(pRegName, "Name", pRegName);
+        buffer = Variables::Rules.GetString(pRegName, "Name", pRegName);
     else
-        return CMapData::GetUIName(pRegName);
+        buffer = CMapData::GetUIName(pRegName);
+
+    int idx = buffer.Find('\n');
+    return idx == -1 ? buffer : buffer.Mid(0, idx);
 }
 
-void ObjectBrowserControlExt::Redraw()
+void CViewObjectsExt::Redraw()
 {
     Redraw_Initialize();
     Redraw_MainList();
@@ -72,7 +85,7 @@ void ObjectBrowserControlExt::Redraw()
     Redraw_PropertyBrush();
 }
 
-void ObjectBrowserControlExt::Redraw_Initialize()
+void CViewObjectsExt::Redraw_Initialize()
 {
     for (auto root : ExtNodes)
         root = NULL;
@@ -134,7 +147,7 @@ void ObjectBrowserControlExt::Redraw_Initialize()
 
 }
 
-void ObjectBrowserControlExt::Redraw_MainList()
+void CViewObjectsExt::Redraw_MainList()
 {
     ExtNodes[Root_Nothing] = this->InsertTranslatedString("NothingObList", -2);
     ExtNodes[Root_Ground] = this->InsertTranslatedString("GroundObList", 13);
@@ -155,7 +168,7 @@ void ObjectBrowserControlExt::Redraw_MainList()
     ExtNodes[Root_Delete] = this->InsertTranslatedString("DelObjObList", 10);
 }
 
-void ObjectBrowserControlExt::Redraw_Ground()
+void CViewObjectsExt::Redraw_Ground()
 {
     HTREEITEM& hGround = ExtNodes[Root_Ground];
     if (hGround == NULL)    return;
@@ -195,7 +208,7 @@ void ObjectBrowserControlExt::Redraw_Ground()
     }
 }
 
-void ObjectBrowserControlExt::Redraw_Owner()
+void CViewObjectsExt::Redraw_Owner()
 {
     HTREEITEM& hOwner = ExtNodes[Root_Owner];
     if (hOwner == NULL)    return;
@@ -242,7 +255,7 @@ void ObjectBrowserControlExt::Redraw_Owner()
     }
 }
 
-void ObjectBrowserControlExt::Redraw_Infantry()
+void CViewObjectsExt::Redraw_Infantry()
 {
     HTREEITEM& hInfantry = ExtNodes[Root_Infantry];
     if (hInfantry == NULL)   return;
@@ -274,7 +287,7 @@ void ObjectBrowserControlExt::Redraw_Infantry()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            QueryUIName(inf.second),
+            QueryUIName(inf.second) + "(" + inf.second + ")",
             Const_Infantry + index,
             subNodes[side]
         );
@@ -291,7 +304,7 @@ void ObjectBrowserControlExt::Redraw_Infantry()
     }
 }
 
-void ObjectBrowserControlExt::Redraw_Vehicle()
+void CViewObjectsExt::Redraw_Vehicle()
 {
     HTREEITEM& hVehicle = ExtNodes[Root_Vehicle];
     if (hVehicle == NULL)   return;
@@ -323,7 +336,7 @@ void ObjectBrowserControlExt::Redraw_Vehicle()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            QueryUIName(veh.second),
+            QueryUIName(veh.second) + "(" + veh.second + ")",
             Const_Vehicle + index,
             subNodes[side]
         );
@@ -340,7 +353,7 @@ void ObjectBrowserControlExt::Redraw_Vehicle()
     }
 }
 
-void ObjectBrowserControlExt::Redraw_Aircraft()
+void CViewObjectsExt::Redraw_Aircraft()
 {
     HTREEITEM& hAircraft = ExtNodes[Root_Aircraft];
     if (hAircraft == NULL)   return;
@@ -373,7 +386,7 @@ void ObjectBrowserControlExt::Redraw_Aircraft()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            QueryUIName(air.second),
+            QueryUIName(air.second) + "(" + air.second + ")",
             Const_Aircraft + index,
             subNodes[side]
         );
@@ -390,7 +403,7 @@ void ObjectBrowserControlExt::Redraw_Aircraft()
     }
 }
 
-void ObjectBrowserControlExt::Redraw_Building()
+void CViewObjectsExt::Redraw_Building()
 {
     HTREEITEM& hBuilding = ExtNodes[Root_Building];
     if (hBuilding == NULL)   return;
@@ -423,7 +436,7 @@ void ObjectBrowserControlExt::Redraw_Building()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            QueryUIName(bud.second),
+            QueryUIName(bud.second) + "(" + bud.second + ")",
             Const_Building + index,
             subNodes[side]
         );
@@ -440,52 +453,99 @@ void ObjectBrowserControlExt::Redraw_Building()
     }
 }
 
-void ObjectBrowserControlExt::Redraw_Terrain()
+void CViewObjectsExt::Redraw_Terrain()
 {
     HTREEITEM& hTerrain = ExtNodes[Root_Terrain];
     if (hTerrain == NULL)   return;
 
-    auto& terrains = Variables::Rules.ParseIndicies("TerrainTypes", true);
+    std::vector<std::pair<HTREEITEM, ppmfc::CString>> nodes;
 
-    HTREEITEM hTree, hTrff, hSign, hLight, hOther;
-    
-    hTree = this->InsertTranslatedString("TreesObList", -1, hTerrain);
-    hTrff = this->InsertTranslatedString("TrafficLightsObList", -1, hTerrain);
-    hSign = this->InsertTranslatedString("SignsObList", -1, hTerrain);
-    hLight = this->InsertTranslatedString("LightPostsObList", -1, hTerrain);
-    hOther = this->InsertTranslatedString("OthObList", -1, hTerrain);
-    
-    this->InsertTranslatedString("RndTreeObList", 50999, hTree);
-
-    for (size_t i = 0, sz = terrains.size(); i < sz; ++i)
+    if (auto pSection = CINI::FAData->GetSection("ObjectBrowser.TerrainTypes"))
     {
-        FA2sp::Buffer = QueryUIName(terrains[i]);
-        FA2sp::Buffer += "(" + terrains[i] + ")";
-        if (IgnoreSet.find(terrains[i]) == IgnoreSet.end())
+        std::map<int, ppmfc::CString> collector;
+
+        for (auto& pair : pSection->GetIndices())
+            collector[pair.second] = pair.first;
+
+        for (auto& pair : collector)
         {
-            if (terrains[i].Find("TREE") >= 0)  this->InsertString(FA2sp::Buffer, Const_Terrain + i, hTree);
-            else if (terrains[i].Find("TRFF") >= 0)  this->InsertString(FA2sp::Buffer, Const_Terrain + i, hTrff);
-            else if (terrains[i].Find("SIGN") >= 0)  this->InsertString(FA2sp::Buffer, Const_Terrain + i, hSign);
-            else if (terrains[i].Find("LT") >= 0)  this->InsertString(FA2sp::Buffer, Const_Terrain + i, hLight);
-            else this->InsertString(FA2sp::Buffer, Const_Terrain + i, hOther);
+            const auto& contains = pair.second;
+            const auto translation = pSection->GetEntities().find(contains)->second;
+
+            nodes.push_back(std::make_pair(this->InsertTranslatedString(translation, -1, hTerrain), contains));
         }
     }
+    HTREEITEM hOther = this->InsertTranslatedString("OthObList", -1, hTerrain);
+
+    auto& terrains = Variables::Rules.ParseIndicies("TerrainTypes", true);
+    for (size_t i = 0, sz = terrains.size(); i < sz; ++i)
+    {
+        if (IgnoreSet.find(terrains[i]) == IgnoreSet.end())
+        {
+            FA2sp::Buffer = QueryUIName(terrains[i]);
+            FA2sp::Buffer += "(" + terrains[i] + ")";
+            bool bNotOther = false;
+            for (const auto& node : nodes)
+            {
+                if (terrains[i].Find(node.second) >= 0)
+                {
+                    this->InsertString(FA2sp::Buffer, Const_Terrain + i, node.first);
+                    bNotOther = true;
+                }
+            }
+            if (!bNotOther)
+                this->InsertString(FA2sp::Buffer, Const_Terrain + i, hOther);
+        }
+    }
+
+    this->InsertTranslatedString("RndTreeObList", 50999, hTerrain);
 }
 
-void ObjectBrowserControlExt::Redraw_Smudge()
+void CViewObjectsExt::Redraw_Smudge()
 {
     HTREEITEM& hSmudge = ExtNodes[Root_Smudge];
     if (hSmudge == NULL)   return;
+
+    std::vector<std::pair<HTREEITEM, ppmfc::CString>> nodes;
+
+    if (auto pSection = CINI::FAData->GetSection("ObjectBrowser.SmudgeTypes"))
+    {
+        std::map<int, ppmfc::CString> collector;
+
+        for (auto& pair : pSection->GetIndices())
+            collector[pair.second] = pair.first;
+
+        for (auto& pair : collector)
+        {
+            const auto& contains = pair.second;
+            const auto translation = pSection->GetEntities().find(contains)->second;
+
+            nodes.push_back(std::make_pair(this->InsertTranslatedString(translation, -1, hSmudge), contains));
+        }
+    }
+    HTREEITEM hOther = this->InsertTranslatedString("OthObList", -1, hSmudge);
 
     auto& smudges = Variables::Rules.ParseIndicies("SmudgeTypes", true);
     for (size_t i = 0, sz = smudges.size(); i < sz; ++i)
     {
         if (IgnoreSet.find(smudges[i]) == IgnoreSet.end())
-            this->InsertString(smudges[i], Const_Smudge + i, hSmudge);
+        {
+            bool bNotOther = false;
+            for (const auto& node : nodes)
+            {
+                if (smudges[i].Find(node.second) >= 0)
+                {
+                    this->InsertString(smudges[i], Const_Smudge + i, node.first);
+                    bNotOther = true;
+                }
+            }
+            if (!bNotOther)
+                this->InsertString(smudges[i], Const_Smudge + i, hOther);
+        }
     }
 }
 
-void ObjectBrowserControlExt::Redraw_Overlay()
+void CViewObjectsExt::Redraw_Overlay()
 {
     HTREEITEM& hOverlay = ExtNodes[Root_Overlay];
     if (hOverlay == NULL)   return;
@@ -542,7 +602,7 @@ void ObjectBrowserControlExt::Redraw_Overlay()
     }
 }
 
-void ObjectBrowserControlExt::Redraw_Waypoint()
+void CViewObjectsExt::Redraw_Waypoint()
 {
     HTREEITEM& hWaypoint = ExtNodes[Root_Waypoint];
     if (hWaypoint == NULL)   return;
@@ -552,7 +612,7 @@ void ObjectBrowserControlExt::Redraw_Waypoint()
     this->InsertTranslatedString("CreateSpecWaypObList", 22, hWaypoint);
 }
 
-void ObjectBrowserControlExt::Redraw_Celltag()
+void CViewObjectsExt::Redraw_Celltag()
 {
     HTREEITEM& hCellTag = ExtNodes[Root_Celltag];
     if (hCellTag == NULL)   return;
@@ -562,7 +622,7 @@ void ObjectBrowserControlExt::Redraw_Celltag()
     this->InsertTranslatedString("CelltagPropObList", 38, hCellTag);
 }
 
-void ObjectBrowserControlExt::Redraw_Basenode()
+void CViewObjectsExt::Redraw_Basenode()
 {
     HTREEITEM& hBasenode = ExtNodes[Root_Basenode];
     if (hBasenode == NULL)   return;
@@ -572,7 +632,7 @@ void ObjectBrowserControlExt::Redraw_Basenode()
     this->InsertTranslatedString("DelNodeObList", 42, hBasenode);
 }
 
-void ObjectBrowserControlExt::Redraw_Tunnel()
+void CViewObjectsExt::Redraw_Tunnel()
 {
     HTREEITEM& hTunnel = ExtNodes[Root_Tunnel];
     if (hTunnel == NULL)   return;
@@ -584,7 +644,7 @@ void ObjectBrowserControlExt::Redraw_Tunnel()
     }
 }
 
-void ObjectBrowserControlExt::Redraw_PlayerLocation()
+void CViewObjectsExt::Redraw_PlayerLocation()
 {
     HTREEITEM& hPlayerLocation = ExtNodes[Root_PlayerLocation];
     if (hPlayerLocation == NULL)   return;
@@ -601,7 +661,7 @@ void ObjectBrowserControlExt::Redraw_PlayerLocation()
     }
 }
 
-void ObjectBrowserControlExt::Redraw_PropertyBrush()
+void CViewObjectsExt::Redraw_PropertyBrush()
 {
     HTREEITEM& hPropertyBrush = ExtNodes[Root_PropertyBrush];
     if (hPropertyBrush == NULL)    return;
@@ -612,7 +672,7 @@ void ObjectBrowserControlExt::Redraw_PropertyBrush()
     this->InsertTranslatedString("PropertyBrushAircraft", Const_PropertyBrush + Set_Aircraft, hPropertyBrush);
 }
 
-bool ObjectBrowserControlExt::DoPropertyBrush_Building()
+bool CViewObjectsExt::DoPropertyBrush_Building()
 {
     if (this->BuildingBrushDlg.get() == nullptr)
         this->BuildingBrushDlg = std::make_unique<CPropertyBuilding>(CFinalSunDlg::Instance->MyViewFrame.pIsoView);
@@ -620,10 +680,10 @@ bool ObjectBrowserControlExt::DoPropertyBrush_Building()
     for (auto& v : this->BuildingBrushBools)
         v = false;
 
-    return this->BuildingBrushDlg->FA2CDialog::DoModal() == IDOK;
+    return this->BuildingBrushDlg->ppmfc::CDialog::DoModal() == IDOK;
 }
 
-bool ObjectBrowserControlExt::DoPropertyBrush_Aircraft()
+bool CViewObjectsExt::DoPropertyBrush_Aircraft()
 {
     if (this->AircraftBrushDlg.get() == nullptr)
         this->AircraftBrushDlg = std::make_unique<CPropertyAircraft>(CFinalSunDlg::Instance->MyViewFrame.pIsoView);
@@ -631,10 +691,10 @@ bool ObjectBrowserControlExt::DoPropertyBrush_Aircraft()
     for (auto& v : this->AircraftBrushBools)
         v = false;
 
-    return this->AircraftBrushDlg->FA2CDialog::DoModal() == IDOK;
+    return this->AircraftBrushDlg->ppmfc::CDialog::DoModal() == IDOK;
 }
 
-bool ObjectBrowserControlExt::DoPropertyBrush_Vehicle()
+bool CViewObjectsExt::DoPropertyBrush_Vehicle()
 {
     if (this->VehicleBrushDlg.get() == nullptr)
         this->VehicleBrushDlg = std::make_unique<CPropertyUnit>(CFinalSunDlg::Instance->MyViewFrame.pIsoView);
@@ -642,10 +702,10 @@ bool ObjectBrowserControlExt::DoPropertyBrush_Vehicle()
     for (auto& v : this->VehicleBrushBools)
         v = false;
 
-    return this->VehicleBrushDlg->FA2CDialog::DoModal() == IDOK;
+    return this->VehicleBrushDlg->ppmfc::CDialog::DoModal() == IDOK;
 }
 
-bool ObjectBrowserControlExt::DoPropertyBrush_Infantry()
+bool CViewObjectsExt::DoPropertyBrush_Infantry()
 {
     if (this->InfantryBrushDlg.get() == nullptr)
         this->InfantryBrushDlg = std::make_unique<CPropertyInfantry>(CFinalSunDlg::Instance->MyViewFrame.pIsoView);
@@ -653,20 +713,20 @@ bool ObjectBrowserControlExt::DoPropertyBrush_Infantry()
     for (auto& v : this->InfantryBrushBools)
         v = false;
 
-    return this->InfantryBrushDlg->FA2CDialog::DoModal() == IDOK;
+    return this->InfantryBrushDlg->ppmfc::CDialog::DoModal() == IDOK;
 }
 
-void ObjectBrowserControlExt::ApplyPropertyBrush(int X, int Y)
+void CViewObjectsExt::ApplyPropertyBrush(int X, int Y)
 {
     int nIndex = CMapData::Instance->GetCoordIndex(X, Y);
     const auto& CellData = CMapData::Instance->CellDatas[nIndex];
 
-    if (CIsoView::CurrentType == Set_Building)
+    if (CIsoView::CurrentCommand->Type == Set_Building)
     {
         if (CellData.Structure != -1)
             ApplyPropertyBrush_Building(CellData.Structure);
     }
-    else if (CIsoView::CurrentType == Set_Infantry)
+    else if (CIsoView::CurrentCommand->Type == Set_Infantry)
     {
         if (CellData.Infantry[0] != -1)
             ApplyPropertyBrush_Infantry(CellData.Infantry[0]);
@@ -675,19 +735,19 @@ void ObjectBrowserControlExt::ApplyPropertyBrush(int X, int Y)
         if (CellData.Infantry[2] != -1)
             ApplyPropertyBrush_Infantry(CellData.Infantry[2]);
     }
-    else if (CIsoView::CurrentType == Set_Vehicle)
+    else if (CIsoView::CurrentCommand->Type == Set_Vehicle)
     {
         if (CellData.Unit != -1)
             ApplyPropertyBrush_Vehicle(CellData.Unit);
     }
-    else if (CIsoView::CurrentType == Set_Aircraft)
+    else if (CIsoView::CurrentCommand->Type == Set_Aircraft)
     {
         if (CellData.Aircraft != -1)
             ApplyPropertyBrush_Aircraft(CellData.Aircraft);
     }
 }
 
-void ObjectBrowserControlExt::ApplyPropertyBrush_Building(int nIndex)
+void CViewObjectsExt::ApplyPropertyBrush_Building(int nIndex)
 {
     CStructureData data;
     CMapData::Instance->QueryStructureData(nIndex, data);
@@ -717,12 +777,12 @@ void ObjectBrowserControlExt::ApplyPropertyBrush_Building(int nIndex)
     ApplyValue(1313, BuildingBrushDlg->CString_Tag, data.Tag);
 
     CMapData::Instance->DeleteStructureData(nIndex);
-    CMapData::Instance->SetStructureData(data, nullptr, nullptr, 0, "");
+    CMapData::Instance->SetStructureData(&data, nullptr, nullptr, 0, "");
 
     ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
 }
 
-void ObjectBrowserControlExt::ApplyPropertyBrush_Infantry(int nIndex)
+void CViewObjectsExt::ApplyPropertyBrush_Infantry(int nIndex)
 {
     CInfantryData data;
     CMapData::Instance->QueryInfantryData(nIndex, data);
@@ -748,12 +808,12 @@ void ObjectBrowserControlExt::ApplyPropertyBrush_Infantry(int nIndex)
     ApplyValue(1309, InfantryBrushDlg->CString_Tag, data.Tag);
 
     CMapData::Instance->DeleteInfantryData(nIndex);
-    CMapData::Instance->SetInfantryData(data, nullptr, nullptr, 0, -1);
+    CMapData::Instance->SetInfantryData(&data, nullptr, nullptr, 0, -1);
 
     ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
 }
 
-void ObjectBrowserControlExt::ApplyPropertyBrush_Aircraft(int nIndex)
+void CViewObjectsExt::ApplyPropertyBrush_Aircraft(int nIndex)
 {
     CAircraftData data;
     CMapData::Instance->QueryAircraftData(nIndex, data);
@@ -778,12 +838,12 @@ void ObjectBrowserControlExt::ApplyPropertyBrush_Aircraft(int nIndex)
     ApplyValue(1308, AircraftBrushDlg->CString_Tag, data.Tag);
 
     CMapData::Instance->DeleteAircraftData(nIndex);
-    CMapData::Instance->SetAircraftData(data, nullptr, nullptr, 0, "");
+    CMapData::Instance->SetAircraftData(&data, nullptr, nullptr, 0, "");
 
     ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
 }
 
-void ObjectBrowserControlExt::ApplyPropertyBrush_Vehicle(int nIndex)
+void CViewObjectsExt::ApplyPropertyBrush_Vehicle(int nIndex)
 {
     CUnitData data;
     CMapData::Instance->QueryUnitData(nIndex, data);
@@ -810,12 +870,12 @@ void ObjectBrowserControlExt::ApplyPropertyBrush_Vehicle(int nIndex)
     ApplyValue(1310, VehicleBrushDlg->CString_Tag, data.Tag);
 
     CMapData::Instance->DeleteUnitData(nIndex);
-    CMapData::Instance->SetUnitData(data, nullptr, nullptr, 0, "");
+    CMapData::Instance->SetUnitData(&data, nullptr, nullptr, 0, "");
 
     ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
 }
 
-int ObjectBrowserControlExt::GuessType(const char* pRegName)
+int CViewObjectsExt::GuessType(const char* pRegName)
 {
     if (ExtSets[Set_Building].find(pRegName) != ExtSets[Set_Building].end())
         return Set_Building;
@@ -828,7 +888,7 @@ int ObjectBrowserControlExt::GuessType(const char* pRegName)
     return -1;
 }
 
-int ObjectBrowserControlExt::GuessSide(const char* pRegName, int nType)
+int CViewObjectsExt::GuessSide(const char* pRegName, int nType)
 {
     auto& knownIterator = KnownItem.find(pRegName);
     if (knownIterator != KnownItem.end())
@@ -857,7 +917,7 @@ int ObjectBrowserControlExt::GuessSide(const char* pRegName, int nType)
     return result;
 }
 
-int ObjectBrowserControlExt::GuessBuildingSide(const char* pRegName)
+int CViewObjectsExt::GuessBuildingSide(const char* pRegName)
 {
     auto& rules = CINI::Rules();
 
@@ -879,7 +939,7 @@ int ObjectBrowserControlExt::GuessBuildingSide(const char* pRegName)
     return GuessGenericSide(pRegName, Set_Building);
 }
 
-int ObjectBrowserControlExt::GuessGenericSide(const char* pRegName, int nType)
+int CViewObjectsExt::GuessGenericSide(const char* pRegName, int nType)
 {
     const auto& set = ExtSets[nType];
 
@@ -919,8 +979,8 @@ int ObjectBrowserControlExt::GuessGenericSide(const char* pRegName, int nType)
     }
 }
 
-// ObjectBrowserControlExt::OnSelectChanged
-void ObjectBrowserControlExt::OnExeTerminate()
+// CViewObjectsExt::OnSelectChanged
+void CViewObjectsExt::OnExeTerminate()
 {
     IgnoreSet.clear();
     ForceName.clear();
@@ -930,7 +990,7 @@ void ObjectBrowserControlExt::OnExeTerminate()
     Owners.clear();
 }
 
-bool ObjectBrowserControlExt::UpdateEngine(int nData)
+bool CViewObjectsExt::UpdateEngine(int nData)
 {
     do
     {
@@ -941,10 +1001,10 @@ bool ObjectBrowserControlExt::UpdateEngine(int nData)
             for (i = 0; i < *CTileTypeClass::InstanceCount; ++i)
                 if ((*CTileTypeClass::Instance)[i].TileSet == TheaterInfo::CurrentInfo[nMorphable].Morphable)
                 {
-                    CIsoView::CurrentParam = 0;
-                    CIsoView::CurrentHeight = 0;
-                    CIsoView::CurrentType = i;
-                    CIsoView::CurrentCommand = FACurrentCommand::TileDraw;
+                    CIsoView::CurrentCommand->Param = 0;
+                    CIsoView::CurrentCommand->Height = 0;
+                    CIsoView::CurrentCommand->Type = i;
+                    CIsoView::CurrentCommand->Command = FACurrentCommand::TileDraw;
                     CBrushSize::UpdateBrushSize(i);
                     return true;
                 }
@@ -959,65 +1019,65 @@ bool ObjectBrowserControlExt::UpdateEngine(int nData)
     {
         if (nData == Set_Building)
         {
-            ObjectBrowserControlExt::InitPropertyDlgFromProperty = true;
+            CViewObjectsExt::InitPropertyDlgFromProperty = true;
 
             if (this->DoPropertyBrush_Building())
             {
-                CIsoView::CurrentCommand = 0x17; // PropertyBrush
-                CIsoView::CurrentType = Set_Building;
+                CIsoView::CurrentCommand->Command = 0x17; // PropertyBrush
+                CIsoView::CurrentCommand->Type = Set_Building;
             }
             else
-                CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+                CIsoView::CurrentCommand->Command = FACurrentCommand::Nothing;
 
-            ObjectBrowserControlExt::InitPropertyDlgFromProperty = false;
+            CViewObjectsExt::InitPropertyDlgFromProperty = false;
 
             return true;
         }
         else if (nData == Set_Infantry)
         {
-            ObjectBrowserControlExt::InitPropertyDlgFromProperty = true;
+            CViewObjectsExt::InitPropertyDlgFromProperty = true;
 
             if (this->DoPropertyBrush_Infantry())
             {
-                CIsoView::CurrentCommand = 0x17;
-                CIsoView::CurrentType = Set_Infantry;
+                CIsoView::CurrentCommand->Command = 0x17;
+                CIsoView::CurrentCommand->Type = Set_Infantry;
             }
             else
-                CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+                CIsoView::CurrentCommand->Command = FACurrentCommand::Nothing;
 
-            ObjectBrowserControlExt::InitPropertyDlgFromProperty = false;
+            CViewObjectsExt::InitPropertyDlgFromProperty = false;
 
             return true;
         }
         else if (nData == Set_Vehicle)
         {
-            ObjectBrowserControlExt::InitPropertyDlgFromProperty = true;
+            CViewObjectsExt::InitPropertyDlgFromProperty = true;
 
             if (this->DoPropertyBrush_Vehicle())
             {
-                CIsoView::CurrentCommand = 0x17;
-                CIsoView::CurrentType = Set_Vehicle;
+                CIsoView::CurrentCommand->Command = 0x17;
+                CIsoView::CurrentCommand->Type = Set_Vehicle;
             }
             else
-                CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+                CIsoView::CurrentCommand->Command = FACurrentCommand::Nothing;
 
-            ObjectBrowserControlExt::InitPropertyDlgFromProperty = false;
+            CViewObjectsExt::InitPropertyDlgFromProperty = false;
 
             return true;
         }
         else if (nData == Set_Aircraft)
         {
-            ObjectBrowserControlExt::InitPropertyDlgFromProperty = true;
+            CViewObjectsExt::InitPropertyDlgFromProperty = true;
 
             if (this->DoPropertyBrush_Aircraft())
             {
-                CIsoView::CurrentCommand = 0x17;
-                CIsoView::CurrentType = Set_Aircraft;
+                CIsoView::CurrentCommand->Command = 0x17;
+                CIsoView::CurrentCommand->Type = Set_Aircraft;
             }
             else
-                CIsoView::CurrentCommand = FACurrentCommand::Nothing;
+                CIsoView::CurrentCommand->Command = FACurrentCommand::Nothing;
 
-            ObjectBrowserControlExt::InitPropertyDlgFromProperty = false;
+            CViewObjectsExt::InitPropertyDlgFromProperty = false;
 
             return true;
         }

@@ -11,6 +11,8 @@
 
 #include "TabPages/TriggerSort.h"
 
+#include "../../Helpers/Translations.h"
+
 HWND CTileSetBrowserFrameExt::hTabCtrl = NULL;
 
 void CTileSetBrowserFrameExt::ProgramStartupInit()
@@ -64,7 +66,7 @@ BOOL CTileSetBrowserFrameExt::PreTranslateMessageExt(MSG* pMsg)
 	}
 	
 
-	return this->FA2CFrameWnd::PreTranslateMessage(pMsg);
+	return this->ppmfc::CFrameWnd::PreTranslateMessage(pMsg);
 }
 
 BOOL CTileSetBrowserFrameExt::OnNotifyExt(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
@@ -104,12 +106,12 @@ BOOL CTileSetBrowserFrameExt::OnNotifyExt(WPARAM wParam, LPARAM lParam, LRESULT*
 	else if (lpNmhdr->hwndFrom == TriggerSort::Instance)
 		if (TriggerSort::Instance.OnNotify(reinterpret_cast<LPNMTREEVIEW>(lpNmhdr)))
 			return TRUE;
-	return this->FA2CFrameWnd::OnNotify(wParam, lParam, pResult);
+	return this->ppmfc::CFrameWnd::OnNotify(wParam, lParam, pResult);
 }
 
 BOOL CTileSetBrowserFrameExt::OnCommandExt(WPARAM wParam, LPARAM lParam)
 {
-	return FA2CFrameWnd::OnCommand(wParam, lParam);
+	return this->ppmfc::CFrameWnd::OnCommand(wParam, lParam);
 }
 
 void CTileSetBrowserFrameExt::InitTabControl()
@@ -127,14 +129,20 @@ void CTileSetBrowserFrameExt::InitTabControl()
 	
 	::SetWindowPos(this->hTabCtrl, *this, NULL, NULL, NULL, NULL, SWP_NOSIZE | SWP_NOMOVE | SWP_SHOWWINDOW);
 
-	TCITEM pitem;
-	pitem.mask = TCIF_TEXT;
+	int i = 0;
+	auto insertItem = [&](const char* lpszDefault, const char* lpszTranslate)
+	{
+		TCITEM pitem;
+		pitem.mask = TCIF_TEXT;
+		FA2sp::Buffer = lpszDefault;
+		Translations::GetTranslationItem(lpszTranslate, FA2sp::Buffer);
+		pitem.pszText = FA2sp::Buffer.m_pchData;
+		TabCtrl_InsertItem(this->hTabCtrl, i++, &pitem);
+	};
 
-	pitem.pszText = "Tile placement";
-	TabCtrl_InsertItem(this->hTabCtrl, 0, &pitem);
-	pitem.pszText = "Trigger sort";
-	TabCtrl_InsertItem(this->hTabCtrl, 1, &pitem);
-
+	insertItem("Tile placement", "TabPages.TilePlacement");
+	insertItem("Trigger sort", "TabPages.TriggerSort");
+	
 	// Create the pages
 	TriggerSort::Instance.Create(hTabCtrl);
 	TriggerSort::Instance.HideWindow();

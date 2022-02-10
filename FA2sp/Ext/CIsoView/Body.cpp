@@ -9,6 +9,8 @@
 #include <Drawing.h>
 #include <CINI.h>
 
+#include <ranges>
+
 bool CIsoViewExt::DrawStructures = true;
 bool CIsoViewExt::DrawInfantries = true;
 bool CIsoViewExt::DrawUnits = true;
@@ -26,6 +28,128 @@ bool CIsoViewExt::DrawBounds = true;
 void CIsoViewExt::ProgramStartupInit()
 {
     // RunTime::ResetMemoryContentAt(0x594518, CIsoViewExt::PreTranslateMessageExt);
+}
+
+void CIsoViewExt::AddTube(int EnterX, int EnterY, int ExitX, int ExitY)
+{
+    Logger::FormatLog("Generating tube from ({}, {}) to ({}, {})\n", EnterX, EnterY, ExitX, ExitY);
+
+    TubeData tube;
+    memset(tube.Directions, 0xFF, sizeof(tube.Directions));
+    tube.EnterX = EnterX;
+    tube.EnterY = EnterY;
+    tube.ExitX = ExitX;
+    tube.ExitY = ExitY;
+    
+    int nTubeSteps = 0;
+    MapCoord coordToMove = { tube.EnterX - tube.ExitX,tube.EnterY - tube.ExitY };
+    while (true)
+    {
+        if (coordToMove.Y < 0 && coordToMove.X < 0)
+        {
+            coordToMove += MapCoord::Facings[FACING_SOUTH];
+            tube.Directions[nTubeSteps++] = FACING_SOUTH;
+        }
+        else if (coordToMove.Y < 0 && coordToMove.X > 0)
+        {
+            coordToMove += MapCoord::Facings[FACING_EAST];
+            tube.Directions[nTubeSteps++] = FACING_EAST;
+        }
+        else if (coordToMove.Y < 0 && coordToMove.X == 0)
+        {
+            coordToMove += MapCoord::Facings[FACING_SOUTHEAST];
+            tube.Directions[nTubeSteps++] = FACING_SOUTHEAST;
+        }
+        else if (coordToMove.Y > 0 && coordToMove.X < 0)
+        {
+            coordToMove += MapCoord::Facings[FACING_WEST];
+            tube.Directions[nTubeSteps++] = FACING_WEST;
+        }
+        else if (coordToMove.Y > 0 && coordToMove.X > 0)
+        {
+            coordToMove += MapCoord::Facings[FACING_NORTH];
+            tube.Directions[nTubeSteps++] = FACING_NORTH;
+        }
+        else if (coordToMove.Y > 0 && coordToMove.X == 0)
+        {
+            coordToMove += MapCoord::Facings[FACING_NORTHWEST];
+            tube.Directions[nTubeSteps++] = FACING_NORTHWEST;
+        }
+        else if (coordToMove.Y == 0 && coordToMove.X < 0)
+        {
+            coordToMove += MapCoord::Facings[FACING_SOUTHWEST];
+            tube.Directions[nTubeSteps++] = FACING_WEST;
+        }
+        else if (coordToMove.Y == 0 && coordToMove.X > 0)
+        {
+            coordToMove += MapCoord::Facings[FACING_NORTHEAST];
+            tube.Directions[nTubeSteps++] = FACING_NORTHEAST;
+        }
+        else
+        {
+            // coordToMove.Y == 0 && coordToMove.X == 0
+            break;
+        }
+
+        if (nTubeSteps > 100)
+        {
+            ::MessageBox(NULL, "Cannot generate a too long tube!", "Error", MB_OK);
+            return;
+        }
+    }
+    if (nTubeSteps == 0)
+        return;
+    tube.EnterFacing = tube.Directions[0];
+    CMapData::Instance->AddTube(&tube);
+    
+    // Add a reversed tube
+    std::swap(tube.EnterX, tube.ExitX);
+    std::swap(tube.EnterY, tube.ExitY);
+    
+    auto GetOppositeFacing = [](int nFacing) -> char
+    {
+        switch (nFacing)
+        {
+        case FACING_NORTHEAST:
+            return FACING_SOUTHWEST;
+
+        case FACING_EAST:
+            return FACING_WEST;
+
+        case FACING_SOUTHEAST:
+            return FACING_NORTHWEST;
+
+        case FACING_SOUTH:
+            return FACING_NORTH;
+
+        case FACING_SOUTHWEST:
+            return FACING_NORTHEAST;
+
+        case FACING_WEST:
+            return FACING_EAST;
+
+        case FACING_NORTHWEST:
+            return FACING_SOUTHEAST;
+
+        case FACING_NORTH:
+            return FACING_SOUTH;
+
+        default:
+        case FACING_INVALID:
+            return FACING_INVALID;
+        }
+    };
+
+    tube.EnterFacing = GetOppositeFacing(tube.EnterFacing);
+
+    for (char* p = tube.Directions, *q = tube.Directions + nTubeSteps - 1; p <= q; ++p, --q)
+    {
+        char tmp = *p;
+        *p = GetOppositeFacing(*q);
+        *q = GetOppositeFacing(tmp);
+    }
+
+    CMapData::Instance->AddTube(&tube);
 }
 
 void CIsoViewExt::DrawLockedCellOutline(int X, int Y, int W, int H, COLORREF color, bool bUseDot, bool bUsePrimary, LPDDSURFACEDESC2 lpDesc)
@@ -268,26 +392,10 @@ void CIsoViewExt::DrawTube(CellData* pData, int X, int Y)
 
 BOOL CIsoViewExt::PreTranslateMessageExt(MSG* pMsg)
 {
-    switch (pMsg->message)
-    {
-    case WM_MOUSEWHEEL:
-        return this->OnMouseWheel(
-            GET_KEYSTATE_WPARAM(pMsg->wParam),
-            GET_WHEEL_DELTA_WPARAM(pMsg->wParam),
-            { GET_X_LPARAM(pMsg->lParam) ,GET_Y_LPARAM(pMsg->lParam) });
-    }
     return CIsoView::PreTranslateMessage(pMsg);
 }
 
 BOOL CIsoViewExt::OnMouseWheelExt(UINT Flags, short zDelta, CPoint point)
 {
-    int nRealStep = zDelta / WHEEL_DELTA;
-    if (nRealStep == 0) return FALSE;
-    
-    if (nRealStep > 0) //GoUp
-    {
-
-    }
-    
     return TRUE;
 }

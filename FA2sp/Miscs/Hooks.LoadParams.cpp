@@ -7,10 +7,10 @@
 #include "../Helpers/STDHelpers.h"
 #include "../Helpers/ControlHelpers.h"
 
-DEFINE_HOOK(43CE8D, Miscs_LoadParamToCombobox, 9)
+DEFINE_HOOK(43CE50, Miscs_LoadParamToCombobox, 7)
 {
-    GET(ppmfc::CComboBox*, pComboBox, ESI);
-    GET(int, nCode, EAX);
+    GET_STACK(ppmfc::CComboBox*, pComboBox, 0x4);
+    GET_STACK(int, nCode, 0x8);
 
     if (nCode <= 30) // 30 is our float
         return 0;
@@ -127,7 +127,7 @@ DEFINE_HOOK(43CE8D, Miscs_LoadParamToCombobox, 9)
         break;
     }
 
-    return 0x43D037;
+    return 0x43D058;
 }
 
 DEFINE_HOOK(43D037, Miscs_LoadParams_AdjustComboboxDropdownWidth, C)

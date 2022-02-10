@@ -9,6 +9,7 @@
 #include <CINI.h>
 
 #include <clocale>
+#include <algorithm>
 
 HANDLE FA2sp::hInstance;
 std::string FA2sp::STDBuffer;
@@ -34,80 +35,82 @@ int ExtConfigs::CursorSelectionBound_HeightColor;
 int ExtConfigs::Waypoint_Color;
 bool ExtConfigs::Waypoint_Background;
 int ExtConfigs::Waypoint_Background_Color;
+CPoint ExtConfigs::Waypoint_Text_ExtraOffset;
 bool ExtConfigs::ExtWaypoints;
 int ExtConfigs::UndoRedoLimit;
 bool ExtConfigs::UseRGBHouseColor;
-bool ExtConfigs::SaveMap;
 bool ExtConfigs::SaveMap_AutoSave;
 int ExtConfigs::SaveMap_AutoSave_Interval;
 int ExtConfigs::SaveMap_AutoSave_MaxCount;
 bool ExtConfigs::SaveMap_OnlySaveMAP;
+int ExtConfigs::SaveMap_DefaultPreviewOptionMP;
+int ExtConfigs::SaveMap_DefaultPreviewOptionSP;
 bool ExtConfigs::VerticalLayout;
 bool ExtConfigs::FastResize;
+int ExtConfigs::RecentFileLimit;
+int ExtConfigs::MultiSelectionColor;
 
 MultimapHelper Variables::Rules = { &CINI::Rules(), &CINI::CurrentDocument() };
-
-DEFINE_HOOK(41FC8B, FAData_Config_Init, 5)
-{
-	FA2sp::ExtConfigsInitialize();
-	return 0;
-}
+MultimapHelper Variables::FAData = { &CINI::FAData() };
 
 void FA2sp::ExtConfigsInitialize()
-{
-	auto& fadata = CINI::FAData();
+{	
+	ExtConfigs::BrowserRedraw = CINI::FAData->GetBool("ExtConfigs", "BrowserRedraw");
+	ExtConfigs::BrowserRedraw_GuessMode = CINI::FAData->GetInteger("ExtConfigs", "BrowserRedraw.GuessMode", 0);
+	ExtConfigs::BrowserRedraw_CleanUp = CINI::FAData->GetBool("ExtConfigs", "BrowserRedraw.CleanUp");
+	ExtConfigs::BrowserRedraw_SafeHouses = CINI::FAData->GetBool("ExtConfigs", "BrowserRedraw.SafeHouses");
 	
-	ExtConfigs::BrowserRedraw = fadata.GetBool("ExtConfigs", "BrowserRedraw");
-	ExtConfigs::BrowserRedraw_GuessMode = fadata.GetInteger("ExtConfigs", "BrowserRedraw.GuessMode", 0);
-	ExtConfigs::BrowserRedraw_CleanUp = fadata.GetBool("ExtConfigs", "BrowserRedraw.CleanUp");
-	ExtConfigs::BrowserRedraw_SafeHouses = fadata.GetBool("ExtConfigs", "BrowserRedraw.SafeHouses");
-	
-	ExtConfigs::AllowIncludes = fadata.GetBool("ExtConfigs", "AllowIncludes");
-	ExtConfigs::AllowPlusEqual = fadata.GetBool("ExtConfigs", "AllowPlusEqual");
+	ExtConfigs::AllowIncludes = CINI::FAData->GetBool("ExtConfigs", "AllowIncludes");
+	ExtConfigs::AllowPlusEqual = CINI::FAData->GetBool("ExtConfigs", "AllowPlusEqual");
 
-	ExtConfigs::TutorialTexts_Hide = fadata.GetBool("ExtConfigs", "TutorialTexts.Hide");
-	ExtConfigs::TutorialTexts_Fix = fadata.GetBool("ExtConfigs", "TutorialTexts.Fix");
+	ExtConfigs::TutorialTexts_Hide = CINI::FAData->GetBool("ExtConfigs", "TutorialTexts.Hide");
+	ExtConfigs::TutorialTexts_Fix = CINI::FAData->GetBool("ExtConfigs", "TutorialTexts.Fix");
 	
-	ExtConfigs::SortByTriggerName = fadata.GetBool("ExtConfigs", "SortByTriggerName");
+	ExtConfigs::SortByTriggerName = CINI::FAData->GetBool("ExtConfigs", "SortByTriggerName");
 	
-	ExtConfigs::AdjustDropdownWidth = fadata.GetBool("ExtConfigs", "AdjustDropdownWidth");
-	ExtConfigs::AdjustDropdownWidth_Factor = fadata.GetInteger("ExtConfigs", "AdjustDropdownWidth.Factor", 8);
-	ExtConfigs::AdjustDropdownWidth_Max = fadata.GetInteger("ExtConfigs", "AdjustDropdownWidth.Max", 360);
+	ExtConfigs::AdjustDropdownWidth = CINI::FAData->GetBool("ExtConfigs", "AdjustDropdownWidth");
+	ExtConfigs::AdjustDropdownWidth_Factor = CINI::FAData->GetInteger("ExtConfigs", "AdjustDropdownWidth.Factor", 8);
+	ExtConfigs::AdjustDropdownWidth_Max = CINI::FAData->GetInteger("ExtConfigs", "AdjustDropdownWidth.Max", 360);
 
 	ExtConfigs::CopySelectionBound_Color = 
-		fadata.GetColor("ExtConfigs", "CopySelectionBound.Color", 0x0000FF);
+		CINI::FAData->GetColor("ExtConfigs", "CopySelectionBound.Color", 0x0000FF);
 	ExtConfigs::CursorSelectionBound_Color =
-		fadata.GetColor("ExtConfigs", "CursorSelectionBound.Color", 0x3CA03C);
+		CINI::FAData->GetColor("ExtConfigs", "CursorSelectionBound.Color", 0x3CA03C);
 	ExtConfigs::CursorSelectionBound_HeightColor = 
-		fadata.GetColor("ExtConfigs", "CursorSelectionBound.HeightIndicatorColor", 0x3C3C3C);
+		CINI::FAData->GetColor("ExtConfigs", "CursorSelectionBound.HeightIndicatorColor", 0x3C3C3C);
 
-	ExtConfigs::Waypoint_Color = fadata.GetColor("ExtConfigs", "Waypoint.Color", 0xFF0000);
-	ExtConfigs::Waypoint_Background = fadata.GetBool("ExtConfigs", "Waypoint.Background");
-	ExtConfigs::Waypoint_Background_Color = fadata.GetColor("ExtConfigs", "Waypoint.Background.Color", 0xFFFFFF);
+	ExtConfigs::Waypoint_Color = CINI::FAData->GetColor("ExtConfigs", "Waypoint.Color", 0xFF0000);
+	ExtConfigs::Waypoint_Background = CINI::FAData->GetBool("ExtConfigs", "Waypoint.Background");
+	ExtConfigs::Waypoint_Background_Color = CINI::FAData->GetColor("ExtConfigs", "Waypoint.Background.Color", 0xFFFFFF);
 
-	ExtConfigs::ExtWaypoints = fadata.GetBool("ExtConfigs", "ExtWaypoints");
+	ExtConfigs::Waypoint_Text_ExtraOffset = CINI::FAData->GetPoint("ExtConfigs", "Waypoint.Text.ExtraOffset");
 
-	ExtConfigs::UndoRedoLimit = fadata.GetInteger("ExtConfigs", "UndoRedoLimit", 16);
+	ExtConfigs::ExtWaypoints = CINI::FAData->GetBool("ExtConfigs", "ExtWaypoints");
 
-	ExtConfigs::UseRGBHouseColor = fadata.GetBool("ExtConfigs", "UseRGBHouseColor");
+	ExtConfigs::UndoRedoLimit = CINI::FAData->GetInteger("ExtConfigs", "UndoRedoLimit", 16);
 
-	if (ExtConfigs::SaveMap = fadata.GetBool("ExtConfigs", "SaveMap"))
+	ExtConfigs::UseRGBHouseColor = CINI::FAData->GetBool("ExtConfigs", "UseRGBHouseColor");
+
+	if (ExtConfigs::SaveMap_AutoSave = CINI::FAData->GetBool("ExtConfigs", "SaveMap.AutoSave"))
 	{
-		if (ExtConfigs::SaveMap_AutoSave = fadata.GetBool("ExtConfigs", "SaveMap.AutoSave"))
-		{
-			ExtConfigs::SaveMap_AutoSave_Interval = fadata.GetInteger("ExtConfigs", "SaveMap.AutoSave.Interval", 300);
-			ExtConfigs::SaveMap_AutoSave_MaxCount = fadata.GetInteger("ExtConfigs", "SaveMap.AutoSave.MaxCount", 10);
-		}
-		else
-		{
-			ExtConfigs::SaveMap_AutoSave_Interval = -1;
-		}
+		ExtConfigs::SaveMap_AutoSave_Interval = CINI::FAData->GetInteger("ExtConfigs", "SaveMap.AutoSave.Interval", 300);
+		ExtConfigs::SaveMap_AutoSave_MaxCount = CINI::FAData->GetInteger("ExtConfigs", "SaveMap.AutoSave.MaxCount", 10);
 	}
-	ExtConfigs::SaveMap_OnlySaveMAP = fadata.GetBool("ExtConfigs", "SaveMap.OnlySaveMAP");
-	
-	ExtConfigs::VerticalLayout = fadata.GetBool("ExtConfigs", "VerticalLayout");
+	else
+	{
+		ExtConfigs::SaveMap_AutoSave_Interval = -1;
+	}
+	ExtConfigs::SaveMap_OnlySaveMAP = CINI::FAData->GetBool("ExtConfigs", "SaveMap.OnlySaveMAP");
+	ExtConfigs::SaveMap_DefaultPreviewOptionMP = CINI::FAData->GetInteger("ExtConfigs", "SaveMap.DefaultPreviewOptionMP", 0);
+	ExtConfigs::SaveMap_DefaultPreviewOptionSP = CINI::FAData->GetInteger("ExtConfigs", "SaveMap.DefaultPreviewOptionSP", 1);
 
-	ExtConfigs::FastResize = fadata.GetBool("ExtConfigs", "FastResize");
+	ExtConfigs::VerticalLayout = CINI::FAData->GetBool("ExtConfigs", "VerticalLayout");
+
+	ExtConfigs::FastResize = CINI::FAData->GetBool("ExtConfigs", "FastResize");
+
+	ExtConfigs::RecentFileLimit = std::clamp(CINI::FAData->GetInteger("ExtConfigs", "RecentFileLimit"), 4, 9);
+
+	ExtConfigs::MultiSelectionColor = CINI::FAData->GetColor("ExtConfigs", "MultiSelectionColor", 0x00FF00);
 }
 
 // DllMain
@@ -124,30 +127,35 @@ BOOL APIENTRY DllMain(HANDLE hInstance, DWORD dwReason, LPVOID v)
 }
 
 // Export Functions
-SYRINGE_HANDSHAKE(pInfo)
-{
-	if (pInfo) {
-		if (pInfo->Message)
-		{
-			sprintf_s(pInfo->Message, pInfo->cchMessage, APPLY_INFO);
-			return S_OK;
-		}
-		else
-		{
-			sprintf_s(pInfo->Message, pInfo->cchMessage, "Requires Official Final Alert 2 version 1.02.");
-			return S_FALSE;
-		}
-	}
-	return E_POINTER;
-}
+//SYRINGE_HANDSHAKE(pInfo)
+//{
+//	if (pInfo) {
+//		if (pInfo->)
+//		{
+//			sprintf_s(pInfo->Message, pInfo->cchMessage, APPLY_INFO);
+//			return S_OK;
+//		}
+//		else
+//		{
+//			sprintf_s(pInfo->Message, pInfo->cchMessage, "Requires Official Final Alert 2 version 1.02.");
+//			return S_FALSE;
+//		}
+//	}
+//	return E_POINTER;
+//}
 
 #define ENABLE_VISUAL_STYLE
 static ULONG_PTR ulCookie;
 
+bool DetachFromDebugger();
 DEFINE_HOOK(537129, ExeRun, 9)
 {
-#ifdef _DEBUG
-	// system("taskkill /IM Syringe.exe /F");
+	if (DetachFromDebugger())
+		Logger::Info("Syringe detached!\n");
+	else
+		Logger::Warn("Failed to detach Syringe!\n");
+
+#ifndef NDEBUG
 	MessageBox(NULL, APPLY_INFO, PRODUCT_NAME, MB_OK);
 	
 #endif
@@ -197,7 +205,7 @@ DEFINE_HOOK(537129, ExeRun, 9)
 	if (hActCtx != INVALID_HANDLE_VALUE)
 	{
 		if (::ActivateActCtx(hActCtx, &ulCookie))
-			Logger::Debug("Visual Style Enabled!\n");
+			Logger::Put("Visual Style Enabled!\n");
 	}
 #endif
 
@@ -227,7 +235,7 @@ DEFINE_HOOK(537208, ExeTerminate, 9)
 	DrawStuff::deinit();
 
 	// Destruct static ppmfc stuffs here
-	ObjectBrowserControlExt::OnExeTerminate();
+	CViewObjectsExt::OnExeTerminate();
 
 #ifdef ENABLE_VISUAL_STYLE
 	::DeactivateActCtx(NULL, ulCookie);
@@ -245,3 +253,71 @@ DEFINE_HOOK(537208, ExeTerminate, 9)
 //	return 0x432743;
 //}
 #endif
+
+#include <tlhelp32.h>
+// https://stackoverflow.com/questions/70458828
+bool DetachFromDebugger()
+{
+	using NTSTATUS = LONG;
+
+	auto GetDebuggerProcessId = [](DWORD dwSelfProcessId) -> DWORD
+	{
+		DWORD dwParentProcessId = -1;
+		HANDLE hSnapshot = CreateToolhelp32Snapshot(2, 0);
+		PROCESSENTRY32 pe32;
+		pe32.dwSize = sizeof(PROCESSENTRY32);
+		Process32First(hSnapshot, &pe32);
+		do
+		{
+			if (pe32.th32ProcessID == dwSelfProcessId)
+			{
+				dwParentProcessId = pe32.th32ParentProcessID;
+				break;
+			}
+		} while (Process32Next(hSnapshot, &pe32));
+		CloseHandle(hSnapshot);
+		return dwParentProcessId;
+	};
+
+	HMODULE hModule = LoadLibrary("ntdll.dll");
+	if (hModule != NULL)
+	{
+		auto const NtRemoveProcessDebug =
+			(NTSTATUS(__stdcall*)(HANDLE, HANDLE))GetProcAddress(hModule, "NtRemoveProcessDebug");
+		auto const NtSetInformationDebugObject =
+			(NTSTATUS(__stdcall*)(HANDLE, ULONG, PVOID, ULONG, PULONG))GetProcAddress(hModule, "NtSetInformationDebugObject");
+		auto const NtQueryInformationProcess =
+			(NTSTATUS(__stdcall*)(HANDLE, ULONG, PVOID, ULONG, PULONG))GetProcAddress(hModule, "NtQueryInformationProcess");
+		auto const NtClose =
+			(NTSTATUS(__stdcall*)(HANDLE))GetProcAddress(hModule, "NtClose");
+
+		HANDLE hDebug;
+		HANDLE hCurrentProcess = GetCurrentProcess();
+		NTSTATUS status = NtQueryInformationProcess(hCurrentProcess, 30, &hDebug, sizeof(HANDLE), 0);
+		if (0 <= status)
+		{
+			ULONG killProcessOnExit = FALSE;
+			status = NtSetInformationDebugObject(
+				hDebug,
+				1,
+				&killProcessOnExit,
+				sizeof(ULONG),
+				NULL
+			);
+			if (0 <= status)
+			{
+				const auto pid = GetDebuggerProcessId(GetProcessId(hCurrentProcess));
+				status = NtRemoveProcessDebug(hCurrentProcess, hDebug);
+				if (0 <= status)
+				{
+					WinExec(std::format("taskkill /F /PID {}", pid).c_str(), SW_HIDE);
+					return true;
+				}
+			}
+			NtClose(hDebug);
+		}
+		FreeLibrary(hModule);
+	}
+
+	return false;
+}

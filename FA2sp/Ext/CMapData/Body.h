@@ -2,6 +2,13 @@
 
 #include <CMapData.h>
 
+#include <vector>
+
+struct OverlayTypeData
+{
+    bool Rock;
+};
+
 class CMapDataExt : public CMapData
 {
 public:
@@ -11,4 +18,11 @@ public:
     }
 
     bool ResizeMapExt(MapRect* const pRect);
+    
+    enum OreType { Riparius = 0, Cruentus, Vinifera, Aboreus };
+    int GetOreValueAt(CellData& cell);
+    void InitOreValue();
+
+    static std::vector<OverlayTypeData> OverlayTypeDatas;
+    static int OreValue[4];
 };

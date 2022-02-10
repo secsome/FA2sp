@@ -17,29 +17,32 @@ unsigned char CLoadingExt::VXL_Data[0x10000] = {0};
 
 ppmfc::CString CLoadingExt::GetImageName(ppmfc::CString ID, int nFacing)
 {
-	ppmfc::CString ImageID;
-	ppmfc::CString DictName;
-	CLoadingExt* pLoading = (CLoadingExt*)CLoading::Instance();
-	switch (pLoading->GetItemType(ID))
-	{
-	case ObjectType::Infantry:
-	{
-		ImageID = pLoading->GetInfantryFileID(ID);
-		DictName.Format("%s%d", ImageID, nFacing);
-		return DictName;
-	}
-	case ObjectType::Aircraft:
-	case ObjectType::Vehicle:
-		ImageID = pLoading->GetVehicleOrAircraftFileID(ID);
-		DictName.Format("%s%d", ImageID, nFacing);
-		return DictName;
-	case ObjectType::Building:
-	 	ImageID = pLoading->GetBuildingFileID(ID);
-	 	DictName.Format("%s%d", ImageID, nFacing);
-	 	return DictName;
-	default: // NEVER GET TO HERE PLS
-		return "NMSL";
-	}
+	ID.Format("%s%d", ID, nFacing);
+	return ID;
+
+	//ppmfc::CString ImageID;
+	//ppmfc::CString DictName;
+	//CLoadingExt* pLoading = (CLoadingExt*)CLoading::Instance();
+	//switch (pLoading->GetItemType(ID))
+	//{
+	//case ObjectType::Infantry:
+	//{
+	//	ImageID = pLoading->GetInfantryFileID(ID);
+	//	DictName.Format("%s%d", ImageID, nFacing);
+	//	return DictName;
+	//}
+	//case ObjectType::Aircraft:
+	//case ObjectType::Vehicle:
+	//	ImageID = pLoading->GetVehicleOrAircraftFileID(ID);
+	//	DictName.Format("%s%d", ImageID, nFacing);
+	//	return DictName;
+	//case ObjectType::Building:
+	// 	ImageID = pLoading->GetBuildingFileID(ID);
+	// 	DictName.Format("%s%d", ImageID, nFacing);
+	// 	return DictName;
+	//default: // NEVER GET TO HERE PLS
+	//	return "NMSL";
+	//}
 
 }
 
@@ -207,7 +210,7 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 			if (!CMixFile::HasFile(file, nMix))
 			{
 				file = name + ".SHP";
-				int nMix = SearchFile(file);
+				nMix = SearchFile(file);
 				if (!CMixFile::HasFile(file, nMix))
 					return false;
 			}
@@ -355,7 +358,8 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 					int width1, height1;
 
 					UnionSHP_GetAndClear(pImage, &width1, &height1);
-					DictName.Format("%s%d", ImageID, i);
+					DictName.Format("%s%d", ID, i);
+					//DictName.Format("%s%d", ImageID, i);
 					SetImageData(pImage, DictName, width1, height1, PalettesManager::LoadPalette(PaletteName));
 				}
 
@@ -380,7 +384,8 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 					int width1, height1;
 					UnionSHP_GetAndClear(pImage, &width1, &height1);
 
-					DictName.Format("%s%d", ImageID, i);
+					DictName.Format("%s%d", ID, i);
+					//DictName.Format("%s%d", ImageID, i);
 					SetImageData(pImage, DictName, width1, height1, PalettesManager::LoadPalette(PaletteName));
 				}
 				GameDelete(pBuffer);
@@ -388,7 +393,8 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 		}
 		else // No turret
 		{
-			DictName.Format("%s%d", ImageID, 0);
+		DictName.Format("%s%d", ID, 0);
+			//DictName.Format("%s%d", ImageID, 0);
 			SetImageData(pBuffer, DictName, width, height, PalettesManager::LoadPalette(PaletteName));
 		}
 	}
@@ -419,7 +425,8 @@ void CLoadingExt::LoadInfantry(ppmfc::CString ID)
 		{
 			CShpFile::LoadFrame(framesToRead[i], 1, &FramesBuffers);
 			ppmfc::CString DictName;
-			DictName.Format("%s%d", ImageID, i);
+			DictName.Format("%s%d", ID, i);
+			// DictName.Format("%s%d", ImageID, i);
 			ppmfc::CString PaletteName = CINI::Art->GetString(ArtID, "Palette", "unit");
 			GetFullPaletteName(PaletteName);
 			SetImageData(FramesBuffers, DictName, header.Width, header.Height, PalettesManager::LoadPalette(PaletteName));
@@ -441,7 +448,8 @@ void CLoadingExt::LoadTerrainOrSmudge(ppmfc::CString ID)
 		CShpFile::GetSHPHeader(&header);
 		CShpFile::LoadFrame(0, 1, &FramesBuffers[0]);
 		ppmfc::CString DictName;
-		DictName.Format("%s%d", ImageID, 0);
+		DictName.Format("%s%d", ID, 0);
+		// DictName.Format("%s%d", ImageID, 0);
 		ppmfc::CString PaletteName = CINI::Art->GetString(ArtID, "Palette", "iso");
 		GetFullPaletteName(PaletteName);
 		SetImageData(FramesBuffers[0], DictName, header.Width, header.Height, PalettesManager::LoadPalette(PaletteName));
@@ -519,7 +527,8 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 			for (int i = 0; i < 8; ++i)
 			{
 				ppmfc::CString DictName;
-				DictName.Format("%s%d", ImageID, i);
+				DictName.Format("%s%d", ID, i);
+				//DictName.Format("%s%d", ImageID, i);
 
 				unsigned char* outBuffer;
 				int outW = 0x100, outH = 0x100;
@@ -561,7 +570,8 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 			for (int i = 0; i < 8; ++i)
 			{
 				ppmfc::CString DictName;
-				DictName.Format("%s%d", ImageID, i);
+				DictName.Format("%s%d", ID, i);
+				// DictName.Format("%s%d", ImageID, i);
 
 				unsigned char* outBuffer;
 				int outW = 0x100, outH = 0x100;
@@ -610,7 +620,8 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 			{
 				CShpFile::LoadFrame(framesToRead[i], 1, &FramesBuffers[0]);
 				ppmfc::CString DictName;
-				DictName.Format("%s%d", ImageID, i);
+				DictName.Format("%s%d", ID, i);
+				// DictName.Format("%s%d", ImageID, i);
 				ppmfc::CString PaletteName = CINI::Art->GetString(ArtID, "Palette", "unit");
 				GetFullPaletteName(PaletteName);
 

@@ -44,20 +44,25 @@ public:
     static int Waypoint_Color;
     static bool Waypoint_Background;
     static int Waypoint_Background_Color;
+    static CPoint Waypoint_Text_ExtraOffset;
     static bool ExtWaypoints;
     static int UndoRedoLimit;
     static bool UseRGBHouseColor;
-    static bool SaveMap;
     static bool SaveMap_AutoSave;
     static int SaveMap_AutoSave_Interval;
     static int SaveMap_AutoSave_MaxCount;
     static bool SaveMap_OnlySaveMAP;
+    static int SaveMap_DefaultPreviewOptionMP;
+    static int SaveMap_DefaultPreviewOptionSP;
     static bool VerticalLayout;
     static bool FastResize;
+    static int RecentFileLimit;
+    static int MultiSelectionColor;
 };
 
 class Variables
 {
 public:
     static MultimapHelper Rules;
+    static MultimapHelper FAData;
 };

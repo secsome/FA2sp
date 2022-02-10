@@ -8,6 +8,7 @@
 #include <CObjectDatas.h>
 #include <CTileTypeClass.h>
 #include <CIsoView.h>
+#include <CInputMessageBox.h>
 
 #include <MFC/ppmfc_cstring.h>
 
@@ -19,33 +20,20 @@ DEFINE_HOOK(42700A, CFinalSunDlg_SaveMap_Extension, 9)
 	return 0x42708D;
 }
 
-// Make FA2 use path stored in FinalAlert.ini instead of Reg
-DEFINE_HOOK(41FD8A, CFinalSunDlg_GetFilePath_1, 6)
-{
-	return 0x41FD90;
-}
-
-DEFINE_HOOK(41FDDB, CFinalSunDlg_GetFilePath_2, 6)
-{
-	return 0x41FDE9;
-}
-
 // Extend Undo/Redo limit
-DEFINE_HOOK(4BBAB8, CMapData_sub_4BB990, 6)
+DEFINE_HOOK(4BBAB8, CMapData_SaveUndoRedoData_SizeLimit, 6)
 {
-	GET(CMapData*, pThis, EBX);
+	++CMapData::Instance->UndoRedoCurrentDataIndex;
+	++CMapData::Instance->UndoRedoDataCount;
 
-	++pThis->UndoRedoCurrentDataIndex;
-	++pThis->UndoRedoDataCount;
+	R->ESI(CMapData::Instance->UndoRedoDataCount);
 
-	R->ESI(pThis->UndoRedoDataCount);
-
-	if (pThis->UndoRedoDataCount <= ExtConfigs::UndoRedoLimit)
+	if (CMapData::Instance->UndoRedoDataCount <= ExtConfigs::UndoRedoLimit)
 		return 0x4BBBB7;
 
-	R->EDX(pThis->UndoRedoData);
-	pThis->UndoRedoDataCount = ExtConfigs::UndoRedoLimit;
-	pThis->UndoRedoCurrentDataIndex = ExtConfigs::UndoRedoLimit - 1;
+	R->EDX(CMapData::Instance->UndoRedoData);
+	CMapData::Instance->UndoRedoDataCount = ExtConfigs::UndoRedoLimit;
+	CMapData::Instance->UndoRedoCurrentDataIndex = ExtConfigs::UndoRedoLimit - 1;
 	return 0x4BBAF7;
 }
 
@@ -120,7 +108,7 @@ DEFINE_HOOK(473E66, CIsoView_Draw_InfantrySubcell, B)
 DEFINE_HOOK(422EA4, CFinalSunApp_ProcessMessageFilter_UpdateTileSetBrowserView_UpAndDown, 8)
 {
 	CFinalSunDlg::Instance->MyViewFrame.pTileSetBrowserFrame->View.SelectTileSet(
-		(*CTileTypeClass::CurrentTileType)[CIsoView::CurrentType].TileSet,
+		(*CTileTypeClass::CurrentTileType)[CIsoView::CurrentCommand->Type].TileSet,
 		false
 	);
 
@@ -138,8 +126,21 @@ DEFINE_HOOK(422B95, CFinalSunApp_ProcessMessageFilter_UpdateTileSetBrowserView_L
 	return 0;
 }
 
-//
-//DEFINE_HOOK(4C61C5, CMapData_ResizeMap_PositionFix, 5)
+// The original implement will lead to memory leak
+DEFINE_HOOK(4564F0, CInputMessageBox_OnOK, 7)
+{
+	static ppmfc::CString ReturnBuffer;
+
+	GET(CInputMessageBox*, pThis, ECX);
+
+	pThis->GetDlgItem(1047)->GetWindowText(ReturnBuffer);
+	
+	pThis->EndDialog(ReturnBuffer.GetLength() ? (int)ReturnBuffer.m_pchData : (int)nullptr);
+
+	return 0x4565A5;
+}
+
+//DEFINE_HOOK(4C61C5, CMapData_ResizeMap_PositionFix_MoveOnField, 5)
 //{
 //	GET(CellData*, pCell, EAX);
 //	auto const pSrc = CONTAINING_RECORD(R->ECX(), CellData, Flag);
@@ -147,6 +148,14 @@ DEFINE_HOOK(422B95, CFinalSunApp_ProcessMessageFilter_UpdateTileSetBrowserView_L
 //	pCell->Smudge = pSrc->Smudge;
 //	pCell->SmudgeType = pSrc->SmudgeType;
 //	pCell->BaseNode = pSrc->BaseNode;
+//
+//	return 0;
+//}
+//
+//DEFINE_HOOK(4C76C6, CMapData_ResizeMap_PositionFix_SyncToINI, 5)
+//{
+//	CMapData::Instance->UpdateMapFieldData_Smudge(true);
+//	CMapData::Instance->UpdateMapFieldData_House(true);
 //
 //	return 0;
 //}

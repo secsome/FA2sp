@@ -2,6 +2,7 @@
 
 #include "../../FA2sp.h"
 #include "../CIsoView/Body.h"
+#include "../CFinalSunApp/Body.h"
 
 #include <CLoading.h>
 #include "../../Miscs/Palettes.h"
@@ -104,7 +105,14 @@ BOOL CFinalSunDlgExt::OnCommandExt(WPARAM wParam, LPARAM lParam)
 		break;
 	}
 
-	return this->FA2CDialog::OnCommand(wParam, lParam);
+	if (wmID >= 40140 && wmID < 40149)
+	{
+		auto& file = CFinalSunAppExt::RecentFilesExt[wmID - 40140];
+		if (CLoading::IsFileExists(file.c_str()))
+			this->LoadMap(file.c_str());
+	}
+
+	return this->ppmfc::CDialog::OnCommand(wParam, lParam);
 }
 
 BOOL CFinalSunDlgExt::PreTranslateMessageExt(MSG* pMsg)
@@ -115,5 +123,5 @@ BOOL CFinalSunDlgExt::PreTranslateMessageExt(MSG* pMsg)
 		;
 		///*SetWindowTheme(*this, L"DarkMode_Explorer", NULL);*/
 	}
-	return FA2CDialog::PreTranslateMessage(pMsg);
+	return ppmfc::CDialog::PreTranslateMessage(pMsg);
 }

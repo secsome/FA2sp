@@ -21,6 +21,8 @@ public:
     void DrawWaypointFlag(int X, int Y);
     void DrawTube(CellData* pData, int X, int Y);
 
+    void AddTube(int EnterX, int EnterY, int ExitX, int ExitY);
+
     static bool DrawStructures;
     static bool DrawInfantries;
     static bool DrawUnits;

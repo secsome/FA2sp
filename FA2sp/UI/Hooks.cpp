@@ -5,16 +5,6 @@
 
 #include <FA2PP.h>
 
-// Load our own accelerators
-// Notice, our accelerator's id need to be the same as FA2's
-
-DEFINE_HOOK(41FAFD, LoadAccelerators_CFinalSunApp_InitInstance, 7)
-{
-	const HINSTANCE hInstance = static_cast<HINSTANCE>(FA2sp::hInstance);
-	R->EAX<HINSTANCE>(hInstance);
-	return 0;
-}
-
 // Replace the resources
 
 DEFINE_HOOK(56543B, FetchResource_CToolBar_LoadBitmapA, 6)

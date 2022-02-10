@@ -5,6 +5,7 @@
 #include "../../Helpers/STDHelpers.h"
 #include "../../Helpers/Translations.h"
 #include "..\CMapData\Body.h"
+#include "..\CFinalSunApp\Body.h"
 
 void CAITriggerTypesExt::ProgramStartupInit()
 {
@@ -72,12 +73,12 @@ BOOL CAITriggerTypesExt::PreTranslateMessageExt(MSG* pMsg)
 	{
 	case WM_LBUTTONUP:
 	{
-		if (pMsg->hwnd == this->GetDlgItem(1919)->GetSafeHwnd())
+		if (pMsg->hwnd == this->GetDlgItem(1919)->m_hWnd)
 			this->OnBNCloneAITriggerClicked();
 	}
 	}
 
-	return this->FA2CDialog::PreTranslateMessage(pMsg);
+	return this->ppmfc::CDialog::PreTranslateMessage(pMsg);
 }
 
 void CAITriggerTypesExt::OnBNCloneAITriggerClicked()

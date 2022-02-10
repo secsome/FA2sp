@@ -18,9 +18,6 @@ public:
 
 	//static void ProgramStartupInit();
 
-	CLoadingExt() {};
-	~CLoadingExt() {};
-
 	void LoadObjects(ppmfc::CString pRegName);
 	static ppmfc::CString GetImageName(ppmfc::CString ID, int nFacing);
 	static void ClearItemTypes();

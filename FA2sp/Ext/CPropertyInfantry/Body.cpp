@@ -14,7 +14,7 @@ if(pMsg->hwnd == this->GetDlgItem(id)->GetSafeHwnd()) \
 { \
 	bool tmp = ::SendMessage(::GetDlgItem(*this, id), BM_GETCHECK, 0, 0) == BST_CHECKED; \
 	::SendMessage(::GetDlgItem(*this, id), BM_SETCHECK, tmp ? BST_UNCHECKED : BST_CHECKED, 0); \
-	ObjectBrowserControlExt::InfantryBrushBools[id-1300] = tmp == false; \
+	CViewObjectsExt::InfantryBrushBools[id-1300] = tmp == false; \
 }
 	if (pMsg->message == WM_LBUTTONUP)
 	{
@@ -32,5 +32,5 @@ if(pMsg->hwnd == this->GetDlgItem(id)->GetSafeHwnd()) \
 
 #undef DECLARE_BST
 
-	return this->FA2CDialog::PreTranslateMessage(pMsg);
+	return this->ppmfc::CDialog::PreTranslateMessage(pMsg);
 }

@@ -5,78 +5,73 @@
 #include <CINI.h>
 #include <CMapData.h>
 
-#include <Windows.h>
-
-#include "../CLoading/Body.h"
+#include "../../Miscs/MultiSelection.h"
 #include "../../Helpers/STDHelpers.h"
 
-DEFINE_HOOK(45AF03, CIsoView_StatusBar_YXTOXY_YToX_1, 7)
+#include "../CLoading/Body.h"
+#include "../CMapData/Body.h"
+
+#include "../../Source/CIsoView.h"
+
+/*
+* FinalAlert 2 coordinate system just reversed the game's one
+* Which means game's (X, Y) is (Y, X) in FinalAlert 2.
+* Therefore we just replace the display function here but
+* keep use FinalAlert's coordinate system in our codes.
+*/
+DEFINE_HOOK(45AEFF, CIsoView_OnMouseMove_UpdateCoordinateYXToXY, B)
 {
 	GET_STACK(int, nPointX, 0x30);
-	R->EDI(nPointX);
-	R->ECX(R->lea_Stack<DWORD>(0x458));
-	return 0x45AF0A;
-}
-
-DEFINE_HOOK(45AF21, CIsoView_StatusBar_YXTOXY_YToX_2, 7)
-{
 	GET_STACK(int, nPointY, 0x38);
-	R->EDI(nPointY);
-	return 0;
-}
+	REF_STACK(ppmfc::CString, lpBuffer, STACK_OFFS(0x3D540, 0x3D4FC));
 
-DEFINE_HOOK(45AF44, CIsoView_StatusBar_YXTOXY_XToY_1, 7)
-{
-	GET_STACK(int, nPointY, 0x38);
-	R->EBX(nPointY);
-	R->EAX(R->lea_Stack<DWORD>(0x458));
-	return 0x45AF4B;
-}
+	lpBuffer.Format("%d / %d - ", nPointX, nPointY);
 
-DEFINE_HOOK(45AF57, CIsoView_StatusBar_YXTOXY_XToY_2, 7)
-{
-	GET_STACK(int, nPointX, 0x30);
 	R->EBX(nPointX);
-	return 0;
+	R->EDI(nPointY);
+
+	return 0x45AF76;
 }
 
 // Fix on wrong infantry facing
 DEFINE_HOOK(473E46, CIsoView_UpdatePaint_InfantryFacing, 9)
 {
-	GET(int, Facing, EAX);
-	R->EAX(7 - Facing / 32);
+	GET(const int, nFacing, EAX);
+	R->EAX(7 - nFacing / 32);
 	R->ECX(R->lea_Stack<DWORD>(0x590));
 	return 0x473E52;
 }
 
-DEFINE_HOOK(46CB96, CIsoView_UpdateOverlay_AutoConnect_1, 5)
+DEFINE_HOOK(46CB96, CIsoView_DrawMouseAttachedStuff_OverlayAutoConnectionFix, 5)
 {
-	// static int __stdcall sub_469B20(int Y, int X);
-	int X = R->EBX();
-	int Y = R->EBP();
-	PUSH_VAR32(X);
-	PUSH_VAR32(Y);
-	CALL(0x469B20);
-	return 0x46CBD3;
+	GET_STACK(CIsoView*, pThis, STACK_OFFS(0x94, 0x84));
+
+	pThis->AutoConnectOverlayAt(R->EBP(), R->EBX());
+
+	return 0x46CC86;
 }
 
-DEFINE_HOOK(469A69, CIsoView_UpdateOverlay_AutoConnect_2, 8)
+DEFINE_HOOK(469A69, CIsoView_CalculateOverlayConnection_OverlayAutoConnectionFix, 8)
 {
 	GET(unsigned char, nOverlayIndex, ESI);
 	GET(bool, bConnectAsWall, ECX);
+
+	enum { CanConnect = 0x469A71, NotAWall = 0x469B07 };
+
 	if (bConnectAsWall)
-		return 0x469A71;
-	if (nOverlayIndex >= 0 && nOverlayIndex <= 255)
+		return CanConnect;
+
+	if (nOverlayIndex >= 0 && nOverlayIndex < 255)
 	{
-		auto& rules = CINI::Rules();
-		ppmfc::CString key;
-		key.Format("%d", nOverlayIndex);
-		auto pRegName = rules.GetString("OverlayTypes", key, "");
-		bool bWall = rules.GetBool(pRegName, "Wall", false);
+		char lpKey[4];
+		_itoa(nOverlayIndex, lpKey, 10);
+		auto pRegName = CINI::Rules->GetString("OverlayTypes", lpKey, "");
+		bool bWall = CINI::Rules->GetBool(pRegName, "Wall", false);
 		if (bWall)
-			return 0x469A71;
+			return CanConnect;
 	}
-	return 0x469B07;
+
+	return NotAWall;
 }
 
 DEFINE_HOOK(459F4F, CIsoView_Draw_CopySelectionBoundColor, 6)
@@ -96,18 +91,6 @@ DEFINE_HOOK(45ADD0, CIsoView_Draw_CursorSelectionBoundHeightColor, 6)
 	R->Stack<COLORREF>(0x8, ExtConfigs::CursorSelectionBound_HeightColor);
 	return 0;
 }
-
-//DEFINE_HOOK(474A49, CIsoView_Draw_WaypointColor, 5)
-//{
-//	GET(CIsoView*, pThis, EBP);
-//	GET(int, X, ESI);
-//	GET(int, Y, EDI);
-//	REF_STACK(ppmfc::CString, str, STACK_OFFS(0xD18, 0xCE4));
-//
-//	pThis->DrawText(X + 15, Y + 7, str, ExtConfigs::Waypoint_Color);
-//
-//	return 0x474A67;
-//}
 
 DEFINE_HOOK(470194, CIsoView_Draw_LayerVisible_Overlay, 8)
 {
@@ -147,31 +130,6 @@ DEFINE_HOOK(4741E7, CIsoView_Draw_LayerVisible_Terrains, 9)
 DEFINE_HOOK(474563, CIsoView_Draw_LayerVisible_Smudges, 9)
 {
 	return CIsoViewExt::DrawSmudges ? 0 : 0x4748DC;
-}
-
-//DEFINE_HOOK(4748DC, CIsoView_Draw_LayerVisible_Celltags, 9)
-//{
-//	return CIsoViewExt::DrawCelltags ? 0 : 0x474986;
-//}
-//
-//DEFINE_HOOK(474986, CIsoView_Draw_LayerVisible_Waypoints, 9)
-//{
-//	return CIsoViewExt::DrawWaypoints ? 0 : 0x474A91;
-//}
-//
-//DEFINE_HOOK(474B9D, CIsoView_Draw_LayerVisible_Tubes, 9)
-//{
-//	return CIsoViewExt::DrawTubes ? 0 : 0x474D64;
-//}
-
-DEFINE_HOOK(474DDF, CIsoView_Draw_LayerVisible_Bounds, 5)
-{
-	return CIsoViewExt::DrawBounds ? 0 : 0x474FE0;
-}
-
-DEFINE_HOOK(474FE0, CIsoView_Draw_LayerVisible_MoneyOnMap, 7)
-{
-	return CIsoViewExt::DrawMoneyOnMap ? 0 : 0x4750B0;
 }
 
 DEFINE_HOOK(471162, CIsoView_Draw_PowerUp1Loc_PosFix, 5)
@@ -384,13 +342,13 @@ DEFINE_HOOK(474DDF, CIsoView_Draw_WaypointTexts, 5)
 		{
 			for (int i = iMin; i < iMax; ++i)
 			{
-				int Y = j, X = i;
+				int X = j, Y = i;
 
-				pThis->MapCoord2ScreenCoord(Y, X);
-				auto pCell = CMapData::Instance->TryGetCellAt(i, j);
+				CIsoView::MapCoord2ScreenCoord(X, Y);
+				auto pCell = CMapData::Instance->TryGetCellAt(j, i);
 
-				int drawX = Y - R->Stack<float>(STACK_OFFS(0xD18, 0xCB0)) + 30;
-				int drawY = X - R->Stack<float>(STACK_OFFS(0xD18, 0xCB8)) - 15;
+				int drawX = X - R->Stack<float>(STACK_OFFS(0xD18, 0xCB0)) + 30 + ExtConfigs::Waypoint_Text_ExtraOffset.x;
+				int drawY = Y - R->Stack<float>(STACK_OFFS(0xD18, 0xCB8)) - 15 + ExtConfigs::Waypoint_Text_ExtraOffset.y;
 
 				if (pCell->Waypoint != -1)
 				{
@@ -405,5 +363,71 @@ DEFINE_HOOK(474DDF, CIsoView_Draw_WaypointTexts, 5)
 		SetTextColor(hDC, RGB(0, 0, 0));
 	}
 
-	return 0;
+	return CIsoViewExt::DrawBounds ? 0 : 0x474FE0;
+}
+
+DEFINE_HOOK(46BDFA, CIsoView_DrawMouseAttachedStuff_Structure, 5)
+{
+	GET_STACK(const int, X, STACK_OFFS(0x94, -0x4));
+	GET_STACK(const int, Y, STACK_OFFS(0x94, -0x8));
+	
+	const int nMapCoord = CMapData::Instance->GetCoordIndex(X, Y);
+	const auto& cell = CMapData::Instance->CellDatas[nMapCoord];
+	if (cell.Structure < 0)
+		CMapData::Instance->SetStructureData(nullptr, CIsoView::CurrentCommand->ObjectID, CIsoView::CurrentHouse(), nMapCoord, "");
+
+	return 0x46BF98;
+}
+
+DEFINE_HOOK(4676CB, CIsoView_OnLeftButtonUp_AddTube, 6)
+{
+	GET(CIsoViewExt*, pThis, ESI);
+	GET(const int, nDestX, EBX);
+	GET(const int, nDestY, EDI);
+
+	pThis->AddTube(pThis->StartCell.X, pThis->StartCell.Y, nDestX, nDestY);
+
+	return 0x468548;
+}
+
+
+DEFINE_HOOK(470502, CIsoView_Draw_OverlayOffset, 5)
+{
+	REF_STACK(const CellData, cell, STACK_OFFS(0xD18, 0xC60));
+	GET(int, nOffset, EAX);
+
+	const int nOverlay = cell.Overlay;
+	const unsigned char nOverlayData = cell.OverlayData;
+
+	if (nOverlay == 0xA7)
+		nOffset -= 45;
+	else if (
+		nOverlay != 0x18 && nOverlay != 0x19 && // BRIDGE1, BRIDGE2
+		nOverlay != 0x3B && nOverlay != 0x3C && // RAILBRDG1, RAILBRDG2
+		nOverlay != 0xED && nOverlay != 0xEE // BRIDGEB1, BRIDGEB2
+		)
+	{
+		if (nOverlay >= 0x27 && nOverlay <= 0x36) // Tracks
+			nOffset += 15;
+		else if (nOverlay >= 0x4A && nOverlay <= 0x65) // LOBRDG 1-28
+			nOffset += 15;
+		else if (nOverlay >= 0xCD && nOverlay <= 0xEC) // LOBRDGB 1-4
+			nOffset += 15;
+		else if (nOverlay < CMapDataExt::OverlayTypeDatas.size())
+		{
+			if (CMapDataExt::OverlayTypeDatas[nOverlay].Rock)
+				nOffset += 15;
+		}
+	}
+	else
+	{
+		if (nOverlayData >= 0x9 && nOverlayData <= 0x11)
+			nOffset -= 16;
+		else
+			nOffset -= 1;
+	}
+
+	R->EAX(nOffset);
+
+	return 0x470574;
 }

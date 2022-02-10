@@ -4,7 +4,7 @@
 #define __str_(x) #x
 
 #define PRODUCT_MAJOR 1
-#define PRODUCT_MINOR 3
+#define PRODUCT_MINOR 4
 #define PRODUCT_REVISION 0
 
 #define PRODUCT_STR __str(PRODUCT_MAJOR) "." __str(PRODUCT_MINOR) "." __str(PRODUCT_REVISION)

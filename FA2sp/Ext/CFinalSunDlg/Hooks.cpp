@@ -1,9 +1,14 @@
 #include "Body.h"
 
 #include <Helpers/Macro.h>
+#include "../../Helpers/Translations.h"
+#include "../../Helpers/TheaterHelpers.h"
 
+#include <CInputMessageBox.h>
 #include <CFinalSunApp.h>
 #include <CMapData.h>
+
+#include <algorithm>
 
 #include "../CIsoView/Body.h"
 
@@ -34,7 +39,7 @@ DEFINE_HOOK(424654, CFinalSunDlg_OnInitDialog_SetMenuItemStateByDefault, 7)
 
 DEFINE_HOOK(432304, CFinalSunDlg_Update_LayersVisibility, 5)
 {
-    GET(CMenu*, pMenu, ESI);
+    GET(ppmfc::CMenu*, pMenu, ESI);
 
     auto SetItemCheckStatus = [&pMenu](int id, bool& param)
     {
@@ -60,7 +65,22 @@ DEFINE_HOOK(432304, CFinalSunDlg_Update_LayersVisibility, 5)
     return 0;
 }
 
-#include "../../Helpers/Translations.h"
+#include "../CFinalSunApp/Body.h"
+
+DEFINE_HOOK(432380, CFinalSunDlg_Update_RecentFiles, A)
+{
+    GET(CMenu*, pMenu, ESI);
+
+    for (size_t i = 0; i < CFinalSunAppExt::RecentFilesExt.size(); ++i)
+    {
+        if (CFinalSunAppExt::RecentFilesExt[i].length())
+            pMenu->GetSubMenu(0)->InsertMenu(10 + i, MF_BYPOSITION, 40140 + i, CFinalSunAppExt::RecentFilesExt[i].c_str());
+    }
+
+    R->EDI(::CheckMenuItem);
+
+    return 0x432442;
+}
 
 DEFINE_HOOK(43209D, CFinalSunDlg_Update_TranslateMenuItems, A)
 {
@@ -181,7 +201,7 @@ DEFINE_HOOK(43209D, CFinalSunDlg_Update_TranslateMenuItems, A)
     translateMenuItem(30012, "Menu.Layers.Bounds");
 
     translateSubMenu(i++, "Menu.Lighting");
-    translateMenuItem(31000, "Menu.Lighting.    ");
+    translateMenuItem(31000, "Menu.Lighting.None");
     translateMenuItem(31001, "Menu.Lighting.Normal");
     translateMenuItem(31002, "Menu.Lighting.Lightning");
     translateMenuItem(31003, "Menu.Lighting.Dominator");
@@ -192,5 +212,100 @@ DEFINE_HOOK(43209D, CFinalSunDlg_Update_TranslateMenuItems, A)
 DEFINE_HOOK(432010, CFinalSunDlg_Update_NoFuckingEasyMode, 7)
 {
     CFinalSunApp::Instance->EasyMode = false;
+    return 0;
+}
+
+#pragma warning(disable : 4834)
+#pragma warning(disable : 6031)
+
+DEFINE_HOOK(436EE0, CFinalSunDlg_AddToRecentFile, 7)
+{
+    REF_STACK(ppmfc::CString, lpPath, 0x4);
+
+    std::string filepath = lpPath;
+    auto& recentfiles = CFinalSunAppExt::RecentFilesExt;
+    std::vector<std::string> sortedrecentfiles;
+    auto itr = std::find_if(recentfiles.begin(), recentfiles.end(),
+        [filepath](std::string& s) {return _strcmpi(s.c_str(), filepath.c_str()) == 0; }
+    );
+    if (itr == recentfiles.end()) // doesn't have this file
+    {
+        sortedrecentfiles.push_back(filepath);
+        for (auto& file : recentfiles)
+        {
+            if (file.length() > 0)
+                sortedrecentfiles.push_back(file);
+        }
+        std::unique(sortedrecentfiles.begin(), sortedrecentfiles.end(), 
+            [](std::string& a, std::string b) {return _strcmpi(a.c_str(), b.c_str()) == 0; });
+        sortedrecentfiles.shrink_to_fit();
+
+        size_t sz = recentfiles.size();
+        size_t cnt = std::min(sz, sortedrecentfiles.size());
+        recentfiles.clear();
+        recentfiles.resize(sz);
+
+        for (size_t i = 0; i < cnt; ++i)
+            recentfiles[i] = sortedrecentfiles[i];
+
+        CINI ini;
+        std::string path = CFinalSunApp::Instance->ExePath + "\\FinalAlert.ini";
+        ini.ClearAndLoad(path.c_str());
+
+        for (size_t i = 0; i < recentfiles.size(); ++i)
+            ini.WriteString("Files", std::format("{0:d}", i).c_str(), recentfiles[i].c_str());
+
+        ini.WriteToFile(path.c_str());
+    }
+
+    return 0x437453;
+}
+
+DEFINE_HOOK(4340F0, CFinalSunDlg_Tools_ChangeMapHeight, 7)
+{
+    GET(CFinalSunDlg*, pThis, ECX);
+
+    if (CMapData::Instance->MapWidthPlusHeight)
+    {
+        pThis->PlaySound(CFinalSunDlg::FASoundType::Normal);
+
+        ppmfc::CString lpTitle = "StrChangeHeightCap";
+        ppmfc::CString lpMessage = "StrChangeHeight";
+        Translations::GetTranslationItem(lpTitle, lpTitle);
+        Translations::GetTranslationItem(lpMessage, lpMessage);
+        lpMessage.Replace("%1", "-14");
+        lpMessage.Replace("%2", "14");
+
+        int nDelta = 0;
+        if (sscanf_s(CInputMessageBox::GetString(lpMessage, lpTitle), "%d", &nDelta) == 1 && nDelta >= -14 && nDelta <= 14)
+        {
+            for (int i = 0; i < CMapData::Instance->CellDataCount; ++i)
+            {
+                CMapData::Instance->CellDatas[i].Height =
+                    std::clamp(CMapData::Instance->CellDatas[i].Height + nDelta, 0, 14);
+            }
+
+            pThis->MyViewFrame.pIsoView->RedrawWindow(nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW);
+        }
+        else
+            pThis->PlaySound(CFinalSunDlg::FASoundType::Error);
+    }
+    else
+        pThis->PlaySound(CFinalSunDlg::FASoundType::Error);
+
+    return 0x434135;
+}
+
+DEFINE_HOOK(42D736, CFinalSunDlg_NewMap_Theater, 5)
+{
+    GET_STACK(int, theaterIndex, STACK_OFFS(0x161C, 0x15D4));
+
+    auto theaters = TheaterHelpers::GetEnabledTheaterNames();
+    auto theaterName = ppmfc::CString(theaterIndex < theaters.size() ? theaters.at(theaterIndex) : "");
+    char* pBuffer = new char[theaterName.GetLength() + 1];
+    strcpy(pBuffer, theaterName);
+
+    R->ECX(pBuffer);
+
     return 0;
 }

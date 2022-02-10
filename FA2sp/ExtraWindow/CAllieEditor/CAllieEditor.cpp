@@ -9,7 +9,7 @@
 
 void CAllieEditor::Create()
 {
-	DialogBox((HINSTANCE)FA2sp::hInstance, MAKEINTRESOURCE(303), CFinalSunDlg::Instance->Houses, DlgProc);
+	DialogBox((HINSTANCE)FA2sp::hInstance, MAKEINTRESOURCE(303), CFinalSunDlg::Instance->Houses.m_hWnd, DlgProc);
 }
 
 BOOL CALLBACK CAllieEditor::DlgProc(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam)

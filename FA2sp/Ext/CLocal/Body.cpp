@@ -14,5 +14,5 @@ BOOL CLocalExt::PreTranslateMessageExt(MSG* pMsg)
 	default:
 		break;
 	}
-	return this->FA2CDialog::PreTranslateMessage(pMsg);
+	return this->ppmfc::CDialog::PreTranslateMessage(pMsg);
 }

@@ -24,7 +24,7 @@ public:
     BOOL OnCommandExt(WPARAM wParam, LPARAM lParam);
 };
 
-class ObjectBrowserControlExt : public ObjectBrowserControl
+class CViewObjectsExt : public CViewObjects
 {
     enum {
         Root_Nothing = 0, Root_Ground, Root_Owner, Root_Infantry, Root_Vehicle,
@@ -98,7 +98,7 @@ public:
     static void ApplyPropertyBrush_Aircraft(int nIndex);
     static void ApplyPropertyBrush_Vehicle(int nIndex);
     
-    ppmfc::CString QueryUIName(const char* pRegName);
+    ppmfc::CString QueryUIName(const char* pRegName, bool bOnlyOneLine = true);
 
 public:
     /// <summary>

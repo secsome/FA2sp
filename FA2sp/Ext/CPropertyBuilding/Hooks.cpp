@@ -14,7 +14,7 @@ DEFINE_HOOK(417F40, CPropertyBuilding_OnInitDialog, 7)
 {
     GET(CPropertyBuilding*, pThis, ECX);
 
-    pThis->FA2CDialog::OnInitDialog();
+    pThis->ppmfc::CDialog::OnInitDialog();
 
     CMapData::Instance->UpdateCurrentDocument();
 
@@ -32,7 +32,7 @@ DEFINE_HOOK(417F40, CPropertyBuilding_OnInitDialog, 7)
         (ppmfc::CComboBox*)pThis->GetDlgItem(1092)
     };
 
-    if (ObjectBrowserControlExt::InitPropertyDlgFromProperty)
+    if (CViewObjectsExt::InitPropertyDlgFromProperty)
     {
         pUpgrades[0]->EnableWindow(TRUE);
         pUpgrades[1]->EnableWindow(TRUE);

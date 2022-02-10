@@ -12,7 +12,7 @@ void CSingleplayerSettingsExt::ProgramStartupInit()
 //{
 //	
 //
-//	return this->FA2CDialog::OnCommand(wParam, lParam);
+//	return this->ppmfc::CDialog::OnCommand(wParam, lParam);
 //}
 
 
@@ -43,5 +43,5 @@ BOOL CSingleplayerSettingsExt::PreTranslateMessageExt(MSG* pMsg)
 		;
 
 	}
-	return this->FA2CDialog::PreTranslateMessage(pMsg);
+	return this->ppmfc::CDialog::PreTranslateMessage(pMsg);
 }

@@ -1,10 +1,118 @@
+#ifndef NDEBUG
+
 #include <CMapData.h>
 #include <CFinalSunDlg.h>
 #include <CIsoView.h>
 #include <CPalette.h>
+#include <CLoading.h>
 #include <Drawing.h>
+#include <CTileTypeClass.h>
 
 #include "Logger.h"
+
+
+//DEFINE_HOOK(48EE60, CLoading_DrawOverlay, 7)
+//{
+//    GET(CLoading*, pThis, ECX);
+//    GET_STACK(LPCSTR, ID, 0x4);
+//    GET_STACK(int, nOverlayIndex, 0x8);
+//
+//    CFinalSunDlg::LastSucceededOperation = 11;
+//
+//    ppmfc::CString id = ID;
+//    id.Trim();
+//
+//    int nPal = pThis->GetPaletteISO();
+//    if (
+//        CINI::Rules->GetBool(id, "IsVeinholeMonster") ||
+//        CINI::Rules->GetBool(id, "Tiberium") ||
+//        CINI::Rules->GetBool(id, "IsVeins")
+//        )
+//    {
+//        nPal = pThis->PAL_TEMPERAT;
+//    }
+//
+//    if (auto ppStr = CINI::Rules->TryGetString(id, "Image"))
+//        id = *ppStr;
+//
+//    ppmfc::CString imageName = id;
+//    if (auto ppStr = CINI::Art->TryGetString(id, "Image"))
+//        imageName = *ppStr;
+//
+//    // Now id holds Art section name, imageName holds assert's name
+//
+//
+//
+//    return 0x4909FE;
+//}
+
+//DEFINE_HOOK(4C37E7, CopyDataTest, 6)
+//{
+//    GET_STACK(CopyPasteDataHeader*, pHeader, STACK_OFFS(0x54, 0x3C));
+//    pHeader = &pHeader[-1];
+//
+//    CopyPasteData* pDatas = (CopyPasteData*)(&pHeader[1]);
+//
+//    Logger::FormatLog("CopyPasteData Width = {}, Height = {}\n", pHeader->Width, pHeader->Height);
+//    for (int i = 0; i < pHeader->Width; ++i)
+//        for (int j = 0; j < pHeader->Height; ++j)
+//        {
+//            int idx = i * pHeader->Height + j;
+//            Logger::FormatLog(
+//                "Data {0:d}: ({1:d}, {2:d})\n"
+//                "IgnoreAltImages = {3:d}\n"
+//                "Overlay, Data = {4:d}, {5:d}\n"
+//                "TileIndex = {6:d}, Short30 = {7:d}, TilesubIndex= {8:d}, Height = {9:d}\n"
+//                "IceGrowth = {10:d}, Unknown_C = {11:d}, TileSet = {12:d}, NthTileSetFile = {13:d}\n\n"
+//                , idx, i, j, pDatas[idx].IgnoreAltImages, pDatas[idx].Overlay, pDatas[idx].OverlayData,
+//                pDatas[idx].TileIndex, pDatas[idx]._8_Short_30, pDatas[idx].TileSubIndex, pDatas[idx].Height,
+//                pDatas[idx].IceGrowth, pDatas[idx].Unknown_D, pDatas[idx].TileSet, pDatas[idx].NthTileSetFile);
+//        }
+//
+//    return 0;
+//}
+
+//DEFINE_HOOK(49C2B8, CMapData_UpdateINIFile_LoadFromINI, 7)
+//{
+//    CMapData::Instance->UpdateSize();
+//    CMapData::Instance->InitMinimap();
+//
+//    CMapData::Instance->SlopeSetPieces = CINI::CurrentTheater->GetInteger("General", "SlopeSetPieces");
+//    CMapData::Instance->RampBase = CINI::CurrentTheater->GetInteger("General", "RampBase");
+//    CMapData::Instance->RampSmooth = CINI::CurrentTheater->GetInteger("General", "RampSmooth");
+//    CMapData::Instance->CliffSet = CINI::CurrentTheater->GetInteger("General", "CliffSet");
+//    CMapData::Instance->WaterSet = CINI::CurrentTheater->GetInteger("General", "WaterSet");
+//    CMapData::Instance->ShorePieces = CINI::CurrentTheater->GetInteger("General", "ShorePieces");
+//    CMapData::Instance->RampBase = CINI::CurrentTheater->GetInteger("General", "RampBase");
+//    CMapData::Instance->Ramps2 = CINI::CurrentTheater->GetInteger("NewUrbanInfo", "Ramps2");
+//    CMapData::Instance->Morphable2= CINI::CurrentTheater->GetInteger("NewUrbanInfo", "Morphable2");
+//    CMapData::Instance->Cliff2 = CINI::CurrentTheater->GetInteger("NewUrbanInfo", "Cliffs2");
+//    CMapData::Instance->CliffWaters2= CINI::CurrentTheater->GetInteger("NewUrbanInfo", "CliffsWaters");
+//
+//    CMapData::Instance->CliffSetCount = CTileTypeClass::GetTileIndex(CMapData::Instance->CliffSet, 0);
+//    CMapData::Instance->RampBaseCount = CTileTypeClass::GetTileIndex(CMapData::Instance->RampBase, 0);
+//    CMapData::Instance->Ramps2Count = CTileTypeClass::GetTileIndex(CMapData::Instance->Ramps2, 0);
+//    CMapData::Instance->Morphable2Count = CTileTypeClass::GetTileIndex(CMapData::Instance->Morphable2, 0);
+//    CMapData::Instance->Cliffs2Count = CTileTypeClass::GetTileIndex(CMapData::Instance->Cliff2, 0);
+//    
+//
+//    CMapData::Instance->TypesInit_4AD930();
+//    CMapData::Instance->InitializeBuildingTypes(nullptr);
+//    CMapData::Instance->InitializeTerrainTypes(nullptr);
+//    CMapData::Instance->InitializeSmudges(nullptr);
+//    CMapData::Instance->UpdateMapFieldData_Field(false);
+//    CMapData::Instance->UpdateMapFieldData_Aircraft(false);
+//
+//    R->EBP(R->Stack32(STACK_OFFS(0x110, 0x74)));
+//
+//    return 0x49D121;
+//}
+
+//DEFINE_HOOK(4B9C39, CMapData_UpdateIniFile_Debug, 5)
+//{
+//    return 0;
+//}
+
 //
 //DEFINE_HOOK(438DB0, CrashMePlease, 6)
 //{
@@ -145,3 +253,5 @@
 //
 //    return 0x438E4E;
 //}
+
+#endif

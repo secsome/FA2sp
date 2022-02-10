@@ -11,132 +11,151 @@
 #include "../FA2sp.h"
 #include "../FA2sp.Constants.h"
 
+#include <algorithm>
 #include <map>
 #include <fstream>
 #include <format>
 
+DEFINE_HOOK(4D5505, CSaveOption_CTOR_DefaultValue, 0)
+{
+    int nValue = CMapData::Instance->IsMultiOnly() ? 
+        ExtConfigs::SaveMap_DefaultPreviewOptionMP : 
+        ExtConfigs::SaveMap_DefaultPreviewOptionSP
+        ;
+
+    R->EBX(std::clamp(nValue, 0, 2));
+    
+    return 0x4D550E;
+}
+
 // FA2 SaveMap is almost O(N^4), who wrote that?
 DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
 {
-    if (ExtConfigs::SaveMap)
+    GET(CINI*, pINI, EAX);
+    GET_STACK(CFinalSunDlg*, pThis, STACK_OFFS(0x3F4, 0x36C));
+    REF_STACK(ppmfc::CString, filepath, STACK_OFFS(0x3F4, -0x4));
+
+    GET_STACK(int, previewOption, STACK_OFFS(0x3F4, 0x1AC));
+
+    pThis->MyViewFrame.StatusBar.SetWindowText("Saving...");
+    pThis->MyViewFrame.StatusBar.UpdateWindow();
+
+    ppmfc::CString buffer;
+    buffer.Format("%d", pINI->GetInteger("FA2spVersionControl", "Version") + 1);
+    pINI->WriteString("FA2spVersionControl", "Version", buffer);
+
+    Logger::Raw("SaveMap : Now removing empty sections and keys.\n");
+    std::vector<ppmfc::CString> sectionsToRemove;
+    for (auto& section_pair : pINI->Dict)
     {
-        GET(CINI*, pINI, EAX);
-        GET_STACK(CFinalSunDlg*, pThis, STACK_OFFS(0x3F4, 0x36C));
-        REF_STACK(ppmfc::CString, filepath, STACK_OFFS(0x3F4, -0x4));
-
-        GET_STACK(bool, bGeneratePreview, STACK_OFFS(0x3F8, 0x3C8));
-
-        pThis->MyViewFrame.StatusBar.SetWindowText("Saving...");
-        pThis->MyViewFrame.StatusBar.UpdateWindow();
-
         ppmfc::CString buffer;
-        buffer.Format("%d", pINI->GetInteger("FA2spVersionControl", "Version") + 1);
-        pINI->WriteString("FA2spVersionControl", "Version", buffer);
+        buffer = section_pair.first;
+        buffer.Trim();
+        if (buffer.GetLength() == 0 || section_pair.second.GetEntities().size() == 0)
+            sectionsToRemove.push_back(section_pair.first);
 
-        Logger::Raw("SaveMap : Now removing empty sections and keys.\n");
-        std::vector<ppmfc::CString> sectionsToRemove;
-        for (auto& section_pair : pINI->Dict)
+        std::vector<ppmfc::CString> keysToRemove;
+        for (auto& key_pair : section_pair.second.GetEntities())
         {
-            ppmfc::CString buffer;
-            buffer = section_pair.first;
+            buffer = key_pair.first;
             buffer.Trim();
-            if (buffer.GetLength() == 0 || section_pair.second.GetEntities().size() == 0)
-                sectionsToRemove.push_back(section_pair.first);
-
-            std::vector<ppmfc::CString> keysToRemove;
-            for (auto& key_pair : section_pair.second.GetEntities())
-            {
-                buffer = key_pair.first;
-                buffer.Trim();
-                if (buffer.GetLength() == 0)
-                    keysToRemove.push_back(key_pair.first);
-            }
-
-            for (auto& key : keysToRemove)
-                pINI->DeleteKey(section_pair.first, key);
-
-            if (section_pair.second.GetEntities().size() == 0)
-                sectionsToRemove.push_back(section_pair.first);
-        }
-        for (auto& section : sectionsToRemove)
-            pINI->DeleteSection(section);
-
-        if (bGeneratePreview)
-        {
-            Logger::Raw("SaveMap : Now generating a hidden preview as vanilla FA2 does.\n");
-            pINI->DeleteSection("Preview");
-            pINI->DeleteSection("PreviewPack");
-            pINI->WriteString("Preview", "Size", "0,0,106,61");
-            pINI->WriteString("PreviewPack", "1", "yAsAIAXQ5PDQ5PDQ6JQATAEE6PDQ4PDI4JgBTAFEAkgAJyAATAG0AydEAEABpAJIA0wBVA");
-            pINI->WriteString("PreviewPack", "2", "BIACcgAEwBtAMnRABAAaQCSANMAVQASAAnIABMAbQDJ0QAQAGkAkgDTAFUAEgAJyAATAG0");
+            if (buffer.GetLength() == 0)
+                keysToRemove.push_back(key_pair.first);
         }
 
-        if (ExtConfigs::SaveMap_OnlySaveMAP) 
-        {
-            int nExtIndex = filepath.ReverseFind('.');
-            if (nExtIndex == -1)
-                filepath += ".map";
-            else
-                filepath = filepath.Mid(0, nExtIndex) + ".map";
-        }
+        for (auto& key : keysToRemove)
+            pINI->DeleteKey(section_pair.first, key);
 
-        Logger::FormatLog("SaveMap : Trying to save map to {}.\n", filepath);
-
-        std::ofstream fout;
-        fout.open(filepath, std::ios::out | std::ios::trunc);
-
-        if (fout.is_open())
-        {
-            fout <<
-                "; Map created with FinalAlert 2(tm) Mission Editor\n"
-                "; Get it at http://www.westwood.com\n"
-                "; note that all comments were truncated\n"
-                "\n"
-                "; This FA2 uses FA2sp created by secsome\n"
-                "; Get the lastest dll at https://github.com/secsome/FA2sp\n"
-                "; Current version : " << PRODUCT_STR << "\n\n";
-
-            for (auto& section : pINI->Dict)
-            {
-                fout << "[" << section.first << "]\n";
-                for (auto& pair : section.second.GetEntities())
-                    fout << pair.first << "=" << pair.second << "\n";
-                fout << "\n";
-            }
-
-            fout.flush();
-            fout.close();
-
-            Logger::FormatLog("SaveMap : Successfully saved {} sections.\n", pINI->Dict.size());
-        }
-        else
-        {
-            auto buffer = std::format("Failed to create file {}.\n", filepath);
-            Logger::Raw(buffer.c_str());
-            ::MessageBox(NULL, buffer.c_str(), "Error", MB_OK | MB_ICONERROR);
-        }
-
-        return 0x42A859;
+        if (section_pair.second.GetEntities().size() == 0)
+            sectionsToRemove.push_back(section_pair.first);
     }
+    for (auto& section : sectionsToRemove)
+        pINI->DeleteSection(section);
+
+    if (previewOption == 2)
+    {
+        // No preview / hidden preview.
+        Logger::Raw("SaveMap : Generating a hidden map preview.\n");
+        pINI->DeleteSection("Preview");
+        pINI->DeleteSection("PreviewPack");
+        pINI->WriteString("Preview", "Size", "0,0,106,61");
+        pINI->WriteString("PreviewPack", "1", "BIACcgAEwBtAMnRABAAaQCSANMAVQASAAnIABMAbQDJ0QAQAGkAkgDTAFUAEgAJyAATAG0");
+        pINI->WriteString("PreviewPack", "2", "yAsAIAXQ5PDQ5PDQ6JQATAEE6PDQ4PDI4JgBTAFEAkgAJyAATAG0AydEAEABpAJIA0wBVA");
+    }
+    else if (previewOption == 0)
+    {
+        // Generate new preview.
+        Logger::Raw("SaveMap : Generating a new map preview.\n");
+        CMapData::Instance->UpdateINIFile(SaveMapFlag::UpdatePreview);
+    }
+    else
+    {
+        // Do not update preview.
+        Logger::Raw("SaveMap : Retaining current map preview.\n");
+    }
+
+    if (ExtConfigs::SaveMap_OnlySaveMAP)
+    {
+        int nExtIndex = filepath.ReverseFind('.');
+        if (nExtIndex == -1)
+            filepath += ".map";
+        else
+            filepath = filepath.Mid(0, nExtIndex) + ".map";
+    }
+
+    Logger::FormatLog("SaveMap : Trying to save map to {}.\n", filepath);
+
+    std::ofstream fout;
+    fout.open(filepath, std::ios::out | std::ios::trunc);
+
+    if (fout.is_open())
+    {
+        fout <<
+            "; Map created with FinalAlert 2(tm) Mission Editor\n"
+            "; Get it at http://www.westwood.com\n"
+            "; note that all comments were truncated\n"
+            "\n"
+            "; This FA2 uses FA2sp created by secsome\n"
+            "; Get the lastest dll at https://github.com/secsome/FA2sp\n"
+            "; Current version : " << PRODUCT_STR << "\n\n";
+
+        for (auto& section : pINI->Dict)
+        {
+            fout << "[" << section.first << "]\n";
+            for (auto& pair : section.second.GetEntities())
+                fout << pair.first << "=" << pair.second << "\n";
+            fout << "\n";
+        }
+
+        fout.flush();
+        fout.close();
+
+        Logger::FormatLog("SaveMap : Successfully saved {} sections.\n", pINI->Dict.size());
+    }
+    else
+    {
+        auto buffer = std::format("Failed to create file {}.\n", filepath);
+        Logger::Raw(buffer.c_str());
+        ::MessageBox(NULL, buffer.c_str(), "Error", MB_OK | MB_ICONERROR);
+    }
+
+    return 0x42A859;
 
     return 0;
 }
 
 DEFINE_HOOK(42B30F, CFinalSunDlg_SaveMap_SkipMapDTOR, 7)
 {
-    return ExtConfigs::SaveMap ? 0x42B323 : 0;
+    return 0x42B323;
 }
 
 DEFINE_HOOK(42B2AF, CFinalSunDlg_SaveMap_SkipDeleteFile, 7)
 {
-    return ExtConfigs::SaveMap ? 0x42B2C2 : 0;
+    return 0x42B2C2;
 }
 
 DEFINE_HOOK(42A8F5, CFinalSunDlg_SaveMap_ReplaceCopyFile, 7)
 {
-    if (!ExtConfigs::SaveMap)
-        return 0;
-
     REF_STACK(ppmfc::CString, filepath, STACK_OFFS(0x3F4, -0x4));
 
     std::ifstream fin;
@@ -151,7 +170,7 @@ DEFINE_HOOK(42A8F5, CFinalSunDlg_SaveMap_ReplaceCopyFile, 7)
 
 DEFINE_HOOK(42B2EA, CFinalSunDlg_SaveMap_SkipStringDTOR, C)
 {
-    return ExtConfigs::SaveMap ? 0x42B30F : 0;
+    return 0x42B30F;
 }
 
 void SaveMapExt::ResetTimer()

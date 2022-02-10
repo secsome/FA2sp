@@ -87,7 +87,7 @@ DEFINE_HOOK(480880, INIClass_LoadTSINI_IncludeSupport_2, 5)
         int len = xINI->GetKeyCount(section);
         for (int i = INIIncludes::LastReadIndex; i < len; i = INIIncludes::LastReadIndex)
         {
-            const char* key = xINI->GetKeyName(section, i);
+            const char* key = xINI->GetKeyAt(section, i);
             ++INIIncludes::LastReadIndex;
             buffer[0] = '\0';
             strcpy_s(buffer ,xINI->GetString(section, key, ""));

@@ -86,5 +86,5 @@ BOOL CLightingExt::PreTranslateMessageExt(MSG* pMsg)
 		;
 
 	}
-	return this->FA2CDialog::PreTranslateMessage(pMsg);
+	return this->ppmfc::CDialog::PreTranslateMessage(pMsg);
 }
