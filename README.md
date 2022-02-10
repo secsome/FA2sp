@@ -253,7 +253,6 @@ COLORREF - R,G,B each of them is in [0,255]
             +) SaveMap.DefaultPreviewOptionMP = INTEGER ; Default radio option button for preview generation when saving multiplayer maps. 0 = Always generate new preview, 1 = Do no generate new preview, 2 = Always generate hidden preview, defaults to 0.
             +) SaveMap.DefaultPreviewOptionSP = INTEGER ; Same as the MP one but for SP maps, defaults to 1.
             +) VerticalLayout = BOOLEAN ; Determines if FA2 will make the bottom view go to the right side
-            +) FastResize = BOOLEAN ; Determines if FA2 will expanding the map more rapidly
             +) RecentFileLimit = INTEGER ; How many recent files should I keep? ranges from 4 to 9
             +) MultiSelectionColor = COLORREF ; Determines the back color of selected tiles
         +) [Sides] ** (** means Essensial, fa2sp need this section to work properly)
