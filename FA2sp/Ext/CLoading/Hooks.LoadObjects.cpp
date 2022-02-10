@@ -40,6 +40,12 @@ DEFINE_HOOK(475450, GetObjectName, 7)
     case 0x4B67C3:
     case 0x4B6C02:
     case 0x4B6C30:
+    case 0x470EA1: // Powerups
+    case 0x471036:
+    case 0x4716C9:
+    case 0x47187A:
+    case 0x471E64:
+    case 0x471FCD:
         new(pRet) ppmfc::CString(temp);
         R->EAX(pRet);
         return 0x47623D;
