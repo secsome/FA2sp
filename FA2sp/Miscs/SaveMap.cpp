@@ -15,6 +15,7 @@
 #include <map>
 #include <fstream>
 #include <format>
+#include <set>
 
 DEFINE_HOOK(4D5505, CSaveOption_CTOR_DefaultValue, 0)
 {
@@ -110,6 +111,9 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
 
     if (fout.is_open())
     {
+        std::set<ppmfc::CString> headerSections = { "Basic", "Header", "Preview", "PreviewPack" };
+        std::set<ppmfc::CString> footerSections = { "Digest" };
+
         fout <<
             "; Map created with FinalAlert 2(tm) Mission Editor\n"
             "; Get it at http://www.westwood.com\n"
@@ -119,12 +123,38 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
             "; Get the lastest dll at https://github.com/secsome/FA2sp\n"
             "; Current version : " << PRODUCT_STR << "\n\n";
 
+        for (auto& sectionName : headerSections)
+        {
+            if (pINI->SectionExists(sectionName)) 
+            {
+                fout << "[" << sectionName << "]\n";
+                for (auto& pair : pINI->GetSection(sectionName)->GetEntities())
+                    fout << pair.first << "=" << pair.second << "\n";
+                fout << "\n";
+            }
+        }
+
         for (auto& section : pINI->Dict)
         {
+            if (headerSections.contains(section.first) ||
+                footerSections.contains(section.first))
+                continue;
+
             fout << "[" << section.first << "]\n";
             for (auto& pair : section.second.GetEntities())
                 fout << pair.first << "=" << pair.second << "\n";
             fout << "\n";
+        }
+
+        for (auto& sectionName : footerSections)
+        {
+            if (pINI->SectionExists(sectionName))
+            {
+                fout << "[" << sectionName << "]\n";
+                for (auto& pair : pINI->GetSection(sectionName)->GetEntities())
+                    fout << pair.first << "=" << pair.second << "\n";
+                fout << "\n";
+            }
         }
 
         fout.flush();
