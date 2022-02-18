@@ -109,4 +109,17 @@ public:
         else
             return pStr.Find(pQuery) != -1;
     }
+
+    static ppmfc::CString GetComboBoxText(const ppmfc::CComboBox& cbb)
+    {
+        int nCurSel = cbb.GetCurSel();
+        ppmfc::CString ret;
+
+        if (nCurSel == CB_ERR)
+            cbb.GetWindowText(ret);
+        else
+            cbb.GetLBText(nCurSel, ret);
+
+        return ret;
+    }
 };
