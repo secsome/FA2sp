@@ -1,6 +1,7 @@
 #include "Body.h"
 
 #include <Helpers/Macro.h>
+#include <Miscs/Miscs.h>
 
 #include <CMapData.h>
 #include <CLoading.h>
@@ -41,11 +42,11 @@ DEFINE_HOOK(4E7900, CTeamTypes_OnCBCurrentTeamSelectChanged, 7)
 			pThis->BOOL_TransportsReturnOnUnload = pINI->GetBool(ID, "TransportsReturnOnUnload");
 			pThis->BOOL_Whiner = pINI->GetBool(ID, "Whiner");
 			pThis->CString_Group = pINI->GetString(ID, "Group");
-			pThis->CString_House = pINI->GetString(ID, "House");
 			pThis->CString_Max = pINI->GetString(ID, "Max");
 			pThis->CString_Name = pINI->GetString(ID, "Name");
 			pThis->CString_Priority = pINI->GetString(ID, "Priority");
 			pThis->CString_TechLevel = pINI->GetString(ID, "TechLevel");
+			Miscs::ParseHouseName(&pThis->CString_House, pINI->GetString(ID, "House"), true);
 
 			pThis->CString_VeteranLevel = pINI->GetString(ID, "VeteranLevel");
 			if (CLoading::HasMdFile)
