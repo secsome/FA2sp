@@ -85,13 +85,24 @@ DEFINE_HOOK(47AB50, CLoading_InitPics_InitOverlayTypeDatas, 7)
 
 DEFINE_HOOK(49DFB4, CMapData_LoadMap_InvalidTheater, 6)
 {
-    GET(char*, theaterName, EDI);
+    GET(const char*, lpTheaterName, EDI);
 
-    for (auto& str : TheaterHelpers::GetEnabledTheaterNames()) 
+    for (const auto& lpStr : TheaterHelpers::GetEnabledTheaterNames()) 
     {
-        if (strcmp(str, theaterName) == 0)
+        if (_strcmpi(lpStr, lpTheaterName) == 0)
             return 0;
     }
 
     return 0x49EDD9;
 }
+
+#define DEFINE_THEATER_NAME_FIX(addr, name) \
+DEFINE_HOOK(addr, CMapData_LoadMap_SupportLowerCaseTheaterName_##name, 5) \
+{R->EAX(_strcmpi(R->EDI<const char*>(), #name)); return (0x##addr + 0xE);}
+
+DEFINE_THEATER_NAME_FIX(49DFB4, TEMPERATE);
+DEFINE_THEATER_NAME_FIX(49E1D9, SNOW);
+DEFINE_THEATER_NAME_FIX(49E3FF, URBAN);
+DEFINE_THEATER_NAME_FIX(49E631, NEWURBAN);
+DEFINE_THEATER_NAME_FIX(49E863, LUNAR);
+DEFINE_THEATER_NAME_FIX(49EAA4, DESERT);
