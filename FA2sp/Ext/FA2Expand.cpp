@@ -12,7 +12,7 @@
 #include "CCreateMap3B/Body.h"
 #include "CCreateMap4/Body.h"
 #include "CCredits/Body.h"
-#include "CDialog289/Body.h"
+#include "CScriptsSelectionDialog/Body.h"
 #include "CEasterEgg/Body.h"
 #include "CHouses/Body.h"
 #include "CINIEditor/Body.h"
