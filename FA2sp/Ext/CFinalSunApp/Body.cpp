@@ -34,9 +34,10 @@ BOOL CFinalSunAppExt::InitInstanceExt()
 		exit(0);
 	}
 	
-	std::string cmdline = this->m_lpCmdLine;
 	CFinalSunDlg::SE2KMODE = FALSE; // We don't need SE2K stuff
 	CFinalSunApp::MapPath[0] = '\0';
+	// Now let's parse the command line
+	// Nothing yet huh...
 
 	std::string path;
 	path = CFinalSunApp::ExePath + "\\FAData.ini";
