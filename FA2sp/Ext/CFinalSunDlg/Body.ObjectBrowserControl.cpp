@@ -287,7 +287,7 @@ void CViewObjectsExt::Redraw_Infantry()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            QueryUIName(inf.second) + "(" + inf.second + ")",
+            QueryUIName(inf.second) + " (" + inf.second + ")",
             Const_Infantry + index,
             subNodes[side]
         );
@@ -336,7 +336,7 @@ void CViewObjectsExt::Redraw_Vehicle()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            QueryUIName(veh.second) + "(" + veh.second + ")",
+            QueryUIName(veh.second) + " (" + veh.second + ")",
             Const_Vehicle + index,
             subNodes[side]
         );
@@ -386,7 +386,7 @@ void CViewObjectsExt::Redraw_Aircraft()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            QueryUIName(air.second) + "(" + air.second + ")",
+            QueryUIName(air.second) + " (" + air.second + ")",
             Const_Aircraft + index,
             subNodes[side]
         );
@@ -436,7 +436,7 @@ void CViewObjectsExt::Redraw_Building()
         if (subNodes.find(side) == subNodes.end())
             side = -1;
         this->InsertString(
-            QueryUIName(bud.second) + "(" + bud.second + ")",
+            QueryUIName(bud.second) + " (" + bud.second + ")",
             Const_Building + index,
             subNodes[side]
         );
@@ -483,7 +483,7 @@ void CViewObjectsExt::Redraw_Terrain()
         if (IgnoreSet.find(terrains[i]) == IgnoreSet.end())
         {
             FA2sp::Buffer = QueryUIName(terrains[i]);
-            FA2sp::Buffer += "(" + terrains[i] + ")";
+            FA2sp::Buffer += " (" + terrains[i] + ")";
             bool bNotOther = false;
             for (const auto& node : nodes)
             {
@@ -590,7 +590,7 @@ void CViewObjectsExt::Redraw_Overlay()
     {
         CString buffer;
         buffer = QueryUIName(overlays[i]);
-        buffer += "(" + overlays[i] + ")";
+        buffer += " (" + overlays[i] + ")";
         if (rules.GetBool(overlays[i], "Wall"))
             this->InsertString(
                 QueryUIName(overlays[i]),
