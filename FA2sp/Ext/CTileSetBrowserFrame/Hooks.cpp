@@ -18,7 +18,7 @@ DEFINE_HOOK(4F1A40, CTileSetBrowserFrame_CreateContent, 5)
 
     RECT rect;
     pThis->GetClientRect(&rect);
-    pThis->DialogBar.Create(pTab, MAKEINTRESOURCE(0xE3), 0x2800, 5);
+    pThis->DialogBar.Create(pTab, MAKEINTRESOURCE(ExtConfigs::VerticalLayout ? 0xE4 : 0xE3), 0x2800, 5);
 
     Translations::TranslateItem(&pThis->DialogBar, 6102, "DialogBar.TileManager");
     Translations::TranslateItem(&pThis->DialogBar, 1368, "DialogBar.TerrainOrGround");
@@ -44,8 +44,16 @@ DEFINE_HOOK(4F1B00, CTileSetBrowserFrame_RecalcLayout, 7)
 
     ::GetClientRect(CTileSetBrowserFrameExt::hTabCtrl, &tabRect);
 
-    pThis->DialogBar.MoveWindow(2, 29, tabRect.right - tabRect.left - 6, 110, FALSE);
-    pThis->View.MoveWindow(2, 139, tabRect.right - tabRect.left - 6, tabRect.bottom - 145, FALSE);
+    if (ExtConfigs::VerticalLayout)
+    {
+        pThis->DialogBar.MoveWindow(2, 29, tabRect.right - tabRect.left - 6, 110, FALSE);
+        pThis->View.MoveWindow(2, 139, tabRect.right - tabRect.left - 6, tabRect.bottom - 145, FALSE);
+    }
+    else
+    {
+        pThis->DialogBar.MoveWindow(2, 29, tabRect.right - tabRect.left - 6, 49, FALSE);
+        pThis->View.MoveWindow(2, 78, tabRect.right - tabRect.left - 6, tabRect.bottom - 54, FALSE);
+    }
 
     SIZE sz{ tabRect.right,pThis->View.ScrollWidth };
     pThis->View.SetScrollSizes(1, sz);
