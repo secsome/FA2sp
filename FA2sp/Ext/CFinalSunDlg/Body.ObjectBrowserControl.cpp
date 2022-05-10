@@ -139,11 +139,19 @@ void CViewObjectsExt::Redraw_Initialize()
 
     if (auto ignores = fadata.GetSection("IgnoreRA2"))
         for (auto& item : ignores->GetEntities())
-            IgnoreSet.insert(item.second);
+        {
+            ppmfc::CString tmp = item.second;
+            tmp.Trim();
+            IgnoreSet.insert(tmp);
+        }
 
     if (auto forcenames = fadata.GetSection("ForceName"))
         for (auto& item : forcenames->GetEntities())
-            ForceName.insert(item.second);
+        {
+            ppmfc::CString tmp = item.second;
+            tmp.Trim();
+            ForceName.insert(tmp);
+        }
 
 }
 

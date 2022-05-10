@@ -72,6 +72,9 @@ inline bool MultiSelection::IsSelected(int X, int Y)
     return SelectedCoords.find(MapCoord{ X,Y }) != SelectedCoords.end();
 }
 
+/*
+
+
 DEFINE_HOOK(456EFC, CIsoView_OnMouseMove_MultiSelect_ReverseStatus, 6)
 {
     GET_STACK(UINT, eFlags, STACK_OFFS(0x3D528, -0x4));
@@ -351,3 +354,5 @@ DEFINE_HOOK(49D2C0, LoadMap_ClearUp_MultiSelection, 5)
 
     return 0;
 }
+
+*/
