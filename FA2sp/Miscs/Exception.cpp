@@ -9,6 +9,7 @@
 #include <CFinalSunApp.h>
 #include <CFinalSunDlg.h>
 #include <CLoading.h>
+#include <CMapData.h>
 #include <FA2PP.h>
 
 LONG CALLBACK Exception::ExceptionFilter(PEXCEPTION_POINTERS const pExs)
@@ -121,15 +122,21 @@ LONG CALLBACK Exception::ExceptionFilter(PEXCEPTION_POINTERS const pExs)
 		break;
 	}
 
-	Logger::Raw("Trying to save current map.\n");
-	ppmfc::CString fcrash_backup = CFinalSunApp::ExePath();
-	fcrash_backup += "\\fcrash_backup.map";
+	if (CMapData::Instance->MapWidthPlusHeight)
+	{
+		Logger::Raw("Trying to save current map.\n");
+		ppmfc::CString fcrash_backup = CFinalSunApp::ExePath();
+		fcrash_backup += "\\fcrash_backup.map";
 
-	SaveMapExt::IsAutoSaving = true;
-	CFinalSunDlg::Instance->SaveMap(fcrash_backup);
-	SaveMapExt::IsAutoSaving = false;
+		SaveMapExt::IsAutoSaving = true;
+		CFinalSunDlg::Instance->SaveMap(fcrash_backup);
+		SaveMapExt::IsAutoSaving = false;
 
-	MessageBox(CFinalSunDlg::Instance->m_hWnd, "Current MapData has been saved as fcrash_backup.map.", "Fatal Error!", MB_OK | MB_ICONINFORMATION);
+		MessageBox(CFinalSunDlg::Instance->m_hWnd, "Current MapData has been saved as fcrash_backup.map.", "Fatal Error!", MB_OK | MB_ICONINFORMATION);
+	}
+	else
+		MessageBox(CFinalSunDlg::Instance->m_hWnd, "Seems there's no map had been loaded.", "Fatal Error!", MB_OK | MB_ICONINFORMATION);
+	
 	CLoading::Instance->Release();
 
 	CINI::Rules->Release();

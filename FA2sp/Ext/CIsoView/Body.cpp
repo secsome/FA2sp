@@ -32,7 +32,7 @@ void CIsoViewExt::ProgramStartupInit()
 
 void CIsoViewExt::AddTube(int EnterX, int EnterY, int ExitX, int ExitY)
 {
-    Logger::FormatLog("Generating tube from ({}, {}) to ({}, {})\n", EnterX, EnterY, ExitX, ExitY);
+    Logger::Raw("Generating tube from (%d, %d) to (%d, %d)\n", EnterX, EnterY, ExitX, ExitY);
 
     TubeData tube;
     memset(tube.Directions, 0xFF, sizeof(tube.Directions));
