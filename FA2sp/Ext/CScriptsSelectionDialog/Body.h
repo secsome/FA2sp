@@ -1,22 +1,22 @@
 #pragma once
 
-#include <CDialog289.h>
+#include <CScriptsSelectionDialog.h>
 #include "../FA2Expand.h"
 
-class NOVTABLE CDialog289Ext : public CDialog289
+class NOVTABLE CScriptsSelectionDialogExt : public CScriptsSelectionDialog
 {
 public:
 	typedef BOOL(*FuncT_PTM)(MSG* pMsg);
 
-	static CDialog289* Instance;
+	static CScriptsSelectionDialog* Instance;
 
 	//hook function to replace in virtual function map
 	BOOL PreTranslateMessageExt(MSG* pMsg);
 
 	static void ProgramStartupInit();
 
-	CDialog289Ext() {};
-	~CDialog289Ext() {};
+	CScriptsSelectionDialogExt() = delete;
+	~CScriptsSelectionDialogExt() {};
 
 private:
 

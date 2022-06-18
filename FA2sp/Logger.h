@@ -1,9 +1,7 @@
 #pragma once
 
-#include <stdarg.h>
+#include <cstdarg>
 #include <cstdio>
-
-#include <string_view>
 #include <format>
 
 class Logger {
@@ -20,11 +18,6 @@ public:
     static void Put(const char*);
     static void Time(char*);
     static void Wrap(unsigned int cnt = 1);
-
-    template <class... _Types>
-    static void FormatLog(const std::string_view _Fmt, const _Types&... _Args) {
-        Logger::Put(std::format(_Fmt, _Args...).c_str());
-    }
 
 private:
     static char pTime[24];

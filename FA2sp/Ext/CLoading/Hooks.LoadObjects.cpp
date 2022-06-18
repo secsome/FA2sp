@@ -2,6 +2,7 @@
 
 #include <Helpers/Macro.h>
 
+#include <CMapData.h>
 #include <CObjectDatas.h>
 #include <CINI.h>
 #include <Drawing.h>
@@ -74,6 +75,16 @@ DEFINE_HOOK(42CBFC, CFinalSunDlg_CreateMap_ClearCLoadingExtData, 8)
 DEFINE_HOOK(49D2C0, CMapData_LoadMap_ClearCLoadingExtData, 5)
 {
     CLoadingExt::ClearItemTypes();
+    return 0;
+}
+
+DEFINE_HOOK(49D5CC, CLoading_LoadMap_CallMissingRelease, 5)
+{
+    GET(CLoading*, pThis, ESI);
+
+    pThis->Release();
+    pThis->InitializeDDraw();
+
     return 0;
 }
 

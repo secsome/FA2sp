@@ -103,8 +103,8 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
             filepath = filepath.Mid(0, nExtIndex) + ".map";
     }
 
-    Logger::FormatLog("SaveMap : Trying to save map to {}.\n", filepath);
-
+    Logger::Raw("SaveMap : Trying to save map to %s.\n", filepath);
+    
     std::ofstream fout;
     fout.open(filepath, std::ios::out | std::ios::trunc);
 
@@ -119,6 +119,20 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
             "; Get the lastest dll at https://github.com/secsome/FA2sp\n"
             "; Current version : " << PRODUCT_STR << "\n\n";
 
+        // Dirty fix: vanilla YR needs Preview and PreviewPack before Map
+        // So we just put them at first
+
+        if (const auto pSection = pINI->GetSection("Preview"))
+        {
+            for (const auto& pair : pSection->GetEntities())
+                fout << pair.first << "=" << pair.second << "\n";
+        }
+        if (const auto pSection = pINI->GetSection("PreviewPack"))
+        {
+            for (const auto& pair : pSection->GetEntities())
+                fout << pair.first << "=" << pair.second << "\n";
+        }
+
         for (auto& section : pINI->Dict)
         {
             fout << "[" << section.first << "]\n";
@@ -130,13 +144,14 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         fout.flush();
         fout.close();
 
-        Logger::FormatLog("SaveMap : Successfully saved {} sections.\n", pINI->Dict.size());
+        Logger::Raw("SaveMap : Successfully saved %u sections.\n", pINI->Dict.size());
     }
     else
     {
-        auto buffer = std::format("Failed to create file {}.\n", filepath);
-        Logger::Raw(buffer.c_str());
-        ::MessageBox(NULL, buffer.c_str(), "Error", MB_OK | MB_ICONERROR);
+        ppmfc::CString buffer;
+        buffer.Format("Failed to create file %s.\n", filepath);
+        Logger::Put(buffer);
+        ::MessageBox(NULL, buffer, "Error", MB_OK | MB_ICONERROR);
     }
 
     return 0x42A859;
@@ -245,7 +260,7 @@ void SaveMapExt::RemoveEarlySaves()
         if (count <= 0)
             return;
 
-        auto& itr = m.begin();
+        auto itr = m.begin();
         while (count != 0)
         {
             buffer.Format("%s\\AutoSaves\\%s\\%s", CFinalSunApp::ExePath(), mapName, itr->second);
