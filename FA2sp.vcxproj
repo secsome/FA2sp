@@ -130,6 +130,7 @@
     <ClCompile Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.cpp" />
     <ClCompile Include="FA2sp\Ext\CAITriggerTypes\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CChangeMapSize\Hooks.cpp" />
+    <ClCompile Include="FA2sp\Ext\CCreateMap2\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CCreateMap3A\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CEasterEgg\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CFinalSunApp\Body.cpp" />
@@ -263,6 +264,7 @@
     <ResourceCompile Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.rc" />
     <ResourceCompile Include="FA2sp\UI\CAircraftDialog.rc" />
     <ResourceCompile Include="FA2sp\UI\CAITriggerTypes.rc" />
+    <ResourceCompile Include="FA2sp\UI\CCreateMap2.rc" />
     <ResourceCompile Include="FA2sp\UI\CInfantryDialog.rc" />
     <ResourceCompile Include="FA2sp\UI\CLighting.rc" />
     <ResourceCompile Include="FA2sp\UI\CLoading.rc" />

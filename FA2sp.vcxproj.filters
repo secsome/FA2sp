@@ -407,6 +407,9 @@
     <ClCompile Include="FA2sp\Source\CIsoView.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CCreateMap2\Hooks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FA2sp\FA2sp.rc">
@@ -470,6 +473,9 @@
       <Filter>资源文件</Filter>
     </ResourceCompile>
     <ResourceCompile Include="FA2sp\UI\CLoading.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="FA2sp\UI\CCreateMap2.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>
