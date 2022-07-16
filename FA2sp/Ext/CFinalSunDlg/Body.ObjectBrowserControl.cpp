@@ -883,6 +883,11 @@ void CViewObjectsExt::ApplyPropertyBrush_Vehicle(int nIndex)
     ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
 }
 
+bool CViewObjectsExt::IsIgnored(const char* pItem)
+{
+    return IgnoreSet.find(pItem) != IgnoreSet.end();
+}
+
 int CViewObjectsExt::GuessType(const char* pRegName)
 {
     if (ExtSets[Set_Building].find(pRegName) != ExtSets[Set_Building].end())

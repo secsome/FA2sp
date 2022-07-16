@@ -49,6 +49,7 @@ bool ExtConfigs::VerticalLayout;
 bool ExtConfigs::FastResize;
 int ExtConfigs::RecentFileLimit;
 int ExtConfigs::MultiSelectionColor;
+bool ExtConfigs::RandomTerrainObjects;
 
 MultimapHelper Variables::Rules = { &CINI::Rules(), &CINI::CurrentDocument() };
 MultimapHelper Variables::FAData = { &CINI::FAData() };
@@ -111,6 +112,8 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::RecentFileLimit = std::clamp(CINI::FAData->GetInteger("ExtConfigs", "RecentFileLimit"), 4, 9);
 
 	ExtConfigs::MultiSelectionColor = CINI::FAData->GetColor("ExtConfigs", "MultiSelectionColor", 0x00FF00);
+
+	ExtConfigs::RandomTerrainObjects = CINI::FAData->GetBool("ExtConfigs", "RandomTerrainObjects");
 }
 
 // DllMain

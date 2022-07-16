@@ -160,6 +160,8 @@
     <ClCompile Include="FA2sp\Ext\CPropertyInfantry\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyUnit\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyUnit\Hooks.cpp" />
+    <ClCompile Include="FA2sp\Ext\CRandomTree\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CRandomTree\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Body.CurrentScript.cpp" />
     <ClCompile Include="FA2sp\Ext\CScriptTypes\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CSingleplayerSettings\Body.cpp" />
@@ -224,6 +226,7 @@
     <ClInclude Include="FA2sp\Ext\CPropertyBuilding\Body.h" />
     <ClInclude Include="FA2sp\Ext\CPropertyInfantry\Body.h" />
     <ClInclude Include="FA2sp\Ext\CPropertyUnit\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CRandomTree\Body.h" />
     <ClInclude Include="FA2sp\Ext\CScriptTypes\Functional.h" />
     <ClInclude Include="FA2sp\Ext\CSingleplayerSettings\Body.h" />
     <ClInclude Include="FA2sp\Ext\CTeamTypes\Body.h" />

@@ -98,6 +98,8 @@ public:
     static void ApplyPropertyBrush_Aircraft(int nIndex);
     static void ApplyPropertyBrush_Vehicle(int nIndex);
     
+    static bool IsIgnored(const char* pItem);
+
     ppmfc::CString QueryUIName(const char* pRegName, bool bOnlyOneLine = true);
 
 public:

@@ -58,6 +58,7 @@ public:
     static bool FastResize;
     static int RecentFileLimit;
     static int MultiSelectionColor;
+    static bool RandomTerrainObjects;
 };
 
 class Variables
