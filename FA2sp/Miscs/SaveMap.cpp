@@ -121,20 +121,31 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
 
         // Dirty fix: vanilla YR needs Preview and PreviewPack before Map
         // So we just put them at first
+        //
+        // @vananaSun: Some inspiration on implementing this properly:
+        //             https://github.com/vananasun/yr-maptool/blob/df76371557575a3d232e05414e9a827d6603270b/internal/map_file.py#L103
+        //             An advantage of this is that editing maps in a text editor becomes more straightforward.
 
         if (const auto pSection = pINI->GetSection("Preview"))
         {
+            fout << "[Preview]\n";
             for (const auto& pair : pSection->GetEntities())
                 fout << pair.first << "=" << pair.second << "\n";
+            fout << "\n";
         }
         if (const auto pSection = pINI->GetSection("PreviewPack"))
         {
+            fout << "[PreviewPack]\n";
             for (const auto& pair : pSection->GetEntities())
                 fout << pair.first << "=" << pair.second << "\n";
+            fout << "\n";
         }
 
         for (auto& section : pINI->Dict)
         {
+            if (!strcmp(section.first, "Preview") || !strcmp(section.first, "PreviewPack"))
+                continue; // do not write Preview and PreviewPack again
+
             fout << "[" << section.first << "]\n";
             for (auto& pair : section.second.GetEntities())
                 fout << pair.first << "=" << pair.second << "\n";
