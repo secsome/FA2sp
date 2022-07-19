@@ -120,17 +120,24 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
             "; Current version : " << PRODUCT_STR << "\n\n";
 
         // Dirty fix: vanilla YR needs Preview and PreviewPack before Map
-        // So we just put them at first
-
+        // So we just put them at first.
+        // 
+        // NOTE: Duplicate section doesn't affect the game reading it, but will
+        // significantly slow down our map saving speed. So just have it duplicated
+        // is fine .
         if (const auto pSection = pINI->GetSection("Preview"))
         {
+            fout << "[Preview]\n";
             for (const auto& pair : pSection->GetEntities())
                 fout << pair.first << "=" << pair.second << "\n";
+            fout << "\n";
         }
         if (const auto pSection = pINI->GetSection("PreviewPack"))
         {
+            fout << "[PreviewPack]\n";
             for (const auto& pair : pSection->GetEntities())
                 fout << pair.first << "=" << pair.second << "\n";
+            fout << "\n";
         }
 
         for (auto& section : pINI->Dict)
