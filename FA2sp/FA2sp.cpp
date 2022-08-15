@@ -153,6 +153,10 @@ static ULONG_PTR ulCookie;
 bool DetachFromDebugger();
 DEFINE_HOOK(537129, ExeRun, 9)
 {
+	Logger::Initialize();
+	Logger::Info(APPLY_INFO);
+	Logger::Wrap(1);
+
 	if (DetachFromDebugger())
 		Logger::Info("Syringe detached!\n");
 	else
@@ -167,9 +171,7 @@ DEFINE_HOOK(537129, ExeRun, 9)
 		if (MessageBox(nullptr, MUTEX_INIT_ERROR_MSG, MUTEX_INIT_ERROR_TIT, MB_YESNO | MB_ICONQUESTION) != IDYES)
 			ExitProcess(114514);
 	}
-	Logger::Initialize();
-	Logger::Info(APPLY_INFO);
-	Logger::Wrap(1);
+	
 	FA2Expand::ExeRun();
 	DrawStuff::init();
 
@@ -313,8 +315,13 @@ bool DetachFromDebugger()
 				status = NtRemoveProcessDebug(hCurrentProcess, hDebug);
 				if (0 <= status)
 				{
-					WinExec(std::format("taskkill /F /PID {}", pid).c_str(), SW_HIDE);
-					return true;
+					HANDLE hDbgProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
+					if (INVALID_HANDLE_VALUE != hDbgProcess)
+					{
+						BOOL ret = TerminateProcess(hDbgProcess, EXIT_SUCCESS);
+						CloseHandle(hDbgProcess);
+						return ret;
+					}
 				}
 			}
 			NtClose(hDebug);
