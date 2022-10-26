@@ -119,12 +119,8 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
             "; Get the lastest dll at https://github.com/secsome/FA2sp\n"
             "; Current version : " << PRODUCT_STR << "\n\n";
 
-        // Dirty fix: vanilla YR needs Preview and PreviewPack before Map
+        // Dirty fix: vanilla YR needs "Preview" and "PreviewPack" before "Map"
         // So we just put them at first.
-        // 
-        // NOTE: Duplicate section doesn't affect the game reading it, but will
-        // significantly slow down our map saving speed. So just have it duplicated
-        // is fine .
         if (const auto pSection = pINI->GetSection("Preview"))
         {
             fout << "[Preview]\n";
@@ -142,6 +138,9 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
 
         for (auto& section : pINI->Dict)
         {
+            if (!strcmp(section.first, "Preview") || !strcmp(section.first, "PreviewPack"))
+                continue;
+
             fout << "[" << section.first << "]\n";
             for (auto& pair : section.second.GetEntities())
                 fout << pair.first << "=" << pair.second << "\n";

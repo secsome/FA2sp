@@ -99,7 +99,7 @@
     <ClInclude Include="FA2sp\Miscs\Palettes.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="FA2sp\vxl_drawing_lib.h">
+    <ClInclude Include="FA2sp\CncVxlRenderText.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FA2sp\Miscs\DrawStuff.h">

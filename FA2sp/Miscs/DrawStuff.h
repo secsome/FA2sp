@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../FA2sp.h"
+#include "../CncVxlRenderText.h"
 
 #include <MFC/ppmfc_cstring.h>
 

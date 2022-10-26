@@ -335,7 +335,7 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 						int turdeltaY = CINI::FAData->GetInteger("BuildingVoxelTurretsRA2", pKey);
 
 						VXL_Add(pTurImages[i], turrect[i][2] + turdeltaX, turrect[i][3] + turdeltaY, turrect[i][0], turrect[i][1]);
-						delete[] pTurImages[i]; // this buffer is created inside the lib
+						CncImgFree(pTurImages[i]);
 
 						if (pBarlImages[i])
 						{
@@ -345,7 +345,7 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 							int barldeltaY = CINI::FAData->GetInteger("BuildingVoxelBarrelsRA2", pKey);
 
 							VXL_Add(pBarlImages[i], barlrect[i][2]+ barldeltaX, barlrect[i][3]+ barldeltaY, barlrect[i][0], barlrect[i][1]);
-							delete[] pBarlImages[i];
+							CncImgFree(pBarlImages[i]);
 						}
 					}
 
@@ -536,7 +536,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 				if (pImage[i])
 				{
 					VXL_Add(pImage[i], rect[i][2], rect[i][3], rect[i][0], rect[i][1]);
-					delete[] pImage[i];
+					CncImgFree(pImage[i]);
 				}
 				ppmfc::CString pKey;
 				if (pTurretImage[i])
@@ -546,7 +546,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 					pKey.Format("%sY%d", ID, i);
 					int turdeltaY = CINI::FAData->GetInteger("VehicleVoxelTurretsRA2", pKey);
 					VXL_Add(pTurretImage[i], turretrect[i][2] + turdeltaX, turretrect[i][3] + turdeltaY, turretrect[i][0], turretrect[i][1]);
-					delete[] pTurretImage[i];
+					CncImgFree(pTurretImage[i]);
 
 					if (pBarrelImage[i])
 					{
@@ -556,7 +556,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 						int barldeltaY = CINI::FAData->GetInteger("VehicleVoxelBarrelsRA2", pKey);
 
 						VXL_Add(pBarrelImage[i], barrelrect[i][2] + barldeltaX, barrelrect[i][3] + barldeltaY, barrelrect[i][0], barrelrect[i][1]);
-						delete[] pBarrelImage[i];
+						CncImgFree(pBarrelImage[i]);
 					}
 				}
 
