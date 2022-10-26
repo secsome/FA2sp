@@ -288,7 +288,7 @@
     <ResourceCompile Include="FA2sp\UI\CUnitDialog.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FA2sp\rt_manif.bin" />
+    <None Include="FA2sp\FA2sp.manifest" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

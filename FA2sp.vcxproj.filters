@@ -489,7 +489,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="FA2sp\rt_manif.bin">
+    <None Include="FA2sp\FA2sp.manifest">
       <Filter>资源文件</Filter>
     </None>
   </ItemGroup>
