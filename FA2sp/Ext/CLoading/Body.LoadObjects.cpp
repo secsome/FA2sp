@@ -7,7 +7,7 @@
 #include <Drawing.h>
 #include <CPalette.h>
 
-#include "../../Miscs/DrawStuff.h"
+#include "../../Miscs/VoxelDrawer.h"
 #include "../../Miscs/Palettes.h"
 #include "../../FA2sp.h"
 
@@ -19,31 +19,6 @@ ppmfc::CString CLoadingExt::GetImageName(ppmfc::CString ID, int nFacing)
 {
 	ID.Format("%s%d", ID, nFacing);
 	return ID;
-
-	//ppmfc::CString ImageID;
-	//ppmfc::CString DictName;
-	//CLoadingExt* pLoading = (CLoadingExt*)CLoading::Instance();
-	//switch (pLoading->GetItemType(ID))
-	//{
-	//case ObjectType::Infantry:
-	//{
-	//	ImageID = pLoading->GetInfantryFileID(ID);
-	//	DictName.Format("%s%d", ImageID, nFacing);
-	//	return DictName;
-	//}
-	//case ObjectType::Aircraft:
-	//case ObjectType::Vehicle:
-	//	ImageID = pLoading->GetVehicleOrAircraftFileID(ID);
-	//	DictName.Format("%s%d", ImageID, nFacing);
-	//	return DictName;
-	//case ObjectType::Building:
-	// 	ImageID = pLoading->GetBuildingFileID(ID);
-	// 	DictName.Format("%s%d", ImageID, nFacing);
-	// 	return DictName;
-	//default: // NEVER GET TO HERE PLS
-	//	return "NMSL";
-	//}
-
 }
 
 CLoadingExt::ObjectType CLoadingExt::GetItemType(ppmfc::CString ID)
@@ -283,38 +258,47 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 				ppmfc::CString BarlName = ID + "barl";
 
 				
-				if (!DrawStuff::is_vpl_loaded())
-					DrawStuff::load_vpl("voxels.vpl");
+				if (!VoxelDrawer::IsVPLLoaded())
+					VoxelDrawer::LoadVPLFile("voxels.vpl");
 
-				unsigned char* pTurImages[8]{ nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr };
-				unsigned char* pBarlImages[8]{ nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr };
-				int turrect[8][4] = { 0 }, barlrect[8][4] = {0};
+				std::vector<unsigned char*> pTurImages, pBarlImages;
+				pTurImages.resize(ExtConfigs::MaxVoxelFacing, nullptr);
+				pBarlImages.resize(ExtConfigs::MaxVoxelFacing, nullptr);
+				std::vector<VoxelRectangle> turrect, barlrect;
+				turrect.resize(ExtConfigs::MaxVoxelFacing);
+				barlrect.resize(ExtConfigs::MaxVoxelFacing);
 
 				ppmfc::CString VXLName = BarlName + ".vxl";
 				ppmfc::CString HVAName = BarlName + ".hva";
-				if (DrawStuff::load_vxl(VXLName))
-					if (DrawStuff::load_hva(HVAName))
+				if (VoxelDrawer::LoadVXLFile(VXLName))
+				{
+					if (VoxelDrawer::LoadHVAFile(HVAName))
+					{
 						for (int i = 0; i < 8; ++i)
 						{
 							// (13 - i) % 8 for facing fix
-							bool result = DrawStuff::get_to_image((13 - i) % 8, pBarlImages[i],
-								barlrect[i][0], barlrect[i][1], barlrect[i][2], barlrect[i][3], turzadjust);
+							bool result = VoxelDrawer::GetImageData((13 - i) % 8, pBarlImages[i], barlrect[i], turzadjust);
 							if (!result)
 								break;
 						}
+					}
+				}
 
 				VXLName = TurName + ".vxl";
 				HVAName = TurName + ".hva";
-				if (DrawStuff::load_vxl(VXLName))
-					if (DrawStuff::load_hva(HVAName))
+				if (VoxelDrawer::LoadVXLFile(VXLName))
+				{
+					if (VoxelDrawer::LoadHVAFile(HVAName))
+					{
 						for (int i = 0; i < 8; ++i)
 						{
 							// (13 - i) % 8 for facing fix
-							bool result = DrawStuff::get_to_image((13 - i) % 8, pTurImages[i],
-								turrect[i][0], turrect[i][1], turrect[i][2], turrect[i][3], pBarlImages[i] ? 0 : turzadjust);
+							bool result = VoxelDrawer::GetImageData((13 - i) % 8, pTurImages[i], turrect[i], pBarlImages[i] ? 0 : turzadjust);
 							if (!result)
 								break;
 						}
+					}
+				}
 
 				for (int i = 0; i < 8; ++i)
 				{
@@ -334,7 +318,7 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 						pKey.Format("%sY%d", ID, (15 - i) % 8);
 						int turdeltaY = CINI::FAData->GetInteger("BuildingVoxelTurretsRA2", pKey);
 
-						VXL_Add(pTurImages[i], turrect[i][2] + turdeltaX, turrect[i][3] + turdeltaY, turrect[i][0], turrect[i][1]);
+						VXL_Add(pTurImages[i], turrect[i].X + turdeltaX, turrect[i].Y + turdeltaY, turrect[i].W, turrect[i].H);
 						CncImgFree(pTurImages[i]);
 
 						if (pBarlImages[i])
@@ -344,7 +328,7 @@ void CLoadingExt::LoadBuilding(ppmfc::CString ID)
 							pKey.Format("%sY%d", ID, (15 - i) % 8);
 							int barldeltaY = CINI::FAData->GetInteger("BuildingVoxelBarrelsRA2", pKey);
 
-							VXL_Add(pBarlImages[i], barlrect[i][2]+ barldeltaX, barlrect[i][3]+ barldeltaY, barlrect[i][0], barlrect[i][1]);
+							VXL_Add(pBarlImages[i], barlrect[i].X + barldeltaX, barlrect[i].Y + barldeltaY, barlrect[i].W, barlrect[i].H);
 							CncImgFree(pBarlImages[i]);
 						}
 					}
@@ -467,26 +451,34 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 		ppmfc::CString FileName = ImageID + ".vxl";
 		ppmfc::CString HVAName = ImageID + ".hva";
 
-		if (!DrawStuff::is_vpl_loaded())
-			DrawStuff::load_vpl("voxels.vpl");
+		if (!VoxelDrawer::IsVPLLoaded())
+			VoxelDrawer::LoadVPLFile("voxels.vpl");
 
 		ppmfc::CString PaletteName = CINI::Art->GetString(ArtID, "Palette", "unit");
 		GetFullPaletteName(PaletteName);
 
-		unsigned char* pImage[8]{ nullptr,nullptr ,nullptr ,nullptr ,nullptr ,nullptr ,nullptr ,nullptr };
-		unsigned char* pTurretImage[8]{ nullptr ,nullptr ,nullptr ,nullptr ,nullptr ,nullptr ,nullptr ,nullptr };
-		unsigned char* pBarrelImage[8]{ nullptr ,nullptr ,nullptr ,nullptr ,nullptr ,nullptr ,nullptr ,nullptr };
-		int rect[8][4], turretrect[8][4], barrelrect[8][4];
-		if (DrawStuff::load_vxl(FileName))
-			if (DrawStuff::load_hva(HVAName))
+		std::vector<unsigned char*> pImage, pTurretImage, pBarrelImage;
+		pImage.resize(ExtConfigs::MaxVoxelFacing, nullptr);
+		pTurretImage.resize(ExtConfigs::MaxVoxelFacing, nullptr);
+		pBarrelImage.resize(ExtConfigs::MaxVoxelFacing, nullptr);
+		std::vector<VoxelRectangle> rect, turretrect, barrelrect;
+		rect.resize(ExtConfigs::MaxVoxelFacing);
+		turretrect.resize(ExtConfigs::MaxVoxelFacing);
+		barrelrect.resize(ExtConfigs::MaxVoxelFacing);
+
+		if (VoxelDrawer::LoadVXLFile(FileName))
+		{
+			if (VoxelDrawer::LoadHVAFile(HVAName))
+			{
 				for (int i = 0; i < 8; ++i)
 				{
 					// (i+6) % 8 to fix the facing
-					bool result = DrawStuff::get_to_image((i + 6) % 8, pImage[i], 
-						rect[i][0], rect[i][1], rect[i][2], rect[i][3]);
+					bool result = VoxelDrawer::GetImageData((i + 6) % 8, pImage[i], rect[i]);
 					if (!result)
 						return;
 				}
+			}
+		}
 
 		if (bHasTurret)
 		{
@@ -498,31 +490,35 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 
 			ppmfc::CString turFileName = ImageID + "tur.vxl";
 			ppmfc::CString turHVAName = ImageID + "tur.hva";
-			if (DrawStuff::load_vxl(turFileName))
-				if (DrawStuff::load_hva(turHVAName))
+			if (VoxelDrawer::LoadVXLFile(turFileName))
+			{
+				if (VoxelDrawer::LoadHVAFile(turHVAName))
+				{
 					for (int i = 0; i < 8; ++i)
 					{
 						// (i+6) % 8 to fix the facing
-						bool result = DrawStuff::get_to_image((i + 6) % 8, pTurretImage[i],
-							turretrect[i][0], turretrect[i][1], turretrect[i][2], turretrect[i][3], F, L, H);
-
+						bool result = VoxelDrawer::GetImageData((i + 6) % 8, pTurretImage[i], turretrect[i], F, L, H);
 						if (!result)
 							break;
 					}
+				}
+			}
 
 			ppmfc::CString barlFileName = ImageID + "barl.vxl";
 			ppmfc::CString barlHVAName = ImageID + "barl.hva";
-			if (DrawStuff::load_vxl(barlFileName))
-				if (DrawStuff::load_hva(barlHVAName))
+			if (VoxelDrawer::LoadVXLFile(barlFileName))
+			{
+				if (VoxelDrawer::LoadHVAFile(barlHVAName))
+				{
 					for (int i = 0; i < 8; ++i)
 					{
 						// (i+6) % 8 to fix the facing
-						bool result = DrawStuff::get_to_image((i + 6) % 8, pBarrelImage[i],
-							barrelrect[i][0], barrelrect[i][1], barrelrect[i][2], barrelrect[i][3], F, L, H);
-
+						bool result = VoxelDrawer::GetImageData((i + 6) % 8, pBarrelImage[i], barrelrect[i], F, L, H);
 						if (!result)
 							break;
 					}
+				}
+			}
 
 			for (int i = 0; i < 8; ++i)
 			{
@@ -535,7 +531,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 
 				if (pImage[i])
 				{
-					VXL_Add(pImage[i], rect[i][2], rect[i][3], rect[i][0], rect[i][1]);
+					VXL_Add(pImage[i], rect[i].X, rect[i].Y, rect[i].W, rect[i].H);
 					CncImgFree(pImage[i]);
 				}
 				ppmfc::CString pKey;
@@ -545,7 +541,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 					int turdeltaX = CINI::FAData->GetInteger("VehicleVoxelTurretsRA2", pKey);
 					pKey.Format("%sY%d", ID, i);
 					int turdeltaY = CINI::FAData->GetInteger("VehicleVoxelTurretsRA2", pKey);
-					VXL_Add(pTurretImage[i], turretrect[i][2] + turdeltaX, turretrect[i][3] + turdeltaY, turretrect[i][0], turretrect[i][1]);
+					VXL_Add(pTurretImage[i], turretrect[i].X + turdeltaX, turretrect[i].Y + turdeltaY, turretrect[i].W, turretrect[i].H);
 					CncImgFree(pTurretImage[i]);
 
 					if (pBarrelImage[i])
@@ -555,7 +551,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 						pKey.Format("%sY%d", ID, i);
 						int barldeltaY = CINI::FAData->GetInteger("VehicleVoxelBarrelsRA2", pKey);
 
-						VXL_Add(pBarrelImage[i], barrelrect[i][2] + barldeltaX, barrelrect[i][3] + barldeltaY, barrelrect[i][0], barrelrect[i][1]);
+						VXL_Add(pBarrelImage[i], barrelrect[i].X + barldeltaX, barrelrect[i].Y + barldeltaY, barrelrect[i].W, barrelrect[i].H);
 						CncImgFree(pBarrelImage[i]);
 					}
 				}
@@ -576,7 +572,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 				unsigned char* outBuffer;
 				int outW = 0x100, outH = 0x100;
 
-				VXL_Add(pImage[i], rect[i][2], rect[i][3], rect[i][0], rect[i][1]);
+				VXL_Add(pImage[i], rect[i].X, rect[i].Y, rect[i].W, rect[i].H);
 				delete[] pImage[i];
 				VXL_GetAndClear(outBuffer, &outW, &outH);
 

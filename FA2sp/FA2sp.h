@@ -59,6 +59,7 @@ public:
     static int RecentFileLimit;
     static int MultiSelectionColor;
     static bool RandomTerrainObjects;
+    static int MaxVoxelFacing;
 };
 
 class Variables

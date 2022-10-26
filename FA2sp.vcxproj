@@ -181,7 +181,7 @@
     <ClCompile Include="FA2sp\Helpers\MultimapHelper.cpp" />
     <ClCompile Include="FA2sp\Hooks.Debug.cpp" />
     <ClCompile Include="FA2sp\MFCWindow\Hooks.cpp" />
-    <ClCompile Include="FA2sp\Miscs\DrawStuff.cpp" />
+    <ClCompile Include="FA2sp\Miscs\VoxelDrawer.cpp" />
     <ClCompile Include="FA2sp\Miscs\Exception.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.PreviewFix.cpp" />
     <ClCompile Include="FA2sp\Miscs\MultiSelection.cpp" />
@@ -249,7 +249,7 @@
     <ClInclude Include="FA2sp\Helpers\TheaterHelpers.h" />
     <ClInclude Include="FA2sp\Helpers\Templates.hpp" />
     <ClInclude Include="FA2sp\Logger.h" />
-    <ClInclude Include="FA2sp\Miscs\DrawStuff.h" />
+    <ClInclude Include="FA2sp\Miscs\VoxelDrawer.h" />
     <ClInclude Include="FA2sp\Miscs\Exception.h" />
     <ClInclude Include="FA2sp\Miscs\MultiSelection.h" />
     <ClInclude Include="FA2sp\Miscs\Palettes.h" />
