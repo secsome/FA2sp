@@ -1,0 +1,16 @@
+#include <Windows.h>
+
+258 DIALOG 0, 0, 222, 129
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Create new map - Step 2"
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+FONT 8, "Tahoma"
+{
+   CONTROL "Next", 1, BUTTON, BS_DEFPUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 165, 108, 50, 14 
+   CONTROL "Cancel", 2, BUTTON, BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 7, 108, 50, 14 
+   CONTROL "Please select here if you want to create a completely new map from scratch or if you want to import an already existing map (Note: You cannot import maps created by the random map generator of RA2)", -1, STATIC, SS_LEFT | WS_CHILD | WS_VISIBLE | WS_GROUP, 7, 7, 208, 37 
+   CONTROL "Create a completely new map", 1415, BUTTON, BS_AUTORADIOBUTTON | WS_CHILD | WS_VISIBLE | WS_GROUP, 7, 55, 208, 11 
+   CONTROL "Import an existing map or bitmap (BMP)", 1370, BUTTON, BS_AUTORADIOBUTTON | WS_CHILD | WS_VISIBLE, 7, 67, 208, 11 
+   // Issue #22
+   CONTROL "Activate AI Triggers (results in better AI)", 1440, BUTTON, BS_AUTOCHECKBOX | WS_CHILD | WS_TABSTOP & ~WS_VISIBLE, 7, 83, 208, 14
+}

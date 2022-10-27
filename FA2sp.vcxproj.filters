@@ -99,10 +99,10 @@
     <ClInclude Include="FA2sp\Miscs\Palettes.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="FA2sp\vxl_drawing_lib.h">
+    <ClInclude Include="FA2sp\CncVxlRenderText.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="FA2sp\Miscs\DrawStuff.h">
+    <ClInclude Include="FA2sp\Miscs\VoxelDrawer.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.h">
@@ -157,6 +157,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FA2sp\Source\CIsoView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\Ext\CRandomTree\Body.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\Algorithms\base64.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -293,7 +299,7 @@
     <ClCompile Include="FA2sp\Ext\CTriggerAction\Hooks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Miscs\DrawStuff.cpp">
+    <ClCompile Include="FA2sp\Miscs\VoxelDrawer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Ext\CFinalSunDlg\Body.cpp">
@@ -407,6 +413,18 @@
     <ClCompile Include="FA2sp\Source\CIsoView.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CCreateMap2\Hooks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CRandomTree\Hooks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Ext\CRandomTree\Body.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Algorithms\base64.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FA2sp\FA2sp.rc">
@@ -472,9 +490,12 @@
     <ResourceCompile Include="FA2sp\UI\CLoading.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+    <ResourceCompile Include="FA2sp\UI\CCreateMap2.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="FA2sp\rt_manif.bin">
+    <None Include="FA2sp\FA2sp.manifest">
       <Filter>资源文件</Filter>
     </None>
   </ItemGroup>

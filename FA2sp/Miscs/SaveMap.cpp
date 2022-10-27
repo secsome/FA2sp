@@ -119,22 +119,28 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
             "; Get the lastest dll at https://github.com/secsome/FA2sp\n"
             "; Current version : " << PRODUCT_STR << "\n\n";
 
-        // Dirty fix: vanilla YR needs Preview and PreviewPack before Map
-        // So we just put them at first
-
+        // Dirty fix: vanilla YR needs "Preview" and "PreviewPack" before "Map"
+        // So we just put them at first.
         if (const auto pSection = pINI->GetSection("Preview"))
         {
+            fout << "[Preview]\n";
             for (const auto& pair : pSection->GetEntities())
                 fout << pair.first << "=" << pair.second << "\n";
+            fout << "\n";
         }
         if (const auto pSection = pINI->GetSection("PreviewPack"))
         {
+            fout << "[PreviewPack]\n";
             for (const auto& pair : pSection->GetEntities())
                 fout << pair.first << "=" << pair.second << "\n";
+            fout << "\n";
         }
 
         for (auto& section : pINI->Dict)
         {
+            if (!strcmp(section.first, "Preview") || !strcmp(section.first, "PreviewPack"))
+                continue;
+
             fout << "[" << section.first << "]\n";
             for (auto& pair : section.second.GetEntities())
                 fout << pair.first << "=" << pair.second << "\n";

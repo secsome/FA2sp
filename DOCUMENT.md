@@ -60,10 +60,11 @@ NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!~~
           - $1$ = Do no generate new preview
           - $2$ = Always generate hidden preview
           - defaults to $0$.
-        - `SaveMap.DefaultPreviewOptionSP` = **INTEGER** ; Same as the **MP** one but for **SP** maps, defaults to $1$.
+        - `SaveMap.DefaultPreviewOptionSP` = **INTEGER** ; Same as the **MP** one but for **SP** maps, defaults to $1$
         - `VerticalLayout` = **BOOLEAN** ; Determines if FA2 will make the bottom view go to the right side
         - `RecentFileLimit` = **INTEGER** ; How many recent files should I keep? ranges from $4$ to $9$
         - `MultiSelectionColor` = **COLORREF** ; Determines the back color of selected tiles
+        - `RandomTerrainObjects` = **BOOLEAN** ; Determines if FA2 will display all terrain objects in random tree dialog, defaults to **false**
     - **`[Sides]`** (**x** means this item is **essensial**, fa2sp need this section to work properly)
         - Contains a list of sides registered in rules
         ```ini

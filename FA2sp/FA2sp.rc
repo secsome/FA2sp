@@ -42,4 +42,4 @@ BEGIN
     VK_F2,          40024,                  VIRTKEY, NOINVERT
 END
 
-101        RT_MANIFEST             "rt_manif.bin"
+101 RT_MANIFEST "FA2sp.manifest"

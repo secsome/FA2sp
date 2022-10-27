@@ -75,7 +75,7 @@ DEFINE_HOOK(45BE1D, CIsoView_OnMouseMove_TheaterInfo, 5)
 			if (info.Ramp == pTile->TileSet || info.Morphable == pTile->TileSet)
 				if (pTile->Morphable)
 				{
-					CMapData::Instance->sub_416550(nIndex, info.MorphableIndex);
+					CMapData::Instance->SetTileAt(nIndex, info.MorphableIndex);
 					break;
 				}
 	}
@@ -89,7 +89,7 @@ DEFINE_HOOK(45BE1D, CIsoView_OnMouseMove_TheaterInfo, 5)
 				break;
 			}
 
-		CMapData::Instance->sub_416550(nIndex, nRampIndex + nRampType - 1);
+		CMapData::Instance->SetTileAt(nIndex, nRampIndex + nRampType - 1);
 	}	return 0x45BEAF;
 }
 
@@ -131,7 +131,7 @@ DEFINE_HOOK(45E7A6, CMapData_sub_45D090_TheaterInfo_2, 7)
 				break;
 			}
 
-		CMapData::Instance->sub_416550(nIndex, nRampIndex + nRampType - 1);
+		CMapData::Instance->SetTileAt(nIndex, nRampIndex + nRampType - 1);
 	}
 
 	return 0x45E801;
@@ -190,7 +190,7 @@ DEFINE_HOOK(4649D0, CIsoView_OnLButtonDown_TheaterInfo, 5)
 			if (info.Ramp == pTile->TileSet || info.Morphable == pTile->TileSet)
 				if (pTile->Morphable)
 				{
-					CMapData::Instance->sub_416550(nIndex, info.MorphableIndex);
+					CMapData::Instance->SetTileAt(nIndex, info.MorphableIndex);
 					nRampType = R->Base<int>(0x8);
 					break;
 				}
@@ -205,7 +205,7 @@ DEFINE_HOOK(4649D0, CIsoView_OnLButtonDown_TheaterInfo, 5)
 				break;
 			}
 
-		CMapData::Instance->sub_416550(nIndex, nRampIndex + nRampType - 1);
+		CMapData::Instance->SetTileAt(nIndex, nRampIndex + nRampType - 1);
 	}
 
 	return R->Origin() + 0x91;

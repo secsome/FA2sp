@@ -3,7 +3,7 @@
 
 #include "Helpers/MutexHelper.h"
 #include "Miscs/Palettes.h"
-#include "Miscs/DrawStuff.h"
+#include "Miscs/VoxelDrawer.h"
 #include "Miscs/Exception.h"
 
 #include <CINI.h>
@@ -49,6 +49,8 @@ bool ExtConfigs::VerticalLayout;
 bool ExtConfigs::FastResize;
 int ExtConfigs::RecentFileLimit;
 int ExtConfigs::MultiSelectionColor;
+bool ExtConfigs::RandomTerrainObjects;
+int ExtConfigs::MaxVoxelFacing;
 
 MultimapHelper Variables::Rules = { &CINI::Rules(), &CINI::CurrentDocument() };
 MultimapHelper Variables::FAData = { &CINI::FAData() };
@@ -111,6 +113,30 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::RecentFileLimit = std::clamp(CINI::FAData->GetInteger("ExtConfigs", "RecentFileLimit"), 4, 9);
 
 	ExtConfigs::MultiSelectionColor = CINI::FAData->GetColor("ExtConfigs", "MultiSelectionColor", 0x00FF00);
+
+	ExtConfigs::RandomTerrainObjects = CINI::FAData->GetBool("ExtConfigs", "RandomTerrainObjects");
+
+	ExtConfigs::MaxVoxelFacing = CINI::FAData->GetInteger("ExtConfigs", "MaxVoxelFacing", 8);
+	auto Int2Highest = [](unsigned int v)
+	{
+		unsigned int r; // result of log2(v) will go here
+		unsigned int shift;
+
+		r = static_cast<unsigned int>(v > 0xFFFF) << 4; v >>= r;
+		shift = static_cast<unsigned int>(v > 0xFF) << 3; v >>= shift; r |= shift;
+		shift = static_cast<unsigned int>(v > 0xF) << 2; v >>= shift; r |= shift;
+		shift = static_cast<unsigned int>(v > 0x3) << 1; v >>= shift; r |= shift;
+		r |= (v >> 1);
+		return r;
+	};
+	ExtConfigs::MaxVoxelFacing = 1 << Int2Highest(ExtConfigs::MaxVoxelFacing);
+	if (ExtConfigs::MaxVoxelFacing < 8)
+		ExtConfigs::MaxVoxelFacing = 8;
+	else if (ExtConfigs::MaxVoxelFacing > 256)
+		ExtConfigs::MaxVoxelFacing = 256;
+
+	// Disable it for now
+	ExtConfigs::MaxVoxelFacing = 8;
 }
 
 // DllMain
@@ -150,6 +176,10 @@ static ULONG_PTR ulCookie;
 bool DetachFromDebugger();
 DEFINE_HOOK(537129, ExeRun, 9)
 {
+	Logger::Initialize();
+	Logger::Info(APPLY_INFO);
+	Logger::Wrap(1);
+
 	if (DetachFromDebugger())
 		Logger::Info("Syringe detached!\n");
 	else
@@ -164,11 +194,9 @@ DEFINE_HOOK(537129, ExeRun, 9)
 		if (MessageBox(nullptr, MUTEX_INIT_ERROR_MSG, MUTEX_INIT_ERROR_TIT, MB_YESNO | MB_ICONQUESTION) != IDYES)
 			ExitProcess(114514);
 	}
-	Logger::Initialize();
-	Logger::Info(APPLY_INFO);
-	Logger::Wrap(1);
+	
 	FA2Expand::ExeRun();
-	DrawStuff::init();
+	VoxelDrawer::Initalize();
 
 #ifdef ENABLE_VISUAL_STYLE
 
@@ -232,7 +260,7 @@ DEFINE_HOOK(537208, ExeTerminate, 9)
 	MutexHelper::Detach();
 	Logger::Info("FA2sp Terminating...\n");
 	Logger::Close();
-	DrawStuff::deinit();
+	VoxelDrawer::Finalize();
 
 	// Destruct static ppmfc stuffs here
 	CViewObjectsExt::OnExeTerminate();
@@ -310,8 +338,13 @@ bool DetachFromDebugger()
 				status = NtRemoveProcessDebug(hCurrentProcess, hDebug);
 				if (0 <= status)
 				{
-					WinExec(std::format("taskkill /F /PID {}", pid).c_str(), SW_HIDE);
-					return true;
+					HANDLE hDbgProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
+					if (INVALID_HANDLE_VALUE != hDbgProcess)
+					{
+						BOOL ret = TerminateProcess(hDbgProcess, EXIT_SUCCESS);
+						CloseHandle(hDbgProcess);
+						return ret;
+					}
 				}
 			}
 			NtClose(hDebug);

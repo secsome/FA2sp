@@ -231,22 +231,20 @@ DEFINE_HOOK(436EE0, CFinalSunDlg_AddToRecentFile, 7)
     if (itr == recentfiles.end()) // doesn't have this file
     {
         sortedrecentfiles.push_back(filepath);
+
+        // Remove useless files
         for (auto& file : recentfiles)
         {
             if (file.length() > 0)
-                sortedrecentfiles.push_back(file);
+            {
+                auto it = std::find_if(sortedrecentfiles.begin(), sortedrecentfiles.end(),
+                    [file](std::string& s) {return _strcmpi(s.c_str(), file.c_str()) == 0; }
+                );
+                if (it == sortedrecentfiles.end()) // no duplicate file
+                    sortedrecentfiles.push_back(file);
+            }
         }
-        std::unique(sortedrecentfiles.begin(), sortedrecentfiles.end(), 
-            [](std::string& a, std::string b) {return _strcmpi(a.c_str(), b.c_str()) == 0; });
-        sortedrecentfiles.shrink_to_fit();
-
-        size_t sz = recentfiles.size();
-        size_t cnt = std::min(sz, sortedrecentfiles.size());
-        recentfiles.clear();
-        recentfiles.resize(sz);
-
-        for (size_t i = 0; i < cnt; ++i)
-            recentfiles[i] = sortedrecentfiles[i];
+        recentfiles = sortedrecentfiles;
 
         CINI ini;
         std::string path = CFinalSunApp::Instance->ExePath + "\\FinalAlert.ini";
