@@ -1,6 +1,7 @@
 # FINALALERT2 - SP  CHANGELOG
 
-## RELEASE 1.4.2 (2022-XX-XX)
+## RELEASE 1.4.2 (2022-10-27)
+- Split `CncVxlRenderText`
 - New ***ExtConfig*** : `RandomTerrainObjects` = **BOOLEAN**, enable it so `random trees` will show all `TerrainTypes`.
 - Fixed a bug when saving `[PreviewPack]` and `[Preview]`
 
