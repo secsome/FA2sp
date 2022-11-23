@@ -128,4 +128,11 @@ POPUP "Lighting"
 	MENUITEM "Lightning Storm", 31002
 	MENUITEM "Dominator", 31003
 }
+POPUP "Property brush"
+{
+	MENUITEM "Auto apply Buildings", 32001
+	MENUITEM "Auto apply Infantries", 32002
+	MENUITEM "Auto apply Vehicles", 32003
+	MENUITEM "Auto apply Aircrafts", 32000	
+}
 }

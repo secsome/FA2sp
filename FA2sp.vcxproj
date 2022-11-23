@@ -151,6 +151,7 @@
     <ClCompile Include="FA2sp\Ext\CLoading\Hooks.InitPalettes.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Hooks.LoadObjects.cpp" />
     <ClCompile Include="FA2sp\Ext\CMapData\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CMapData\Hooks.AutoPropertyBrush.cpp" />
     <ClCompile Include="FA2sp\Ext\CMapData\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CMapD\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CMinimap\Hooks.cpp" />

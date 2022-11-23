@@ -24,6 +24,7 @@ bool CIsoViewExt::DrawTerrains = true;
 bool CIsoViewExt::DrawSmudges = true;
 bool CIsoViewExt::DrawTubes = true;
 bool CIsoViewExt::DrawBounds = true;
+bool CIsoViewExt::AutoPropertyBrush[4] = { false };
 
 void CIsoViewExt::ProgramStartupInit()
 {

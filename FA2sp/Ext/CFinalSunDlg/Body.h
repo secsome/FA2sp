@@ -13,6 +13,8 @@
 #include <CPropertyInfantry.h>
 #include <CPropertyUnit.h>
 
+#include <CObjectDatas.h>
+
 class NOVTABLE CFinalSunDlgExt : CFinalSunDlg
 {
 public:
@@ -97,6 +99,10 @@ public:
     static void ApplyPropertyBrush_Infantry(int nIndex);
     static void ApplyPropertyBrush_Aircraft(int nIndex);
     static void ApplyPropertyBrush_Vehicle(int nIndex);
+    static void ApplyPropertyBrush_Building(CStructureData& data);
+    static void ApplyPropertyBrush_Infantry(CInfantryData& data);
+    static void ApplyPropertyBrush_Aircraft(CAircraftData& data);
+    static void ApplyPropertyBrush_Vehicle(CUnitData& data);
     
     static bool IsIgnored(const char* pItem);
 

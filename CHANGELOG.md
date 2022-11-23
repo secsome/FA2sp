@@ -1,5 +1,8 @@
 # FINALALERT2 - SP  CHANGELOG
 
+## RELEASE 1.5.0 (2022-12-XX)
+- Implement Auto Property Brush
+
 ## RELEASE 1.4.2 (2022-10-27)
 - Split `CncVxlRenderText`
 - New ***ExtConfig*** : `RandomTerrainObjects` = **BOOLEAN**, enable it so `random trees` will show all `TerrainTypes`.

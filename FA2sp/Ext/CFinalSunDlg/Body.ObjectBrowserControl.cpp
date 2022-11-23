@@ -760,6 +760,55 @@ void CViewObjectsExt::ApplyPropertyBrush_Building(int nIndex)
     CStructureData data;
     CMapData::Instance->QueryStructureData(nIndex, data);
     
+    ApplyPropertyBrush_Building(data);
+
+    CMapData::Instance->DeleteStructureData(nIndex);
+    CMapData::Instance->SetStructureData(&data, nullptr, nullptr, 0, "");
+
+    ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
+}
+
+void CViewObjectsExt::ApplyPropertyBrush_Infantry(int nIndex)
+{
+    CInfantryData data;
+    CMapData::Instance->QueryInfantryData(nIndex, data);
+
+    ApplyPropertyBrush_Infantry(data);
+
+    CMapData::Instance->DeleteInfantryData(nIndex);
+    CMapData::Instance->SetInfantryData(&data, nullptr, nullptr, 0, -1);
+
+    ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
+}
+
+void CViewObjectsExt::ApplyPropertyBrush_Aircraft(int nIndex)
+{
+    CAircraftData data;
+    CMapData::Instance->QueryAircraftData(nIndex, data);
+
+    ApplyPropertyBrush_Aircraft(data);
+
+    CMapData::Instance->DeleteAircraftData(nIndex);
+    CMapData::Instance->SetAircraftData(&data, nullptr, nullptr, 0, "");
+
+    ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
+}
+
+void CViewObjectsExt::ApplyPropertyBrush_Vehicle(int nIndex)
+{
+    CUnitData data;
+    CMapData::Instance->QueryUnitData(nIndex, data);
+
+    ApplyPropertyBrush_Vehicle(data);
+
+    CMapData::Instance->DeleteUnitData(nIndex);
+    CMapData::Instance->SetUnitData(&data, nullptr, nullptr, 0, "");
+
+    ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
+}
+
+void CViewObjectsExt::ApplyPropertyBrush_Building(CStructureData& data)
+{
     auto ApplyValue = [&](int nCheckBoxIdx, ppmfc::CString& src, ppmfc::CString& dst)
     {
         if (BuildingBrushBools[nCheckBoxIdx - 1300])
@@ -783,18 +832,10 @@ void CViewObjectsExt::ApplyPropertyBrush_Building(int nIndex)
     ApplyValue(1311, BuildingBrushDlg->CString_AIRepairs, data.AIRepairable);
     ApplyValue(1312, BuildingBrushDlg->CString_ShowName, data.Nominal);
     ApplyValue(1313, BuildingBrushDlg->CString_Tag, data.Tag);
-
-    CMapData::Instance->DeleteStructureData(nIndex);
-    CMapData::Instance->SetStructureData(&data, nullptr, nullptr, 0, "");
-
-    ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
 }
 
-void CViewObjectsExt::ApplyPropertyBrush_Infantry(int nIndex)
+void CViewObjectsExt::ApplyPropertyBrush_Infantry(CInfantryData& data)
 {
-    CInfantryData data;
-    CMapData::Instance->QueryInfantryData(nIndex, data);
-
     auto ApplyValue = [&](int nCheckBoxIdx, ppmfc::CString& src, ppmfc::CString& dst)
     {
         if (InfantryBrushBools[nCheckBoxIdx - 1300])
@@ -814,18 +855,10 @@ void CViewObjectsExt::ApplyPropertyBrush_Infantry(int nIndex)
     ApplyValue(1307, InfantryBrushDlg->CString_AutoCreateNoRecruitable, data.AutoNORecruitType);
     ApplyValue(1308, InfantryBrushDlg->CString_AutoCreateYesRecruitable, data.AutoYESRecruitType);
     ApplyValue(1309, InfantryBrushDlg->CString_Tag, data.Tag);
-
-    CMapData::Instance->DeleteInfantryData(nIndex);
-    CMapData::Instance->SetInfantryData(&data, nullptr, nullptr, 0, -1);
-
-    ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
 }
 
-void CViewObjectsExt::ApplyPropertyBrush_Aircraft(int nIndex)
+void CViewObjectsExt::ApplyPropertyBrush_Aircraft(CAircraftData& data)
 {
-    CAircraftData data;
-    CMapData::Instance->QueryAircraftData(nIndex, data);
-
     auto ApplyValue = [&](int nCheckBoxIdx, ppmfc::CString& src, ppmfc::CString& dst)
     {
         if (AircraftBrushBools[nCheckBoxIdx - 1300])
@@ -844,18 +877,10 @@ void CViewObjectsExt::ApplyPropertyBrush_Aircraft(int nIndex)
     ApplyValue(1306, AircraftBrushDlg->CString_AutoCreateNoRecruitable, data.AutoNORecruitType);
     ApplyValue(1307, AircraftBrushDlg->CString_AutoCreateYesRecruitable, data.AutoYESRecruitType);
     ApplyValue(1308, AircraftBrushDlg->CString_Tag, data.Tag);
-
-    CMapData::Instance->DeleteAircraftData(nIndex);
-    CMapData::Instance->SetAircraftData(&data, nullptr, nullptr, 0, "");
-
-    ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
 }
 
-void CViewObjectsExt::ApplyPropertyBrush_Vehicle(int nIndex)
+void CViewObjectsExt::ApplyPropertyBrush_Vehicle(CUnitData& data)
 {
-    CUnitData data;
-    CMapData::Instance->QueryUnitData(nIndex, data);
-
     auto ApplyValue = [&](int nCheckBoxIdx, ppmfc::CString& src, ppmfc::CString& dst)
     {
         if (VehicleBrushBools[nCheckBoxIdx - 1300])
@@ -876,11 +901,6 @@ void CViewObjectsExt::ApplyPropertyBrush_Vehicle(int nIndex)
     ApplyValue(1308, VehicleBrushDlg->CString_AutoCreateNoRecruitable, data.AutoNORecruitType);
     ApplyValue(1309, VehicleBrushDlg->CString_AutoCreateYesRecruitable, data.AutoYESRecruitType);
     ApplyValue(1310, VehicleBrushDlg->CString_Tag, data.Tag);
-
-    CMapData::Instance->DeleteUnitData(nIndex);
-    CMapData::Instance->SetUnitData(&data, nullptr, nullptr, 0, "");
-
-    ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
 }
 
 bool CViewObjectsExt::IsIgnored(const char* pItem)

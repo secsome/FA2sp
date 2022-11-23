@@ -450,6 +450,11 @@ NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!~~
     Menu.Lighting.Normal = TEXT
     Menu.Lighting.Lightning = TEXT
     Menu.Lighting.Dominator = TEXT
+    Menu.PropertyBrush = TEXT
+    Menu.PropertyBrush.AutoAircraft = TEXT
+    Menu.PropertyBrush.AutoBuilding = TEXT
+    Menu.PropertyBrush.AutoInfantry = TEXT
+    Menu.PropertyBrush.AutoVehicle = TEXT
     DialogBar.TileManager = TEXT
     DialogBar.TerrainOrGround = TEXT
     DialogBar.OverlayAndSpecial = TEXT

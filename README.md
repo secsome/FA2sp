@@ -26,7 +26,7 @@ You can check the full changelog [here](https://github.com/secsome/FA2sp/blob/ma
 Document
 ---------
 
-The document is not built out currently, but you can check a txt version document [here](https://github.com/secsome/FA2sp/blob/master/DOCUMENT.md) now.
+You can check the document [here](https://github.com/secsome/FA2sp/blob/master/DOCUMENT.md).
 
 [Unexplored](https://github.com/secsome/FA2sp/blob/master/UNEXPLORED.md)
 ---------

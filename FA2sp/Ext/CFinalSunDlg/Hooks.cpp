@@ -206,6 +206,12 @@ DEFINE_HOOK(43209D, CFinalSunDlg_Update_TranslateMenuItems, A)
     translateMenuItem(31002, "Menu.Lighting.Lightning");
     translateMenuItem(31003, "Menu.Lighting.Dominator");
 
+    translateSubMenu(i++, "Menu.PropertyBrush");
+    translateMenuItem(32000, "Menu.PropertyBrush.AutoAircraft");
+    translateMenuItem(32001, "Menu.PropertyBrush.AutoBuilding");
+    translateMenuItem(32002, "Menu.PropertyBrush.AutoInfantry");
+    translateMenuItem(32003, "Menu.PropertyBrush.AutoVehicle");
+
     return 0x432304;
 }
 
