@@ -437,6 +437,9 @@
     <ClCompile Include="FA2sp\Ext\CMapData\Hooks.AutoPropertyBrush.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FA2sp\Miscs\Hooks.DirectDraw.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FA2sp\FA2sp.rc">

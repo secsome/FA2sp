@@ -60,6 +60,8 @@ public:
     static int MultiSelectionColor;
     static bool RandomTerrainObjects;
     static int MaxVoxelFacing;
+    static bool DDrawInVideoMem;
+    static bool DDrawEmulation;
 };
 
 class Variables
