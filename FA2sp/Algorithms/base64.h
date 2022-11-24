@@ -5,7 +5,9 @@
 class base64
 {
 public:
+	static std::string encode(const void* buffer, size_t length);
 	static std::string encode(std::string_view s);
+	static std::string decode(const void* buffer, size_t length);
 	static std::string decode(std::string_view s);
 private:
 	static constexpr char encoder[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";

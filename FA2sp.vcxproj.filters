@@ -171,6 +171,9 @@
     <ClInclude Include="FA2sp\AutoUpdate\AutoUpdate.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2sp\Algorithms\sha1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">
@@ -438,6 +441,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Miscs\Hooks.DirectDraw.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Algorithms\sha1.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

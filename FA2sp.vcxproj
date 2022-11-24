@@ -128,6 +128,7 @@
   <ItemGroup>
     <ClCompile Include="FA2pp\FunctionInit.cpp" />
     <ClCompile Include="FA2sp\Algorithms\base64.cpp" />
+    <ClCompile Include="FA2sp\Algorithms\sha1.cpp" />
     <ClCompile Include="FA2sp\AutoUpdate\AutoUpdate.cpp" />
     <ClCompile Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.cpp" />
     <ClCompile Include="FA2sp\Ext\CAITriggerTypes\Body.cpp" />
@@ -218,6 +219,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FA2sp\Algorithms\base64.h" />
+    <ClInclude Include="FA2sp\Algorithms\sha1.h" />
     <ClInclude Include="FA2sp\AutoUpdate\AutoUpdate.h" />
     <ClInclude Include="FA2sp\AutoUpdate\zip_file.h" />
     <ClInclude Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.h" />

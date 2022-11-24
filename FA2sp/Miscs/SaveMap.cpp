@@ -11,8 +11,12 @@
 #include "../FA2sp.h"
 #include "../FA2sp.Constants.h"
 
+#include "../Algorithms/sha1.h"
+#include "../Algorithms/base64.h"
+
 #include <algorithm>
 #include <map>
+#include <sstream>
 #include <fstream>
 #include <format>
 
@@ -107,10 +111,11 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
     
     std::ofstream fout;
     fout.open(filepath, std::ios::out | std::ios::trunc);
-
     if (fout.is_open())
     {
-        fout <<
+        std::ostringstream oss;
+
+        oss <<
             "; Map created with FinalAlert 2(tm) Mission Editor\n"
             "; Get it at http://www.westwood.com\n"
             "; note that all comments were truncated\n"
@@ -123,17 +128,17 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         // So we just put them at first.
         if (const auto pSection = pINI->GetSection("Preview"))
         {
-            fout << "[Preview]\n";
+            oss << "[Preview]\n";
             for (const auto& pair : pSection->GetEntities())
-                fout << pair.first << "=" << pair.second << "\n";
-            fout << "\n";
+                oss << pair.first << "=" << pair.second << "\n";
+            oss << "\n";
         }
         if (const auto pSection = pINI->GetSection("PreviewPack"))
         {
-            fout << "[PreviewPack]\n";
+            oss << "[PreviewPack]\n";
             for (const auto& pair : pSection->GetEntities())
-                fout << pair.first << "=" << pair.second << "\n";
-            fout << "\n";
+                oss << pair.first << "=" << pair.second << "\n";
+            oss << "\n";
         }
 
         for (auto& section : pINI->Dict)
@@ -141,12 +146,25 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
             if (!strcmp(section.first, "Preview") || !strcmp(section.first, "PreviewPack"))
                 continue;
 
-            fout << "[" << section.first << "]\n";
+            oss << "[" << section.first << "]\n";
             for (auto& pair : section.second.GetEntities())
-                fout << pair.first << "=" << pair.second << "\n";
-            fout << "\n";
+                oss << pair.first << "=" << pair.second << "\n";
+            oss << "\n";
         }
 
+        // Generate the Digest
+        SHA1 sha1;
+        sha1.add(oss.str().data(), oss.str().length());
+        unsigned char hash[20];
+        sha1.getHash(hash);
+        Logger::Raw("SaveMap : Map SHA1 hash: %s\n", sha1.getHash().c_str());
+
+        // As sha1 hash length is only 20, the length of base64 result won't
+        // go over the limitation of uublock's 70 per line. So only one row!
+        oss << "[Digest]\n1=" << base64::encode(hash, 20) << "\n";
+
+        // Now just write the file
+        fout << oss.str();
         fout.flush();
         fout.close();
 
@@ -161,8 +179,6 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
     }
 
     return 0x42A859;
-
-    return 0;
 }
 
 DEFINE_HOOK(42B30F, CFinalSunDlg_SaveMap_SkipMapDTOR, 7)

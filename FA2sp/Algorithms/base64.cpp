@@ -1,5 +1,13 @@
 #include "base64.h"
 
+std::string base64::encode(const void* buffer, size_t length)
+{
+    std::string s;
+    s.resize(length);
+    memcpy(s.data(), buffer, length);
+    return encode(s);
+}
+
 std::string base64::encode(std::string_view s)
 {
 	std::string ret;
@@ -33,6 +41,14 @@ std::string base64::encode(std::string_view s)
 
     ret.shrink_to_fit();
     return ret;
+}
+
+std::string base64::decode(const void* buffer, size_t length)
+{
+    std::string s;
+    s.resize(length);
+    memcpy(s.data(), buffer, length);
+    return decode(s);
 }
 
 std::string base64::decode(std::string_view s)
