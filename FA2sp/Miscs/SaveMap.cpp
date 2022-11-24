@@ -113,6 +113,8 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
     fout.open(filepath, std::ios::out | std::ios::trunc);
     if (fout.is_open())
     {
+        pINI->DeleteSection("Digest");
+
         std::ostringstream oss;
 
         oss <<
