@@ -135,7 +135,6 @@
     <ClCompile Include="FA2sp\Algorithms\lzo1x_c.cpp" />
     <ClCompile Include="FA2sp\Algorithms\lzo1x_d.cpp" />
     <ClCompile Include="FA2sp\Algorithms\sha1.cpp" />
-    <ClCompile Include="FA2sp\AutoUpdate\AutoUpdate.cpp" />
     <ClCompile Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.cpp" />
     <ClCompile Include="FA2sp\Ext\CAITriggerTypes\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CChangeMapSize\Hooks.cpp" />
@@ -232,8 +231,6 @@
     <ClInclude Include="FA2sp\Algorithms\lzoconf.h" />
     <ClInclude Include="FA2sp\Algorithms\lzo_conf.h" />
     <ClInclude Include="FA2sp\Algorithms\sha1.h" />
-    <ClInclude Include="FA2sp\AutoUpdate\AutoUpdate.h" />
-    <ClInclude Include="FA2sp\AutoUpdate\zip_file.h" />
     <ClInclude Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.h" />
     <ClInclude Include="FA2sp\Ext\CAITriggerTypes\Body.h" />
     <ClInclude Include="FA2sp\Ext\CFinalSunApp\Body.h" />
