@@ -35,7 +35,7 @@ void CIsoViewExt::AddTube(int EnterX, int EnterY, int ExitX, int ExitY)
 {
     Logger::Raw("Generating tube from (%d, %d) to (%d, %d)\n", EnterX, EnterY, ExitX, ExitY);
 
-    TubeData tube;
+    CTubeData tube;
     memset(tube.Directions, 0xFF, sizeof(tube.Directions));
     tube.EnterX = EnterX;
     tube.EnterY = EnterY;

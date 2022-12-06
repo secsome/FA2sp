@@ -99,7 +99,7 @@ public:
     static void ApplyPropertyBrush_Infantry(int nIndex);
     static void ApplyPropertyBrush_Aircraft(int nIndex);
     static void ApplyPropertyBrush_Vehicle(int nIndex);
-    static void ApplyPropertyBrush_Building(CStructureData& data);
+    static void ApplyPropertyBrush_Building(CBuildingData& data);
     static void ApplyPropertyBrush_Infantry(CInfantryData& data);
     static void ApplyPropertyBrush_Aircraft(CAircraftData& data);
     static void ApplyPropertyBrush_Vehicle(CUnitData& data);

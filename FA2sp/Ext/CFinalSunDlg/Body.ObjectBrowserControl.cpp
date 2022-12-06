@@ -757,13 +757,13 @@ void CViewObjectsExt::ApplyPropertyBrush(int X, int Y)
 
 void CViewObjectsExt::ApplyPropertyBrush_Building(int nIndex)
 {
-    CStructureData data;
-    CMapData::Instance->QueryStructureData(nIndex, data);
+    CBuildingData data;
+    CMapData::Instance->GetBuildingData(nIndex, data);
     
     ApplyPropertyBrush_Building(data);
 
-    CMapData::Instance->DeleteStructureData(nIndex);
-    CMapData::Instance->SetStructureData(&data, nullptr, nullptr, 0, "");
+    CMapData::Instance->DeleteBuildingData(nIndex);
+    CMapData::Instance->SetBuildingData(&data, nullptr, nullptr, 0, "");
 
     ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
 }
@@ -771,7 +771,7 @@ void CViewObjectsExt::ApplyPropertyBrush_Building(int nIndex)
 void CViewObjectsExt::ApplyPropertyBrush_Infantry(int nIndex)
 {
     CInfantryData data;
-    CMapData::Instance->QueryInfantryData(nIndex, data);
+    CMapData::Instance->GetInfantryData(nIndex, data);
 
     ApplyPropertyBrush_Infantry(data);
 
@@ -784,7 +784,7 @@ void CViewObjectsExt::ApplyPropertyBrush_Infantry(int nIndex)
 void CViewObjectsExt::ApplyPropertyBrush_Aircraft(int nIndex)
 {
     CAircraftData data;
-    CMapData::Instance->QueryAircraftData(nIndex, data);
+    CMapData::Instance->GetAircraftData(nIndex, data);
 
     ApplyPropertyBrush_Aircraft(data);
 
@@ -797,7 +797,7 @@ void CViewObjectsExt::ApplyPropertyBrush_Aircraft(int nIndex)
 void CViewObjectsExt::ApplyPropertyBrush_Vehicle(int nIndex)
 {
     CUnitData data;
-    CMapData::Instance->QueryUnitData(nIndex, data);
+    CMapData::Instance->GetUnitData(nIndex, data);
 
     ApplyPropertyBrush_Vehicle(data);
 
@@ -807,7 +807,7 @@ void CViewObjectsExt::ApplyPropertyBrush_Vehicle(int nIndex)
     ::RedrawWindow(CFinalSunDlg::Instance->MyViewFrame.pIsoView->m_hWnd, 0, 0, RDW_UPDATENOW | RDW_INVALIDATE);
 }
 
-void CViewObjectsExt::ApplyPropertyBrush_Building(CStructureData& data)
+void CViewObjectsExt::ApplyPropertyBrush_Building(CBuildingData& data)
 {
     auto ApplyValue = [&](int nCheckBoxIdx, ppmfc::CString& src, ppmfc::CString& dst)
     {

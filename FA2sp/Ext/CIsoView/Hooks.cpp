@@ -219,12 +219,12 @@ DEFINE_HOOK(4720D3, CIsoView_Draw_PowerUp3Loc_PosFix, 5)
 DEFINE_HOOK(470986, CIsoView_Draw_BuildingImageDataQuery_1, 8)
 {
 	REF_STACK(ImageDataClass, image, STACK_OFFS(0xD18, 0xAFC));
-	REF_STACK(StructureData, structure, STACK_OFFS(0xD18, 0xC0C));
+	REF_STACK(const CBuildingTypeData, type, STACK_OFFS(0xD18, 0xC0C));
 
 	int nFacing = 0;
-	if (Variables::Rules.GetBool(structure.ID, "Turret"))
-		nFacing = 7 - (structure.Facing / 32) % 8;
-	image = *ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(structure.ID, nFacing));
+	if (Variables::Rules.GetBool(type.ID, "Turret"))
+		nFacing = 7 - (type.Facing / 32) % 8;
+	image = *ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(type.ID, nFacing));
 
 	return 0x4709E1;
 }
@@ -232,12 +232,12 @@ DEFINE_HOOK(470986, CIsoView_Draw_BuildingImageDataQuery_1, 8)
 DEFINE_HOOK(470AE3, CIsoView_Draw_BuildingImageDataQuery_2, 7)
 {
 	REF_STACK(ImageDataClass, image, STACK_OFFS(0xD18, 0xAFC));
-	REF_STACK(StructureData, structure, STACK_OFFS(0xD18, 0xC0C));
+	REF_STACK(const CBuildingTypeData, type, STACK_OFFS(0xD18, 0xC0C));
 
 	int nFacing = 0;
-	if (Variables::Rules.GetBool(structure.ID, "Turret"))
-		nFacing = (7 - structure.Facing / 32) % 8;
-	image = *ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(structure.ID, nFacing));
+	if (Variables::Rules.GetBool(type.ID, "Turret"))
+		nFacing = (7 - type.Facing / 32) % 8;
+	image = *ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(type.ID, nFacing));
 
 	return 0x470B4D;
 }
@@ -374,7 +374,7 @@ DEFINE_HOOK(46BDFA, CIsoView_DrawMouseAttachedStuff_Structure, 5)
 	const int nMapCoord = CMapData::Instance->GetCoordIndex(X, Y);
 	const auto& cell = CMapData::Instance->CellDatas[nMapCoord];
 	if (cell.Structure < 0)
-		CMapData::Instance->SetStructureData(nullptr, CIsoView::CurrentCommand->ObjectID, CIsoView::CurrentHouse(), nMapCoord, "");
+		CMapData::Instance->SetBuildingData(nullptr, CIsoView::CurrentCommand->ObjectID, CIsoView::CurrentHouse(), nMapCoord, "");
 
 	return 0x46BF98;
 }

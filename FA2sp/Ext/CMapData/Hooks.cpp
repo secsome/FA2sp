@@ -51,7 +51,7 @@ DEFINE_HOOK(4A17C0, CMapData_DeleteTiberium, 6)
 
 DEFINE_HOOK(4BB04A, CMapData_AddTube_IgnoreUselessNegativeOne, 7)
 {
-    GET(TubeData*, pTubeData, ESI);
+    GET(CTubeData*, pTubeData, ESI);
     REF_STACK(ppmfc::CString, lpBuffer, STACK_OFFS(0x134, 0x124));
 
     for (int i = 0; i < 100; ++i)

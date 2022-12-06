@@ -22,13 +22,13 @@ DEFINE_HOOK(4B0186, CMapData_SetAircraftData_AutoPropertyBrush, 7)
 	return 0x4B026A;
 }
 
-DEFINE_HOOK(4ACCE2, CMapData_SetStructureData_AutoPropertyBrush, 6)
+DEFINE_HOOK(4ACCE2, CMapData_SetBuildingData_AutoPropertyBrush, 6)
 {
 	if (!CIsoViewExt::AutoPropertyBrush[1])
 		return 0;
 
 	GET(const int, nCellIndex, EDI);
-	REF_STACK(CStructureData, data, STACK_OFFS(0x194, 0x184));
+	REF_STACK(CBuildingData, data, STACK_OFFS(0x194, 0x184));
 	REF_STACK(ppmfc::CString, ID, STACK_OFFS(0x194, -0x8));
 	REF_STACK(ppmfc::CString, House, STACK_OFFS(0x194, -0xC));
 
