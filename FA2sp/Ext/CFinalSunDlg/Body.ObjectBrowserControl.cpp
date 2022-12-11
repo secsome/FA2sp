@@ -809,6 +809,9 @@ void CViewObjectsExt::ApplyPropertyBrush_Vehicle(int nIndex)
 
 void CViewObjectsExt::ApplyPropertyBrush_Building(CBuildingData& data)
 {
+    if (!BuildingBrushDlg)
+        return;
+
     auto ApplyValue = [&](int nCheckBoxIdx, ppmfc::CString& src, ppmfc::CString& dst)
     {
         if (BuildingBrushBools[nCheckBoxIdx - 1300])
@@ -836,6 +839,9 @@ void CViewObjectsExt::ApplyPropertyBrush_Building(CBuildingData& data)
 
 void CViewObjectsExt::ApplyPropertyBrush_Infantry(CInfantryData& data)
 {
+    if (!InfantryBrushDlg)
+        return;
+
     auto ApplyValue = [&](int nCheckBoxIdx, ppmfc::CString& src, ppmfc::CString& dst)
     {
         if (InfantryBrushBools[nCheckBoxIdx - 1300])
@@ -859,6 +865,9 @@ void CViewObjectsExt::ApplyPropertyBrush_Infantry(CInfantryData& data)
 
 void CViewObjectsExt::ApplyPropertyBrush_Aircraft(CAircraftData& data)
 {
+    if (!AircraftBrushDlg)
+        return;
+
     auto ApplyValue = [&](int nCheckBoxIdx, ppmfc::CString& src, ppmfc::CString& dst)
     {
         if (AircraftBrushBools[nCheckBoxIdx - 1300])
@@ -881,6 +890,9 @@ void CViewObjectsExt::ApplyPropertyBrush_Aircraft(CAircraftData& data)
 
 void CViewObjectsExt::ApplyPropertyBrush_Vehicle(CUnitData& data)
 {
+    if (!VehicleBrushDlg)
+        return;
+
     auto ApplyValue = [&](int nCheckBoxIdx, ppmfc::CString& src, ppmfc::CString& dst)
     {
         if (VehicleBrushBools[nCheckBoxIdx - 1300])
