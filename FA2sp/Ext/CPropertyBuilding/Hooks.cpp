@@ -64,7 +64,7 @@ DEFINE_HOOK(417F40, CPropertyBuilding_OnInitDialog, 7)
                             upgrades.push_back(bld.first.m_pchData);
                     }
                 }
-
+                
                 for (const auto& upgrade : upgrades)
                 {
                     const auto UIName = CMapData::Instance->GetUIName(upgrade.c_str());
