@@ -175,7 +175,7 @@ DEFINE_HOOK(441910, Miscs_LoadParams_TutorialTexts, 7)
     if (ExtConfigs::TutorialTexts_Fix)
     {   
         pComboBox->DeleteAllStrings();
-        for (auto x : FA2sp::TutorialTextsMap)
+        for (auto& x : FA2sp::TutorialTextsMap)
             pComboBox->AddString(x.first + " : " + x.second);
         Logger::Debug("%d csf entities added.\n", FA2sp::TutorialTextsMap.size());
         return 0x441A34;
@@ -198,7 +198,7 @@ DEFINE_HOOK(441A40, Miscs_LoadParams_Triggers, 6)
         
         if (auto const pSection = pINI->GetSection("Triggers"))
         {
-            for (auto pair : pSection->GetEntities())
+            for (auto& pair : pSection->GetEntities())
             {
                 auto splits = STDHelpers::SplitString(pair.second, 2);
                 ppmfc::CString buffer(pair.first);
@@ -207,7 +207,7 @@ DEFINE_HOOK(441A40, Miscs_LoadParams_Triggers, 6)
             }
         }
 
-        for (auto pair : collector)
+        for (auto& pair : collector)
             pComboBox->AddString(pair.second);
 
         collector.clear();
@@ -228,4 +228,20 @@ DEFINE_HOOK(441A40, Miscs_LoadParams_Triggers, 6)
 
     pComboBox->UnlockWindowUpdate();
     return 0x441DF6;
+}
+
+DEFINE_HOOK(43C3C0, Miscs_ParseHouseName, 7)
+{
+    if (ExtConfigs::NoHouseNameTranslation)
+    {
+        GET_STACK(ppmfc::CString*, pRet, 0x4);
+        REF_STACK(ppmfc::CString, src, 0x8);
+        GET_STACK(bool, IDToUIName, 0xC);
+
+        new(pRet) ppmfc::CString(src);
+        R->EAX(pRet);
+
+        return 0x43CA72;
+    }
+    return 0;
 }

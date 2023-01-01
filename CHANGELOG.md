@@ -1,9 +1,10 @@
 # FINALALERT2 - SP  CHANGELOG
 
-## RELEASE 1.5.0 (2022-12-XX)
+## RELEASE 1.5.0 (2023-01-03)
 - Implement Auto Property Brush
 - New ***ExtConfig*** : `DDrawInVideoMem` = **BOOLEAN**, defaults to true
 - New ***ExtConfig*** : `DDrawEmulation` = **BOOLEAN**, defaults to false
+- New ***ExtConfig*** : `NoHouseNameTranslation` = **BOOLEAN**, defaults to false
 
 ## RELEASE 1.4.2 (2022-10-27)
 - Split `CncVxlRenderText`

@@ -55,7 +55,7 @@ NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!~~
             - `SaveMap.AutoSave.Interval` = **INTEGER** ; Should be greater than or equal to $30$, defaults to $300$, determines how many seconds should we wait during the two auto saving
             - `SaveMap.AutoSave.MaxCount` = **INTEGER** ; How many saving should FA2 keep, set to $-1$ will disable the auto cleanning, defaults to $10$
         - `SaveMap.OnlySaveMAP` = **BOOLEAN** ; Determines if FA2 will only save map with *.map* file extension
-        - `SaveMap.DefaultPreviewOptionMP` = **INTEGER** ; Default radio option button for preview generation when saving multiplayer maps. 
+        - `SaveMap.DefaultPreviewOptionMP` = **INTEGER** ; Default radio option button for preview generation when saving multiplayer maps 
           - $0$ = Always generate new preview
           - $1$ = Do no generate new preview
           - $2$ = Always generate hidden preview
@@ -65,8 +65,9 @@ NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!~~
         - `RecentFileLimit` = **INTEGER** ; How many recent files should I keep? ranges from $4$ to $9$
         - `MultiSelectionColor` = **COLORREF** ; Determines the back color of selected tiles
         - `RandomTerrainObjects` = **BOOLEAN** ; Determines if FA2 will display all terrain objects in random tree dialog, defaults to **false**
-        - `DDrawInVideoMem` = **BOOLEAN** ; Determines if FA2 will allocate DirectDraw surface in the video memory
-        - `DDrawEmulation` = **BOOLEAN** ; Determines if FA2 will use emulation mode for DirectDrawCreate
+        - `DDrawInVideoMem` = **BOOLEAN** ; Determines if FA2 will allocate DirectDraw surface in the video memory, defaults to true
+        - `DDrawEmulation` = **BOOLEAN** ; Determines if FA2 will use emulation mode for DirectDrawCreate, defaults to false
+        - `NoHouseNameTranslation` = **BOOLEAN** ; Determines if FA2 will translate house to their UIName, defaults to false
     - **`[Sides]`** (**x** means this item is **essensial**, fa2sp need this section to work properly)
         - Contains a list of sides registered in rules
         ```ini

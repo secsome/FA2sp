@@ -51,8 +51,9 @@ int ExtConfigs::RecentFileLimit;
 int ExtConfigs::MultiSelectionColor;
 bool ExtConfigs::RandomTerrainObjects;
 int ExtConfigs::MaxVoxelFacing;
-bool ExtConfigs::DDrawInVideoMem = true;
-bool ExtConfigs::DDrawEmulation = false;
+bool ExtConfigs::DDrawInVideoMem;
+bool ExtConfigs::DDrawEmulation;
+bool ExtConfigs::NoHouseNameTranslation;
 
 MultimapHelper Variables::Rules = { &CINI::Rules(), &CINI::CurrentDocument() };
 MultimapHelper Variables::FAData = { &CINI::FAData() };
@@ -140,8 +141,10 @@ void FA2sp::ExtConfigsInitialize()
 	// Disable it for now
 	ExtConfigs::MaxVoxelFacing = 8;
 
-	ExtConfigs::DDrawInVideoMem = CINI::FAData->GetBool("ExtConfigs", "DDrawInVideoMem");
+	ExtConfigs::DDrawInVideoMem = CINI::FAData->GetBool("ExtConfigs", "DDrawInVideoMem", true);
 	ExtConfigs::DDrawEmulation = CINI::FAData->GetBool("ExtConfigs", "DDrawEmulation");
+
+	ExtConfigs::NoHouseNameTranslation = CINI::FAData->GetBool("ExtConfigs", "NoHouseNameTranslation");
 }
 
 // DllMain

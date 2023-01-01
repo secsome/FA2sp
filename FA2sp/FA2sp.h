@@ -62,6 +62,7 @@ public:
     static int MaxVoxelFacing;
     static bool DDrawInVideoMem;
     static bool DDrawEmulation;
+    static bool NoHouseNameTranslation;
 };
 
 class Variables
