@@ -5,7 +5,7 @@
 - What you need to know is that FA2sp requires Vanilla FinalAlert 2 1.02, any modified version may lead to unexpected errors!
 - Before you launch it for the first time, write the ini files below properly, especially for essential ones (marked by **x**).
 - If you still have any problem about it or something wrong occured while using it, please contact me directly or mail me at 3179369262@qq.com.
-- Now you can also join Discord server https://discord.gg/k4SVuMm, and found `map-editor-patches` under `DEDICATED PROJECTS`.
+- Now you can also join Discord server https://discord.gg/k4SVuMm, and found `map-editors` under `DEDICATED PROJECTS`.
 - For now, I cannot ensure the stability of it, so save your maps frequently before heavy loss! XD
 
 ~~The multiple selection function is now available. Press Ctrl key to select tiles and press Ctrl+Shift key to deselect them. Ctrl+D can clear all selected tiles.
