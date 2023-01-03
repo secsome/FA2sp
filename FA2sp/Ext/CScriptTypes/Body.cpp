@@ -303,7 +303,7 @@ void CScriptTypesExt::UpdateDialog()
 
 void CScriptTypesExt::OnCBCurrentScriptSelectChanged()
 {
-	while (this->CLBScriptActions.DeleteString(0) != LB_ERR);
+	this->CLBScriptActions.DeleteAllStrings();
 	
 	int index = this->CCBCurrentScript.GetCurSel();
 	if (index == CB_ERR)

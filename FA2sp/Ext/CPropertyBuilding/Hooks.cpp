@@ -56,15 +56,15 @@ DEFINE_HOOK(417F40, CPropertyBuilding_OnInitDialog, 7)
             if (nUpgrades > 0)
             {
                 std::vector<std::string> upgrades;
-                for (auto& bld : Variables::Rules.GetSection("BuildingTypes"))
+                for (auto& bld : CMapData::Instance->BuildingTypes)
                 {
-                    if (auto const ppString = Variables::Rules.TryGetString(bld.second, "PowersUpBuilding"))
+                    if (auto const ppString = Variables::Rules.TryGetString(bld.first, "PowersUpBuilding"))
                     {
-                        if (strcmp(*ppString, pThis->CString_ObjectID) == 0)
-                            upgrades.push_back(bld.second.m_pchData);
+                        if (*ppString == pThis->CString_ObjectID)
+                            upgrades.push_back(bld.first.m_pchData);
                     }
                 }
-
+                
                 for (const auto& upgrade : upgrades)
                 {
                     const auto UIName = CMapData::Instance->GetUIName(upgrade.c_str());

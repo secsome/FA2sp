@@ -101,6 +101,26 @@ BOOL CFinalSunDlgExt::OnCommandExt(WPARAM wParam, LPARAM lParam)
 	case 31003:
 		SetLightingStatus(wmID);
 		break;
+	case 32000:
+	case 32001:
+	case 32002:
+	case 32003:
+	{
+		HMENU hMenu = *this->GetMenu();
+		if (GetMenuState(hMenu, wmID, MF_BYCOMMAND) & MF_CHECKED)
+		{
+			// set to false
+			CIsoViewExt::AutoPropertyBrush[wmID - 32000] = false;
+			CheckMenuItem(hMenu, wmID, MF_UNCHECKED);
+		}
+		else
+		{
+			// set to true
+			CIsoViewExt::AutoPropertyBrush[wmID - 32000] = true;
+			CheckMenuItem(hMenu, wmID, MF_CHECKED);
+		}
+		break;
+	}
 	default:
 		break;
 	}

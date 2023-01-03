@@ -26,7 +26,7 @@ DEFINE_HOOK(4E7900, CTeamTypes_OnCBCurrentTeamSelectChanged, 7)
 			pThis->BOOL_AreTeamMembersRecruitable = pINI->GetBool(ID, "AreTeamMembersRecruitable");
 			pThis->BOOL_Autocreate = pINI->GetBool(ID, "Autocreate");
 			pThis->BOOL_AvoidThreats = pINI->GetBool(ID, "AvoidThreats");
-			pThis->BOOL_CargoPlane = pINI->GetBool(ID, "CargoPlane");
+			pThis->BOOL_Droppod = pINI->GetBool(ID, "Droppod");
 			pThis->BOOL_Full = pINI->GetBool(ID, "Full");
 			pThis->BOOL_GuardSlower = pINI->GetBool(ID, "GuardSlower");
 			pThis->BOOL_IonImmune = pINI->GetBool(ID, "IonImmune");

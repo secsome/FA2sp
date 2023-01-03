@@ -36,4 +36,6 @@ public:
     static bool DrawSmudges;
     static bool DrawTubes;
     static bool DrawBounds;
+
+    static bool AutoPropertyBrush[4];
 };

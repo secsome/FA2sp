@@ -24,6 +24,7 @@ bool CIsoViewExt::DrawTerrains = true;
 bool CIsoViewExt::DrawSmudges = true;
 bool CIsoViewExt::DrawTubes = true;
 bool CIsoViewExt::DrawBounds = true;
+bool CIsoViewExt::AutoPropertyBrush[4] = { false };
 
 void CIsoViewExt::ProgramStartupInit()
 {
@@ -34,7 +35,7 @@ void CIsoViewExt::AddTube(int EnterX, int EnterY, int ExitX, int ExitY)
 {
     Logger::Raw("Generating tube from (%d, %d) to (%d, %d)\n", EnterX, EnterY, ExitX, ExitY);
 
-    TubeData tube;
+    CTubeData tube;
     memset(tube.Directions, 0xFF, sizeof(tube.Directions));
     tube.EnterX = EnterX;
     tube.EnterY = EnterY;

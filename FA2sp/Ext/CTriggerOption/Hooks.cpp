@@ -6,7 +6,8 @@ DEFINE_HOOK(502E66, CTriggerOption_OnInitDialog_RepeatTypeFix, 7)
 {
     GET(CTriggerOption*, pThis, ESI);
 
-    while (pThis->CCBRepeatType.DeleteString(0) != CB_ERR);
+    pThis->CCBHouse.DeleteAllStrings();
+    pThis->CCBRepeatType.DeleteAllStrings();
 
     pThis->CCBRepeatType.AddString("0 - One Time OR");
     pThis->CCBRepeatType.AddString("1 - One Time AND");

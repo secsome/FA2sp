@@ -5,7 +5,7 @@
 - What you need to know is that FA2sp requires Vanilla FinalAlert 2 1.02, any modified version may lead to unexpected errors!
 - Before you launch it for the first time, write the ini files below properly, especially for essential ones (marked by **x**).
 - If you still have any problem about it or something wrong occured while using it, please contact me directly or mail me at 3179369262@qq.com.
-- Now you can also join Discord server https://discord.gg/k4SVuMm, and found `map-editor-patches` under `DEDICATED PROJECTS`.
+- Now you can also join Discord server https://discord.gg/k4SVuMm, and found `map-editors` under `DEDICATED PROJECTS`.
 - For now, I cannot ensure the stability of it, so save your maps frequently before heavy loss! XD
 
 ~~The multiple selection function is now available. Press Ctrl key to select tiles and press Ctrl+Shift key to deselect them. Ctrl+D can clear all selected tiles.
@@ -55,7 +55,7 @@ NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!~~
             - `SaveMap.AutoSave.Interval` = **INTEGER** ; Should be greater than or equal to $30$, defaults to $300$, determines how many seconds should we wait during the two auto saving
             - `SaveMap.AutoSave.MaxCount` = **INTEGER** ; How many saving should FA2 keep, set to $-1$ will disable the auto cleanning, defaults to $10$
         - `SaveMap.OnlySaveMAP` = **BOOLEAN** ; Determines if FA2 will only save map with *.map* file extension
-        - `SaveMap.DefaultPreviewOptionMP` = **INTEGER** ; Default radio option button for preview generation when saving multiplayer maps. 
+        - `SaveMap.DefaultPreviewOptionMP` = **INTEGER** ; Default radio option button for preview generation when saving multiplayer maps 
           - $0$ = Always generate new preview
           - $1$ = Do no generate new preview
           - $2$ = Always generate hidden preview
@@ -65,6 +65,9 @@ NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!~~
         - `RecentFileLimit` = **INTEGER** ; How many recent files should I keep? ranges from $4$ to $9$
         - `MultiSelectionColor` = **COLORREF** ; Determines the back color of selected tiles
         - `RandomTerrainObjects` = **BOOLEAN** ; Determines if FA2 will display all terrain objects in random tree dialog, defaults to **false**
+        - `DDrawInVideoMem` = **BOOLEAN** ; Determines if FA2 will allocate DirectDraw surface in the video memory, defaults to true
+        - `DDrawEmulation` = **BOOLEAN** ; Determines if FA2 will use emulation mode for DirectDrawCreate, defaults to false
+        - `NoHouseNameTranslation` = **BOOLEAN** ; Determines if FA2 will translate house to their UIName, defaults to false
     - **`[Sides]`** (**x** means this item is **essensial**, fa2sp need this section to work properly)
         - Contains a list of sides registered in rules
         ```ini
@@ -450,6 +453,11 @@ NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!~~
     Menu.Lighting.Normal = TEXT
     Menu.Lighting.Lightning = TEXT
     Menu.Lighting.Dominator = TEXT
+    Menu.PropertyBrush = TEXT
+    Menu.PropertyBrush.AutoAircraft = TEXT
+    Menu.PropertyBrush.AutoBuilding = TEXT
+    Menu.PropertyBrush.AutoInfantry = TEXT
+    Menu.PropertyBrush.AutoVehicle = TEXT
     DialogBar.TileManager = TEXT
     DialogBar.TerrainOrGround = TEXT
     DialogBar.OverlayAndSpecial = TEXT

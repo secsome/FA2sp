@@ -17,6 +17,7 @@ public:
         return reinterpret_cast<CMapDataExt*>(&CMapData::Instance());
     }
 
+    void PackExt(bool UpdatePreview, bool Description);
     bool ResizeMapExt(MapRect* const pRect);
     
     enum OreType { Riparius = 0, Cruentus, Vinifera, Aboreus };
