@@ -55,15 +55,19 @@ void CMapDataExt::PackExt(bool UpdatePreview, bool Description)
 
 		if (UpdatePreview)
 		{
+			Logger::Raw("Removing old previewpack\n");
+			INI.DeleteSection("PreviewPack");
+			INI.DeleteSection("Preview");
+
 			Logger::Raw("Packing previewpack\n");
 			
-			BITMAPINFO info; void* buffer; int stride;
+			BITMAPINFO info; unsigned char* buffer; int stride;
 			GetMapPreview(buffer, &info, stride);
 
 			const int width = info.bmiHeader.biWidth;
 			const int height = info.bmiHeader.biHeight;
 			auto rawdata = new unsigned char[3 * width * height];
-			const unsigned char* p = (const unsigned char*)buffer;
+			auto p = buffer;
 			for (int x = 0; x < width; ++x)
 			{
 				for (int y = 0; y < height; ++y)
@@ -85,7 +89,7 @@ void CMapDataExt::PackExt(bool UpdatePreview, bool Description)
 			
 			ppmfc::CString size;
 			size.Format("0,0,%d,%d", width, height);
-			INI.WriteString("PreviewPack", "Size", size);
+			INI.WriteString("Preview", "Size", size);
 			Logger::Raw(" done\n");
 		}
 	}

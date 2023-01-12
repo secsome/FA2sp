@@ -630,6 +630,15 @@ NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!~~
     AllieEditorOK = TEXT
     AllieEditorCancel = TEXT
     TileManagerTitle = TEXT
+    ; Script params
+    ; For example, ScriptParam.Status.0
+    ScriptParam.Target.[0 - 11, except 8] = TEXT
+    ScriptParam.SplitGroup.[0 - 3] = TEXT
+    ScriptParam.Facing.[0 - 7] = TEXT
+    ScriptParam.TalkBubble.[0 - 3] = TEXT
+    ScriptParam.Status.[0 - 31] = TEXT 
+    ScriptParam.Boolean.[0 - 1] = TEXT
+    ScriptExtraParam.Preference.[0 - 3] = TEXT
     ```
 
 ## WRITE IN THE END

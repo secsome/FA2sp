@@ -4,6 +4,8 @@
 #include <CINI.h>
 #include <CFinalSunDlg.h>
 
+#include "../../Helpers/Translations.h"
+
 CurrentScript* CScriptTypesExt::ExtCurrentScript;
 ppmfc::CString CurrentScript::ToString()
 {
@@ -194,10 +196,10 @@ void CurrentScript::LoadExtraParamBox(ppmfc::CComboBox& comboBox, int actionInde
 
 	if (actionIndex == 46 || actionIndex == 47 || actionIndex == 56 || actionIndex == 58)
 	{
-		comboBox.SetItemData(comboBox.AddString("0 - Min Threat"), 0);
-		comboBox.SetItemData(comboBox.AddString("1 - Max Threat"), 1);
-		comboBox.SetItemData(comboBox.AddString("2 - Nearest"), 2);
-		comboBox.SetItemData(comboBox.AddString("3 - Farthest"), 3);
+		comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptExtraParam.Preference.0", "0 - Min Threat")), 0);
+		comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptExtraParam.Preference.1", "1 - Max Threat")), 1);
+		comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptExtraParam.Preference.2", "2 - Nearest")), 2);
+		comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptExtraParam.Preference.3", "3 - Farthest")), 3);
 		return;
 	}
 

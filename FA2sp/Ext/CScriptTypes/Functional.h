@@ -9,6 +9,7 @@
 #include "../../Helpers/STDHelpers.h"
 #include "../../Helpers/ControlHelpers.h"
 #include "../../FA2sp.h"
+#include "../../Helpers/Translations.h"
 
 class CScriptTypesFunctions
 {
@@ -117,17 +118,17 @@ static void CScriptTypes_LoadParams_Target(ppmfc::CComboBox& comboBox)
 {
     comboBox.DeleteAllStrings();
 
-    comboBox.SetItemData(comboBox.AddString("0 - Not specified"), 0);
-    comboBox.SetItemData(comboBox.AddString("1 - Anything (uses auto-targeting)"), 1);
-    comboBox.SetItemData(comboBox.AddString("2 - Buildings"), 2);
-    comboBox.SetItemData(comboBox.AddString("3 - Harvesters"), 3);
-    comboBox.SetItemData(comboBox.AddString("4 - Infantry"), 4);
-    comboBox.SetItemData(comboBox.AddString("5 - Vehicles"), 5);
-    comboBox.SetItemData(comboBox.AddString("6 - Factories"), 6);
-    comboBox.SetItemData(comboBox.AddString("7 - Base defenses"), 7);
-    comboBox.SetItemData(comboBox.AddString("9 - Power plants"), 9);
-    comboBox.SetItemData(comboBox.AddString("10 - Occupiables"), 10);
-    comboBox.SetItemData(comboBox.AddString("11 - Tech Buildings"), 11);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Target.0", "0 - Not specified")), 0);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Target.1", "1 - Anything (uses auto-targeting)")), 1);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Target.2", "2 - Buildings")), 2);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Target.3", "3 - Harvesters")), 3);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Target.4", "4 - Infantry")), 4);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Target.5", "5 - Vehicles")), 5);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Target.6", "6 - Factories")), 6);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Target.7", "7 - Base defenses")), 7);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Target.9", "9 - Power plants")), 9);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Target.10", "10 - Occupiables")), 10);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Target.11", "11 - Tech Buildings")), 11);
 }
 
 // 2
@@ -220,10 +221,10 @@ static void CScriptTypes_LoadParams_SplitGroup(ppmfc::CComboBox& comboBox)
 {
     comboBox.DeleteAllStrings();
     
-    comboBox.SetItemData(comboBox.AddString("0 - Keep Transports, Keep Units"), 0);
-    comboBox.SetItemData(comboBox.AddString("1 - Keep Transports, Lose Units"), 1);
-    comboBox.SetItemData(comboBox.AddString("2 - Lose Transports, Keep Units"), 2);
-    comboBox.SetItemData(comboBox.AddString("3 - Lose Transports, Lose Units"), 3);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.SplitGroup.0", "0 - Keep Transports, Keep Units")), 0);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.SplitGroup.1", "1 - Keep Transports, Lose Units")), 1);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.SplitGroup.2", "2 - Lose Transports, Keep Units")), 2);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.SplitGroup.3", "3 - Lose Transports, Lose Units")), 3);
 }
 
 // 5
@@ -415,14 +416,14 @@ static void CScriptTypes_LoadParams_Facing(ppmfc::CComboBox& comboBox)
 {
     comboBox.DeleteAllStrings();
 
-    comboBox.SetItemData(comboBox.AddString("0 - NE"), 0);
-    comboBox.SetItemData(comboBox.AddString("1 - E"), 1);
-    comboBox.SetItemData(comboBox.AddString("2 - SE"), 2);
-    comboBox.SetItemData(comboBox.AddString("3 - S"), 3);
-    comboBox.SetItemData(comboBox.AddString("4 - SW"), 4);
-    comboBox.SetItemData(comboBox.AddString("5 - W"), 5);
-    comboBox.SetItemData(comboBox.AddString("6 - NW"), 6);
-    comboBox.SetItemData(comboBox.AddString("7 - N"), 7);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Facing.0", "0 - NE")), 0);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Facing.1", "1 - E")), 1);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Facing.2", "2 - SE")), 2);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Facing.3", "3 - S")), 3);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Facing.4", "4 - SW")), 4);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Facing.5", "5 - W")), 5);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Facing.6", "6 - NW")), 6);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Facing.7", "7 - N")), 7);
 }
 
 // 16
@@ -442,10 +443,10 @@ static void CScriptTypes_LoadParams_TalkBubble(ppmfc::CComboBox& comboBox)
 {
     comboBox.DeleteAllStrings();
 
-    comboBox.SetItemData(comboBox.AddString("0 - None"), 0);
-    comboBox.SetItemData(comboBox.AddString("1 - Asterisk(*)"), 1);
-    comboBox.SetItemData(comboBox.AddString("2 - Question mark(?)"), 2);
-    comboBox.SetItemData(comboBox.AddString("3 - Exclamation mark(!)"), 3);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.TalkBubble.0", "0 - None")), 0);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.TalkBubble.1", "1 - Asterisk(*)")), 1);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.TalkBubble.2", "2 - Question mark(?)")), 2);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.TalkBubble.3", "3 - Exclamation mark(!)")), 3);
 }
 
 // 19
@@ -454,38 +455,38 @@ static void CScriptTypes_LoadParams_Status(ppmfc::CComboBox& comboBox)
     comboBox.DeleteAllStrings();
 
     int i = 0;
-    comboBox.SetItemData(comboBox.AddString("0 - Sleep"), i++);
-    comboBox.SetItemData(comboBox.AddString("1 - Attack nearest enemy"), i++);
-    comboBox.SetItemData(comboBox.AddString("2 - Move"), i++);
-    comboBox.SetItemData(comboBox.AddString("3 - QMove"), i++);
-    comboBox.SetItemData(comboBox.AddString("4 - Retreat home for R&R"), i++);
-    comboBox.SetItemData(comboBox.AddString("5 - Guard"), i++);
-    comboBox.SetItemData(comboBox.AddString("6 - Sticky (never recruit)"), i++);
-    comboBox.SetItemData(comboBox.AddString("7 - Enter object"), i++);
-    comboBox.SetItemData(comboBox.AddString("8 - Capture object"), i++);
-    comboBox.SetItemData(comboBox.AddString("9 - Move into & get eaten"), i++);
-    comboBox.SetItemData(comboBox.AddString("10 - Harvest"), i++);
-    comboBox.SetItemData(comboBox.AddString("11 - Area Guard"), i++);
-    comboBox.SetItemData(comboBox.AddString("12 - Return (to refinery)"), i++);
-    comboBox.SetItemData(comboBox.AddString("13 - Stop"), i++);
-    comboBox.SetItemData(comboBox.AddString("14 - Ambush (wait until discovered)"), i++);
-    comboBox.SetItemData(comboBox.AddString("15 - Hunt"), i++);
-    comboBox.SetItemData(comboBox.AddString("16 - Unload"), i++);
-    comboBox.SetItemData(comboBox.AddString("17 - Sabotage (move in & destroy)"), i++);
-    comboBox.SetItemData(comboBox.AddString("18 - Construction"), i++);
-    comboBox.SetItemData(comboBox.AddString("19 - Deconstruction"), i++);
-    comboBox.SetItemData(comboBox.AddString("20 - Repair"), i++);
-    comboBox.SetItemData(comboBox.AddString("21 - Rescue"), i++);
-    comboBox.SetItemData(comboBox.AddString("22 - Missile"), i++);
-    comboBox.SetItemData(comboBox.AddString("23 - Harmless"), i++);
-    comboBox.SetItemData(comboBox.AddString("24 - Open"), i++);
-    comboBox.SetItemData(comboBox.AddString("25 - Patrol"), i++);
-    comboBox.SetItemData(comboBox.AddString("26 - Paradrop approach drop zone"), i++);
-    comboBox.SetItemData(comboBox.AddString("27 - Paradrop overlay drop zone"), i++);
-    comboBox.SetItemData(comboBox.AddString("28 - Wait"), i++);
-    comboBox.SetItemData(comboBox.AddString("29 - Attack again"), i++);
-    comboBox.SetItemData(comboBox.AddString("30 - Spyplane approach"), i++);
-    comboBox.SetItemData(comboBox.AddString("31 - Spyplane overfly"), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.0", "0 - Sleep")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.1", "1 - Attack nearest enemy")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.2", "2 - Move")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.3", "3 - QMove")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.4", "4 - Retreat home for R&R")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.5", "5 - Guard")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.6", "6 - Sticky (never recruit)")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.7", "7 - Enter object")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.8", "8 - Capture object")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.9", "9 - Move into & get eaten")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.10", "10 - Harvest")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.11", "11 - Area Guard")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.12", "12 - Return (to refinery)")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.13", "13 - Stop")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.14", "14 - Ambush (wait until discovered)")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.15", "15 - Hunt")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.16", "16 - Unload")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.17", "17 - Sabotage (move in & destroy)")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.18", "18 - Construction")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.19", "19 - Deconstruction")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.20", "20 - Repair")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.21", "21 - Rescue")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.22", "22 - Missile")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.23", "23 - Harmless")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.24", "24 - Open")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.25", "25 - Patrol")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.26", "26 - Paradrop approach drop zone")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.27", "27 - Paradrop overlay drop zone")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.28", "28 - Wait")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.29", "29 - Attack again")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.30", "30 - Spyplane approach")), i++);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Status.31", "31 - Spyplane overfly")), i++);
 }
 
 // 20
@@ -493,8 +494,8 @@ static void CScriptTypes_LoadParams_Boolean(ppmfc::CComboBox& comboBox)
 {
     comboBox.DeleteAllStrings();
 
-    comboBox.SetItemData(comboBox.AddString("0 - FALSE"), 0);
-    comboBox.SetItemData(comboBox.AddString("1 - TRUE"), 1);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Boolean.0", "0 - FALSE")), 0);
+    comboBox.SetItemData(comboBox.AddString(Translations::TranslateOrDefault("ScriptParam.Boolean.1", "1 - TRUE")), 1);
 }
 
 };

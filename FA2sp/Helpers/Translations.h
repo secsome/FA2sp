@@ -20,6 +20,7 @@ public:
     static void TranslateItem(CWnd* pWnd, const char* lpKey);
     static void TranslateItem(ppmfc::CWnd* pWnd, int nSubID, const char* lpKey) { TranslateItem((CWnd*)pWnd, nSubID, lpKey); }
     static void TranslateItem(ppmfc::CWnd* pWnd, const char* lpKey) { TranslateItem((CWnd*)pWnd, lpKey); };
+    static const char* TranslateOrDefault(const char* lpLabelName, const char* lpDefault);
     static char pLanguage[4][0x400];
 };
 

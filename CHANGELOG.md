@@ -1,5 +1,10 @@
 # FINALALERT2 - SP  CHANGELOG
 
+## RELEASE 1.5.1 (2023-01-12)
+- Fixed the bug that Preview was incorrectly saved in version 1.5.0
+- Built-in script params can be translated
+- Trigger repeat type can be translated
+
 ## RELEASE 1.5.0 (2023-01-03)
 - Implement Auto Property Brush
 - New ***ExtConfig*** : `DDrawInVideoMem` = **BOOLEAN**, defaults to true
