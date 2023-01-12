@@ -55,6 +55,21 @@ bool Translations::GetTranslationItem(const char* pLabelName, ppmfc::CString& re
         return false;
 }
 
+const char* Translations::TranslateOrDefault(const char* lpLabelName, const char* lpDefault)
+{
+    for (const auto& language : Translations::pLanguage)
+    {
+        if (auto section = CINI::FALanguage->GetSection(language))
+        {
+            auto itr = section->GetEntities().find(lpLabelName);
+            if (itr != section->GetEntities().end())
+                return itr->second;
+        }
+    }
+
+    return lpDefault;
+}
+
 void Translations::TranslateItem(CWnd* pWnd, int nSubID, const char* lpKey)
 {
     ppmfc::CString buffer;

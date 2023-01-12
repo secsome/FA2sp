@@ -2,6 +2,8 @@
 
 #include <Helpers/Macro.h>
 
+#include "../../Helpers/Translations.h"
+
 DEFINE_HOOK(502E66, CTriggerOption_OnInitDialog_RepeatTypeFix, 7)
 {
     GET(CTriggerOption*, pThis, ESI);
@@ -9,9 +11,9 @@ DEFINE_HOOK(502E66, CTriggerOption_OnInitDialog_RepeatTypeFix, 7)
     pThis->CCBHouse.DeleteAllStrings();
     pThis->CCBRepeatType.DeleteAllStrings();
 
-    pThis->CCBRepeatType.AddString("0 - One Time OR");
-    pThis->CCBRepeatType.AddString("1 - One Time AND");
-    pThis->CCBRepeatType.AddString("2 - Repeating OR");
+    pThis->CCBRepeatType.AddString(Translations::TranslateOrDefault("TriggerRepeatType.OneTimeOr", "0 - One Time OR"));
+    pThis->CCBRepeatType.AddString(Translations::TranslateOrDefault("TriggerRepeatType.OneTimeAnd", "1 - One Time AND"));
+    pThis->CCBRepeatType.AddString(Translations::TranslateOrDefault("TriggerRepeatType.RepeatingOr", "2 - Repeating OR"));
 
     return 0;
 }
