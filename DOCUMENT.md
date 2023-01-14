@@ -8,9 +8,9 @@
 - Now you can also join Discord server https://discord.gg/k4SVuMm, and found `map-editors` under `DEDICATED PROJECTS`.
 - For now, I cannot ensure the stability of it, so save your maps frequently before heavy loss! XD
 
-~~The multiple selection function is now available. Press Ctrl key to select tiles and press Ctrl+Shift key to deselect them. Ctrl+D can clear all selected tiles.
+The multiple selection function is now available. Press Ctrl key to select tiles and press Ctrl+Shift key to deselect them. Ctrl+D can clear all selected tiles.
 Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "Single" anymore) and calucate selected area ore value.
-NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!~~
+NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!
 
 ## BASIC TYPES
 - **INTEGER** 
@@ -68,6 +68,7 @@ NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!~~
         - `DDrawInVideoMem` = **BOOLEAN** ; Determines if FA2 will allocate DirectDraw surface in the video memory, defaults to true
         - `DDrawEmulation` = **BOOLEAN** ; Determines if FA2 will use emulation mode for DirectDrawCreate, defaults to false
         - `NoHouseNameTranslation` = **BOOLEAN** ; Determines if FA2 will translate house to their UIName, defaults to false
+        - `EnableMultiSelection` = **BOOLEAN** ; Determines if FA2sp will enable expermental multi-selection features, defaults to false
     - **`[Sides]`** (**x** means this item is **essensial**, fa2sp need this section to work properly)
         - Contains a list of sides registered in rules
         ```ini

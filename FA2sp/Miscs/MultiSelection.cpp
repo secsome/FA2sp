@@ -14,7 +14,7 @@
 
 std::set<MapCoord> MultiSelection::SelectedCoords;
 bool MultiSelection::ShiftKeyIsDown = false;
-BGRStruct MultiSelection::ColorHolder[0x200];
+BGRStruct MultiSelection::ColorHolder[0x1000];
 MapCoord MultiSelection::CurrentCoord;
 
 bool MultiSelection::AddCoord(int X, int Y)
@@ -72,11 +72,12 @@ inline bool MultiSelection::IsSelected(int X, int Y)
     return SelectedCoords.find(MapCoord{ X,Y }) != SelectedCoords.end();
 }
 
-/*
-
 
 DEFINE_HOOK(456EFC, CIsoView_OnMouseMove_MultiSelect_ReverseStatus, 6)
 {
+    if (!ExtConfigs::EnableMultiSelection)
+        return 0;
+
     GET_STACK(UINT, eFlags, STACK_OFFS(0x3D528, -0x4));
     REF_STACK(const CPoint, point, STACK_OFFS(0x3D528, -0x8));
 
@@ -100,6 +101,9 @@ DEFINE_HOOK(456EFC, CIsoView_OnMouseMove_MultiSelect_ReverseStatus, 6)
 
 DEFINE_HOOK(469470, CIsoView_OnKeyDown, 5)
 {
+    if (!ExtConfigs::EnableMultiSelection)
+        return 0;
+
     GET(CIsoView*, pThis, ECX);
     GET_STACK(UINT, nChar, 0x4);
 
@@ -126,6 +130,9 @@ DEFINE_HOOK(469470, CIsoView_OnKeyDown, 5)
 
 DEFINE_HOOK(46BC30, CIsoView_OnKeyUp, 5)
 {
+    if (!ExtConfigs::EnableMultiSelection)
+        return 0;
+
     GET(CIsoView*, pThis, ECX);
     GET_STACK(UINT, nChar, 0x4);
 
@@ -141,6 +148,9 @@ DEFINE_HOOK(46BC30, CIsoView_OnKeyUp, 5)
 
 DEFINE_HOOK(46EAFA, CIsoView_Draw_TileCurrentCoord_1, 5)
 {
+    if (!ExtConfigs::EnableMultiSelection)
+        return 0;
+
     MultiSelection::CurrentCoord.X = R->EBP();
     MultiSelection::CurrentCoord.Y = R->EBX();
     return 0;
@@ -148,6 +158,9 @@ DEFINE_HOOK(46EAFA, CIsoView_Draw_TileCurrentCoord_1, 5)
 
 DEFINE_HOOK(46F680, CIsoView_Draw_TileCurrentCoord_2, 5)
 {
+    if (!ExtConfigs::EnableMultiSelection)
+        return 0;
+
     MultiSelection::CurrentCoord.X = R->EDI();
     MultiSelection::CurrentCoord.Y = R->EBP();
     return 0;
@@ -163,6 +176,9 @@ DEFINE_HOOK_AGAIN(46FF71, CIsoView_Draw_MultiSelect, 7)
 DEFINE_HOOK_AGAIN(470081, CIsoView_Draw_MultiSelect, 7)
 DEFINE_HOOK(470710, CIsoView_Draw_MultiSelect, 7)
 {
+    if (!ExtConfigs::EnableMultiSelection)
+        return 0;
+
     if (MultiSelection::IsSelected(MultiSelection::CurrentCoord.X, MultiSelection::CurrentCoord.Y))
     {
         GET(BGRStruct*, pColors, ESI);
@@ -187,6 +203,9 @@ DEFINE_HOOK(470710, CIsoView_Draw_MultiSelect, 7)
 
 DEFINE_HOOK(433DA0, CFinalSunDlg_Tools_RaiseSingleTile, 5)
 {
+    if (!ExtConfigs::EnableMultiSelection)
+        return 0;
+
     GET(CFinalSunDlg*, pThis, ECX);
 
     if (CMapData::Instance->MapWidthPlusHeight)
@@ -222,6 +241,9 @@ DEFINE_HOOK(433DA0, CFinalSunDlg_Tools_RaiseSingleTile, 5)
 
 DEFINE_HOOK(433D30, CFinalSunDlg_Tools_LowerSingleTile, 5)
 {
+    if (!ExtConfigs::EnableMultiSelection)
+        return 0;
+
     GET(CFinalSunDlg*, pThis, ECX);
 
     if (CMapData::Instance->MapWidthPlusHeight)
@@ -257,6 +279,9 @@ DEFINE_HOOK(433D30, CFinalSunDlg_Tools_LowerSingleTile, 5)
 
 DEFINE_HOOK(433F70, CFinalSunDlg_Tools_HideSingleField, 5)
 {
+    if (!ExtConfigs::EnableMultiSelection)
+        return 0;
+
     GET(CFinalSunDlg*, pThis, ECX);
 
     if (CMapData::Instance->MapWidthPlusHeight)
@@ -322,19 +347,22 @@ DEFINE_HOOK(474FE0, CIsoView_Draw_MultiSelectionMoney, 5)
         buffer.Format("Money on map: %d", CMapData::Instance->MoneyCount);
         ::TextOut(hDC, rect.left + 10, rect.top + 10, buffer, buffer.GetLength());
 
-        if (MultiSelection::GetCount())
+        if (ExtConfigs::EnableMultiSelection)
         {
-            int nCount = 0;
-            auto pExt = CMapDataExt::GetExtension();
-            pExt->InitOreValue();
-            MultiSelection::ApplyForEach(
-                [&nCount, pExt](CellData& cell) {
-                    nCount += pExt->GetOreValueAt(cell);
-                }
-            );
-            
-            buffer.Format("Selected money: %d", nCount);
-            ::TextOut(hDC, rect.left + 10, rect.top + 30, buffer, buffer.GetLength());
+            if (MultiSelection::GetCount())
+            {
+                int nCount = 0;
+                auto pExt = CMapDataExt::GetExtension();
+                pExt->InitOreValue();
+                MultiSelection::ApplyForEach(
+                    [&nCount, pExt](CellData& cell) {
+                        nCount += pExt->GetOreValueAt(cell);
+                    }
+                );
+
+                buffer.Format("Selected money: %d", nCount);
+                ::TextOut(hDC, rect.left + 10, rect.top + 30, buffer, buffer.GetLength());
+            }
         }
     }
     
@@ -343,6 +371,9 @@ DEFINE_HOOK(474FE0, CIsoView_Draw_MultiSelectionMoney, 5)
 
 DEFINE_HOOK(4B9F7A, CreateMap_ClearUp_MultiSelection, 5)
 {
+    if (!ExtConfigs::EnableMultiSelection)
+        return 0;
+
     MultiSelection::Clear();
 
     return 0;
@@ -350,9 +381,10 @@ DEFINE_HOOK(4B9F7A, CreateMap_ClearUp_MultiSelection, 5)
 
 DEFINE_HOOK(49D2C0, LoadMap_ClearUp_MultiSelection, 5)
 {
+    if (!ExtConfigs::EnableMultiSelection)
+        return 0;
+
     MultiSelection::Clear();
 
     return 0;
 }
-
-*/
