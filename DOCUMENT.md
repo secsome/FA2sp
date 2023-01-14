@@ -576,6 +576,9 @@ NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!
     TriggerActionParameter = TEXT
     TriggerActionParamValue = TEXT
     TriggerActionDesc = TEXT
+    TriggerRepeatType.OneTimeOr= TEXT
+    TriggerRepeatType.OneTimeAnd= TEXT
+    TriggerRepeatType.RepeatingOr= TEXT
     ScriptTypesTitle = TEXT
     ScriptTypesDesc = TEXT
     ScriptTypesSelectedScript = TEXT
