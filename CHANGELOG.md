@@ -1,7 +1,10 @@
 # FINALALERT2 - SP  CHANGELOG
 
-## RELEASE 1.5.2 (2023-01-XX)
-- Fixed the bug that money calculation is incorrect.
+## RELEASE 1.6.0 (2023-XX-XX)
+- Reimplemented file reading system
+
+## RELEASE 1.5.2 (2023-02-28)
+- Fixed the bug that money calculation is incorrect
 - New ***ExtConfig*** : `EnableMultiSelection` = **BOOLEAN**, defaults to false
 
 ## RELEASE 1.5.1 (2023-01-12)

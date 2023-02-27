@@ -576,6 +576,9 @@ NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!
     TriggerActionParameter = TEXT
     TriggerActionParamValue = TEXT
     TriggerActionDesc = TEXT
+    TriggerRepeatType.OneTimeOr= TEXT
+    TriggerRepeatType.OneTimeAnd= TEXT
+    TriggerRepeatType.RepeatingOr= TEXT
     ScriptTypesTitle = TEXT
     ScriptTypesDesc = TEXT
     ScriptTypesSelectedScript = TEXT
@@ -633,7 +636,7 @@ NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!
     TileManagerTitle = TEXT
     ; Script params
     ; For example, ScriptParam.Status.0
-    ScriptParam.Target.[0 - 11, except 8] = TEXT
+    ScriptParam.Target.[0 - 11] = TEXT
     ScriptParam.SplitGroup.[0 - 3] = TEXT
     ScriptParam.Facing.[0 - 7] = TEXT
     ScriptParam.TalkBubble.[0 - 3] = TEXT
