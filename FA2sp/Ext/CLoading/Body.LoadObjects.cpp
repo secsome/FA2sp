@@ -582,20 +582,23 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 	}
 	else // As SHP
 	{
+		int facingCount = CINI::Art->GetInteger(ArtID, "Facings", 8);
+		if (facingCount % 8 != 0)
+			facingCount = (facingCount + 7) / 8 * 8;
 		int framesToRead[8];
 		if (CINI::Art->KeyExists(ArtID, "StandingFrames"))
 		{
 			int nStartStandFrame = CINI::Art->GetInteger(ArtID, "StartStandFrame", 0);
 			int nStandingFrames = CINI::Art->GetInteger(ArtID, "StandingFrames", 1);
 			for (int i = 0; i < 8; ++i)
-				framesToRead[i] = nStartStandFrame + i * nStandingFrames;
+				framesToRead[i] = nStartStandFrame + (i * facingCount / 8) * nStandingFrames;
 		}
 		else
 		{
 			int nStartWalkFrame = CINI::Art->GetInteger(ArtID, "StartWalkFrame", 0);
 			int nWalkFrames = CINI::Art->GetInteger(ArtID, "WalkFrames", 1);
 			for (int i = 0; i < 8; ++i) {
-				framesToRead[i] = nStartWalkFrame + i * nWalkFrames;
+				framesToRead[i] = nStartWalkFrame + (i * facingCount / 8) * nWalkFrames;
 			}
 		}
 		// fix from cmcc
@@ -628,7 +631,7 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 					int turretFramesToRead[8];
 					
 					// fix from cmcc
-					turretFramesToRead[i] = nStartWalkFrame + 8 * nWalkFrames + 4 * ((i + 1) % 8);
+					turretFramesToRead[i] = nStartWalkFrame + 8 * nWalkFrames + 4 * (((i * facingCount / 8) + 1) % 8);
 
 					CShpFile::LoadFrame(turretFramesToRead[i], 1, &FramesBuffers[1]);
 					UnionSHP_Add(FramesBuffers[0], header.Width, header.Height);
