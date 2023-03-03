@@ -154,6 +154,7 @@
     <ClCompile Include="FA2sp\Ext\CLighting\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Body.LoadObjects.cpp" />
+    <ClCompile Include="FA2sp\Ext\CLoading\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Hooks.InitPalettes.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Hooks.LoadObjects.cpp" />
     <ClCompile Include="FA2sp\Ext\CMapData\Body.cpp" />
@@ -192,6 +193,8 @@
     <ClCompile Include="FA2sp\Hooks.Debug.cpp" />
     <ClCompile Include="FA2sp\MFCWindow\Hooks.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.DirectDraw.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.Memory.cpp" />
+    <ClCompile Include="FA2sp\Miscs\PlaceHolder.cpp" />
     <ClCompile Include="FA2sp\Miscs\VoxelDrawer.cpp" />
     <ClCompile Include="FA2sp\Miscs\Exception.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.PreviewFix.cpp" />

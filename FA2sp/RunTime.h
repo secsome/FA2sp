@@ -22,6 +22,8 @@ public:
 		RunTime::ResetMemoryContentAt(addr, &value, sizeof(T));
 	}
 
+	static void SetJump(DWORD from, DWORD to);
+
 	RunTime();
 	~RunTime();
 
