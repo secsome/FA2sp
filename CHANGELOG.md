@@ -3,8 +3,9 @@
 ## RELEASE 1.6.0 (2023-XX-XX)
 - Reimplemented file reading system
 
-## RELEASE 1.5.2 (2023-02-28)
+## RELEASE 1.5.2 (2023-03-03)
 - Fixed the bug that money calculation is incorrect
+- Now SHP Vehicles more than 8 facings are supported
 - New ***ExtConfig*** : `EnableMultiSelection` = **BOOLEAN**, defaults to false
 
 ## RELEASE 1.5.1 (2023-01-12)
