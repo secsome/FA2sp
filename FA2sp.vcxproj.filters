@@ -562,6 +562,9 @@
     <ResourceCompile Include="FA2sp\UI\CCreateMap2.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+    <ResourceCompile Include="FA2sp\UI\CMapValidator.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="FA2sp\FA2sp.manifest">

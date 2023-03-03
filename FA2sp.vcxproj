@@ -296,6 +296,7 @@
     <ResourceCompile Include="FA2sp\UI\CInfantryDialog.rc" />
     <ResourceCompile Include="FA2sp\UI\CLighting.rc" />
     <ResourceCompile Include="FA2sp\UI\CLoading.rc" />
+    <ResourceCompile Include="FA2sp\UI\CMapValidator.rc" />
     <ResourceCompile Include="FA2sp\UI\CMenu.rc" />
     <ResourceCompile Include="FA2sp\UI\CScriptTypes.rc" />
     <ResourceCompile Include="FA2sp\UI\CSingleplayerSettings.rc" />
