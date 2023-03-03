@@ -15,13 +15,13 @@ std::vector<OverlayTypeData> CMapDataExt::OverlayTypeDatas;
 int CMapDataExt::GetOreValue(unsigned char nOverlay, unsigned char nOverlayData)
 {
     if (nOverlay >= 0x66 && nOverlay <= 0x79)
-        return (nOverlayData + 1) * OreValue[OreType::Riparius];
+        return nOverlayData * OreValue[OreType::Riparius];
     else if (nOverlay >= 0x1B && nOverlay <= 0x26)
-        return (nOverlayData + 1) * OreValue[OreType::Cruentus];
+        return nOverlayData * OreValue[OreType::Cruentus];
     else if (nOverlay >= 0x7F && nOverlay <= 0x92)
-        return (nOverlayData + 1) * OreValue[OreType::Vinifera];
+        return nOverlayData * OreValue[OreType::Vinifera];
     else if (nOverlay >= 0x93 && nOverlay <= 0xA6)
-        return (nOverlayData + 1) * OreValue[OreType::Aboreus];
+        return nOverlayData * OreValue[OreType::Aboreus];
     else
         return 0;
 }

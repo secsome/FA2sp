@@ -63,6 +63,7 @@ public:
     static bool DDrawInVideoMem;
     static bool DDrawEmulation;
     static bool NoHouseNameTranslation;
+    static bool EnableMultiSelection;
 };
 
 class Variables

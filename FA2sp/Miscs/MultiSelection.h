@@ -26,7 +26,7 @@ public:
     }
 
     static bool ShiftKeyIsDown;
-    static BGRStruct ColorHolder[0x200];
+    static BGRStruct ColorHolder[0x1000];
     static MapCoord CurrentCoord;
 
 private:
