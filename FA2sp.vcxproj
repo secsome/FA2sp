@@ -163,6 +163,8 @@
     <ClCompile Include="FA2sp\Ext\CMapData\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CMapData\Body.Pack.cpp" />
     <ClCompile Include="FA2sp\Ext\CMapD\Hooks.cpp" />
+    <ClCompile Include="FA2sp\Ext\CMapValidator\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CMapValidator\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CMinimap\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyAircraft\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyAircraft\Hooks.cpp" />
@@ -244,6 +246,7 @@
     <ClInclude Include="FA2sp\Ext\CLighting\Body.h" />
     <ClInclude Include="FA2sp\Ext\CLoading\Body.h" />
     <ClInclude Include="FA2sp\Ext\CMapData\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CMapValidator\Body.h" />
     <ClInclude Include="FA2sp\Ext\CPropertyAircraft\Body.h" />
     <ClInclude Include="FA2sp\Ext\CPropertyBuilding\Body.h" />
     <ClInclude Include="FA2sp\Ext\CPropertyInfantry\Body.h" />

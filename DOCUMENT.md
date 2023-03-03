@@ -367,6 +367,7 @@ NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!
     [CURRENTLANGUAGE-TranslationsRA2]
     [CURRENTLANGUAGE-Translations]
     ; Those four are all acceptable, just write under one of them is okey
+    MV_OverlapStructures = TEXT(%1 for count, %2 for X, %3 for Y)
     TabPages.TilePlacement = TEXT
     TabPages.TriggerSort = TEXT
     Menu.File = TEXT

@@ -1,8 +1,10 @@
 # FINALALERT2 - SP  CHANGELOG
 
 ## RELEASE 1.6.0 (2023-XX-XX)
+- **ONLY YURI's REVENGE WILL BE SUPPORTED SINCE FA2SP 1.6.0**
 - Reimplemented file reading system
 - Support Ares Custom Foundation
+- Map validator now checks overlapping structures, raise an error instead of warning for now. String can be modified by `MV_OverlapStructures`
 
 ## RELEASE 1.5.2 (2023-03-03)
 - Fixed the bug that money calculation is incorrect
