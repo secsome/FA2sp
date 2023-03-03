@@ -216,6 +216,11 @@ DEFINE_HOOK(4720D3, CIsoView_Draw_PowerUp3Loc_PosFix, 5)
 	return 0x47230B;
 }
 
+namespace CIsoViewDrawTemp
+{
+	int BuildingIndex;
+}
+
 DEFINE_HOOK(470986, CIsoView_Draw_BuildingImageDataQuery_1, 8)
 {
 	REF_STACK(ImageDataClass, image, STACK_OFFS(0xD18, 0xAFC));
@@ -225,6 +230,8 @@ DEFINE_HOOK(470986, CIsoView_Draw_BuildingImageDataQuery_1, 8)
 	if (Variables::Rules.GetBool(type.ID, "Turret"))
 		nFacing = 7 - (type.Facing / 32) % 8;
 	image = *ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(type.ID, nFacing));
+
+	CIsoViewDrawTemp::BuildingIndex = R->ESI();
 
 	return 0x4709E1;
 }
@@ -252,9 +259,19 @@ DEFINE_HOOK(4709EE, CIsoView_Draw_ShowBuildingOutline, 6)
 	GET_STACK(COLORREF, dwColor, STACK_OFFS(0xD18, 0xD04));
 	LEA_STACK(LPDDSURFACEDESC2, lpDesc, STACK_OFFS(0xD18, 0x92C));
 
-	pThis->DrawLockedCellOutline(X, Y, W, H, dwColor, false, false, lpDesc);
+	const auto& DataExt = CMapDataExt::BuildingDataExts[CIsoViewDrawTemp::BuildingIndex];
+	if (DataExt.IsCustomFoundation())
+		pThis->DrawLockedLines(*DataExt.LinesToDraw, X, Y, dwColor, false, false, lpDesc);
+	else
+		pThis->DrawLockedCellOutline(X, Y, W, H, dwColor, false, false, lpDesc);
 
 	return 0x470A38;
+}
+
+DEFINE_HOOK(4727B2, CIsoView_Draw_BasenodeOutline_CustomFoundation, B)
+{
+	CIsoViewDrawTemp::BuildingIndex = R->ESI();
+	return 0;
 }
 
 DEFINE_HOOK(47280B, CIsoView_Draw_BasenodeOutline, 6)
@@ -267,8 +284,17 @@ DEFINE_HOOK(47280B, CIsoView_Draw_BasenodeOutline, 6)
 	GET_STACK(COLORREF, dwColor, STACK_OFFS(0xD18, 0xB94));
 	LEA_STACK(LPDDSURFACEDESC2, lpDesc, STACK_OFFS(0xD18, 0x92C));
 
-	pThis->DrawLockedCellOutline(X, Y, W, H, dwColor, true, false, lpDesc);
-	pThis->DrawLockedCellOutline(X + 1, Y, W, H, dwColor, true, false, lpDesc);
+	const auto& DataExt = CMapDataExt::BuildingDataExts[CIsoViewDrawTemp::BuildingIndex];
+	if (DataExt.IsCustomFoundation())
+	{
+		pThis->DrawLockedLines(*DataExt.LinesToDraw, X, Y, dwColor, true, false, lpDesc);
+		pThis->DrawLockedLines(*DataExt.LinesToDraw, X + 1, Y, dwColor, true, false, lpDesc);
+	}
+	else
+	{
+		pThis->DrawLockedCellOutline(X, Y, W, H, dwColor, true, false, lpDesc);
+		pThis->DrawLockedCellOutline(X + 1, Y, W, H, dwColor, true, false, lpDesc);
+	}
 
 	return 0x472884;
 }

@@ -2,6 +2,7 @@
 
 ## RELEASE 1.6.0 (2023-XX-XX)
 - Reimplemented file reading system
+- Support Ares Custom Foundation
 
 ## RELEASE 1.5.2 (2023-03-03)
 - Fixed the bug that money calculation is incorrect

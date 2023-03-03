@@ -11,6 +11,7 @@
 
 int CMapDataExt::OreValue[4] { -1,-1,-1,-1 };
 std::vector<OverlayTypeData> CMapDataExt::OverlayTypeDatas;
+std::vector<BuildingDataExt> CMapDataExt::BuildingDataExts;
 
 int CMapDataExt::GetOreValue(unsigned char nOverlay, unsigned char nOverlayData)
 {
