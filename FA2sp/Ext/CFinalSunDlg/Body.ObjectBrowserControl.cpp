@@ -1001,10 +1001,14 @@ int CViewObjectsExt::GuessGenericSide(const char* pRegName, int nType)
             int guess = -1;
             for (auto& subprep : STDHelpers::SplitString(Variables::Rules.GetString("GenericPrerequisites", prep)))
             {
+                if (subprep == pRegName) // Avoid build myself crash
+                    return -1;
                 guess = GuessSide(subprep, GuessType(subprep));
                 if (guess != -1)
                     return guess;
             }
+            if (prep == pRegName) // Avoid build myself crash
+                return -1;
             guess = GuessSide(prep, GuessType(prep));
             if (guess != -1)
                 return guess;
