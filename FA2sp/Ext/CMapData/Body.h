@@ -2,6 +2,7 @@
 
 #include <CMapData.h>
 
+#include <unordered_map>
 #include <vector>
 
 struct OverlayTypeData
@@ -48,7 +49,7 @@ public:
 
     void InitializeBuildingTypesExt(const char* ID);
 
-    static std::vector<BuildingDataExt> BuildingDataExts;
+    static std::unordered_map<int, BuildingDataExt> BuildingDataExts;
     static std::vector<OverlayTypeData> OverlayTypeDatas;
     static int OreValue[4];
 };

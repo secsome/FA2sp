@@ -154,7 +154,6 @@ DEFINE_HOOK(4B5460, CMapData_InitializeBuildingTypes, 7)
 	{
 		pThis->BuildingDataExts.clear();
 		const auto Types = Variables::Rules.GetSection("BuildingTypes");
-		pThis->BuildingDataExts.resize(Types.size());
 		for (auto& Type : Types)
 			ProcessType(Type.second);
 	}
