@@ -1,6 +1,6 @@
 # FINALALERT2 - SP  CHANGELOG
 
-## RELEASE 1.6.0 (2023-XX-XX)
+## RELEASE 1.6.0 (2023-04-XX)
 - **ONLY YURI's REVENGE WILL BE SUPPORTED SINCE FA2SP 1.6.0**
 - Reimplemented file reading system
 - Support Ares Custom Foundation
