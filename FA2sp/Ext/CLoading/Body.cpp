@@ -167,7 +167,23 @@ bool CLoadingExt::InitMixFilesFix()
 	LoadMixFile("LUN.MIX");
 	LoadMixFile("LUNARMD.MIX");
 
-	LoadMixFile("MARBLE.MIX");
+	if (LoadMixFile("MARBLE.MIX"))
+		CFinalSunApp::Instance->MarbleLoaded = TRUE;
+	else
+	{
+		ppmfc::CString FullPath = CFinalSunApp::ExePath + "MARBLE.MIX";
+		int result = CMixFile::Open(FullPath, 0);
+		if (result)
+		{
+			Logger::Raw("[MixLoader] %04d - %s loaded.\n", result, FullPath);
+			CFinalSunApp::Instance->MarbleLoaded = TRUE;
+		}
+		else
+		{
+			CFinalSunApp::Instance->MarbleLoaded = FALSE;
+			::MessageBox(NULL, "Failed to load marble.mix! Framework mode won't be able to use!", "FA2sp", MB_OK | MB_ICONEXCLAMATION);
+		}
+	}
 
 	return true;
 }
