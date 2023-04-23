@@ -10,7 +10,7 @@ std::unordered_set<std::string> CMapValidatorExt::StructureOverlappingIgnorance;
 
 void CMapValidatorExt::ValidateStructureOverlapping(BOOL& result)
 {
-	std::vector<int> Occupied;
+	std::vector<std::vector<std::string>> Occupied;
 	int length = CMapData::Instance->MapWidthPlusHeight;
 	length *= length;
 	Occupied.resize(length);
@@ -22,7 +22,7 @@ void CMapValidatorExt::ValidateStructureOverlapping(BOOL& result)
 			const auto splits = STDHelpers::SplitString(Data, 4);
 
 			// In the list, ignore it.
-			if (StructureOverlappingIgnorance.count(std::string{splits[1].m_pchData}))
+			if (StructureOverlappingIgnorance.count(splits[1].m_pchData))
 				continue;
 
 			const int Index = CMapData::Instance->GetBuildingTypeID(splits[1]);
@@ -35,28 +35,34 @@ void CMapValidatorExt::ValidateStructureOverlapping(BOOL& result)
 				for (int dx = 0; dx < DataExt.Height; ++dx)
 				{
 					for (int dy = 0; dy < DataExt.Width; ++dy)
-						++Occupied[CMapData::Instance->GetCoordIndex(X + dx, Y + dy)];
+						Occupied[CMapData::Instance->GetCoordIndex(X + dx, Y + dy)].emplace_back(splits[1].m_pchData);
 				}
 			}
 			else
 			{
 				for (const auto& block : *DataExt.Foundations)
-					++Occupied[CMapData::Instance->GetCoordIndex(X + block.Y, Y + block.X)];
+					Occupied[CMapData::Instance->GetCoordIndex(X + block.Y, Y + block.X)].emplace_back(splits[1].m_pchData);
 			}
 		}
 	}
 
 	ppmfc::CString Format = this->FetchLanguageString(
-		"MV_OverlapStructures", "%1 structures overlap at (%2, %3)");
+		"MV_OverlapStructures", "%1 structures overlap at (%2, %3): ");
 	for (int i = 0; i < length; ++i)
 	{
-		if (Occupied[i] > 1)
+		if (Occupied[i].size() > 1)
 		{
 			result = FALSE;
 			auto buffer = Format;
-			buffer.ReplaceNumString(1, Occupied[i]);
+			buffer.ReplaceNumString(1, Occupied[i].size());
 			buffer.ReplaceNumString(2, CMapData::Instance->GetYFromCoordIndex(i));
 			buffer.ReplaceNumString(3, CMapData::Instance->GetXFromCoordIndex(i));
+			for (size_t k = 0; k < Occupied[i].size() - 1; ++k)
+			{
+				buffer += Occupied[i][k].c_str();
+				buffer += ", ";
+			}
+			buffer += Occupied[i].back().c_str();
 			this->InsertString(buffer, false);
 		}
 	}
