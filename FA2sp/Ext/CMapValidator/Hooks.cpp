@@ -15,3 +15,21 @@ DEFINE_HOOK(4D19A0, CMapValidator_DoValidator_Extra, 5)
 
 	return 0;
 }
+
+DEFINE_HOOK(4CEA50, CMapValidator_CTOR, 7)
+{
+	if (auto pSection = CINI::FAData->GetSection("StructureOverlappingCheckIgnorance"))
+	{
+		for (const auto& [key, value] : pSection->GetEntities())
+			CMapValidatorExt::StructureOverlappingIgnorance.emplace(std::string{value.m_pchData});
+	}
+
+	return 0;
+}
+
+DEFINE_HOOK(426A60, CMapValidator_DTOR, 7)
+{
+	CMapValidatorExt::StructureOverlappingIgnorance.clear();
+
+	return 0;
+}

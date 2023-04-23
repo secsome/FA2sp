@@ -360,6 +360,13 @@ NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!
         70=70 - Disable Weapons (Ares 3.0 Only),20,0,1,Disables the ability of all team members to fire for a number of FRAMES.
         ```
     - `[VehicleVoxelBarrelsRA2]`
+    - `[StructureOverlappingCheckIgnorance]`
+        - id = BuildingRegName
+    ```ini
+    [StructureOverlappingCheckIgnorance]
+    Index = RegName
+    ; Like 0=INORANLAMP, value must be a valid building regname
+    ```
 - `FALanguage.ini`
     ```ini
     [CURRENTLANGUAGE-StringsRA2]
