@@ -5,7 +5,11 @@
 
 void CTriggerOptionExt::ProgramStartupInit()
 {
+	// Name Update, EN_CHANGE -> EN_KILLFOCUS, reduce lag
+	// RunTime::ResetMemoryContentAt(0x597D60 + 0x4, &RunTime::Messages::EDIT_KILLFOCUS, 4);
+
 	RunTime::ResetMemoryContentAt(0x597F24, &CTriggerOptionExt::OnInitDialogExt);
+	// RunTime::ResetMemoryContentAt(0x597EF8, &CTriggerOptionExt::PreTranslateMessageExt);
 }
 
 BOOL CTriggerOptionExt::OnInitDialogExt()
@@ -30,10 +34,17 @@ BOOL CTriggerOptionExt::OnInitDialogExt()
 
 BOOL CTriggerOptionExt::PreTranslateMessageExt(MSG* pMsg)
 {
-	switch (pMsg->message) {
+	// Original tooltip
+	this->CTTCHouse.RelayEvent(pMsg);
 
-	default:
-		break;
+	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN)
+	{
+		if (::GetDlgCtrlID(pMsg->hwnd) == 1010)
+		{
+			this->OnETNameEdited();
+			return TRUE;
+		}
 	}
+
 	return this->ppmfc::CDialog::PreTranslateMessage(pMsg);
 }

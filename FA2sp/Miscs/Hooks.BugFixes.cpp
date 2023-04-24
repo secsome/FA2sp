@@ -142,18 +142,6 @@ DEFINE_HOOK(4564F0, CInputMessageBox_OnOK, 7)
 	return 0x4565A5;
 }
 
-//DEFINE_HOOK(4C61C5, CMapData_ResizeMap_PositionFix_MoveOnField, 5)
-//{
-//	GET(CellData*, pCell, EAX);
-//	auto const pSrc = CONTAINING_RECORD(R->ECX(), CellData, Flag);
-//
-//	pCell->Smudge = pSrc->Smudge;
-//	pCell->SmudgeType = pSrc->SmudgeType;
-//	pCell->BaseNode = pSrc->BaseNode;
-//
-//	return 0;
-//}
-
 DEFINE_HOOK(4C76C6, CMapData_ResizeMap_PositionFix_SmudgeAndBasenode, 5)
 {
 	GET_STACK(int, XOFF, STACK_OFFS(0x1C4, 0x194));
@@ -169,7 +157,7 @@ DEFINE_HOOK(4C76C6, CMapData_ResizeMap_PositionFix_SmudgeAndBasenode, 5)
 			buffer.Format("%d", i);
 			smudges.emplace_back(buffer, data.TypeID, data.X + XOFF, data.Y + YOFF);
 		}
-
+		
 		CMapData::Instance->INI.DeleteSection("Smudge");
 		if (auto pSection = CMapData::Instance->INI.AddSection("Smudge"))
 		{
