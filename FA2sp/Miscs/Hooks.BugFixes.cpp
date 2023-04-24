@@ -14,6 +14,8 @@
 
 #include "../FA2sp.h"
 
+#include "../Helpers/STDHelpers.h"
+
 // FA2 will no longer automatically change the extension of map
 DEFINE_HOOK(42700A, CFinalSunDlg_SaveMap_Extension, 9)
 {
@@ -151,11 +153,59 @@ DEFINE_HOOK(4564F0, CInputMessageBox_OnOK, 7)
 //
 //	return 0;
 //}
-//
-//DEFINE_HOOK(4C76C6, CMapData_ResizeMap_PositionFix_SyncToINI, 5)
-//{
-//	CMapData::Instance->UpdateMapFieldData_Smudge(true);
-//	CMapData::Instance->UpdateMapFieldData_House(true);
-//
-//	return 0;
-//}
+
+DEFINE_HOOK(4C76C6, CMapData_ResizeMap_PositionFix_SmudgeAndBasenode, 5)
+{
+	GET_STACK(int, XOFF, STACK_OFFS(0x1C4, 0x194));
+	GET_STACK(int, YOFF, STACK_OFFS(0x1C4, 0x19C));
+
+	ppmfc::CString buffer;
+
+	{
+		std::vector<std::tuple<ppmfc::CString, ppmfc::CString, int, int>> smudges;
+		for (size_t i = 0; i < CMapData::Instance->SmudgeDatas.size();++i)
+		{
+			const auto& data = CMapData::Instance->SmudgeDatas[i];
+			buffer.Format("%d", i);
+			smudges.emplace_back(buffer, data.TypeID, data.X + XOFF, data.Y + YOFF);
+		}
+
+		CMapData::Instance->INI.DeleteSection("Smudge");
+		if (auto pSection = CMapData::Instance->INI.AddSection("Smudge"))
+		{
+			for (const auto& [key, id, x, y] : smudges)
+			{
+				buffer.Format("%s,%d,%d,0", id, x, y);
+				CMapData::Instance->INI.WriteString(pSection, key, buffer);
+			}
+		}
+	}
+	CMapData::Instance->UpdateFieldSmudgeData(false);
+
+	for (const auto& [_, house] : Variables::Rules.GetSection("Houses"))
+	{
+		if (auto pSection = CMapData::Instance->INI.GetSection(house))
+		{
+			const int nodeCount = CMapData::Instance->INI.GetInteger(pSection, "NodeCount");
+
+			std::vector<std::tuple<ppmfc::CString, ppmfc::CString, int, int>> nodes;
+			for (int i = 0; i < nodeCount; ++i)
+			{
+				buffer.Format("%03d", i);
+				const auto value = CMapData::Instance->INI.GetString(pSection, buffer);
+				const auto splits = STDHelpers::SplitString(value);
+				nodes.emplace_back(buffer, splits[0], atoi(splits[1]) + XOFF, atoi(splits[2]) + YOFF);
+			}
+
+			for (const auto& [key, id, x, y] : nodes)
+			{
+				buffer.Format("%s,%d,%d", id, x, y);
+				// CMapData::Instance->INI.DeleteKey(pSection, key); // useless
+				CMapData::Instance->INI.WriteString(pSection, key, buffer);
+			}
+		}
+	}
+	CMapData::Instance->UpdateFieldBasenodeData(false);
+
+	return 0;
+}

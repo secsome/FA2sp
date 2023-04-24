@@ -12,7 +12,6 @@ DEFINE_HOOK(4D19A0, CMapValidator_DoValidator_Extra, 5)
 	pThis->ValidateStructureOverlapping(result);
 	pThis->ValidateMissingParams(result);
 
-
 	return 0;
 }
 
