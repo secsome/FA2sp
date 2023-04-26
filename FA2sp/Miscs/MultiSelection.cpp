@@ -5,6 +5,7 @@
 #include <Helpers/Macro.h>
 #include <Drawing.h>
 #include <CTileTypeClass.h>
+#include <CLoading.h>
 
 #include "../Ext/CIsoView/Body.h"
 #include "../Ext/CMapData/Body.h"
@@ -96,7 +97,7 @@ void MultiSelection::Copy()
         datas.push_back(data);
     }
 
-    auto hGlobal = GlobalAlloc(GMEM_SHARE | GMEM_MOVEABLE, 8 + sizeof(MyClipboardData) * datas.size());
+    auto hGlobal = GlobalAlloc(GMEM_SHARE | GMEM_MOVEABLE, 12 + sizeof(MyClipboardData) * datas.size());
     if (hGlobal == NULL)
     {
         MessageBox(NULL, "Error", "Failed to allocate global memory!", MB_OK);
@@ -114,8 +115,9 @@ void MultiSelection::Copy()
 
     reinterpret_cast<int*>(pBuffer)[0] = 0; // Flag indicate this is multiselection
     reinterpret_cast<size_t*>(pBuffer)[1] = datas.size();
-    memcpy(reinterpret_cast<char*>(pBuffer) + 8, datas.data(), sizeof(MyClipboardData) * datas.size());
-
+    reinterpret_cast<int*>(pBuffer)[2] = CLoading::Instance->TheaterIdentifier;
+    memcpy(reinterpret_cast<char*>(pBuffer) + 12, datas.data(), sizeof(MyClipboardData) * datas.size());
+    
     OpenClipboard(CFinalSunApp::Instance->m_pMainWnd->m_hWnd);
     EmptyClipboard();
     if (FALSE == SetClipboardData(CFinalSunApp::Instance->ClipboardFormat, hGlobal))
@@ -457,8 +459,12 @@ DEFINE_HOOK(4C3850, CMapData_PasteAt, 8)
         if (reinterpret_cast<int*>(ptr)[0] == 0) // Multiselection
         {
             const auto length = reinterpret_cast<size_t*>(ptr)[1];
-            const auto p = reinterpret_cast<MultiSelection::MyClipboardData*>(reinterpret_cast<char*>(ptr) + 8);
-            MultiSelection::Paste(X, Y, nBaseHeight, p, length);
+            const int identifier = reinterpret_cast<int*>(ptr)[2];
+            if (identifier == CLoading::Instance->TheaterIdentifier)
+            {
+                const auto p = reinterpret_cast<MultiSelection::MyClipboardData*>(reinterpret_cast<char*>(ptr) + 12);
+                MultiSelection::Paste(X, Y, nBaseHeight, p, length);
+            }
             GlobalUnlock(hData);
             CloseClipboard();
             return 0x4C388B;
