@@ -6,7 +6,7 @@
 
 #include <CMapData.h>
 
-std::unordered_set<std::string> CMapValidatorExt::StructureOverlappingIgnorance;
+std::unordered_set<std::string> CMapValidatorExt::StructureOverlappingIgnores;
 
 void CMapValidatorExt::ValidateStructureOverlapping(BOOL& result)
 {
@@ -22,7 +22,7 @@ void CMapValidatorExt::ValidateStructureOverlapping(BOOL& result)
 			const auto splits = STDHelpers::SplitString(Data, 4);
 
 			// In the list, ignore it.
-			if (StructureOverlappingIgnorance.count(splits[1].m_pchData))
+			if (StructureOverlappingIgnores.count(splits[1].m_pchData))
 				continue;
 
 			const int Index = CMapData::Instance->GetBuildingTypeID(splits[1]);

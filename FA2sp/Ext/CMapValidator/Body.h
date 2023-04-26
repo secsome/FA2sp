@@ -13,5 +13,5 @@ public:
 	ppmfc::CString FetchLanguageString(const char* Key, const char* def);
 	void InsertString(const char* String, bool IsWarning);
 
-	static std::unordered_set<std::string> StructureOverlappingIgnorance;
+	static std::unordered_set<std::string> StructureOverlappingIgnores;
 };
