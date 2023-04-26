@@ -10,6 +10,7 @@
 - Map validator now checks missing logic params, raise an error instead of warning for now. String can be modified by `MV_LogicMissingParams`
 - Fixed the bug that lighting is not reset correctly when loading/creating a map
 - Fixed the bug that smudges and basenodes drifting away when resizing the map
+- Multiselection now supports copy & paste
 
 ## RELEASE 1.5.2 (2023-03-03)
 - Fixed the bug that money calculation is incorrect

@@ -15,6 +15,22 @@ public:
     inline static void ReverseStatus(int X, int Y);
     inline static bool IsSelected(int X, int Y);
 
+    struct MyClipboardData
+    {
+        int X;
+        int Y;
+        unsigned char Overlay;
+        unsigned char OverlayData;
+        unsigned short TileIndex;
+        unsigned short TileIndexHiPart;
+        unsigned char TileSubIndex;
+        unsigned char Height;
+        unsigned char IceGrowth;
+        CellData::CellDataFlag Flag;
+    };
+    static void Copy();
+    static void Paste(int X, int Y, int nBaseHeight, MyClipboardData* data, size_t length);
+
     template<typename _Fn> requires std::invocable<_Fn, CellData&>
     static void ApplyForEach(_Fn _Func)
     {
