@@ -3,6 +3,7 @@
 #include "../../Helpers/Translations.h"
 #include "../../Helpers/STDHelpers.h"
 #include "../../Ext/CMapData/Body.h"
+#include "../../FA2sp.h"
 
 #include <CMapData.h>
 
@@ -52,7 +53,8 @@ void CMapValidatorExt::ValidateStructureOverlapping(BOOL& result)
 	{
 		if (Occupied[i].size() > 1)
 		{
-			result = FALSE;
+			if (!ExtConfigs::ExtendedValidationNoError)
+				result = FALSE;
 			auto buffer = Format;
 			buffer.ReplaceNumString(1, Occupied[i].size());
 			buffer.ReplaceNumString(2, CMapData::Instance->GetYFromCoordIndex(i));
@@ -63,7 +65,7 @@ void CMapValidatorExt::ValidateStructureOverlapping(BOOL& result)
 				buffer += ", ";
 			}
 			buffer += Occupied[i].back().c_str();
-			this->InsertString(buffer, false);
+			this->InsertStringAsError(buffer);
 		}
 	}
 }
@@ -82,10 +84,11 @@ void CMapValidatorExt::ValidateMissingParams(BOOL& result)
 			{
 				if (value.Find(",,") != -1) // has missing param!
 				{
-					result = FALSE;
+					if (!ExtConfigs::ExtendedValidationNoError)
+						result = FALSE;
 					auto tmp = Format;
 					tmp.ReplaceNumString(2, key);
-					InsertString(tmp, false);
+					InsertStringAsError(tmp);
 				}
 			}
 		}
@@ -105,6 +108,11 @@ ppmfc::CString CMapValidatorExt::FetchLanguageString(const char* Key, const char
 		buffer = def;
 
 	return buffer;
+}
+
+void CMapValidatorExt::InsertStringAsError(const char* String)
+{
+	CLCResults.InsertItem(LVIF_TEXT | LVIF_IMAGE, CLCResults.GetItemCount(), String, NULL, NULL, ExtConfigs::ExtendedValidationNoError, NULL);
 }
 
 void CMapValidatorExt::InsertString(const char* String, bool IsWarning)

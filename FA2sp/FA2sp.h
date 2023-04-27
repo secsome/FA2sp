@@ -64,6 +64,7 @@ public:
     static bool DDrawEmulation;
     static bool NoHouseNameTranslation;
     static bool EnableMultiSelection;
+    static bool ExtendedValidationNoError;
 };
 
 class Variables

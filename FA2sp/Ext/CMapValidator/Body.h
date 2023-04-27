@@ -11,6 +11,7 @@ public:
 	void ValidateMissingParams(BOOL& result);
 
 	ppmfc::CString FetchLanguageString(const char* Key, const char* def);
+	void InsertStringAsError(const char* String);
 	void InsertString(const char* String, bool IsWarning);
 
 	static std::unordered_set<std::string> StructureOverlappingIgnores;

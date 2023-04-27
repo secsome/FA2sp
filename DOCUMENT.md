@@ -65,10 +65,11 @@ NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!
         - `RecentFileLimit` = **INTEGER** ; How many recent files should I keep? ranges from $4$ to $9$
         - `MultiSelectionColor` = **COLORREF** ; Determines the back color of selected tiles
         - `RandomTerrainObjects` = **BOOLEAN** ; Determines if FA2 will display all terrain objects in random tree dialog, defaults to **false**
-        - `DDrawInVideoMem` = **BOOLEAN** ; Determines if FA2 will allocate DirectDraw surface in the video memory, defaults to true
-        - `DDrawEmulation` = **BOOLEAN** ; Determines if FA2 will use emulation mode for DirectDrawCreate, defaults to false
-        - `NoHouseNameTranslation` = **BOOLEAN** ; Determines if FA2 will translate house to their UIName, defaults to false
-        - `EnableMultiSelection` = **BOOLEAN** ; Determines if FA2sp will enable expermental multi-selection features, defaults to false
+        - `DDrawInVideoMem` = **BOOLEAN** ; Determines if FA2 will allocate DirectDraw surface in the video memory, defaults to **true**
+        - `DDrawEmulation` = **BOOLEAN** ; Determines if FA2 will use emulation mode for DirectDrawCreate, defaults to **false**
+        - `NoHouseNameTranslation` = **BOOLEAN** ; Determines if FA2 will translate house to their UIName, defaults to **false**
+        - `EnableMultiSelection` = **BOOLEAN** ; Determines if FA2sp will enable expermental multi-selection features, defaults to **false**
+        - `ExtendedValidationNoError` = **BOOLEAN** ; If this value is true, then extended map validation won't be shown as error but warning, defaults to **false**
     - **`[Sides]`** (**x** means this item is **essensial**, fa2sp need this section to work properly)
         - Contains a list of sides registered in rules
         ```ini

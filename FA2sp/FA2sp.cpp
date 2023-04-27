@@ -55,6 +55,7 @@ bool ExtConfigs::DDrawInVideoMem;
 bool ExtConfigs::DDrawEmulation;
 bool ExtConfigs::NoHouseNameTranslation;
 bool ExtConfigs::EnableMultiSelection;
+bool ExtConfigs::ExtendedValidationNoError;
 
 MultimapHelper Variables::Rules = { &CINI::Rules(), &CINI::CurrentDocument() };
 MultimapHelper Variables::FAData = { &CINI::FAData() };
@@ -148,6 +149,8 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::NoHouseNameTranslation = CINI::FAData->GetBool("ExtConfigs", "NoHouseNameTranslation");
 
 	ExtConfigs::EnableMultiSelection = CINI::FAData->GetBool("ExtConfigs", "EnableMultiSelection");
+
+	ExtConfigs::ExtendedValidationNoError = CINI::FAData->GetBool("ExtConfigs", "ExtendedValidationNoError");
 }
 
 // DllMain
