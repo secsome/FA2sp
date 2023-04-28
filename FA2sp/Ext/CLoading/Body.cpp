@@ -171,7 +171,7 @@ bool CLoadingExt::InitMixFilesFix()
 		CFinalSunApp::Instance->MarbleLoaded = TRUE;
 	else
 	{
-		ppmfc::CString FullPath = CFinalSunApp::ExePath + "MARBLE.MIX";
+		ppmfc::CString FullPath = CFinalSunApp::ExePath + "\\MARBLE.MIX";
 		int result = CMixFile::Open(FullPath, 0);
 		if (result)
 		{
