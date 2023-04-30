@@ -425,25 +425,22 @@ DEFINE_HOOK(433F70, CFinalSunDlg_Tools_HideSingleField, 5)
 }
 
 DEFINE_HOOK(435F10, CFinalSunDlg_Tools_Copy, 7)
-{
-    if (!ExtConfigs::EnableMultiSelection)
-        return 0;
-
-    GET(CFinalSunDlg*, pThis, ECX);
-
-    pThis->PlaySound(CFinalSunDlg::FASoundType::Normal);
-
-    Logger::Raw("Before Call MultiSelection::GetCount!\n");
-
-    if (MultiSelection::GetCount())
-        MultiSelection::Copy();
-    else
-        CIsoView::CurrentCommand->Command = FACurrentCommand::TileCopy;
-
-    Logger::Raw("After Call MultiSelection::GetCount!\n");
-
-    return 0x435F24;
-}
+ {
+     GET(CFinalSunDlg*, pThis, ECX);
+ 
+     pThis->PlaySound(CFinalSunDlg::FASoundType::Normal);
+ 
+     Logger::Raw("Before Call MultiSelection::GetCount!\n");
+ 
+     if (ExtConfigs::EnableMultiSelection && MultiSelection::GetCount())
+         MultiSelection::Copy();
+     else
+         CIsoView::CurrentCommand->Command = FACurrentCommand::TileCopy;
+ 
+     Logger::Raw("After Call MultiSelection::GetCount!\n");
+ 
+     return 0x435F24;
+ }
 
 DEFINE_HOOK(4C3850, CMapData_PasteAt, 8)
 {

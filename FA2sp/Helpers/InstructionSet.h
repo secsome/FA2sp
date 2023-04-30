@@ -88,7 +88,7 @@ public:
 
         auto& outstream = oss;
 
-        auto support_message = [&outstream](std::string isa_feature, bool is_supported) {
+        auto support_message = [&outstream](const std::string_view&& isa_feature, bool is_supported) {
             outstream << isa_feature << (is_supported ? " supported" : " not supported") << "\n";
         };
 
