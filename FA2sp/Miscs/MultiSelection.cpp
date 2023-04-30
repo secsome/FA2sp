@@ -27,11 +27,11 @@ bool MultiSelection::AddCoord(int X, int Y)
     if (X == -1 || Y == -1)
         return false;
 
-    MapCoord coord{ X,Y };
-    auto itr = SelectedCoords.find(coord);
+    MapCoord coords{ X,Y };
+    auto itr = SelectedCoords.find(coords);
     if (itr == SelectedCoords.end())
     {
-        SelectedCoords.insert(itr, coord);
+        SelectedCoords.insert(itr, coords);
         return true;
     }
     return false;
@@ -42,8 +42,8 @@ bool MultiSelection::RemoveCoord(int X, int Y)
     if (X == -1 || Y == -1)
         return false;
 
-    MapCoord coord{ X,Y };
-    auto itr = SelectedCoords.find(coord);
+    MapCoord coords{ X,Y };
+    auto itr = SelectedCoords.find(coords);
     if (itr != SelectedCoords.end())
     {
         SelectedCoords.erase(itr);
@@ -79,25 +79,25 @@ inline bool MultiSelection::IsSelected(int X, int Y)
 
 void MultiSelection::Copy()
 {
-    std::vector<MyClipboardData> datas;
-    for (const auto& coord : SelectedCoords)
+    std::vector<MyClipboardData> data;
+    for (const auto& coords : SelectedCoords)
     {
-        auto pCell = CMapData::Instance->GetCellAt(coord.X, coord.Y);
-        MyClipboardData data;
-        data.X = coord.X;
-        data.Y = coord.Y;
-        data.Overlay = pCell->Overlay;
-        data.OverlayData = pCell->OverlayData;
-        data.TileIndex = pCell->TileIndex;
-        data.TileIndexHiPart = pCell->TileIndexHiPart;
-        data.TileSubIndex = pCell->TileSubIndex;
-        data.Height = pCell->Height;
-        data.IceGrowth = pCell->IceGrowth;
-        data.Flag = pCell->Flag;
-        datas.push_back(data);
+        auto pCell = CMapData::Instance->GetCellAt(coords.X, coords.Y);
+        MyClipboardData item = {};
+        item.X = coords.X;
+        item.Y = coords.Y;
+        item.Overlay = pCell->Overlay;
+        item.OverlayData = pCell->OverlayData;
+        item.TileIndex = pCell->TileIndex;
+        item.TileIndexHiPart = pCell->TileIndexHiPart;
+        item.TileSubIndex = pCell->TileSubIndex;
+        item.Height = pCell->Height;
+        item.IceGrowth = pCell->IceGrowth;
+        item.Flag = pCell->Flag;
+        data.push_back(item);
     }
 
-    auto hGlobal = GlobalAlloc(GMEM_SHARE | GMEM_MOVEABLE, 12 + sizeof(MyClipboardData) * datas.size());
+    auto hGlobal = GlobalAlloc(GMEM_SHARE | GMEM_MOVEABLE, 12 + sizeof(MyClipboardData) * data.size());
     if (hGlobal == NULL)
     {
         MessageBox(NULL, "Error", "Failed to allocate global memory!", MB_OK);
@@ -113,10 +113,10 @@ void MultiSelection::Copy()
     while (GlobalUnlock(hGlobal))
         ;
 
-    reinterpret_cast<int*>(pBuffer)[0] = 0; // Flag indicate this is multiselection
-    reinterpret_cast<size_t*>(pBuffer)[1] = datas.size();
+    reinterpret_cast<int*>(pBuffer)[0] = 0; // Flag indicate this is multi-selection
+    reinterpret_cast<size_t*>(pBuffer)[1] = data.size();
     reinterpret_cast<int*>(pBuffer)[2] = CLoading::Instance->TheaterIdentifier;
-    memcpy(reinterpret_cast<char*>(pBuffer) + 12, datas.data(), sizeof(MyClipboardData) * datas.size());
+    memcpy(reinterpret_cast<char*>(pBuffer) + 12, data.data(), sizeof(MyClipboardData) * data.size());
     
     OpenClipboard(CFinalSunApp::Instance->m_pMainWnd->m_hWnd);
     EmptyClipboard();
@@ -129,7 +129,7 @@ void MultiSelection::Paste(int X, int Y, int nBaseHeight, MyClipboardData* data,
 {
     std::span<MyClipboardData> cells {data, data + length};
     
-    RECT rect
+    RECT bounds
     { 
         std::numeric_limits<LONG>::max(), 
         std::numeric_limits<LONG>::max(), 
@@ -138,25 +138,25 @@ void MultiSelection::Paste(int X, int Y, int nBaseHeight, MyClipboardData* data,
     };
     for (const auto& cell : cells)
     {
-        if (cell.X < rect.left)
-            rect.left = cell.X;
-        if (cell.X > rect.right)
-            rect.right = cell.X;
-        if (cell.Y < rect.top)
-            rect.top = cell.Y;
-        if (cell.Y > rect.bottom)
-            rect.bottom = cell.Y;
+        if (cell.X < bounds.left)
+            bounds.left = cell.X;
+        if (cell.X > bounds.right)
+            bounds.right = cell.X;
+        if (cell.Y < bounds.top)
+            bounds.top = cell.Y;
+        if (cell.Y > bounds.bottom)
+            bounds.bottom = cell.Y;
     }
 
-    const MapCoord center = { (rect.left + rect.right) / 2, (rect.top + rect.bottom) / 2 };
+    const MapCoord center = { (bounds.left + bounds.right) / 2, (bounds.top + bounds.bottom) / 2 };
 
     auto lowest_height = std::numeric_limits<unsigned char>::min();
     for (const auto& cell : cells)
     {
-        int offx = cell.X - center.X;
-        int offy = cell.Y - center.Y;
+        int offset_x = cell.X - center.X;
+        int offset_y = cell.Y - center.Y;
 
-        const auto pCell = CMapData::Instance->TryGetCellAt(X + offx, Y + offy);
+        const auto pCell = CMapData::Instance->TryGetCellAt(X + offset_x, Y + offset_y);
         if (pCell->Height < lowest_height)
             lowest_height = pCell->Height;
     }
@@ -164,10 +164,10 @@ void MultiSelection::Paste(int X, int Y, int nBaseHeight, MyClipboardData* data,
     nBaseHeight += lowest_height;
     for (const auto& cell : cells)
     {
-        int offx = cell.X - center.X;
-        int offy = cell.Y - center.Y;
+        int offset_x = cell.X - center.X;
+        int offset_y = cell.Y - center.Y;
 
-        auto nCellIndex = CMapData::Instance->GetCoordIndex(X + offx, Y + offy);
+        auto nCellIndex = CMapData::Instance->GetCoordIndex(X + offset_x, Y + offset_y);
         if (nCellIndex < 0 || nCellIndex >= CMapData::Instance->CellDataCount)
             continue;
 
@@ -187,7 +187,7 @@ void MultiSelection::Paste(int X, int Y, int nBaseHeight, MyClipboardData* data,
         pCell->IceGrowth = cell.IceGrowth;
         pCell->Flag = cell.Flag;
 
-        CMapData::Instance->UpdateMapPreviewAt(X + offx, Y + offy);
+        CMapData::Instance->UpdateMapPreviewAt(X + offset_x, Y + offset_y);
     }
 }
 
@@ -433,10 +433,14 @@ DEFINE_HOOK(435F10, CFinalSunDlg_Tools_Copy, 7)
 
     pThis->PlaySound(CFinalSunDlg::FASoundType::Normal);
 
+    Logger::Raw("Before Call MultiSelection::GetCount!\n");
+
     if (MultiSelection::GetCount())
         MultiSelection::Copy();
     else
         CIsoView::CurrentCommand->Command = FACurrentCommand::TileCopy;
+
+    Logger::Raw("After Call MultiSelection::GetCount!\n");
 
     return 0x435F24;
 }
@@ -456,7 +460,7 @@ DEFINE_HOOK(4C3850, CMapData_PasteAt, 8)
     
     if (ptr)
     {
-        if (reinterpret_cast<int*>(ptr)[0] == 0) // Multiselection
+        if (reinterpret_cast<int*>(ptr)[0] == 0) // Multi-selection
         {
             const auto length = reinterpret_cast<size_t*>(ptr)[1];
             const int identifier = reinterpret_cast<int*>(ptr)[2];

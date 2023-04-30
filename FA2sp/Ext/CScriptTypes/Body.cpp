@@ -199,11 +199,11 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 		curAction.ParamCode_ = 0;
 	}*/
 
-	auto& fadata = CINI::FAData();
+	auto& ini = CINI::FAData();
 
-	if (auto entities = fadata.GetSection("ScriptParams"))
+	if (auto entities = ini.GetSection("ScriptParams"))
 	{
-		char* pParseBuffer[2];
+		char* pParseBuffer[2] = { nullptr };
 		for (auto& pair : entities->GetEntities())
 		{
 			int id = atoi(pair.first);
@@ -216,18 +216,20 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 			case 2:
 				CScriptTypeParam::ExtParams[id].Param_ = atoi((const char*)pParseBuffer[1]);
 				SAFE_RELEASE(pParseBuffer[1]);
+				[[fallthrough]];
 			case 1:
 				CScriptTypeParam::ExtParams[id].Label_ = pParseBuffer[0];
 				SAFE_RELEASE(pParseBuffer[0]);
+				[[fallthrough]];
 			case 0:
 				continue;
 			}
 		}
 	}
 
-	if (auto entities = fadata.GetSection("ScriptsRA2"))
+	if (auto entities = ini.GetSection("ScriptsRA2"))
 	{
-		char* pParseBuffer[5];
+		char* pParseBuffer[5] = { nullptr };
 		for (auto& pair : entities->GetEntities())
 		{
 			int id = atoi(pair.first);
@@ -240,18 +242,23 @@ BOOL CScriptTypesExt::OnInitDialogExt()
 			default:
 				CScriptTypeAction::ExtActions[id].Description_ = pParseBuffer[4];
 				SAFE_RELEASE(pParseBuffer[4]);
+				[[fallthrough]];
 			case 4:
 				CScriptTypeAction::ExtActions[id].Editable_ = ParseBool((const char*)pParseBuffer[3]);
 				SAFE_RELEASE(pParseBuffer[3]);
+				[[fallthrough]];
 			case 3:
 				CScriptTypeAction::ExtActions[id].Hide_ = ParseBool((const char*)pParseBuffer[2]);
 				SAFE_RELEASE(pParseBuffer[2]);
+				[[fallthrough]];
 			case 2:
 				CScriptTypeAction::ExtActions[id].ParamCode_ = atoi((const char*)pParseBuffer[1]);
 				SAFE_RELEASE(pParseBuffer[1]);
+				[[fallthrough]];
 			case 1:
 				CScriptTypeAction::ExtActions[id].Name_ = pParseBuffer[0];
 				SAFE_RELEASE(pParseBuffer[0]);
+				[[fallthrough]];
 			case 0:
 				continue;
 			}

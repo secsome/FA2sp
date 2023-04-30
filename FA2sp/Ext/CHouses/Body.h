@@ -13,8 +13,6 @@ public:
 	// Ext Functions
 	//
 
-	void UpdateComboboxContents();
-
 	static void ProgramStartupInit();
 
 	CHousesExt() {};
