@@ -11,6 +11,7 @@
 - Fixed the bug that lighting is not reset correctly when loading/creating a map
 - Fixed the bug that smudges and basenodes drifting away when resizing the map
 - Multiselection now supports copy & paste
+- Multiselection operations(raise or lower cells) now supports undo & redo
 - New ***ExtConfig*** : `ExtendedValidationNoError` = **BOOLEAN**, defaults to false
 
 ## RELEASE 1.5.2 (2023-03-03)

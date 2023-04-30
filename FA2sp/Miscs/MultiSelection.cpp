@@ -330,6 +330,7 @@ DEFINE_HOOK(433DA0, CFinalSunDlg_Tools_RaiseSingleTile, 5)
     {
         if (MultiSelection::GetCount())
         {
+            CMapData::Instance->SaveUndoRedoData(true, 0, 0, 0, 0);
             MultiSelection::ApplyForEach(
                 [](CellData& cell) {
                     if (cell.Height < 14)
@@ -337,6 +338,8 @@ DEFINE_HOOK(433DA0, CFinalSunDlg_Tools_RaiseSingleTile, 5)
                 }
             );
             pThis->MyViewFrame.pIsoView->RedrawWindow(nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW);
+            CMapData::Instance->SaveUndoRedoData(true, 0, 0, 0, 0);
+            CMapData::Instance->DoUndo();
         }
         else
         {
@@ -368,6 +371,7 @@ DEFINE_HOOK(433D30, CFinalSunDlg_Tools_LowerSingleTile, 5)
     {
         if (MultiSelection::GetCount())
         {
+            CMapData::Instance->SaveUndoRedoData(true, 0, 0, 0, 0);
             MultiSelection::ApplyForEach(
                 [](CellData& cell) {
                     if (cell.Height > 0)
@@ -375,6 +379,8 @@ DEFINE_HOOK(433D30, CFinalSunDlg_Tools_LowerSingleTile, 5)
                 }
             );
             pThis->MyViewFrame.pIsoView->RedrawWindow(nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW);
+            CMapData::Instance->SaveUndoRedoData(true, 0, 0, 0, 0);
+            CMapData::Instance->DoUndo();
         }
         else
         {

@@ -9,8 +9,7 @@
 - For now, I cannot ensure the stability of it, so save your maps frequently before heavy loss! XD
 
 The multiple selection function is now available. Press Ctrl key to select tiles and press Ctrl+Shift key to deselect them. Ctrl+D can clear all selected tiles.
-Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "Single" anymore) and calucate selected area ore value.
-NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!
+Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "Single" anymore), copy paste, and calucating selected area ore value.
 
 ## BASIC TYPES
 - **INTEGER** 
