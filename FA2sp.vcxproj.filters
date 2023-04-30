@@ -165,7 +165,7 @@
     <ClInclude Include="FA2sp\Algorithms\base64.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="FA2sp\Algorithms\sha1.h">
+    <ClInclude Include="FA2sp\Algorithms\sha1impl.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FA2sp\Algorithms\lzo1x.h">
@@ -184,6 +184,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FA2sp\Ext\CMapValidator\Body.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\Helpers\InstructionSet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\Algorithms\sha1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FA2sp\Algorithms\sha1x86.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -452,7 +461,7 @@
     <ClCompile Include="FA2sp\Miscs\Hooks.DirectDraw.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FA2sp\Algorithms\sha1.cpp">
+    <ClCompile Include="FA2sp\Algorithms\sha1impl.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Algorithms\lzo1x_c.cpp">
@@ -495,6 +504,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Miscs\Hooks.ShpLoad.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Algorithms\sha1x86.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Algorithms\sha1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Helpers\InstructionSet.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

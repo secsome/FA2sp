@@ -15,25 +15,25 @@ bool CLoadingExt::InitMixFilesFix()
 		{
 			std::map<int, ppmfc::CString> collector;
 
-			for (auto& pair : pSection->GetIndices())
-				collector[pair.second] = pair.first;
+			for (const auto& [key, index] : pSection->GetIndices())
+				collector[index] = key;
 
 			ppmfc::CString path;
 
-			for (auto& pair : collector)
+			for (const auto& [_, key] : collector)
 			{
-				if (CINI::FAData->GetBool("ExtraMixes", pair.second))
+				if (CINI::FAData->GetBool("ExtraMixes", key))
 					path = CFinalSunApp::Instance->ExePath;
 				else
 					path = CFinalSunApp::Instance->FilePath;
-				path += "\\" + pair.second;
+				path += "\\" + key;
 				if (auto id = CMixFile::Open(path, 0))
 				{
 					Logger::Raw("[MixLoader][EXTRA] %04d - %s loaded.\n", id, path);
 				}
 				else
 				{
-					Logger::Raw("[MixLoader][EXTRA] %s failed!\n", id);
+					Logger::Raw("[MixLoader][EXTRA] %s failed!\n", path);
 				}
 			}
 		}

@@ -2,6 +2,7 @@
 #include "FA2sp.Constants.h"
 
 #include "Helpers/MutexHelper.h"
+#include "Helpers/InstructionSet.h"
 #include "Miscs/Palettes.h"
 #include "Miscs/VoxelDrawer.h"
 #include "Miscs/Exception.h"
@@ -193,6 +194,9 @@ DEFINE_HOOK(537129, ExeRun, 9)
 	Logger::Initialize();
 	Logger::Info(APPLY_INFO);
 	Logger::Wrap(1);
+
+	Logger::Raw("==============================\nCPU Report:\n%s==============================\n", 
+		InstructionSet::Report().c_str());
 
 	if (DetachFromDebugger())
 		Logger::Info("Syringe detached!\n");
