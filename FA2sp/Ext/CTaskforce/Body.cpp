@@ -71,7 +71,10 @@ BOOL CTaskForceExt::PreTranslateMessageExt(MSG* pMsg)
 		case WM_LBUTTONUP:
 		{
 			if (pMsg->hwnd == this->GetDlgItem(50807)->GetSafeHwnd())
+			{
 				this->OnBNCloneTaskforceClicked();
+				return TRUE;
+			}
 		}
 	}
 

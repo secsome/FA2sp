@@ -5,15 +5,21 @@
 
 #include "Palettes.h"
 
+#include "../Ext/CFinalSunDlg/Body.h"
+
 DEFINE_HOOK(4B9F7A, CreateMap_ClearUp_Pals, 5)
 {
+	CFinalSunDlgExt::CurrentLighting = 31000;
+	CheckMenuRadioItem(*CFinalSunDlg::Instance->GetMenu(), 31000, 31003, 31000, MF_UNCHECKED);
 	PalettesManager::Release();
-
+	
 	return 0;
 }
 
 DEFINE_HOOK(49D2C0, LoadMap_ClearUp_Pals, 5)
 {
+	CFinalSunDlgExt::CurrentLighting = 31000;
+	CheckMenuRadioItem(*CFinalSunDlg::Instance->GetMenu(), 31000, 31003, 31000, MF_UNCHECKED);
 	PalettesManager::Release();
 
 	return 0;

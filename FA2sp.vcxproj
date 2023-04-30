@@ -77,6 +77,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <EnableModules>false</EnableModules>
       <Optimization>MaxSpeed</Optimization>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -112,6 +113,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <EnableModules>false</EnableModules>
       <Optimization>Disabled</Optimization>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,6 +137,7 @@
     <ClCompile Include="FA2sp\Algorithms\lzo1x_c.cpp" />
     <ClCompile Include="FA2sp\Algorithms\lzo1x_d.cpp" />
     <ClCompile Include="FA2sp\Algorithms\sha1.cpp" />
+    <ClCompile Include="FA2sp\Algorithms\sha1impl.cpp" />
     <ClCompile Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.cpp" />
     <ClCompile Include="FA2sp\Ext\CAITriggerTypes\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CChangeMapSize\Hooks.cpp" />
@@ -154,13 +157,17 @@
     <ClCompile Include="FA2sp\Ext\CLighting\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Body.LoadObjects.cpp" />
+    <ClCompile Include="FA2sp\Ext\CLoading\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Hooks.InitPalettes.cpp" />
     <ClCompile Include="FA2sp\Ext\CLoading\Hooks.LoadObjects.cpp" />
     <ClCompile Include="FA2sp\Ext\CMapData\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CMapData\Hooks.AutoPropertyBrush.cpp" />
+    <ClCompile Include="FA2sp\Ext\CMapData\Hooks.BuildingTypeDatas.cpp" />
     <ClCompile Include="FA2sp\Ext\CMapData\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CMapData\Body.Pack.cpp" />
     <ClCompile Include="FA2sp\Ext\CMapD\Hooks.cpp" />
+    <ClCompile Include="FA2sp\Ext\CMapValidator\Body.cpp" />
+    <ClCompile Include="FA2sp\Ext\CMapValidator\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CMinimap\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyAircraft\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CPropertyAircraft\Hooks.cpp" />
@@ -188,10 +195,14 @@
     <ClCompile Include="FA2sp\Ext\CTriggerOption\Hooks.cpp" />
     <ClCompile Include="FA2sp\Ext\FA2Expand.cpp" />
     <ClCompile Include="FA2sp\Helpers\ControlHelpers.cpp" />
+    <ClCompile Include="FA2sp\Helpers\InstructionSet.cpp" />
     <ClCompile Include="FA2sp\Helpers\MultimapHelper.cpp" />
     <ClCompile Include="FA2sp\Hooks.Debug.cpp" />
     <ClCompile Include="FA2sp\MFCWindow\Hooks.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.DirectDraw.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.ShpLoad.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.Memory.cpp" />
+    <ClCompile Include="FA2sp\Miscs\PlaceHolder.cpp" />
     <ClCompile Include="FA2sp\Miscs\VoxelDrawer.cpp" />
     <ClCompile Include="FA2sp\Miscs\Exception.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.PreviewFix.cpp" />
@@ -207,6 +218,7 @@
     <ClCompile Include="FA2sp\Ext\CTriggerFrame\Body.cpp" />
     <ClCompile Include="FA2sp\Ext\CTriggerOption\Body.cpp" />
     <ClCompile Include="FA2sp\FA2sp.cpp" />
+    <ClCompile Include="FA2sp\Algorithms\sha1x86.cpp" />
     <ClCompile Include="FA2sp\Source\CIsoView.cpp" />
     <ClCompile Include="FA2sp\UI\Hooks.cpp" />
     <ClCompile Include="FA2sp\Logger.cpp" />
@@ -231,6 +243,7 @@
     <ClInclude Include="FA2sp\Algorithms\lzoconf.h" />
     <ClInclude Include="FA2sp\Algorithms\lzo_conf.h" />
     <ClInclude Include="FA2sp\Algorithms\sha1.h" />
+    <ClInclude Include="FA2sp\Algorithms\sha1impl.h" />
     <ClInclude Include="FA2sp\ExtraWindow\CAllieEditor\CAllieEditor.h" />
     <ClInclude Include="FA2sp\Ext\CAITriggerTypes\Body.h" />
     <ClInclude Include="FA2sp\Ext\CFinalSunApp\Body.h" />
@@ -240,6 +253,7 @@
     <ClInclude Include="FA2sp\Ext\CLighting\Body.h" />
     <ClInclude Include="FA2sp\Ext\CLoading\Body.h" />
     <ClInclude Include="FA2sp\Ext\CMapData\Body.h" />
+    <ClInclude Include="FA2sp\Ext\CMapValidator\Body.h" />
     <ClInclude Include="FA2sp\Ext\CPropertyAircraft\Body.h" />
     <ClInclude Include="FA2sp\Ext\CPropertyBuilding\Body.h" />
     <ClInclude Include="FA2sp\Ext\CPropertyInfantry\Body.h" />
@@ -261,6 +275,7 @@
     <ClInclude Include="FA2sp\FA2sp.Constants.h" />
     <ClInclude Include="FA2sp\Helpers\ControlHelpers.h" />
     <ClInclude Include="FA2sp\Helpers\Helper.h" />
+    <ClInclude Include="FA2sp\Helpers\InstructionSet.h" />
     <ClInclude Include="FA2sp\Helpers\MultimapHelper.h" />
     <ClInclude Include="FA2sp\Helpers\Parser.h" />
     <ClInclude Include="FA2sp\Helpers\STDHelpers.h" />
@@ -278,6 +293,7 @@
     <ClInclude Include="FA2sp\Helpers\MutexHelper.h" />
     <ClInclude Include="FA2sp\Helpers\Translations.h" />
     <ClInclude Include="FA2sp\ExtraWindow\CTileManager\CTileManager.h" />
+    <ClInclude Include="FA2sp\Algorithms\sha1x86.h" />
     <ClInclude Include="FA2sp\Source\CIsoView.h" />
     <ClInclude Include="FA2sp\CncVxlRenderText.h" />
   </ItemGroup>
@@ -289,6 +305,7 @@
     <ResourceCompile Include="FA2sp\UI\CInfantryDialog.rc" />
     <ResourceCompile Include="FA2sp\UI\CLighting.rc" />
     <ResourceCompile Include="FA2sp\UI\CLoading.rc" />
+    <ResourceCompile Include="FA2sp\UI\CMapValidator.rc" />
     <ResourceCompile Include="FA2sp\UI\CMenu.rc" />
     <ResourceCompile Include="FA2sp\UI\CScriptTypes.rc" />
     <ResourceCompile Include="FA2sp\UI\CSingleplayerSettings.rc" />

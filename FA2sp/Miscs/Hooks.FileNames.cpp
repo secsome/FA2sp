@@ -152,13 +152,3 @@ DEFINE_HOOK(47AA67, FileNames_DesertIni, 7)
 
     return 0x47AA7A;
 }
-
-DEFINE_HOOK(48768B, FileNames_MixExtension, 5)
-{
-    REF_STACK(ppmfc::CString, name, 40);
-
-    name += CINI::FAData->GetString("Filenames", "MixExtension", "md");
-    R->ECX<const char*>(name);
-
-    return 0x487699;
-}

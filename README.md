@@ -21,12 +21,12 @@ You can choose one of the following:
 Changelog
 ---------
 
-You can check the full changelog [here](https://github.com/secsome/FA2sp/blob/master/CHANGELOG.md).
+You can check the full changelog [here](./CHANGELOG.md).
 
 Document
 ---------
 
-You can check the document [here](https://github.com/secsome/FA2sp/blob/master/DOCUMENT.md).
+You can check the document [here](./DOCUMENT.md).
 
-[Unexplored](https://github.com/secsome/FA2sp/blob/master/UNEXPLORED.md)
+[Unexplored](./UNEXPLORED.md)
 ---------

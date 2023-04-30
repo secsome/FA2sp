@@ -4,8 +4,8 @@
 
 void CIsoViewImpl::ScreenCoord2MapCoord_Flat(int& X, int& Y)
 {
-    double x = X * 0.016666668;
-    double y = Y * 0.033333335;
+    double x = X * 1.0 / 60;
+    double y = Y * 1.0 / 30;
     X = y - x + CMapData::Instance->MapWidthPlusHeight * 0.5 + 1.5;
     Y = y + x - CMapData::Instance->MapWidthPlusHeight * 0.5 + 0.5;
 }

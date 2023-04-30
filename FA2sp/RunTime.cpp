@@ -1,5 +1,23 @@
 #include "RunTime.h"
 
+void RunTime::SetJump(DWORD from, DWORD to)
+{
+#pragma pack(push, 1)
+	struct JumpStruct
+	{
+		JumpStruct(DWORD from, DWORD to)
+			: OpCode{ 0xE9 }
+			, Offset(to - from - 5)
+		{}
+		unsigned char OpCode;
+		DWORD Offset;
+	};
+	static_assert(sizeof(JumpStruct) == 5);
+#pragma pack(pop)
+	JumpStruct data{ from,to };
+	ResetMemoryContentAt(from, data);
+}
+
 RunTime::RunTime()
 {
 }

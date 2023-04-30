@@ -155,11 +155,20 @@ DEFINE_HOOK(428D97, CFinalSunDlg_SaveMap, 7)
         }
 
         // Generate the Digest
-        SHA1 sha1;
-        sha1.add(oss.str().data(), oss.str().length());
         unsigned char hash[20];
-        sha1.getHash(hash);
-        Logger::Raw("SaveMap : Map SHA1 hash: %s\n", sha1.getHash().c_str());
+        const auto& hash_source = oss.str();
+        SHA1::hash(hash, hash_source.data(), hash_source.length());
+        
+        char hash_value[64] = { 0 };
+        sprintf_s(
+            hash_value,
+            "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+            hash[0], hash[1], hash[2], hash[3], hash[4],
+            hash[5], hash[6], hash[7], hash[8], hash[9],
+            hash[10], hash[11], hash[12], hash[13], hash[14],
+            hash[15], hash[16], hash[17], hash[18], hash[19]
+            );
+        Logger::Raw("SaveMap : Map SHA1 hash: %s\n", hash_value);
 
         // As sha1 hash length is only 20, the length of base64 result won't
         // go over the limitation of uublock's 70 per line. So only one row!

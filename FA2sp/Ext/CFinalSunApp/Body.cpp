@@ -69,7 +69,10 @@ BOOL CFinalSunAppExt::InitInstanceExt()
 		this->FileSearchLikeTS = ini.GetBool("FinalSun", "FileSearchLikeTS");
 		this->Language = ini.GetString("FinalSun", "Language");
 	}
-	
+
+	// HACK, Game like pls
+	this->FileSearchLikeTS = TRUE;
+
 	// No graphics, no need for them in fact
 	this->NoAircraftGraphics = ini.GetBool("Graphics", "NoAircraftGraphics");
 	this->NoVehicleGraphics = ini.GetBool("Graphics", "NoVehicleGraphics");

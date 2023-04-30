@@ -601,11 +601,8 @@ void CLoadingExt::LoadVehicleOrAircraft(ppmfc::CString ID)
 				framesToRead[i] = nStartWalkFrame + (i * facingCount / 8) * nWalkFrames;
 			}
 		}
-		// fix from cmcc
-		int temp = framesToRead[0];
-		for (int i = 0; i < 7; i++)
-			framesToRead[i] = framesToRead[i + 1];
-		framesToRead[7] = temp;
+
+		std::rotate(framesToRead, framesToRead + 1, framesToRead + 8);
 
 		ppmfc::CString FileName = ImageID + ".shp";
 		int nMix = this->SearchFile(FileName);

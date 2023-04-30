@@ -18,6 +18,8 @@ public:
 
 	//static void ProgramStartupInit();
 
+	bool InitMixFilesFix();
+
 	void LoadObjects(ppmfc::CString pRegName);
 	static ppmfc::CString GetImageName(ppmfc::CString ID, int nFacing);
 	static void ClearItemTypes();

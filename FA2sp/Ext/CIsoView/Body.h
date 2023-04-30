@@ -17,6 +17,7 @@ public:
     BOOL OnMouseWheelExt(UINT Flags, short zDelta, CPoint pt);
 
     void DrawLockedCellOutline(int X, int Y, int W, int H, COLORREF color, bool bUseDot, bool bUsePrimary, LPDDSURFACEDESC2 lpDesc);
+    void DrawLockedLines(const std::vector<std::pair<MapCoord, MapCoord>>& lines, int X, int Y, COLORREF color, bool bUseDot, bool bUsePrimary, LPDDSURFACEDESC2 lpDesc);
     void DrawCelltag(int X, int Y);
     void DrawWaypointFlag(int X, int Y);
     void DrawTube(CellData* pData, int X, int Y);

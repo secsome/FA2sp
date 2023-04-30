@@ -53,8 +53,8 @@ DEFINE_HOOK(48B020, CLoading_InitPalettes, 7)
     loadPalette("lunar.pal", pThis->PAL_LUNAR);
     loadPalette("desert.pal", pThis->PAL_DESERT);
 
-    if (!loadPalette("libtem.pal", pThis->PAL_LIB_ID2124019542))
-        loadPalette("_ID2124019542", pThis->PAL_LIB_ID2124019542);
+    loadPalette("libtem.pal", pThis->PAL_LIBTEM);
+
 
     return 0x48C3CD;
 }

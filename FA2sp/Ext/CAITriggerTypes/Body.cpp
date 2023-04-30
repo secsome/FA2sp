@@ -6,6 +6,7 @@
 #include "../../Helpers/Translations.h"
 #include "..\CMapData\Body.h"
 #include "..\CFinalSunApp\Body.h"
+#include "Body.h"
 
 void CAITriggerTypesExt::ProgramStartupInit()
 {

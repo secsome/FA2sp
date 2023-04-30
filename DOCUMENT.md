@@ -9,8 +9,7 @@
 - For now, I cannot ensure the stability of it, so save your maps frequently before heavy loss! XD
 
 The multiple selection function is now available. Press Ctrl key to select tiles and press Ctrl+Shift key to deselect them. Ctrl+D can clear all selected tiles.
-Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "Single" anymore) and calucate selected area ore value.
-NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!
+Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "Single" anymore), copy paste, and calucating selected area ore value.
 
 ## BASIC TYPES
 - **INTEGER** 
@@ -65,10 +64,11 @@ NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!
         - `RecentFileLimit` = **INTEGER** ; How many recent files should I keep? ranges from $4$ to $9$
         - `MultiSelectionColor` = **COLORREF** ; Determines the back color of selected tiles
         - `RandomTerrainObjects` = **BOOLEAN** ; Determines if FA2 will display all terrain objects in random tree dialog, defaults to **false**
-        - `DDrawInVideoMem` = **BOOLEAN** ; Determines if FA2 will allocate DirectDraw surface in the video memory, defaults to true
-        - `DDrawEmulation` = **BOOLEAN** ; Determines if FA2 will use emulation mode for DirectDrawCreate, defaults to false
-        - `NoHouseNameTranslation` = **BOOLEAN** ; Determines if FA2 will translate house to their UIName, defaults to false
-        - `EnableMultiSelection` = **BOOLEAN** ; Determines if FA2sp will enable expermental multi-selection features, defaults to false
+        - `DDrawInVideoMem` = **BOOLEAN** ; Determines if FA2 will allocate DirectDraw surface in the video memory, defaults to **true**
+        - `DDrawEmulation` = **BOOLEAN** ; Determines if FA2 will use emulation mode for DirectDrawCreate, defaults to **false**
+        - `NoHouseNameTranslation` = **BOOLEAN** ; Determines if FA2 will translate house to their UIName, defaults to **false**
+        - `EnableMultiSelection` = **BOOLEAN** ; Determines if FA2sp will enable expermental multi-selection features, defaults to **false**
+        - `ExtendedValidationNoError` = **BOOLEAN** ; If this value is true, then extended map validation won't be shown as error but warning, defaults to **false**
     - **`[Sides]`** (**x** means this item is **essensial**, fa2sp need this section to work properly)
         - Contains a list of sides registered in rules
         ```ini
@@ -360,6 +360,13 @@ NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!
         70=70 - Disable Weapons (Ares 3.0 Only),20,0,1,Disables the ability of all team members to fire for a number of FRAMES.
         ```
     - `[VehicleVoxelBarrelsRA2]`
+    - `[StructureOverlappingCheckIgnores]`
+        - id = BuildingRegName
+    ```ini
+    [StructureOverlappingCheckIgnorance]
+    Index = RegName
+    ; Like 0=INORANLAMP, value must be a valid building regname
+    ```
 - `FALanguage.ini`
     ```ini
     [CURRENTLANGUAGE-StringsRA2]
@@ -367,6 +374,8 @@ NOTICE THAT UNDOREDO AND COPYPASTE HASN'T BEEN SUPPORTED YET!
     [CURRENTLANGUAGE-TranslationsRA2]
     [CURRENTLANGUAGE-Translations]
     ; Those four are all acceptable, just write under one of them is okey
+    MV_OverlapStructures = TEXT(%1 for count, %2 for X, %3 for Y)
+    MV_LogicMissingParams = TEXT(%1 for section, %2 for key)
     TabPages.TilePlacement = TEXT
     TabPages.TriggerSort = TEXT
     Menu.File = TEXT

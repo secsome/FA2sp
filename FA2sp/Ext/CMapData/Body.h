@@ -2,11 +2,33 @@
 
 #include <CMapData.h>
 
+#include <unordered_map>
 #include <vector>
 
 struct OverlayTypeData
 {
     bool Rock;
+};
+
+struct BuildingDataExt
+{
+    ~BuildingDataExt()
+    {
+        if (Foundations)
+            delete Foundations;
+        if (LinesToDraw)
+            delete LinesToDraw;
+    }
+
+    bool IsCustomFoundation() const
+    {
+        return Foundations != nullptr;
+    }
+
+    int Width{ 0 };
+    int Height{ 0 };
+    std::vector<MapCoord>* Foundations{ nullptr };
+    std::vector<std::pair<MapCoord, MapCoord>>* LinesToDraw{ nullptr };
 };
 
 class CMapDataExt : public CMapData
@@ -25,6 +47,9 @@ public:
     int GetOreValueAt(CellData& cell);
     void InitOreValue();
 
+    void InitializeBuildingTypesExt(const char* ID);
+
+    static std::unordered_map<int, BuildingDataExt> BuildingDataExts;
     static std::vector<OverlayTypeData> OverlayTypeDatas;
     static int OreValue[4];
 };

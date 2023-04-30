@@ -33,8 +33,8 @@ std::string lcw::decompress(const void* src, int slen)
 	while (slen > 0)
 	{
 		auto blocksize = reinterpret_cast<unsigned short*>(ptr)[0];
-		LCW_Uncompress(ptr + 4, buffer);
-		ret.append(buffer, buffer);
+		auto count = LCW_Uncompress(ptr + 4, buffer);
+		ret.append(buffer, count);
 		ptr += blocksize;
 		slen -= blocksize;
 	}

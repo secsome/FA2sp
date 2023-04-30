@@ -2,6 +2,7 @@
 #include "FA2sp.Constants.h"
 
 #include "Helpers/MutexHelper.h"
+#include "Helpers/InstructionSet.h"
 #include "Miscs/Palettes.h"
 #include "Miscs/VoxelDrawer.h"
 #include "Miscs/Exception.h"
@@ -55,6 +56,7 @@ bool ExtConfigs::DDrawInVideoMem;
 bool ExtConfigs::DDrawEmulation;
 bool ExtConfigs::NoHouseNameTranslation;
 bool ExtConfigs::EnableMultiSelection;
+bool ExtConfigs::ExtendedValidationNoError;
 
 MultimapHelper Variables::Rules = { &CINI::Rules(), &CINI::CurrentDocument() };
 MultimapHelper Variables::FAData = { &CINI::FAData() };
@@ -148,6 +150,8 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::NoHouseNameTranslation = CINI::FAData->GetBool("ExtConfigs", "NoHouseNameTranslation");
 
 	ExtConfigs::EnableMultiSelection = CINI::FAData->GetBool("ExtConfigs", "EnableMultiSelection");
+
+	ExtConfigs::ExtendedValidationNoError = CINI::FAData->GetBool("ExtConfigs", "ExtendedValidationNoError");
 }
 
 // DllMain
@@ -190,6 +194,9 @@ DEFINE_HOOK(537129, ExeRun, 9)
 	Logger::Initialize();
 	Logger::Info(APPLY_INFO);
 	Logger::Wrap(1);
+
+	Logger::Raw("==============================\nCPU Report:\n%s==============================\n", 
+		InstructionSet::Report().c_str());
 
 	if (DetachFromDebugger())
 		Logger::Info("Syringe detached!\n");
