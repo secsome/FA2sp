@@ -99,11 +99,11 @@ POPUP "Options"
 }
 POPUP "Help"
 {
-	MENUITEM "Manual\tF1",  57670
-	MENUITEM SEPARATOR
+	// MENUITEM "Manual\tF1",  57670
+	// MENUITEM SEPARATOR
 	MENUITEM "Info",  40006
 	MENUITEM "Credits",  40075
-	MENUITEM "Tip of the day",  40022
+	// MENUITEM "Tip of the day",  40022
 }
 POPUP "Layers"
 {
