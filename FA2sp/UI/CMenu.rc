@@ -77,6 +77,7 @@ POPUP "Map tools"
 	MENUITEM "Paint cliff back\tF4",  40093
 	MENUITEM SEPARATOR
 	MENUITEM "Search Waypoint\tCtrl+W",  40133
+	MENUITEM "Navigate to coordinate", 40134
 	MENUITEM SEPARATOR
 	MENUITEM "Tool Scripts",  40135
 }

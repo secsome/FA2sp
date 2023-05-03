@@ -29,7 +29,7 @@ BOOL CALLBACK CAllieEditor::DlgProc(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM l
 		std::set<ppmfc::CString> allies;
 		cHouses.CETAllies.GetWindowText(FA2sp::Buffer);
 		for (auto& str : STDHelpers::SplitString(FA2sp::Buffer))
-			if (!STDHelpers::IsNullOrEmpty(str))
+			if (!STDHelpers::IsNoneOrEmpty(str))
 			{
 				str.Trim();
 				allies.insert(str);

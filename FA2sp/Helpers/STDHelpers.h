@@ -15,111 +15,15 @@
 class STDHelpers
 {
 public:
-    static std::vector<ppmfc::CString> SplitString(const ppmfc::CString& pSource, const char* pSplit = ",")
-    {
-        std::vector<ppmfc::CString> ret;
-        if (pSource.GetLength() == 0)
-            return ret;
+    static std::vector<ppmfc::CString> SplitString(const ppmfc::CString& pSource, const char* pSplit = ",");
+    static std::vector<ppmfc::CString> SplitString(const ppmfc::CString& pSource, size_t nth, const char* pSplit = ",");
+    static int ParseToInt(const char* pSource, int nDefault = 0);
+    static bool IsNullOrEmpty(const char* pSource);
+    static bool IsNullOrWhitespace(const char* pSource);
+    static bool IsNoneOrEmpty(const char* pSource);
+    static void TrimString(ppmfc::CString& str);
+    static void TrimIndex(ppmfc::CString& str);
+    static bool Contains(ppmfc::CString pStr, ppmfc::CString pQuery, bool bIgnoreCase = false);
+    static ppmfc::CString GetComboBoxText(const ppmfc::CComboBox& cbb);
 
-        int nIdx = 0;
-        while (true)
-        {
-            int nPos = pSource.Find(pSplit, nIdx);
-            if (nPos == -1)
-                break;
-
-            ret.push_back(pSource.Mid(nIdx, nPos - nIdx));
-            nIdx = nPos + 1;
-        }
-        ret.push_back(pSource.Mid(nIdx));
-        return ret;
-    }
-
-    static std::vector<ppmfc::CString> SplitString(const ppmfc::CString& pSource, size_t nth, const char* pSplit = ",")
-    {
-        std::vector<ppmfc::CString> ret;
-        if (pSource.GetLength() == 0)
-            return ret;
-
-        size_t i = 0;
-
-        int nIdx = 0;
-        while (true)
-        {
-            int nPos = pSource.Find(pSplit, nIdx);
-            if (nPos == -1)
-                break;
-
-            ret.push_back(pSource.Mid(nIdx, nPos - nIdx));
-            nIdx = nPos + 1;
-            if (++i > nth)
-                return ret;
-        }
-        if (nIdx != pSource.GetLength() - 1)
-        {
-            ++i;
-            ret.push_back(pSource.Mid(nIdx));
-        }
-        return ret;
-    }
-
-    static int ParseToInt(const char* pSource, int nDefault = 0)
-    {
-        int ret;
-        if (sscanf_s(pSource, "%d", &ret) != 1)
-            return nDefault;
-        return ret;
-    }
-
-    static bool IsNullOrEmpty(const char* pSource)
-    {
-        int len = strlen(pSource);
-        if (len == 0)  return true;
-        for (int i = 0; i < len; ++i)
-            if (pSource[i] != ' ' && pSource[i] != '\0')  return false;
-        return 
-            strcmp(pSource, "none") != 0 &&
-            strcmp(pSource, "<none>") != 0;
-    }
-
-    static void TrimString(ppmfc::CString& str)
-    {
-        str.TrimLeft();
-        str.TrimRight();
-    }
-
-    static void TrimIndex(ppmfc::CString& str)
-    {
-        TrimString(str);
-        int spaceIndex = str.Find(' ');
-        if (spaceIndex > 0)
-            str = str.Mid(0, spaceIndex);
-    }
-
-    static bool Contains(ppmfc::CString pStr, ppmfc::CString pQuery, bool bIgnoreCase = false)
-    {
-        if (bIgnoreCase)
-        {
-            ppmfc::CString s = pStr;
-            ppmfc::CString q = pQuery;
-            s.MakeLower();
-            q.MakeLower();
-            return s.Find(q) != -1;
-        }
-        else
-            return pStr.Find(pQuery) != -1;
-    }
-
-    static ppmfc::CString GetComboBoxText(const ppmfc::CComboBox& cbb)
-    {
-        int nCurSel = cbb.GetCurSel();
-        ppmfc::CString ret;
-
-        if (nCurSel == CB_ERR)
-            cbb.GetWindowText(ret);
-        else
-            cbb.GetLBText(nCurSel, ret);
-
-        return ret;
-    }
 };
