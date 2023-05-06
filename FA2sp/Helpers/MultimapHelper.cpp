@@ -129,8 +129,8 @@ std::map<ppmfc::CString, ppmfc::CString, INISectionEntriesComparator> MultimapHe
             {
                 for (auto& pair : section->GetEntities())
                 {
-                    if (STDHelpers::IsNullOrEmpty(pair.first) ||
-                        STDHelpers::IsNullOrEmpty(pair.second) ||
+                    if (STDHelpers::IsNoneOrEmpty(pair.first) ||
+                        STDHelpers::IsNoneOrEmpty(pair.second) ||
                         pair.first == "Name")
                     {
                         ++index;

@@ -67,7 +67,7 @@ public:
 			{
 				ppmfc::CString str = itr.second;
 
-				if (STDHelpers::IsNullOrEmpty(str))
+				if (STDHelpers::IsNoneOrEmpty(str))
 					continue;
 
 				str.MakeUpper();

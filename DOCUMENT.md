@@ -425,6 +425,7 @@ Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "
     Menu.MapTools.PaintCliffFront = TEXT
     Menu.MapTools.PaintCliffBack = TEXT
     Menu.MapTools.SearchWaypoint = TEXT
+    Menu.MapTools.NavigateCoordinate = TEXT
     Menu.MapTools.ToolScripts = TEXT
     Menu.Online = TEXT
     Menu.Online.Westwood = TEXT
@@ -643,6 +644,11 @@ Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "
     AllieEditorOK = TEXT
     AllieEditorCancel = TEXT
     TileManagerTitle = TEXT
+    NavigateCoordTitle = TEXT
+    NavigateCoordMessage = TEXT
+    NavigateCoordInvalidFormat = TEXT
+    NavigateCoordInvalidCoord = TEXT
+    NavigateCoordInvalidTitle = TEXT
     ; Script params
     ; For example, ScriptParam.Status.0
     ScriptParam.Target.[0 - 11] = TEXT

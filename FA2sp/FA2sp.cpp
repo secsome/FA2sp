@@ -149,7 +149,16 @@ void FA2sp::ExtConfigsInitialize()
 
 	ExtConfigs::NoHouseNameTranslation = CINI::FAData->GetBool("ExtConfigs", "NoHouseNameTranslation");
 
-	ExtConfigs::EnableMultiSelection = CINI::FAData->GetBool("ExtConfigs", "EnableMultiSelection");
+	ExtConfigs::EnableMultiSelection = CINI::FAData->GetBool("ExtConfigs", "EnableMultiSelection", true);
+	if (!ExtConfigs::EnableMultiSelection)
+	{
+		MessageBox(NULL, 
+			"You have disabled Multi-selection, this tag is supposed to be deprecated in future "
+			"version of FA2sp. So if you are disabling it because of the feature has some problem, "
+			"please report it at https://github.com/secsome/FA2sp/issues. Thanks for your help.",
+			"FA2sp", MB_OK | MB_ICONINFORMATION
+		);
+	}
 
 	ExtConfigs::ExtendedValidationNoError = CINI::FAData->GetBool("ExtConfigs", "ExtendedValidationNoError");
 }
@@ -166,24 +175,6 @@ BOOL APIENTRY DllMain(HANDLE hInstance, DWORD dwReason, LPVOID v)
 	}
 	return TRUE;
 }
-
-// Export Functions
-//SYRINGE_HANDSHAKE(pInfo)
-//{
-//	if (pInfo) {
-//		if (pInfo->)
-//		{
-//			sprintf_s(pInfo->Message, pInfo->cchMessage, APPLY_INFO);
-//			return S_OK;
-//		}
-//		else
-//		{
-//			sprintf_s(pInfo->Message, pInfo->cchMessage, "Requires Official Final Alert 2 version 1.02.");
-//			return S_FALSE;
-//		}
-//	}
-//	return E_POINTER;
-//}
 
 #define ENABLE_VISUAL_STYLE
 static ULONG_PTR ulCookie;

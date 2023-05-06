@@ -5,7 +5,11 @@
 #include "../CFinalSunApp/Body.h"
 
 #include <CLoading.h>
+#include <CInputMessageBox.h>
 #include "../../Miscs/Palettes.h"
+#include "../../Helpers/STDHelpers.h"
+
+#include "../../Helpers/Translations.h"
 
 int CFinalSunDlgExt::CurrentLighting = 31000;
 
@@ -130,6 +134,54 @@ BOOL CFinalSunDlgExt::OnCommandExt(WPARAM wParam, LPARAM lParam)
 		auto& file = CFinalSunAppExt::RecentFilesExt[wmID - 40140];
 		if (CLoading::IsFileExists(file.c_str()))
 			this->LoadMap(file.c_str());
+	}
+
+	// navigate to coordinate
+	if (wmID == 40134 && CMapData::Instance->MapWidthPlusHeight)
+	{
+		while (true)
+		{
+			const ppmfc::CString title = Translations::TranslateOrDefault(
+				"NavigateCoordTitle", "Navigate to coordinate"
+			);
+			const ppmfc::CString message = Translations::TranslateOrDefault(
+				"NavigateCoordMessage", "Please input the coordinate in the format like X,Y"
+			);
+			const ppmfc::CString invalid_title = Translations::TranslateOrDefault(
+				"NavigateCoordInvalidTitle", "Error!"
+			);
+
+			const auto result = CInputMessageBox::GetString(message, title);
+			
+			// canceled
+			if (STDHelpers::IsNullOrWhitespace(result))
+				break;
+
+			const auto data = STDHelpers::SplitString(result);
+			if (data.size() != 2)
+			{
+				const ppmfc::CString invalid_format = Translations::TranslateOrDefault(
+					"NavigateCoordInvalidFormat", "Invalid format!"
+				);
+				::MessageBox(NULL, invalid_format, invalid_title, MB_OK | MB_ICONERROR);
+				continue;
+			}
+
+			const int x = atoi(data[0]);
+			const int y = atoi(data[1]);
+
+			if (!CMapData::Instance->IsCoordInMap(x, y))
+			{
+				const ppmfc::CString invalid_coord = Translations::TranslateOrDefault(
+					"NavigateCoordInvalidCoord", "Invalid coordinate!"
+				);
+				::MessageBox(NULL, invalid_coord, invalid_title, MB_OK | MB_ICONERROR);
+				continue;
+			}
+
+			CIsoView::GetInstance()->MoveToMapCoord(x, y);
+			break;
+		}
 	}
 
 	return this->ppmfc::CDialog::OnCommand(wParam, lParam);
