@@ -1,7 +1,9 @@
 # FINALALERT2 - SP  CHANGELOG
 
-## RELEASE 1.6.1 (2023-XX-XX)
+## RELEASE 1.6.1 (2023-05-06)
 - New Map Tool: Navigate to coordinate, can be translated by `Menu.MapTools.NavigateCoordinate`, more locolization tags could be found in the document
+- Fixed the bug that Taskforce window didn't translate message properly
+- ***ExtConfig*** : `EnableMultiSelection` defaults to true since this version. This tag is supposed to be deprecated in 1.7.0.
 
 ## RELEASE 1.6.0 (2023-04-30)
 - **ONLY YURI's REVENGE WILL BE SUPPORTED SINCE FA2SP 1.6.0**

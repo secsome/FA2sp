@@ -53,27 +53,30 @@ BOOL CTaskForceExt::PreTranslateMessageExt(MSG* pMsg)
 			case VK_RETURN:
 			{
 				if (pMsg->hwnd == this->CCBMemberType.GetWindow(GW_CHILD)->m_hWnd)
+				{
 					this->OnCBMemberTypeEditChanged();
-
-				switch (::GetDlgCtrlID(pMsg->hwnd)) {
-				case 1010: {this->OnETCurrentTaskforceEditChanged(); break; }
-				case 1148: {this->OnETMemberCountEditChanged(); break; }
-				case 1149: {this->OnETGroupEditChanged(); break; }
-				default: break;
+					break;
+				}
+				else
+				{
+					switch (::GetDlgCtrlID(pMsg->hwnd))
+					{
+						case 1010: {this->OnETCurrentTaskforceEditChanged(); break; }
+						case 1148: {this->OnETMemberCountEditChanged(); break; }
+						case 1149: {this->OnETGroupEditChanged(); break; }
+						default: break;
+					}
 				}
 			}
-			return TRUE;
-
-			default:
-				break;
 			}
+			break;
 		}
 		case WM_LBUTTONUP:
 		{
 			if (pMsg->hwnd == this->GetDlgItem(50807)->GetSafeHwnd())
 			{
 				this->OnBNCloneTaskforceClicked();
-				return TRUE;
+				break;
 			}
 		}
 	}
