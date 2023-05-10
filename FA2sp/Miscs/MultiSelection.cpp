@@ -191,7 +191,7 @@ void MultiSelection::Paste(int X, int Y, int nBaseHeight, MyClipboardData* data,
     }
 }
 
-DEFINE_HOOK(456EFC, CIsoView_OnMouseMove_MultiSelect_ReverseStatus, 6)
+DEFINE_HOOK(456EFC, CIsoView_OnMouseMove_MultiSelect_SelectStatus, 6)
 {
     if (!ExtConfigs::EnableMultiSelection)
         return 0;
@@ -227,7 +227,7 @@ DEFINE_HOOK(469470, CIsoView_OnKeyDown, 5)
 
     if (nChar == 'D')
     {
-        if (CIsoView::ControlKeyIsDown)
+        if (CIsoView::ControlKeyIsDown && MultiSelection::ShiftKeyIsDown)
             MultiSelection::Clear();
         else
             CFinalSunApp::Instance->FlatToGround = !CFinalSunApp::Instance->FlatToGround;
