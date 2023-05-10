@@ -376,7 +376,6 @@ void CLoadingExt::LoadBuilding_Normal(ppmfc::CString ID)
 
 					UnionSHP_GetAndClear(pImage, &width1, &height1);
 					DictName.Format("%s%d\233NORMAL", ID, i);
-					//DictName.Format("%s%d", ImageID, i);
 					SetImageData(pImage, DictName, width1, height1, PalettesManager::LoadPalette(PaletteName));
 				}
 
@@ -401,8 +400,7 @@ void CLoadingExt::LoadBuilding_Normal(ppmfc::CString ID)
 					int width1, height1;
 					UnionSHP_GetAndClear(pImage, &width1, &height1);
 
-					DictName.Format("%s%dNORMAL", ID, i);
-					//DictName.Format("%s%d", ImageID, i);
+					DictName.Format("%s%d\233NORMAL", ID, i);
 					SetImageData(pImage, DictName, width1, height1, PalettesManager::LoadPalette(PaletteName));
 				}
 				GameDelete(pBuffer);
@@ -411,7 +409,6 @@ void CLoadingExt::LoadBuilding_Normal(ppmfc::CString ID)
 		else // No turret
 		{
 			DictName.Format("%s%d\233NORMAL", ID, 0);
-			//DictName.Format("%s%d", ImageID, 0);
 			SetImageData(pBuffer, DictName, width, height, PalettesManager::LoadPalette(PaletteName));
 		}
 	}
@@ -471,7 +468,16 @@ void CLoadingExt::LoadBuilding_Damaged(ppmfc::CString ID)
 
 	auto loadAnimFrameShape = [&](ppmfc::CString animkey, ppmfc::CString ignorekey)
 	{
-		if (auto ppStr = CINI::Art->TryGetString(ArtID, animkey))
+		ppmfc::CString damagedAnimkey = animkey + "Damaged";
+		if (auto ppStr = CINI::Art->TryGetString(ArtID, damagedAnimkey))
+		{
+			if (!CINI::FAData->GetBool(ignorekey, ID))
+			{
+				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
+				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
+			}
+		}
+		else if (auto ppStr = CINI::Art->TryGetString(ArtID, animkey))
 		{
 			if (!CINI::FAData->GetBool(ignorekey, ID))
 			{
@@ -484,15 +490,15 @@ void CLoadingExt::LoadBuilding_Damaged(ppmfc::CString ID)
 	int nBldStartFrame = CINI::Art->GetInteger(ArtID, "LoopStart", 0) + 1;
 	if (loadBuildingFrameShape(ImageID, nBldStartFrame))
 	{
-		loadAnimFrameShape("IdleAnimDamaged", "IgnoreIdleAnim");
-		loadAnimFrameShape("ActiveAnimDamaged", "IgnoreActiveAnim1");
-		loadAnimFrameShape("ActiveAnimTwoDamaged", "IgnoreActiveAnim2");
-		loadAnimFrameShape("ActiveAnimThreeDamaged", "IgnoreActiveAnim3");
-		loadAnimFrameShape("ActiveAnimFourDamaged", "IgnoreActiveAnim4");
-		loadAnimFrameShape("SuperAnimDamaged", "IgnoreSuperAnim1");
-		loadAnimFrameShape("SuperAnimTwoDamaged", "IgnoreSuperAnim2");
-		loadAnimFrameShape("SuperAnimThreeDamaged", "IgnoreSuperAnim3");
-		loadAnimFrameShape("SuperAnimFourDamaged", "IgnoreSuperAnim4");
+		loadAnimFrameShape("IdleAnim", "IgnoreIdleAnim");
+		loadAnimFrameShape("ActiveAnim", "IgnoreActiveAnim1");
+		loadAnimFrameShape("ActiveAnimTwo", "IgnoreActiveAnim2");
+		loadAnimFrameShape("ActiveAnimThree", "IgnoreActiveAnim3");
+		loadAnimFrameShape("ActiveAnimFour", "IgnoreActiveAnim4");
+		loadAnimFrameShape("SuperAnim", "IgnoreSuperAnim1");
+		loadAnimFrameShape("SuperAnimTwo", "IgnoreSuperAnim2");
+		loadAnimFrameShape("SuperAnimThree", "IgnoreSuperAnim3");
+		loadAnimFrameShape("SuperAnimFour", "IgnoreSuperAnim4");
 
 		if (auto ppStr = CINI::Art->TryGetString(ArtID, "BibShape"))
 			loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), 1);
@@ -514,7 +520,7 @@ void CLoadingExt::LoadBuilding_Damaged(ppmfc::CString ID)
 			{
 				int turzadjust = Variables::Rules.GetInteger(ID, "TurretAnimZAdjust"); // no idea why apply it but it worked
 
-				ppmfc::CString TurName = Variables::Rules.GetString(ID, "TurretAnimDamaged", ID + "tur");
+				ppmfc::CString TurName = Variables::Rules.GetString(ID, "TurretAnim", ID + "tur");
 				ppmfc::CString BarlName = ID + "barl";
 
 
@@ -603,7 +609,6 @@ void CLoadingExt::LoadBuilding_Damaged(ppmfc::CString ID)
 
 					UnionSHP_GetAndClear(pImage, &width1, &height1);
 					DictName.Format("%s%d\233DAMAGED", ID, i);
-					//DictName.Format("%s%d", ImageID, i);
 					SetImageData(pImage, DictName, width1, height1, PalettesManager::LoadPalette(PaletteName));
 				}
 
@@ -611,7 +616,7 @@ void CLoadingExt::LoadBuilding_Damaged(ppmfc::CString ID)
 			}
 			else //SHP anim
 			{
-				ppmfc::CString TurName = Variables::Rules.GetString(ID, "TurretAnimDamaged", ID + "tur");
+				ppmfc::CString TurName = Variables::Rules.GetString(ID, "TurretAnim", ID + "tur");
 				int nStartFrame = CINI::Art->GetInteger(TurName, "LoopStart");
 				for (int i = 0; i < 8; ++i)
 				{
@@ -628,8 +633,7 @@ void CLoadingExt::LoadBuilding_Damaged(ppmfc::CString ID)
 					int width1, height1;
 					UnionSHP_GetAndClear(pImage, &width1, &height1);
 
-					DictName.Format("%s%dDAMAGED", ID, i);
-					//DictName.Format("%s%d", ImageID, i);
+					DictName.Format("%s%d\233DAMAGED", ID, i);
 					SetImageData(pImage, DictName, width1, height1, PalettesManager::LoadPalette(PaletteName));
 				}
 				GameDelete(pBuffer);
@@ -638,7 +642,6 @@ void CLoadingExt::LoadBuilding_Damaged(ppmfc::CString ID)
 		else // No turret
 		{
 			DictName.Format("%s%d\233DAMAGED", ID, 0);
-			//DictName.Format("%s%d", ImageID, 0);
 			SetImageData(pBuffer, DictName, width, height, PalettesManager::LoadPalette(PaletteName));
 		}
 	}
@@ -698,7 +701,16 @@ void CLoadingExt::LoadBuilding_Rubble(ppmfc::CString ID)
 
 	auto loadAnimFrameShape = [&](ppmfc::CString animkey, ppmfc::CString ignorekey)
 	{
-		if (auto ppStr = CINI::Art->TryGetString(ArtID, animkey))
+		ppmfc::CString damagedAnimkey = animkey + "Damaged";
+		if (auto ppStr = CINI::Art->TryGetString(ArtID, damagedAnimkey))
+		{
+			if (!CINI::FAData->GetBool(ignorekey, ID))
+			{
+				int nStartFrame = CINI::Art->GetInteger(*ppStr, "LoopStart");
+				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), nStartFrame);
+			}
+		}
+		else if (auto ppStr = CINI::Art->TryGetString(ArtID, animkey))
 		{
 			if (!CINI::FAData->GetBool(ignorekey, ID))
 			{
@@ -713,15 +725,15 @@ void CLoadingExt::LoadBuilding_Rubble(ppmfc::CString ID)
 		int nBldStartFrame = CINI::Art->GetInteger(ArtID, "LoopStart", 0) + 1;
 		if (loadBuildingFrameShape(ImageID, nBldStartFrame))
 		{
-			loadAnimFrameShape("IdleAnimDamaged", "IgnoreIdleAnim");
-			loadAnimFrameShape("ActiveAnimDamaged", "IgnoreActiveAnim1");
-			loadAnimFrameShape("ActiveAnimTwoDamaged", "IgnoreActiveAnim2");
-			loadAnimFrameShape("ActiveAnimThreeDamaged", "IgnoreActiveAnim3");
-			loadAnimFrameShape("ActiveAnimFourDamaged", "IgnoreActiveAnim4");
-			loadAnimFrameShape("SuperAnimDamaged", "IgnoreSuperAnim1");
-			loadAnimFrameShape("SuperAnimTwoDamaged", "IgnoreSuperAnim2");
-			loadAnimFrameShape("SuperAnimThreeDamaged", "IgnoreSuperAnim3");
-			loadAnimFrameShape("SuperAnimFourDamaged", "IgnoreSuperAnim4");
+			loadAnimFrameShape("IdleAnim", "IgnoreIdleAnim");
+			loadAnimFrameShape("ActiveAnim", "IgnoreActiveAnim1");
+			loadAnimFrameShape("ActiveAnimTwo", "IgnoreActiveAnim2");
+			loadAnimFrameShape("ActiveAnimThree", "IgnoreActiveAnim3");
+			loadAnimFrameShape("ActiveAnimFour", "IgnoreActiveAnim4");
+			loadAnimFrameShape("SuperAnim", "IgnoreSuperAnim1");
+			loadAnimFrameShape("SuperAnimTwo", "IgnoreSuperAnim2");
+			loadAnimFrameShape("SuperAnimThree", "IgnoreSuperAnim3");
+			loadAnimFrameShape("SuperAnimFour", "IgnoreSuperAnim4");
 
 			if (auto ppStr = CINI::Art->TryGetString(ArtID, "BibShape"))
 				loadSingleFrameShape(CINI::Art->GetString(*ppStr, "Image", *ppStr), 1);
@@ -743,7 +755,7 @@ void CLoadingExt::LoadBuilding_Rubble(ppmfc::CString ID)
 				{
 					int turzadjust = Variables::Rules.GetInteger(ID, "TurretAnimZAdjust"); // no idea why apply it but it worked
 
-					ppmfc::CString TurName = Variables::Rules.GetString(ID, "TurretAnimDamaged", ID + "tur");
+					ppmfc::CString TurName = Variables::Rules.GetString(ID, "TurretAnim", ID + "tur");
 					ppmfc::CString BarlName = ID + "barl";
 
 
@@ -832,7 +844,6 @@ void CLoadingExt::LoadBuilding_Rubble(ppmfc::CString ID)
 
 						UnionSHP_GetAndClear(pImage, &width1, &height1);
 						DictName.Format("%s%d\233RUBBLE", ID, i);
-						//DictName.Format("%s%d", ImageID, i);
 						SetImageData(pImage, DictName, width1, height1, PalettesManager::LoadPalette(PaletteName));
 					}
 
@@ -840,7 +851,7 @@ void CLoadingExt::LoadBuilding_Rubble(ppmfc::CString ID)
 				}
 				else //SHP anim
 				{
-					ppmfc::CString TurName = Variables::Rules.GetString(ID, "TurretAnimDamaged", ID + "tur");
+					ppmfc::CString TurName = Variables::Rules.GetString(ID, "TurretAnim", ID + "tur");
 					int nStartFrame = CINI::Art->GetInteger(TurName, "LoopStart");
 					for (int i = 0; i < 8; ++i)
 					{
@@ -857,8 +868,7 @@ void CLoadingExt::LoadBuilding_Rubble(ppmfc::CString ID)
 						int width1, height1;
 						UnionSHP_GetAndClear(pImage, &width1, &height1);
 
-						DictName.Format("%s%dRUBBLE", ID, i);
-						//DictName.Format("%s%d", ImageID, i);
+						DictName.Format("%s%d\233RUBBLE", ID, i);
 						SetImageData(pImage, DictName, width1, height1, PalettesManager::LoadPalette(PaletteName));
 					}
 					GameDelete(pBuffer);
@@ -867,7 +877,6 @@ void CLoadingExt::LoadBuilding_Rubble(ppmfc::CString ID)
 			else // No turret
 			{
 				DictName.Format("%s%d\233RUBBLE", ID, 0);
-				//DictName.Format("%s%d", ImageID, 0);
 				SetImageData(pBuffer, DictName, width, height, PalettesManager::LoadPalette(PaletteName));
 			}
 		}
