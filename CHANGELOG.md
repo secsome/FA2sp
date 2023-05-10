@@ -7,6 +7,7 @@
     - Those buildings with `LeaveRubble=no` will be displayed as black house color and damaged
 - Multiselection deselect all hotkey changed from CTRL+D into CTRL+SHIFT+D
 - Added hotkey CTRL+SHIFT+F for Navigate to coordinate
+- SliderCtrl now displays tooltip indicating current strength of the object
 
 ## RELEASE 1.6.1 (2023-05-06)
 - New Map Tool: Navigate to coordinate, can be translated by `Menu.MapTools.NavigateCoordinate`, more locolization tags could be found in the document
