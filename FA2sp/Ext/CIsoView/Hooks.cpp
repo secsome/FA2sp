@@ -13,6 +13,37 @@
 
 #include "../../Source/CIsoView.h"
 
+namespace CIsoViewDrawTemp
+{
+	float ConditionYellow = 0.67f;
+}
+
+DEFINE_HOOK(46DE00, CIsoView_Draw_InitDrawData, 7)
+{
+	CIsoViewDrawTemp::ConditionYellow = Variables::Rules.GetSingle("AudioVisual", "ConditionYellow", 0.67f);
+	return 0;
+}
+
+// For rubble drawing, those who have no rubble image will be considered as black house color
+DEFINE_HOOK(4A4D06, CMapData_UpdateMapFieldData_Structures_FixStrengthValue, 7)
+{
+	LEA_STACK(ppmfc::CString*, pBuffer, STACK_OFFS(0x16C, 0xB8));
+	REF_STACK(CBuildingTypeData, type, STACK_OFFS(0x16C, 0x120));
+	GET(int, value, EAX);
+
+	R->ECX(pBuffer);
+	value = std::clamp(value, 0, 256);
+	if (value == 0)
+	{
+		reinterpret_cast<unsigned char*>(&type)[3] = true;
+		type.Strength = 0;
+	}
+	else
+		type.Strength = value - 1;
+
+	return 0x4A4D11;
+}
+
 /*
 * FinalAlert 2 coordinate system just reversed the game's one
 * Which means game's (X, Y) is (Y, X) in FinalAlert 2.
@@ -229,7 +260,16 @@ DEFINE_HOOK(470986, CIsoView_Draw_BuildingImageDataQuery_1, 8)
 	int nFacing = 0;
 	if (Variables::Rules.GetBool(type.ID, "Turret"))
 		nFacing = 7 - (type.Facing / 32) % 8;
-	image = *ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(type.ID, nFacing));
+
+	const int HP = (unsigned int)type.Strength + 1;
+	int status = CLoadingExt::GBIN_NORMAL;
+	if (reinterpret_cast<const unsigned char*>(&type)[3] != 0)
+		status = CLoadingExt::GBIN_RUBBLE;
+	else if (static_cast<int>((CIsoViewDrawTemp::ConditionYellow + 0.001f) * 256) > HP)
+		status = CLoadingExt::GBIN_DAMAGED;
+
+	const auto& imageName = CLoadingExt::GetBuildingImageName(type.ID, nFacing, status);
+	image = *ImageDataMapHelper::GetImageDataFromMap(imageName);
 
 	CIsoViewDrawTemp::BuildingIndex = R->ESI();
 
@@ -244,7 +284,16 @@ DEFINE_HOOK(470AE3, CIsoView_Draw_BuildingImageDataQuery_2, 7)
 	int nFacing = 0;
 	if (Variables::Rules.GetBool(type.ID, "Turret"))
 		nFacing = (7 - type.Facing / 32) % 8;
-	image = *ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(type.ID, nFacing));
+
+	const int HP = (unsigned int)type.Strength + 1;
+	int status = CLoadingExt::GBIN_NORMAL;
+	if (reinterpret_cast<const unsigned char*>(&type)[3] != 0)
+		status = CLoadingExt::GBIN_RUBBLE;
+	else if (static_cast<int>((CIsoViewDrawTemp::ConditionYellow + 0.001f) * 256) > HP)
+		status = CLoadingExt::GBIN_DAMAGED;
+
+	const auto& imageName = CLoadingExt::GetBuildingImageName(type.ID, nFacing, status);
+	image = *ImageDataMapHelper::GetImageDataFromMap(imageName);
 
 	return 0x470B4D;
 }
@@ -415,7 +464,6 @@ DEFINE_HOOK(4676CB, CIsoView_OnLeftButtonUp_AddTube, 6)
 
 	return 0x468548;
 }
-
 
 DEFINE_HOOK(470502, CIsoView_Draw_OverlayOffset, 5)
 {

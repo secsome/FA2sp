@@ -17,6 +17,7 @@ public:
 
     ppmfc::CString* TryGetString(ppmfc::CString pSection, ppmfc::CString pKey);
     int GetInteger(ppmfc::CString pSection, ppmfc::CString pKey, int nDefault = 0);
+    float GetSingle(ppmfc::CString pSection, ppmfc::CString pKey, float nDefault = 0.0f);
     ppmfc::CString GetString(ppmfc::CString pSection, ppmfc::CString pKey, ppmfc::CString pDefault = "");
     bool GetBool(ppmfc::CString pSection, ppmfc::CString pKey, bool nDefault = false);
 

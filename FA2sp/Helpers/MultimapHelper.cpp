@@ -55,6 +55,19 @@ int MultimapHelper::GetInteger(ppmfc::CString pSection, ppmfc::CString pKey, int
     return nDefault;
 }
 
+float MultimapHelper::GetSingle(ppmfc::CString pSection, ppmfc::CString pKey, float nDefault)
+{
+    ppmfc::CString& pStr = this->GetString(pSection, pKey, "");
+    float ret = 0.0f;
+    if (sscanf_s(pStr, "%f", &ret) == 1)
+    {
+        if (strchr(pStr, '%%'))
+            ret *= 0.01f;
+        return ret;
+    }
+    return nDefault;
+}
+
 bool MultimapHelper::GetBool(ppmfc::CString pSection, ppmfc::CString pKey, bool nDefault) {
     ppmfc::CString& pStr = this->GetString(pSection, pKey, "");
     switch (toupper(static_cast<unsigned char>(*pStr)))

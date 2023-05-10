@@ -1,5 +1,13 @@
 # FINALALERT2 - SP  CHANGELOG
 
+## RELEASE 1.6.2 (2023-XX-XX)
+- Now buildings whose hp percentage lower than `[AudioVisual]>ConditionYellow` will be displayed as damaged one
+- Now buildings whose hp is 0 will be displayed as their rubble frame
+    - Currently the rubble will probably be drawn with an incorrect palette
+    - Those buildings with `LeaveRubble=no` will be displayed as black house color and damaged
+- Multiselection hotkey changed
+
+
 ## RELEASE 1.6.1 (2023-05-06)
 - New Map Tool: Navigate to coordinate, can be translated by `Menu.MapTools.NavigateCoordinate`, more locolization tags could be found in the document
 - Fixed the bug that Taskforce window didn't translate message properly
