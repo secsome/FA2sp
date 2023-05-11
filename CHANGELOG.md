@@ -4,7 +4,7 @@
 - Now buildings whose hp percentage lower than `[AudioVisual]>ConditionYellow` will be displayed as damaged one
 - Now buildings whose hp is 0 will be displayed as their rubble frame
     - Currently the rubble will probably be drawn with an incorrect palette
-    - Those buildings with `LeaveRubble=no` will be displayed as black house color and damaged
+- New ***ExtConfig*** : `HideNoRubbleBuilding` = **BOOLEAN**, defaults to false, enable it so Buildings with `LeaveRubble=no` will be hide if their HP = 0
 - Multiselection deselect all hotkey changed from CTRL+D into CTRL+SHIFT+D
 - Added hotkey CTRL+SHIFT+F for Navigate to coordinate
 - SliderCtrl now displays tooltip indicating current strength of the object

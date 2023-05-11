@@ -69,6 +69,7 @@ Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "
         - `NoHouseNameTranslation` = **BOOLEAN** ; Determines if FA2 will translate house to their UIName, defaults to **false**
         - `EnableMultiSelection` = **BOOLEAN** ; Determines if FA2sp will enable expermental multi-selection features, defaults to **false**
         - `ExtendedValidationNoError` = **BOOLEAN** ; If this value is true, then extended map validation won't be shown as error but warning, defaults to **false**
+        - `HideNoRubbleBuilding` = **BOOLEAN** ; If this value is true, then building whose HP = 0 with `LeaveRubble=no` won't be rendered, defaults to **false**
     - **`[Sides]`** (**x** means this item is **essensial**, fa2sp need this section to work properly)
         - Contains a list of sides registered in rules
         ```ini

@@ -65,6 +65,7 @@ public:
     static bool NoHouseNameTranslation;
     static bool EnableMultiSelection;
     static bool ExtendedValidationNoError;
+    static bool HideNoRubbleBuilding;
 };
 
 class Variables
