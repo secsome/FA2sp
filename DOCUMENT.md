@@ -650,6 +650,7 @@ Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "
     NavigateCoordInvalidFormat = TEXT
     NavigateCoordInvalidCoord = TEXT
     NavigateCoordInvalidTitle = TEXT
+    FileWatcherMessage = TEXT
     ; Script params
     ; For example, ScriptParam.Status.0
     ScriptParam.Target.[0 - 11] = TEXT

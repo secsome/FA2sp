@@ -20,6 +20,8 @@
 #include <fstream>
 #include <format>
 
+std::optional<std::filesystem::file_time_type> SaveMapExt::SaveTime;
+
 DEFINE_HOOK(4D5505, CSaveOption_CTOR_DefaultValue, 0)
 {
     int nValue = CMapData::Instance->IsMultiOnly() ? 
@@ -211,6 +213,10 @@ DEFINE_HOOK(42A8F5, CFinalSunDlg_SaveMap_ReplaceCopyFile, 7)
     if (fin.is_open())
     {
         fin.close();
+
+        if (!SaveMapExt::IsAutoSaving)
+            SaveMapExt::SaveTime = std::filesystem::last_write_time(filepath.m_pchData);
+
         return 0x42A92D;
     }
     return 0x42A911;

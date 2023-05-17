@@ -6,6 +6,9 @@
 
 #include "../../FA2sp.h"
 
+#include "../../Miscs/FileWatcher.h"
+#include "../../Miscs/SaveMap.h"
+
 #pragma warning(disable : 6262)
 
 std::vector<std::string> CFinalSunAppExt::RecentFilesExt;
@@ -119,10 +122,25 @@ BOOL CFinalSunAppExt::InitInstanceExt()
 	CLoading loading(nullptr);
 	this->Loading = &loading;
 	
+	bool is_watcher_running = true;
+	std::thread watcher([&is_watcher_running]()
+		{
+			FileWatcher fw(
+				CFinalSunApp::MapPath(), 
+				std::chrono::milliseconds{1000}, 
+				is_watcher_running, 
+				SaveMapExt::SaveTime
+			);
+			fw.start(fw.Callback);
+		}
+	);
 	CFinalSunDlg dlg(nullptr);
 	this->m_pMainWnd = &dlg;
 
 	dlg.DoModal();
+
+	is_watcher_running = false; // stop watcher
+	watcher.join(); // wait for thread exit
 
 	return FALSE;
 }
