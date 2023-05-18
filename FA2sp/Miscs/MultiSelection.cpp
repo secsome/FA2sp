@@ -436,14 +436,10 @@ DEFINE_HOOK(435F10, CFinalSunDlg_Tools_Copy, 7)
  
      pThis->PlaySound(CFinalSunDlg::FASoundType::Normal);
  
-     Logger::Raw("Before Call MultiSelection::GetCount!\n");
- 
      if (ExtConfigs::EnableMultiSelection && MultiSelection::GetCount())
          MultiSelection::Copy();
      else
          CIsoView::CurrentCommand->Command = FACurrentCommand::TileCopy;
- 
-     Logger::Raw("After Call MultiSelection::GetCount!\n");
  
      return 0x435F24;
  }
