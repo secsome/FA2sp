@@ -27,9 +27,9 @@ class ExtConfigs
 {
 public:
     static bool BrowserRedraw;
-    static int  BrowserRedraw_GuessMode;
-    static bool BrowserRedraw_CleanUp;
-    static bool BrowserRedraw_SafeHouses;
+    static int  ObjectBrowser_GuessMode;
+    static bool ObjectBrowser_CleanUp;
+    static bool ObjectBrowser_SafeHouses;
     static bool AllowIncludes;
     static bool AllowPlusEqual;
     static bool TutorialTexts_Hide;
@@ -66,6 +66,7 @@ public:
     static bool EnableMultiSelection;
     static bool ExtendedValidationNoError;
     static bool HideNoRubbleBuilding;
+    static bool ModernObjectBrowser;
 };
 
 class Variables

@@ -28,10 +28,12 @@ Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "
 ## BASIC TYPES
 - FAData.ini
     - [ExtConfigs]
-        - `BrowserRedraw` = **BOOLEAN** ; Enable refactored ObjectBrowserView
-          - `BrowserRedraw.GuessMode` = **$0/1$** ; Determines how FA2sp guess Technos' side, $0$(Default) to Prerequisite, $1$ to use first Owner 
-          - `BrowserRedraw.CleanUp` = **BOOLEAN** ; Sides classification will clear empty items
-          - `BrowserRedraw.SafeHouses` = **BOOLEAN** ; Determines whether FA2sp will rearrangement the houses or not
+        - **ObjectBrowser**, if `ModernObjectBrowser` is enabled, `BrowserRedraw` won't be useful
+            - `BrowserRedraw` = **BOOLEAN** ; Enable refactored ObjectBrowserView 
+            - `ModernObjectBrowser` = **BOOLEAN** ; If this value is true, then experimental object browser will be enabled, replacing the vanilla tree view, defaults to **false**
+                - `ObjectBrowser.GuessMode` = **$0/1$** ; Determines how FA2sp guess Technos' side, $0$(Default) to Prerequisite, $1$ to use first Owner 
+                - `ObjectBrowser.CleanUp` = **BOOLEAN** ; Sides classification will clear empty items
+                - `ObjectBrowser.SafeHouses` = **BOOLEAN** ; Determines whether FA2sp will rearrangement the houses or not
         - `AllowIncludes` = **BOOLEAN** ; Read #include section for other ini (NOT RECOMMENDED) 
         - `AllowPlusEqual` = **BOOLEAN** ; Read += (NOT RECOMMENDED)
         - `TutorialTexts.Fix` = **BOOLEAN** ; Replace original process while loading texts to comboboxes

@@ -19,9 +19,9 @@ std::map<ppmfc::CString, ppmfc::CString> FA2sp::TutorialTextsMap;
 void* FA2sp::pExceptionHandler = nullptr;
 
 bool ExtConfigs::BrowserRedraw;
-int	 ExtConfigs::BrowserRedraw_GuessMode;
-bool ExtConfigs::BrowserRedraw_CleanUp;
-bool ExtConfigs::BrowserRedraw_SafeHouses;
+int	 ExtConfigs::ObjectBrowser_GuessMode;
+bool ExtConfigs::ObjectBrowser_CleanUp;
+bool ExtConfigs::ObjectBrowser_SafeHouses;
 bool ExtConfigs::AllowIncludes;
 bool ExtConfigs::AllowPlusEqual;
 bool ExtConfigs::TutorialTexts_Hide;
@@ -58,6 +58,7 @@ bool ExtConfigs::NoHouseNameTranslation;
 bool ExtConfigs::EnableMultiSelection;
 bool ExtConfigs::ExtendedValidationNoError;
 bool ExtConfigs::HideNoRubbleBuilding;
+bool ExtConfigs::ModernObjectBrowser;
 
 MultimapHelper Variables::Rules = { &CINI::Rules(), &CINI::CurrentDocument() };
 MultimapHelper Variables::FAData = { &CINI::FAData() };
@@ -65,9 +66,10 @@ MultimapHelper Variables::FAData = { &CINI::FAData() };
 void FA2sp::ExtConfigsInitialize()
 {	
 	ExtConfigs::BrowserRedraw = CINI::FAData->GetBool("ExtConfigs", "BrowserRedraw");
-	ExtConfigs::BrowserRedraw_GuessMode = CINI::FAData->GetInteger("ExtConfigs", "BrowserRedraw.GuessMode", 0);
-	ExtConfigs::BrowserRedraw_CleanUp = CINI::FAData->GetBool("ExtConfigs", "BrowserRedraw.CleanUp");
-	ExtConfigs::BrowserRedraw_SafeHouses = CINI::FAData->GetBool("ExtConfigs", "BrowserRedraw.SafeHouses");
+	ExtConfigs::ModernObjectBrowser = CINI::FAData->GetBool("ExtConfigs", "ModernObjectBrowser");
+	ExtConfigs::ObjectBrowser_GuessMode = CINI::FAData->GetInteger("ExtConfigs", "ObjectBrowser.GuessMode", 0);
+	ExtConfigs::ObjectBrowser_CleanUp = CINI::FAData->GetBool("ExtConfigs", "ObjectBrowser.CleanUp");
+	ExtConfigs::ObjectBrowser_SafeHouses = CINI::FAData->GetBool("ExtConfigs", "ObjectBrowser.SafeHouses");
 	
 	ExtConfigs::AllowIncludes = CINI::FAData->GetBool("ExtConfigs", "AllowIncludes");
 	ExtConfigs::AllowPlusEqual = CINI::FAData->GetBool("ExtConfigs", "AllowPlusEqual");

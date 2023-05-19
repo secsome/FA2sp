@@ -112,7 +112,7 @@ void CViewObjectsExt::Redraw_Initialize()
     loadSet("VehicleTypes", Set_Vehicle);
     loadSet("AircraftTypes", Set_Aircraft);
 
-    if (ExtConfigs::BrowserRedraw_GuessMode == 1)
+    if (ExtConfigs::ObjectBrowser_GuessMode == 1)
     {
         auto loadOwner = []()
         {
@@ -221,7 +221,7 @@ void CViewObjectsExt::Redraw_Owner()
     HTREEITEM& hOwner = ExtNodes[Root_Owner];
     if (hOwner == NULL)    return;
 
-    if (ExtConfigs::BrowserRedraw_SafeHouses)
+    if (ExtConfigs::ObjectBrowser_SafeHouses)
     {
         if (CMapData::Instance->IsMultiOnly())
         {
@@ -302,7 +302,7 @@ void CViewObjectsExt::Redraw_Infantry()
     }
 
     // Clear up
-    if (ExtConfigs::BrowserRedraw_CleanUp)
+    if (ExtConfigs::ObjectBrowser_CleanUp)
     {
         for (auto& subnode : subNodes)
         {
@@ -351,7 +351,7 @@ void CViewObjectsExt::Redraw_Vehicle()
     }
 
     // Clear up
-    if (ExtConfigs::BrowserRedraw_CleanUp)
+    if (ExtConfigs::ObjectBrowser_CleanUp)
     {
         for (auto& subnode : subNodes)
         {
@@ -401,7 +401,7 @@ void CViewObjectsExt::Redraw_Aircraft()
     }
 
     // Clear up
-    if (ExtConfigs::BrowserRedraw_CleanUp)
+    if (ExtConfigs::ObjectBrowser_CleanUp)
     {
         for (auto& subnode : subNodes)
         {
@@ -451,7 +451,7 @@ void CViewObjectsExt::Redraw_Building()
     }
 
     // Clear up
-    if (ExtConfigs::BrowserRedraw_CleanUp)
+    if (ExtConfigs::ObjectBrowser_CleanUp)
     {
         for (auto& subnode : subNodes)
         {
@@ -991,7 +991,7 @@ int CViewObjectsExt::GuessGenericSide(const char* pRegName, int nType)
     if (set.find(pRegName) == set.end())
         return -1;
 
-    switch (ExtConfigs::BrowserRedraw_GuessMode)
+    switch (ExtConfigs::ObjectBrowser_GuessMode)
     {
     default:
     case 0:

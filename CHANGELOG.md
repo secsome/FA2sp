@@ -5,6 +5,10 @@
 - Now buildings whose hp is 0 will be displayed as their rubble frame
     - Currently the rubble will probably be drawn with an incorrect palette
 - New ***ExtConfig*** : `HideNoRubbleBuilding` = **BOOLEAN**, defaults to false, enable it so Buildings with `LeaveRubble=no` will be hide if their HP = 0
+- New ***ExtConfig*** : `ModernObjectBrowser` = **BOOLEAN**, defaults to false, enable it to use the experimental object browser
+- Renamed ***ExtConfig*** : `BrowserRedraw.GuessMode` to `ObjectBrowser.GuessMode`
+- Renamed ***ExtConfig*** : `BrowserRedraw.CleanUp` to `ObjectBrowser.CleanUp`
+- Renamed ***ExtConfig*** : `BrowserRedraw.SafeHouses` to `ObjectBrowser.SafeHouses`
 - Multiselection deselect all hotkey changed from CTRL+D into CTRL+SHIFT+D
 - Added hotkey CTRL+SHIFT+F for Navigate to coordinate
 - SliderCtrl now displays tooltip indicating current strength of the object
