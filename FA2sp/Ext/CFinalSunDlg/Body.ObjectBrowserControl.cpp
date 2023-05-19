@@ -32,7 +32,7 @@ bool CViewObjectsExt::InitPropertyDlgFromProperty{ false };
 HTREEITEM CViewObjectsExt::InsertString(const char* pString, DWORD dwItemData,
     HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
-    return this->InsertItem(5, pString, 0, 0, 0, 0, dwItemData, hParent, hInsertAfter);
+    return this->GetTreeCtrl().InsertItem(TVIF_TEXT | TVIF_PARAM, pString, 0, 0, 0, 0, dwItemData, hParent, hInsertAfter);
 }
 
 HTREEITEM CViewObjectsExt::InsertTranslatedString(const char* pOriginString, DWORD dwItemData,
@@ -93,7 +93,7 @@ void CViewObjectsExt::Redraw_Initialize()
     IgnoreSet.clear();
     ForceName.clear();
     Owners.clear();
-    this->DeleteAllItems();
+    this->GetTreeCtrl().DeleteAllItems();
 
     auto& rules = CINI::Rules();
     auto& fadata = CINI::FAData();
@@ -306,8 +306,8 @@ void CViewObjectsExt::Redraw_Infantry()
     {
         for (auto& subnode : subNodes)
         {
-            if (!this->ItemHasChildren(subnode.second))
-                this->DeleteItem(subnode.second);
+            if (!this->GetTreeCtrl().ItemHasChildren(subnode.second))
+                this->GetTreeCtrl().DeleteItem(subnode.second);
         }
     }
 }
@@ -355,8 +355,8 @@ void CViewObjectsExt::Redraw_Vehicle()
     {
         for (auto& subnode : subNodes)
         {
-            if (!this->ItemHasChildren(subnode.second))
-                this->DeleteItem(subnode.second);
+            if (!this->GetTreeCtrl().ItemHasChildren(subnode.second))
+                this->GetTreeCtrl().DeleteItem(subnode.second);
         }
     }
 }
@@ -405,8 +405,8 @@ void CViewObjectsExt::Redraw_Aircraft()
     {
         for (auto& subnode : subNodes)
         {
-            if (!this->ItemHasChildren(subnode.second))
-                this->DeleteItem(subnode.second);
+            if (!this->GetTreeCtrl().ItemHasChildren(subnode.second))
+                this->GetTreeCtrl().DeleteItem(subnode.second);
         }
     }
 }
@@ -455,8 +455,8 @@ void CViewObjectsExt::Redraw_Building()
     {
         for (auto& subnode : subNodes)
         {
-            if (!this->ItemHasChildren(subnode.second))
-                this->DeleteItem(subnode.second);
+            if (!this->GetTreeCtrl().ItemHasChildren(subnode.second))
+                this->GetTreeCtrl().DeleteItem(subnode.second);
         }
     }
 }
