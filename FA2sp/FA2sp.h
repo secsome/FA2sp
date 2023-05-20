@@ -55,11 +55,10 @@ public:
     static int SaveMap_DefaultPreviewOptionMP;
     static int SaveMap_DefaultPreviewOptionSP;
     static bool VerticalLayout;
-    static bool FastResize;
     static int RecentFileLimit;
     static int MultiSelectionColor;
     static bool RandomTerrainObjects;
-    static int MaxVoxelFacing;
+    static unsigned int MaxVoxelFacing;
     static bool DDrawInVideoMem;
     static bool DDrawEmulation;
     static bool NoHouseNameTranslation;
