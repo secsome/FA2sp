@@ -57,6 +57,7 @@ public:
     static bool VerticalLayout;
     static int RecentFileLimit;
     static int MultiSelectionColor;
+    static bool MultiSelectionShiftDeselect;
     static bool RandomTerrainObjects;
     static unsigned int MaxVoxelFacing;
     static bool DDrawInVideoMem;

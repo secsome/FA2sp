@@ -65,6 +65,7 @@ Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "
         - `VerticalLayout` = **BOOLEAN** ; Determines if FA2 will make the bottom view go to the right side
         - `RecentFileLimit` = **INTEGER** ; How many recent files should I keep? ranges from $4$ to $9$
         - `MultiSelectionColor` = **COLORREF** ; Determines the back color of selected tiles
+        - `MultiSelectionShiftDeselect` = **BOOLEAN** ; Determines the hotkey of deselect all multiselected cells would be CTRL+SHIFT+D(**true**) or CTRL+D(**false**), defaults to **false**
         - `RandomTerrainObjects` = **BOOLEAN** ; Determines if FA2 will display all terrain objects in random tree dialog, defaults to **false**
         - `DDrawInVideoMem` = **BOOLEAN** ; Determines if FA2 will allocate DirectDraw surface in the video memory, defaults to **true**
         - `DDrawEmulation` = **BOOLEAN** ; Determines if FA2 will use emulation mode for DirectDrawCreate, defaults to **false**
