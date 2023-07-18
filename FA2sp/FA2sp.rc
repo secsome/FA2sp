@@ -40,6 +40,7 @@ BEGIN
     VK_F4,          40093,                  VIRTKEY, NOINVERT
     "W",            40133,                  VIRTKEY, CONTROL, NOINVERT
     VK_F2,          40024,                  VIRTKEY, NOINVERT
+    "F",            40134,                  VIRTKEY, SHIFT, CONTROL, NOINVERT
 END
 
 101 RT_MANIFEST "FA2sp.manifest"

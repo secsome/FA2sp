@@ -1,5 +1,18 @@
 # FINALALERT2 - SP  CHANGELOG
 
+## RELEASE 1.6.2 (2023-07-18)
+- Renamed ***ExtConfig*** : `BrowserRedraw.GuessMode` to `ObjectBrowser.GuessMode`
+- Renamed ***ExtConfig*** : `BrowserRedraw.CleanUp` to `ObjectBrowser.CleanUp`
+- Renamed ***ExtConfig*** : `BrowserRedraw.SafeHouses` to `ObjectBrowser.SafeHouses`
+- Now buildings whose hp percentage lower than `[AudioVisual]>ConditionYellow` will be displayed as damaged one
+- Now buildings whose hp is 0 will be displayed as their rubble frame
+    - Currently the rubble will probably be drawn with an incorrect palette
+- New ***ExtConfig*** : `HideNoRubbleBuilding` = **BOOLEAN**, defaults to false, enable it so Buildings with `LeaveRubble=no` will be hide if their HP = 0
+- New ***ExtConfig*** : `MultiSelectionShiftDeselect` = **BOOLEAN**, defaults to false, enable it so deselect all hotkey would be CTRL+SHIFT+D, otherwise it would be CTRL+D
+- Added hotkey CTRL+SHIFT+F for Navigate to coordinate
+- SliderCtrl now displays tooltip indicating current strength of the object
+- Now Map Editor will hint if the map file had been externally modified. Can be translated by `FileWatcherMessage`.
+
 ## RELEASE 1.6.1 (2023-05-06)
 - New Map Tool: Navigate to coordinate, can be translated by `Menu.MapTools.NavigateCoordinate`, more locolization tags could be found in the document
 - Fixed the bug that Taskforce window didn't translate message properly

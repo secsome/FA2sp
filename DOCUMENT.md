@@ -28,10 +28,12 @@ Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "
 ## BASIC TYPES
 - FAData.ini
     - [ExtConfigs]
-        - `BrowserRedraw` = **BOOLEAN** ; Enable refactored ObjectBrowserView
-          - `BrowserRedraw.GuessMode` = **$0/1$** ; Determines how FA2sp guess Technos' side, $0$(Default) to Prerequisite, $1$ to use first Owner 
-          - `BrowserRedraw.CleanUp` = **BOOLEAN** ; Sides classification will clear empty items
-          - `BrowserRedraw.SafeHouses` = **BOOLEAN** ; Determines whether FA2sp will rearrangement the houses or not
+        - **ObjectBrowser**, if `ModernObjectBrowser` is enabled, `BrowserRedraw` won't be useful
+            - `BrowserRedraw` = **BOOLEAN** ; Enable refactored ObjectBrowserView 
+            - `ModernObjectBrowser` = **BOOLEAN** ; If this value is true, then experimental object browser will be enabled, replacing the vanilla tree view, defaults to **false**
+                - `ObjectBrowser.GuessMode` = **$0/1$** ; Determines how FA2sp guess Technos' side, $0$(Default) to Prerequisite, $1$ to use first Owner 
+                - `ObjectBrowser.CleanUp` = **BOOLEAN** ; Sides classification will clear empty items
+                - `ObjectBrowser.SafeHouses` = **BOOLEAN** ; Determines whether FA2sp will rearrangement the houses or not
         - `AllowIncludes` = **BOOLEAN** ; Read #include section for other ini (NOT RECOMMENDED) 
         - `AllowPlusEqual` = **BOOLEAN** ; Read += (NOT RECOMMENDED)
         - `TutorialTexts.Fix` = **BOOLEAN** ; Replace original process while loading texts to comboboxes
@@ -63,12 +65,14 @@ Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "
         - `VerticalLayout` = **BOOLEAN** ; Determines if FA2 will make the bottom view go to the right side
         - `RecentFileLimit` = **INTEGER** ; How many recent files should I keep? ranges from $4$ to $9$
         - `MultiSelectionColor` = **COLORREF** ; Determines the back color of selected tiles
+        - `MultiSelectionShiftDeselect` = **BOOLEAN** ; Determines the hotkey of deselect all multiselected cells would be CTRL+SHIFT+D(**true**) or CTRL+D(**false**), defaults to **false**
         - `RandomTerrainObjects` = **BOOLEAN** ; Determines if FA2 will display all terrain objects in random tree dialog, defaults to **false**
         - `DDrawInVideoMem` = **BOOLEAN** ; Determines if FA2 will allocate DirectDraw surface in the video memory, defaults to **true**
         - `DDrawEmulation` = **BOOLEAN** ; Determines if FA2 will use emulation mode for DirectDrawCreate, defaults to **false**
         - `NoHouseNameTranslation` = **BOOLEAN** ; Determines if FA2 will translate house to their UIName, defaults to **false**
         - `EnableMultiSelection` = **BOOLEAN** ; Determines if FA2sp will enable expermental multi-selection features, defaults to **false**
         - `ExtendedValidationNoError` = **BOOLEAN** ; If this value is true, then extended map validation won't be shown as error but warning, defaults to **false**
+        - `HideNoRubbleBuilding` = **BOOLEAN** ; If this value is true, then building whose HP = 0 with `LeaveRubble=no` won't be rendered, defaults to **false**
     - **`[Sides]`** (**x** means this item is **essensial**, fa2sp need this section to work properly)
         - Contains a list of sides registered in rules
         ```ini
@@ -649,6 +653,7 @@ Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "
     NavigateCoordInvalidFormat = TEXT
     NavigateCoordInvalidCoord = TEXT
     NavigateCoordInvalidTitle = TEXT
+    FileWatcherMessage = TEXT
     ; Script params
     ; For example, ScriptParam.Status.0
     ScriptParam.Target.[0 - 11] = TEXT

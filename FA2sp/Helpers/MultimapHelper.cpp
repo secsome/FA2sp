@@ -48,15 +48,28 @@ ppmfc::CString MultimapHelper::GetString(ppmfc::CString pSection, ppmfc::CString
 }
 
 int MultimapHelper::GetInteger(ppmfc::CString pSection, ppmfc::CString pKey, int nDefault) {
-    ppmfc::CString& pStr = this->GetString(pSection, pKey, "");
+    ppmfc::CString&& pStr = this->GetString(pSection, pKey, "");
     int ret = 0;
     if (sscanf_s(pStr, "%d", &ret) == 1)
         return ret;
     return nDefault;
 }
 
+float MultimapHelper::GetSingle(ppmfc::CString pSection, ppmfc::CString pKey, float nDefault)
+{
+    ppmfc::CString&& pStr = this->GetString(pSection, pKey, "");
+    float ret = 0.0f;
+    if (sscanf_s(pStr, "%f", &ret) == 1)
+    {
+        if (strchr(pStr, '%%'))
+            ret *= 0.01f;
+        return ret;
+    }
+    return nDefault;
+}
+
 bool MultimapHelper::GetBool(ppmfc::CString pSection, ppmfc::CString pKey, bool nDefault) {
-    ppmfc::CString& pStr = this->GetString(pSection, pKey, "");
+    ppmfc::CString&& pStr = this->GetString(pSection, pKey, "");
     switch (toupper(static_cast<unsigned char>(*pStr)))
     {
     case '1':
@@ -84,11 +97,11 @@ std::vector<ppmfc::CString> MultimapHelper::ParseIndicies(ppmfc::CString pSectio
     {
         if (pINI)
         {
-            auto& cur = pINI->ParseIndiciesData(pSection);
+            auto&& cur = pINI->ParseIndiciesData(pSection);
             for (auto& pair : cur)
             {
                 ppmfc::CString value = pINI->GetString(pSection, pair.second, pair.second);
-                auto& unitr = tmp2.find(value);
+                auto&& unitr = tmp2.find(value);
                 if (unitr == tmp2.end())
                 {
                     belonging[tmp2.size()] = pINI;

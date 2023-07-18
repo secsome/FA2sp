@@ -13,6 +13,17 @@
 
 #include "../../Source/CIsoView.h"
 
+namespace CIsoViewDrawTemp
+{
+	float ConditionYellow = 0.67f;
+}
+
+DEFINE_HOOK(46DE00, CIsoView_Draw_InitDrawData, 7)
+{
+	CIsoViewDrawTemp::ConditionYellow = Variables::Rules.GetSingle("AudioVisual", "ConditionYellow", 0.67f);
+	return 0;
+}
+
 /*
 * FinalAlert 2 coordinate system just reversed the game's one
 * Which means game's (X, Y) is (Y, X) in FinalAlert 2.
@@ -224,12 +235,21 @@ namespace CIsoViewDrawTemp
 DEFINE_HOOK(470986, CIsoView_Draw_BuildingImageDataQuery_1, 8)
 {
 	REF_STACK(ImageDataClass, image, STACK_OFFS(0xD18, 0xAFC));
-	REF_STACK(const CBuildingTypeData, type, STACK_OFFS(0xD18, 0xC0C));
+	REF_STACK(const CBuildingRenderData, data, STACK_OFFS(0xD18, 0xC0C));
 
 	int nFacing = 0;
-	if (Variables::Rules.GetBool(type.ID, "Turret"))
-		nFacing = 7 - (type.Facing / 32) % 8;
-	image = *ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(type.ID, nFacing));
+	if (Variables::Rules.GetBool(data.ID, "Turret"))
+		nFacing = 7 - (data.Facing / 32) % 8;
+
+	const int HP = CMapDataExt::CurrentRenderBuildingStrength;
+	int status = CLoadingExt::GBIN_NORMAL;
+	if (HP == 0)
+		status = CLoadingExt::GBIN_RUBBLE;
+	else if (static_cast<int>((CIsoViewDrawTemp::ConditionYellow + 0.001f) * 256) > HP)
+		status = CLoadingExt::GBIN_DAMAGED;
+
+	const auto& imageName = CLoadingExt::GetBuildingImageName(data.ID, nFacing, status);
+	image = *ImageDataMapHelper::GetImageDataFromMap(imageName);
 
 	CIsoViewDrawTemp::BuildingIndex = R->ESI();
 
@@ -239,12 +259,21 @@ DEFINE_HOOK(470986, CIsoView_Draw_BuildingImageDataQuery_1, 8)
 DEFINE_HOOK(470AE3, CIsoView_Draw_BuildingImageDataQuery_2, 7)
 {
 	REF_STACK(ImageDataClass, image, STACK_OFFS(0xD18, 0xAFC));
-	REF_STACK(const CBuildingTypeData, type, STACK_OFFS(0xD18, 0xC0C));
+	REF_STACK(const CBuildingRenderData, data, STACK_OFFS(0xD18, 0xC0C));
 
 	int nFacing = 0;
-	if (Variables::Rules.GetBool(type.ID, "Turret"))
-		nFacing = (7 - type.Facing / 32) % 8;
-	image = *ImageDataMapHelper::GetImageDataFromMap(CLoadingExt::GetImageName(type.ID, nFacing));
+	if (Variables::Rules.GetBool(data.ID, "Turret"))
+		nFacing = (7 - data.Facing / 32) % 8;
+
+	const int HP = CMapDataExt::CurrentRenderBuildingStrength;
+	int status = CLoadingExt::GBIN_NORMAL;
+	if (HP == 0)
+		status = CLoadingExt::GBIN_RUBBLE;
+	else if (static_cast<int>((CIsoViewDrawTemp::ConditionYellow + 0.001f) * 256) > HP)
+		status = CLoadingExt::GBIN_DAMAGED;
+
+	const auto& imageName = CLoadingExt::GetBuildingImageName(data.ID, nFacing, status);
+	image = *ImageDataMapHelper::GetImageDataFromMap(imageName);
 
 	return 0x470B4D;
 }
@@ -415,7 +444,6 @@ DEFINE_HOOK(4676CB, CIsoView_OnLeftButtonUp_AddTube, 6)
 
 	return 0x468548;
 }
-
 
 DEFINE_HOOK(470502, CIsoView_Draw_OverlayOffset, 5)
 {

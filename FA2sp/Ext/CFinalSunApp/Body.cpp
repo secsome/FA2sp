@@ -6,6 +6,9 @@
 
 #include "../../FA2sp.h"
 
+#include "../../Miscs/FileWatcher.h"
+#include "../../Miscs/SaveMap.h"
+
 #pragma warning(disable : 6262)
 
 std::vector<std::string> CFinalSunAppExt::RecentFilesExt;
@@ -40,17 +43,20 @@ BOOL CFinalSunAppExt::InitInstanceExt()
 	// Nothing yet huh...
 
 	std::string path;
-	path = CFinalSunApp::ExePath + "\\FAData.ini";
+	path = CFinalSunApp::ExePath;
+	path += "\\FAData.ini";
 	CINI::FAData->ClearAndLoad(path.c_str());
 
 	FA2sp::ExtConfigsInitialize(); // ExtConfigs
 
-	path = CFinalSunApp::ExePath + "\\FALanguage.ini";
+	path = CFinalSunApp::ExePath;
+	path += "\\FALanguage.ini";
 	CINI::FALanguage->ClearAndLoad(path.c_str());
 	// No need to validate falanguage I guess
 
 	CINI ini;
-	path = CFinalSunApp::ExePath + "\\FinalAlert.ini";
+	path = CFinalSunApp::ExePath;
+	path += "\\FinalAlert.ini";
 	ini.ClearAndLoad(path.c_str());
 	if (
 		!ini.KeyExists("TS", "Exe") || 
@@ -119,10 +125,25 @@ BOOL CFinalSunAppExt::InitInstanceExt()
 	CLoading loading(nullptr);
 	this->Loading = &loading;
 	
+	bool is_watcher_running = true;
+	std::thread watcher([&is_watcher_running]()
+		{
+			FileWatcher fw(
+				CFinalSunApp::MapPath(), 
+				std::chrono::milliseconds{1000}, 
+				is_watcher_running, 
+				SaveMapExt::SaveTime
+			);
+			fw.start(fw.Callback);
+		}
+	);
 	CFinalSunDlg dlg(nullptr);
 	this->m_pMainWnd = &dlg;
 
 	dlg.DoModal();
+
+	is_watcher_running = false; // stop watcher
+	watcher.join(); // wait for thread exit
 
 	return FALSE;
 }

@@ -191,7 +191,7 @@ void MultiSelection::Paste(int X, int Y, int nBaseHeight, MyClipboardData* data,
     }
 }
 
-DEFINE_HOOK(456EFC, CIsoView_OnMouseMove_MultiSelect_ReverseStatus, 6)
+DEFINE_HOOK(456EFC, CIsoView_OnMouseMove_MultiSelect_SelectStatus, 6)
 {
     if (!ExtConfigs::EnableMultiSelection)
         return 0;
@@ -227,10 +227,20 @@ DEFINE_HOOK(469470, CIsoView_OnKeyDown, 5)
 
     if (nChar == 'D')
     {
-        if (CIsoView::ControlKeyIsDown)
-            MultiSelection::Clear();
+        if (ExtConfigs::MultiSelectionShiftDeselect)
+        {
+            if (CIsoView::ControlKeyIsDown && MultiSelection::ShiftKeyIsDown)
+                MultiSelection::Clear();
+            else
+                CFinalSunApp::Instance->FlatToGround = !CFinalSunApp::Instance->FlatToGround;
+        }
         else
-            CFinalSunApp::Instance->FlatToGround = !CFinalSunApp::Instance->FlatToGround;
+        {
+            if (CIsoView::ControlKeyIsDown)
+                MultiSelection::Clear();
+            else
+                CFinalSunApp::Instance->FlatToGround = !CFinalSunApp::Instance->FlatToGround;
+        }
 
         pThis->RedrawWindow(nullptr, nullptr, RDW_INVALIDATE | RDW_UPDATENOW);
     }
@@ -436,14 +446,10 @@ DEFINE_HOOK(435F10, CFinalSunDlg_Tools_Copy, 7)
  
      pThis->PlaySound(CFinalSunDlg::FASoundType::Normal);
  
-     Logger::Raw("Before Call MultiSelection::GetCount!\n");
- 
      if (ExtConfigs::EnableMultiSelection && MultiSelection::GetCount())
          MultiSelection::Copy();
      else
          CIsoView::CurrentCommand->Command = FACurrentCommand::TileCopy;
- 
-     Logger::Raw("After Call MultiSelection::GetCount!\n");
  
      return 0x435F24;
  }

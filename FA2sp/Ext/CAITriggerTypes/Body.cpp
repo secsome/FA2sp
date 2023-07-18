@@ -102,7 +102,7 @@ void CAITriggerTypesExt::OnBNCloneAITriggerClicked()
 		delete[] pStr;
 
 		value = name + ",";
-		auto& results = STDHelpers::SplitString(CINI::CurrentDocument->GetString("AITriggerTypes", currentID));
+		auto&& results = STDHelpers::SplitString(CINI::CurrentDocument->GetString("AITriggerTypes", currentID));
 		for (int i = 1; i < results.size() - 1; ++i)
 			value += (results[i] + ",");
 		value += results.back();

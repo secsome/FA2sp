@@ -27,9 +27,9 @@ class ExtConfigs
 {
 public:
     static bool BrowserRedraw;
-    static int  BrowserRedraw_GuessMode;
-    static bool BrowserRedraw_CleanUp;
-    static bool BrowserRedraw_SafeHouses;
+    static int  ObjectBrowser_GuessMode;
+    static bool ObjectBrowser_CleanUp;
+    static bool ObjectBrowser_SafeHouses;
     static bool AllowIncludes;
     static bool AllowPlusEqual;
     static bool TutorialTexts_Hide;
@@ -55,16 +55,18 @@ public:
     static int SaveMap_DefaultPreviewOptionMP;
     static int SaveMap_DefaultPreviewOptionSP;
     static bool VerticalLayout;
-    static bool FastResize;
     static int RecentFileLimit;
     static int MultiSelectionColor;
+    static bool MultiSelectionShiftDeselect;
     static bool RandomTerrainObjects;
-    static int MaxVoxelFacing;
+    static unsigned int MaxVoxelFacing;
     static bool DDrawInVideoMem;
     static bool DDrawEmulation;
     static bool NoHouseNameTranslation;
     static bool EnableMultiSelection;
     static bool ExtendedValidationNoError;
+    static bool HideNoRubbleBuilding;
+    static bool ModernObjectBrowser;
 };
 
 class Variables

@@ -21,7 +21,18 @@ public:
 	bool InitMixFilesFix();
 
 	void LoadObjects(ppmfc::CString pRegName);
+	
+	// except buildings
 	static ppmfc::CString GetImageName(ppmfc::CString ID, int nFacing);
+	// only buildings
+	enum
+	{
+		GBIN_NORMAL,
+		GBIN_RUBBLE,		
+		GBIN_DAMAGED,
+	};
+	static ppmfc::CString GetBuildingImageName(ppmfc::CString ID, int nFacing, int state);
+	
 	static void ClearItemTypes();
 private:
 	void GetFullPaletteName(ppmfc::CString& PaletteName);
@@ -34,6 +45,10 @@ private:
 	}
 
 	void LoadBuilding(ppmfc::CString ID);
+	void LoadBuilding_Normal(ppmfc::CString ID);
+	void LoadBuilding_Rubble(ppmfc::CString ID);
+	void LoadBuilding_Damaged(ppmfc::CString ID);
+
 	void LoadInfantry(ppmfc::CString ID);
 	void LoadTerrainOrSmudge(ppmfc::CString ID);
 	void LoadVehicleOrAircraft(ppmfc::CString ID);
@@ -75,7 +90,7 @@ private:
 		int DeltaX;
 		int DeltaY;
 	};
-	
+
 	static std::vector<SHPUnionData> UnionSHP_Data[2];
 	static std::map<ppmfc::CString, ObjectType> ObjectTypes;
 	static unsigned char VXL_Data[0x10000];

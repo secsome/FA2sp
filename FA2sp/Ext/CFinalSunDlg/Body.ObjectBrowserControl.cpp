@@ -32,7 +32,7 @@ bool CViewObjectsExt::InitPropertyDlgFromProperty{ false };
 HTREEITEM CViewObjectsExt::InsertString(const char* pString, DWORD dwItemData,
     HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
-    return this->InsertItem(5, pString, 0, 0, 0, 0, dwItemData, hParent, hInsertAfter);
+    return this->GetTreeCtrl().InsertItem(TVIF_TEXT | TVIF_PARAM, pString, 0, 0, 0, 0, dwItemData, hParent, hInsertAfter);
 }
 
 HTREEITEM CViewObjectsExt::InsertTranslatedString(const char* pOriginString, DWORD dwItemData,
@@ -40,7 +40,7 @@ HTREEITEM CViewObjectsExt::InsertTranslatedString(const char* pOriginString, DWO
 {
     ppmfc::CString buffer;
     bool result = Translations::GetTranslationItem(pOriginString, buffer);
-    return InsertString(result ? buffer : pOriginString, dwItemData, hParent, hInsertAfter);
+    return InsertString(result ? buffer.m_pchData : pOriginString, dwItemData, hParent, hInsertAfter);
 }
 
 ppmfc::CString CViewObjectsExt::QueryUIName(const char* pRegName, bool bOnlyOneLine)
@@ -93,7 +93,7 @@ void CViewObjectsExt::Redraw_Initialize()
     IgnoreSet.clear();
     ForceName.clear();
     Owners.clear();
-    this->DeleteAllItems();
+    this->GetTreeCtrl().DeleteAllItems();
 
     auto& rules = CINI::Rules();
     auto& fadata = CINI::FAData();
@@ -102,7 +102,7 @@ void CViewObjectsExt::Redraw_Initialize()
     auto loadSet = [](const char* pTypeName, int nType)
     {
         ExtSets[nType].clear();
-        auto& section = Variables::Rules.GetSection(pTypeName);
+        auto&& section = Variables::Rules.GetSection(pTypeName);
         for (auto& itr : section)
             ExtSets[nType].insert(itr.second);
     };
@@ -112,11 +112,11 @@ void CViewObjectsExt::Redraw_Initialize()
     loadSet("VehicleTypes", Set_Vehicle);
     loadSet("AircraftTypes", Set_Aircraft);
 
-    if (ExtConfigs::BrowserRedraw_GuessMode == 1)
+    if (ExtConfigs::ObjectBrowser_GuessMode == 1)
     {
         auto loadOwner = []()
         {
-            auto& sides = Variables::Rules.ParseIndicies("Sides", true);
+            auto&& sides = Variables::Rules.ParseIndicies("Sides", true);
             for (size_t i = 0, sz = sides.size(); i < sz; ++i)
                 for (auto& owner : STDHelpers::SplitString(sides[i]))
                     Owners[owner] = i;
@@ -182,11 +182,11 @@ void CViewObjectsExt::Redraw_Ground()
     if (hGround == NULL)    return;
 
     auto& doc = CINI::CurrentDocument();
-    CString theater = doc.GetString("Map", "Theater");
+    auto theater = doc.GetString("Map", "Theater");
     if (theater == "NEWURBAN")
         theater = "UBN";
 
-    CString suffix;
+    ppmfc::CString suffix;
     if (theater != "")
         suffix = theater.Mid(0, 3);
 
@@ -221,11 +221,11 @@ void CViewObjectsExt::Redraw_Owner()
     HTREEITEM& hOwner = ExtNodes[Root_Owner];
     if (hOwner == NULL)    return;
 
-    if (ExtConfigs::BrowserRedraw_SafeHouses)
+    if (ExtConfigs::ObjectBrowser_SafeHouses)
     {
         if (CMapData::Instance->IsMultiOnly())
         {
-            auto& section = Variables::Rules.GetSection("Countries");
+            auto&& section = Variables::Rules.GetSection("Countries");
             auto itr = section.begin();
             for (size_t i = 0, sz = section.size(); i < sz; ++i, ++itr)
                 if (strcmp(itr->second, "Neutral") == 0 || strcmp(itr->second, "Special") == 0)
@@ -233,7 +233,7 @@ void CViewObjectsExt::Redraw_Owner()
         }
         else
         {
-            auto& section = Variables::Rules.ParseIndicies("Houses", true);
+            auto&& section = Variables::Rules.ParseIndicies("Houses", true);
             for (size_t i = 0, sz = section.size(); i < sz; ++i)
                 this->InsertString(section[i], Const_House + i, hOwner);
         }
@@ -284,7 +284,7 @@ void CViewObjectsExt::Redraw_Infantry()
     }
     subNodes[-1] = this->InsertTranslatedString("OthObList", -1, hInfantry);
 
-    auto& infantries = Variables::Rules.GetSection("InfantryTypes");
+    auto&& infantries = Variables::Rules.GetSection("InfantryTypes");
     for (auto& inf : infantries)
     {
         if (IgnoreSet.find(inf.second) != IgnoreSet.end())
@@ -302,12 +302,12 @@ void CViewObjectsExt::Redraw_Infantry()
     }
 
     // Clear up
-    if (ExtConfigs::BrowserRedraw_CleanUp)
+    if (ExtConfigs::ObjectBrowser_CleanUp)
     {
         for (auto& subnode : subNodes)
         {
-            if (!this->ItemHasChildren(subnode.second))
-                this->DeleteItem(subnode.second);
+            if (!this->GetTreeCtrl().ItemHasChildren(subnode.second))
+                this->GetTreeCtrl().DeleteItem(subnode.second);
         }
     }
 }
@@ -333,7 +333,7 @@ void CViewObjectsExt::Redraw_Vehicle()
     }
     subNodes[-1] = this->InsertTranslatedString("OthObList", -1, hVehicle);
 
-    auto& vehicles = Variables::Rules.GetSection("VehicleTypes");
+    auto&& vehicles = Variables::Rules.GetSection("VehicleTypes");
     for (auto& veh : vehicles)
     {
         if (IgnoreSet.find(veh.second) != IgnoreSet.end())
@@ -351,12 +351,12 @@ void CViewObjectsExt::Redraw_Vehicle()
     }
 
     // Clear up
-    if (ExtConfigs::BrowserRedraw_CleanUp)
+    if (ExtConfigs::ObjectBrowser_CleanUp)
     {
         for (auto& subnode : subNodes)
         {
-            if (!this->ItemHasChildren(subnode.second))
-                this->DeleteItem(subnode.second);
+            if (!this->GetTreeCtrl().ItemHasChildren(subnode.second))
+                this->GetTreeCtrl().DeleteItem(subnode.second);
         }
     }
 }
@@ -383,7 +383,7 @@ void CViewObjectsExt::Redraw_Aircraft()
     }
     subNodes[-1] = this->InsertTranslatedString("OthObList", -1, hAircraft);
 
-    auto& aircrafts = Variables::Rules.GetSection("AircraftTypes");
+    auto&& aircrafts = Variables::Rules.GetSection("AircraftTypes");
     for (auto& air : aircrafts)
     {
         if (IgnoreSet.find(air.second) != IgnoreSet.end())
@@ -401,12 +401,12 @@ void CViewObjectsExt::Redraw_Aircraft()
     }
 
     // Clear up
-    if (ExtConfigs::BrowserRedraw_CleanUp)
+    if (ExtConfigs::ObjectBrowser_CleanUp)
     {
         for (auto& subnode : subNodes)
         {
-            if (!this->ItemHasChildren(subnode.second))
-                this->DeleteItem(subnode.second);
+            if (!this->GetTreeCtrl().ItemHasChildren(subnode.second))
+                this->GetTreeCtrl().DeleteItem(subnode.second);
         }
     }
 }
@@ -432,8 +432,8 @@ void CViewObjectsExt::Redraw_Building()
         subNodes[i++] = this->InsertString("Yuri", -1, hBuilding);
     }
     subNodes[-1] = this->InsertTranslatedString("OthObList", -1, hBuilding);
-
-    auto& buildings = Variables::Rules.GetSection("BuildingTypes");
+    
+    auto&& buildings = Variables::Rules.GetSection("BuildingTypes");
     for (auto& bud : buildings)
     {
         if (IgnoreSet.find(bud.second) != IgnoreSet.end())
@@ -451,12 +451,12 @@ void CViewObjectsExt::Redraw_Building()
     }
 
     // Clear up
-    if (ExtConfigs::BrowserRedraw_CleanUp)
+    if (ExtConfigs::ObjectBrowser_CleanUp)
     {
         for (auto& subnode : subNodes)
         {
-            if (!this->ItemHasChildren(subnode.second))
-                this->DeleteItem(subnode.second);
+            if (!this->GetTreeCtrl().ItemHasChildren(subnode.second))
+                this->GetTreeCtrl().DeleteItem(subnode.second);
         }
     }
 }
@@ -478,14 +478,14 @@ void CViewObjectsExt::Redraw_Terrain()
         for (auto& pair : collector)
         {
             const auto& contains = pair.second;
-            const auto translation = pSection->GetEntities().find(contains)->second;
+            const auto& translation = pSection->GetEntities().find(contains)->second;
 
             nodes.push_back(std::make_pair(this->InsertTranslatedString(translation, -1, hTerrain), contains));
         }
     }
     HTREEITEM hOther = this->InsertTranslatedString("OthObList", -1, hTerrain);
 
-    auto& terrains = Variables::Rules.ParseIndicies("TerrainTypes", true);
+    auto&& terrains = Variables::Rules.ParseIndicies("TerrainTypes", true);
     for (size_t i = 0, sz = terrains.size(); i < sz; ++i)
     {
         if (IgnoreSet.find(terrains[i]) == IgnoreSet.end())
@@ -526,14 +526,14 @@ void CViewObjectsExt::Redraw_Smudge()
         for (auto& pair : collector)
         {
             const auto& contains = pair.second;
-            const auto translation = pSection->GetEntities().find(contains)->second;
+            const auto& translation = pSection->GetEntities().find(contains)->second;
 
             nodes.push_back(std::make_pair(this->InsertTranslatedString(translation, -1, hSmudge), contains));
         }
     }
     HTREEITEM hOther = this->InsertTranslatedString("OthObList", -1, hSmudge);
 
-    auto& smudges = Variables::Rules.ParseIndicies("SmudgeTypes", true);
+    auto&& smudges = Variables::Rules.ParseIndicies("SmudgeTypes", true);
     for (size_t i = 0, sz = smudges.size(); i < sz; ++i)
     {
         if (IgnoreSet.find(smudges[i]) == IgnoreSet.end())
@@ -593,7 +593,7 @@ void CViewObjectsExt::Redraw_Overlay()
     
     MultimapHelper mmh;
     mmh.AddINI(&CINI::Rules());
-    auto& overlays = mmh.ParseIndicies("OverlayTypes", true);
+    auto&& overlays = mmh.ParseIndicies("OverlayTypes", true);
     for (size_t i = 0, sz = std::min<unsigned int>(overlays.size(), 255); i < sz; ++i)
     {
         CString buffer;
@@ -935,7 +935,7 @@ int CViewObjectsExt::GuessType(const char* pRegName)
 
 int CViewObjectsExt::GuessSide(const char* pRegName, int nType)
 {
-    auto& knownIterator = KnownItem.find(pRegName);
+    auto&& knownIterator = KnownItem.find(pRegName);
     if (knownIterator != KnownItem.end())
         return knownIterator->second;
 
@@ -972,7 +972,7 @@ int CViewObjectsExt::GuessBuildingSide(const char* pRegName)
         return -1;
     if (planning >= 0)
         return planning;
-    auto& cons = STDHelpers::SplitString(rules.GetString("AI", "BuildConst"));
+    auto&& cons = STDHelpers::SplitString(rules.GetString("AI", "BuildConst"));
     int i;
     for (i = 0; i < cons.size(); ++i)
     {
@@ -991,7 +991,7 @@ int CViewObjectsExt::GuessGenericSide(const char* pRegName, int nType)
     if (set.find(pRegName) == set.end())
         return -1;
 
-    switch (ExtConfigs::BrowserRedraw_GuessMode)
+    switch (ExtConfigs::ObjectBrowser_GuessMode)
     {
     default:
     case 0:
@@ -1017,10 +1017,10 @@ int CViewObjectsExt::GuessGenericSide(const char* pRegName, int nType)
     }
     case 1:
     {
-        auto& owners = STDHelpers::SplitString(Variables::Rules.GetString(pRegName, "Owner"));
+        auto&& owners = STDHelpers::SplitString(Variables::Rules.GetString(pRegName, "Owner"));
         if (owners.size() <= 0)
             return -1;
-        auto& itr = Owners.find(owners[0]);
+        auto&& itr = Owners.find(owners[0]);
         if (itr == Owners.end())
             return -1;
         return itr->second;
