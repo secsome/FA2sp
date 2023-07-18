@@ -11,6 +11,8 @@ public:
     static PyObject* message_box(PyObject* self, PyObject* args);
     static PyObject* write_log(PyObject* self, PyObject* args);
     static PyObject* get_current_map_dict(PyObject* self, PyObject* args);
+    static PyObject* set_current_map_dict(PyObject* self, PyObject* args);
+    static PyObject* merge_current_map_dict(PyObject* self, PyObject* args);
 
 private:
     static PyModuleDef ModuleDef;

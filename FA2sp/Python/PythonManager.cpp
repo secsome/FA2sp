@@ -1,6 +1,7 @@
 #include "PythonManager.h"
 
 #include <fstream>
+#include "../FA2sp.h"
 
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>

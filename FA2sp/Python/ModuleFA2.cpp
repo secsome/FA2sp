@@ -15,6 +15,8 @@ PyMethodDef ModuleFA2::MethodsDef[] =
     {"message_box", ModuleFA2::message_box, METH_VARARGS, "Show message box."},
     {"write_log", ModuleFA2::write_log, METH_VARARGS, "Write to log."},
     {"get_current_map_dict", ModuleFA2::get_current_map_dict, METH_NOARGS, "Get current map dict."},
+    {"set_current_map_dict", ModuleFA2::set_current_map_dict, METH_VARARGS, "Set current map dict."},
+    {"merge_current_map_dict", ModuleFA2::merge_current_map_dict, METH_VARARGS, "Merge current map dict."},
     {nullptr, nullptr, 0, nullptr}
 };
 
@@ -31,9 +33,9 @@ PyObject* ModuleFA2::message_box(PyObject* self, PyObject* args)
     if (!PyArg_ParseTuple(args, "ssl", &message, &title, &mask))
         return nullptr;
 
-    ::MessageBox(NULL, message, title, mask);
+    const auto ret = ::MessageBox(NULL, message, title, mask);
 
-    return Py_None;
+    return PyLong_FromLong(ret);
 }
 
 PyObject* ModuleFA2::write_log(PyObject* self, PyObject* args)
@@ -61,4 +63,60 @@ PyObject* ModuleFA2::get_current_map_dict(PyObject* self, PyObject* Py_UNUSED(ar
     }
 
     return ret;
+}
+
+PyObject* ModuleFA2::set_current_map_dict(PyObject* self, PyObject* args)
+{
+    PyObject* dict;
+    if (!PyArg_ParseTuple(args, "O!", &PyDict_Type, &dict))
+        return nullptr;
+
+    auto& ini = CMapData::Instance->INI;
+    ini.ClearAndLoad(nullptr); // pass nullptr to just clear it
+    
+    auto section_names = PyDict_Keys(dict);
+    const auto section_count = PyList_Size(section_names);
+    for (auto i = 0; i < section_count; ++i)
+    {
+        auto section_name = PyList_GetItem(section_names, i);
+        auto pSection = ini.AddSection(PyUnicode_AsUTF8(section_name));
+        auto section = PyDict_GetItem(dict, section_name);
+        auto keys = PyDict_Keys(section);
+        const auto key_count = PyList_Size(keys);
+        for (auto j = 0; j < key_count; ++j)
+        {
+            auto key = PyList_GetItem(keys, j);
+            auto value = PyDict_GetItem(section, key);
+            ini.WriteString(pSection, PyUnicode_AsUTF8(key), PyUnicode_AsUTF8(value));
+        }
+    }
+
+    return Py_None;
+}
+
+PyObject* ModuleFA2::merge_current_map_dict(PyObject* self, PyObject* args)
+{
+    PyObject* dict;
+    if (!PyArg_ParseTuple(args, "O!", &PyDict_Type, &dict))
+        return nullptr;
+
+    auto& ini = CMapData::Instance->INI;
+    auto section_names = PyDict_Keys(dict);
+    const auto section_count = PyList_Size(section_names);
+    for (auto i = 0; i < section_count; ++i)
+    {
+        auto section_name = PyList_GetItem(section_names, i);
+        auto pSection = ini.AddOrGetSection(PyUnicode_AsUTF8(section_name));
+        auto section = PyDict_GetItem(dict, section_name);
+        auto keys = PyDict_Keys(section);
+        const auto key_count = PyList_Size(keys);
+        for (auto j = 0; j < key_count; ++j)
+        {
+            auto key = PyList_GetItem(keys, j);
+            auto value = PyDict_GetItem(section, key);
+            ini.WriteString(pSection, PyUnicode_AsUTF8(key), PyUnicode_AsUTF8(value));
+        }
+    }
+
+    return Py_None;
 }
