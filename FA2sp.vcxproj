@@ -225,6 +225,7 @@
     <ClCompile Include="FA2sp\Ext\CTriggerOption\Body.cpp" />
     <ClCompile Include="FA2sp\FA2sp.cpp" />
     <ClCompile Include="FA2sp\Algorithms\sha1x86.cpp" />
+    <ClCompile Include="FA2sp\Python\ModuleFA2.cpp" />
     <ClCompile Include="FA2sp\Python\PythonManager.cpp" />
     <ClCompile Include="FA2sp\Source\CIsoView.cpp" />
     <ClCompile Include="FA2sp\UI\Hooks.cpp" />
@@ -296,6 +297,7 @@
     <ClInclude Include="FA2sp\Miscs\Palettes.h" />
     <ClInclude Include="FA2sp\Miscs\SaveMap.h" />
     <ClInclude Include="FA2sp\Miscs\TheaterInfo.h" />
+    <ClInclude Include="FA2sp\Python\ModuleFA2.h" />
     <ClInclude Include="FA2sp\resource.h" />
     <ClInclude Include="FA2sp\RunTime.h" />
     <ClInclude Include="FA2sp\Helpers\MutexHelper.h" />

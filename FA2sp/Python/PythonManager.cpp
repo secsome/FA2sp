@@ -1,11 +1,15 @@
 #include "PythonManager.h"
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
+
+#include "ModuleFA2.h"
 
 bool PythonManager::IsInitialized;
 
 bool PythonManager::Init()
 {
+    PyImport_AppendInittab("fa2", &ModuleFA2::Init);
     Py_Initialize();
     IsInitialized = Py_IsInitialized() != 0;
     return IsInitialized;
