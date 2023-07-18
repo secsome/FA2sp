@@ -1,5 +1,11 @@
 # FINALALERT2 - SP  CHANGELOG
 
+## TODO - WIP
+- New ***ExtConfig*** : `ModernObjectBrowser` = **BOOLEAN**, defaults to false, enable it to use the experimental object browser
+
+## RELEASE 1.7.0 (202X-XX-XX)
+- FA2sp now integrate Python as script language
+
 ## RELEASE 1.6.2 (2023-07-18)
 - Renamed ***ExtConfig*** : `BrowserRedraw.GuessMode` to `ObjectBrowser.GuessMode`
 - Renamed ***ExtConfig*** : `BrowserRedraw.CleanUp` to `ObjectBrowser.CleanUp`
