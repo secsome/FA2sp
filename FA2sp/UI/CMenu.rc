@@ -80,6 +80,7 @@ POPUP "Map tools"
 	MENUITEM "Navigate to coordinate\tCtrl+Shift+F", 40134
 	MENUITEM SEPARATOR
 	MENUITEM "Tool Scripts",  40135
+	MENUITEM "Python Script", 40136
 }
 //POPUP "Online"
 //{

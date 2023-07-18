@@ -3,6 +3,7 @@
 #include <Helpers/Macro.h>
 #include "../../Helpers/Translations.h"
 #include "../../Helpers/TheaterHelpers.h"
+#include "../../Python/PythonManager.h"
 
 #include <CInputMessageBox.h>
 #include <CFinalSunApp.h>
@@ -161,6 +162,9 @@ DEFINE_HOOK(43209D, CFinalSunDlg_Update_TranslateMenuItems, A)
     translateMenuItem(40133, "Menu.MapTools.SearchWaypoint");
     translateMenuItem(40134, "Menu.MapTools.NavigateCoordinate");
     translateMenuItem(40135, "Menu.MapTools.ToolScripts");
+    translateMenuItem(40136, "Menu.MapTools.PythonScript");
+    if (!PythonManager::Is_Initialized())
+        pMenu->EnableMenuItem(40136, false);
 
     if (0)
     {

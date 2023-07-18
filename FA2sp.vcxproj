@@ -87,7 +87,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <AdditionalDependencies>python3.lib;python311.lib;DbgHelp.lib;legacy_stdio_definitions.lib;CncVxlRenderText.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python311.lib;DbgHelp.lib;legacy_stdio_definitions.lib;CncVxlRenderText.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
@@ -124,7 +124,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <AdditionalDependencies>python3.lib;python311.lib;DbgHelp.lib;legacy_stdio_definitions.lib;CncVxlRenderText.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python311.lib;DbgHelp.lib;legacy_stdio_definitions.lib;CncVxlRenderText.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
@@ -225,6 +225,7 @@
     <ClCompile Include="FA2sp\Ext\CTriggerOption\Body.cpp" />
     <ClCompile Include="FA2sp\FA2sp.cpp" />
     <ClCompile Include="FA2sp\Algorithms\sha1x86.cpp" />
+    <ClCompile Include="FA2sp\Python\PythonManager.cpp" />
     <ClCompile Include="FA2sp\Source\CIsoView.cpp" />
     <ClCompile Include="FA2sp\UI\Hooks.cpp" />
     <ClCompile Include="FA2sp\Logger.cpp" />
@@ -301,6 +302,7 @@
     <ClInclude Include="FA2sp\Helpers\Translations.h" />
     <ClInclude Include="FA2sp\ExtraWindow\CTileManager\CTileManager.h" />
     <ClInclude Include="FA2sp\Algorithms\sha1x86.h" />
+    <ClInclude Include="FA2sp\Python\PythonManager.h" />
     <ClInclude Include="FA2sp\Source\CIsoView.h" />
     <ClInclude Include="FA2sp\CncVxlRenderText.h" />
   </ItemGroup>

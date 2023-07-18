@@ -6,6 +6,7 @@
 #include "Miscs/Palettes.h"
 #include "Miscs/VoxelDrawer.h"
 #include "Miscs/Exception.h"
+#include "Python/PythonManager.h"
 
 #include <CINI.h>
 
@@ -182,7 +183,7 @@ DEFINE_HOOK(537129, ExeRun, 9)
 		Logger::Info("Syringe detached!\n");
 	else
 		Logger::Warn("Failed to detach Syringe!\n");
-
+	
 #ifndef NDEBUG
 	MessageBox(NULL, APPLY_INFO, PRODUCT_NAME, MB_OK);
 	
@@ -196,6 +197,12 @@ DEFINE_HOOK(537129, ExeRun, 9)
 	
 	FA2Expand::ExeRun();
 	VoxelDrawer::Initalize();
+
+	Logger::Raw("Trying to initialize embedded Python 3.11.4 for FA2sp... ");
+	if (PythonManager::Init())
+		Logger::Raw("DONE!\n");
+	else
+		Logger::Raw("FAILED! Python script won't be available.\n");
 
 #ifdef ENABLE_VISUAL_STYLE
 
@@ -267,6 +274,13 @@ DEFINE_HOOK(537208, ExeTerminate, 9)
 #ifdef ENABLE_VISUAL_STYLE
 	::DeactivateActCtx(NULL, ulCookie);
 #endif
+
+	if (PythonManager::Is_Initialized())
+	{
+		Logger::Raw("Releasing Python environment... ");
+		PythonManager::Release();
+		Logger::Raw(" DONE!\n");
+	}
 
 	GET(UINT, result, EAX);
 	ExitProcess(result);

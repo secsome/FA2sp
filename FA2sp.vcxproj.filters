@@ -198,6 +198,9 @@
     <ClInclude Include="FA2sp\Miscs\FileWatcher.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FA2sp\Python\PythonManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FA2sp\FA2sp.cpp">
@@ -522,6 +525,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FA2sp\Miscs\FileWatcher.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FA2sp\Python\PythonManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

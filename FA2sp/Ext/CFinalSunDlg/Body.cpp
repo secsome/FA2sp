@@ -11,6 +11,8 @@
 
 #include "../../Helpers/Translations.h"
 
+#include "../../Python/PythonManager.h"
+
 int CFinalSunDlgExt::CurrentLighting = 31000;
 
 void CFinalSunDlgExt::ProgramStartupInit()
@@ -181,6 +183,24 @@ BOOL CFinalSunDlgExt::OnCommandExt(WPARAM wParam, LPARAM lParam)
 
 			CIsoView::GetInstance()->MoveToMapCoord(x, y);
 			break;
+		}
+	}
+	// Python script
+	if (wmID == 40136 && CMapData::Instance->MapWidthPlusHeight)
+	{
+		OPENFILENAME ofn;
+		char file_buffer[MAX_PATH] = { 0 };
+		ZeroMemory(&ofn, sizeof(ofn));
+		ofn.lStructSize = sizeof(ofn);
+		ofn.hwndOwner = m_hWnd;
+		ofn.lpstrFile = file_buffer;
+		ofn.nMaxFile = sizeof(file_buffer);
+		ofn.lpstrFilter = "Python script(*.py)\0*.py\0All files(*.*)\0*.*\0";
+
+		if (GetOpenFileName(&ofn) == TRUE)
+		{
+			if (!PythonManager::Execute(file_buffer))
+				::MessageBox(NULL, "Something wrong happened while executing the script.", "Error", MB_OK | MB_ICONERROR);
 		}
 	}
 
