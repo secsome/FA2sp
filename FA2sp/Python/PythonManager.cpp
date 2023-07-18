@@ -1,5 +1,7 @@
 #include "PythonManager.h"
 
+#include <fstream>
+
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
@@ -27,11 +29,19 @@ bool PythonManager::Is_Initialized()
 
 bool PythonManager::Execute(const char* filepath)
 {
-    PyObject* obj = Py_BuildValue("s", filepath);
-    FILE* fp = _Py_fopen_obj(obj, "rb");
-    if (fp == nullptr)
+    std::ifstream fin;
+    fin.open(filepath, fin.in | fin.binary);
+    if (!fin.is_open())
         return false;
-    PyRun_SimpleFile(fp, filepath);
-    fclose(fp);
+    fin.seekg(0, fin.end);
+    const auto sz = fin.tellg();
+    fin.seekg(0, fin.beg);
+    std::string buffer;
+    buffer.resize(sz);
+    fin.read(buffer.data(), sz);
+    fin.close();
+
+    PyRun_SimpleString(buffer.c_str());
+
     return true;
 }

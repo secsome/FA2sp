@@ -9,6 +9,8 @@ public:
     static PyObject* Init();
 
     static PyObject* message_box(PyObject* self, PyObject* args);
+    static PyObject* write_log(PyObject* self, PyObject* args);
+    static PyObject* get_current_map_dict(PyObject* self, PyObject* args);
 
 private:
     static PyModuleDef ModuleDef;
