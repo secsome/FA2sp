@@ -4,3 +4,6 @@
 [submodule "MFC42"]
 	path = MFC42
 	url = https://github.com/secsome/MFC42
+[submodule "FA2py"]
+	path = FA2py
+	url = https://github.com/secsome/FA2py

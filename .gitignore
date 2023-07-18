@@ -1,21 +1,14 @@
-#Don't always push resource temp file OK?
 *.aps
 *.user
 /VC5
 /MFC42
 /Debug
-/.vs/FA2sp/v16
-/.vs/FA2sp/v16
 /Release
-/SyringeDebug
-/SyringeRelease
-/O2_enabled
-/.vs/FA2sp/v17
+/.vs
 
-#Don't ignore these files
 !/Debug/vxl_drawing_lib.lib
 !/Release/vxl_drawing_lib.lib
-/.vs/FA2sp/project-colors.json
-
-
-.vs/
+!/Debug/python3.dll
+!/Debug/python311.dll
+!/Release/python3.lib
+!/Release/python311.lib
