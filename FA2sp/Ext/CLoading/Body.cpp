@@ -39,7 +39,8 @@ bool CLoadingExt::InitMixFilesFix()
 		}
 	}
 
-	ppmfc::CString Dir = CFinalSunApp::Instance->FilePath + "\\";
+	ppmfc::CString Dir = CFinalSunApp::Instance->FilePath();
+	Dir += "\\";
 	auto LoadMixFile = [this, Dir](const char* Mix, int Parent = 0)
 	{
 		if (Parent)
@@ -171,7 +172,8 @@ bool CLoadingExt::InitMixFilesFix()
 		CFinalSunApp::Instance->MarbleLoaded = TRUE;
 	else
 	{
-		ppmfc::CString FullPath = CFinalSunApp::ExePath + "\\MARBLE.MIX";
+		ppmfc::CString FullPath = CFinalSunApp::ExePath();
+		FullPath += "\\MARBLE.MIX";
 		int result = CMixFile::Open(FullPath, 0);
 		if (result)
 		{

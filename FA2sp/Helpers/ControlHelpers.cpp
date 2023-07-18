@@ -13,7 +13,7 @@ namespace ControlHelpers
     {
         combobox.DeleteAllStrings();
 
-        auto& entries = Variables::Rules.ParseIndicies("Houses", true);
+        auto&& entries = Variables::Rules.ParseIndicies("Houses", true);
         CString buffer;
         for (size_t i = 0, sz = entries.size(); i < sz; ++i)
         {
@@ -61,7 +61,7 @@ namespace ControlHelpers
             return;
         }
 
-        auto& entries = Variables::Rules.ParseIndicies("Countries", true);
+        auto&& entries = Variables::Rules.ParseIndicies("Countries", true);
         CString buffer;
         for (size_t i = 0, sz = entries.size(); i < sz; ++i)
         {
@@ -77,7 +77,7 @@ namespace ControlHelpers
     {
         combobox.DeleteAllStrings();
 
-        auto& entries = Variables::Rules.ParseIndicies(pSection, true);
+        auto&& entries = Variables::Rules.ParseIndicies(pSection, true);
         CString buffer;
         for (size_t i = 0, sz = entries.size(); i < sz; ++i)
         {

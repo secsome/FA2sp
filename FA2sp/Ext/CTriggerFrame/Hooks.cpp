@@ -93,7 +93,7 @@ DEFINE_HOOK(4FAAD0, CTriggerFrame_OnBNNewTriggerClicked, 7)
     ppmfc::CString Name =
         CTriggerFrameExt::CreateFromTriggerSort ?
         TriggerSort::Instance.GetCurrentPrefix() + "New Trigger" : 
-        "New Trigger";
+        ppmfc::CString("New Trigger");
 
     auto TriggerBuffer = Owner + ",<none>,"+ Name + ",0,1,1,1,0";
 

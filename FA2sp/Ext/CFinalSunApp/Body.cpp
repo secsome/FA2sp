@@ -43,17 +43,20 @@ BOOL CFinalSunAppExt::InitInstanceExt()
 	// Nothing yet huh...
 
 	std::string path;
-	path = CFinalSunApp::ExePath + "\\FAData.ini";
+	path = CFinalSunApp::ExePath;
+	path += "\\FAData.ini";
 	CINI::FAData->ClearAndLoad(path.c_str());
 
 	FA2sp::ExtConfigsInitialize(); // ExtConfigs
 
-	path = CFinalSunApp::ExePath + "\\FALanguage.ini";
+	path = CFinalSunApp::ExePath;
+	path += "\\FALanguage.ini";
 	CINI::FALanguage->ClearAndLoad(path.c_str());
 	// No need to validate falanguage I guess
 
 	CINI ini;
-	path = CFinalSunApp::ExePath + "\\FinalAlert.ini";
+	path = CFinalSunApp::ExePath;
+	path += "\\FinalAlert.ini";
 	ini.ClearAndLoad(path.c_str());
 	if (
 		!ini.KeyExists("TS", "Exe") || 
