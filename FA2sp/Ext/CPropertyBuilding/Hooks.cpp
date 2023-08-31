@@ -68,7 +68,7 @@ DEFINE_HOOK(417F40, CPropertyBuilding_OnInitDialog, 7)
                 for (const auto& upgrade : upgrades)
                 {
                     const auto UIName = CMapData::Instance->GetUIName(upgrade.c_str());
-                    const auto name = std::format("{} ({})", upgrade, UIName);
+                    const auto name = std::format("{} ({})", upgrade, UIName.m_pchData);
 
                     for (int i = 0; i < nUpgrades; ++i)
                         pUpgrades[i]->AddString(name.c_str());
