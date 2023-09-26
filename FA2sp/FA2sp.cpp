@@ -61,6 +61,7 @@ bool ExtConfigs::ExtendedValidationNoError;
 bool ExtConfigs::HideNoRubbleBuilding;
 bool ExtConfigs::ModernObjectBrowser;
 bool ExtConfigs::ExtVariables;
+bool ExtConfigs::FileWatcher;
 
 MultimapHelper Variables::Rules = { &CINI::Rules(), &CINI::CurrentDocument() };
 MultimapHelper Variables::FAData = { &CINI::FAData() };
@@ -153,6 +154,8 @@ void FA2sp::ExtConfigsInitialize()
 	ExtConfigs::HideNoRubbleBuilding = CINI::FAData->GetBool("ExtConfigs", "HideNoRubbleBuilding");
 
 	ExtConfigs::ExtVariables = CINI::FAData->GetBool("ExtConfigs", "ExtVariables");
+
+	ExtConfigs::FileWatcher = CINI::FAData->GetBool("ExtConfigs", "FileWatcher", true);
 }
 
 // DllMain

@@ -1,7 +1,8 @@
 # FINALALERT2 - SP  CHANGELOG
 
-## RELEASE 1.6.3 (2023-XX-XX)
+## RELEASE 1.6.3 (2023-09-26)
 - New ***ExtConfig*** : `ExtVariables` = **BOOLEAN**, defaults to false
+- New ***ExtConfig*** : `FileWatcher` = **BOOLEAN**, defaults to true
 
 ## RELEASE 1.6.2 (2023-07-18)
 - Renamed ***ExtConfig*** : `BrowserRedraw.GuessMode` to `ObjectBrowser.GuessMode`

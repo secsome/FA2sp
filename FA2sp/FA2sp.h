@@ -68,6 +68,7 @@ public:
     static bool HideNoRubbleBuilding;
     static bool ModernObjectBrowser;
     static bool ExtVariables;
+    static bool FileWatcher;
 };
 
 class Variables
