@@ -73,6 +73,7 @@ Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "
         - `EnableMultiSelection` = **BOOLEAN** ; Determines if FA2sp will enable expermental multi-selection features, defaults to **false**
         - `ExtendedValidationNoError` = **BOOLEAN** ; If this value is true, then extended map validation won't be shown as error but warning, defaults to **false**
         - `HideNoRubbleBuilding` = **BOOLEAN** ; If this value is true, then building whose HP = 0 with `LeaveRubble=no` won't be rendered, defaults to **false**
+        - `ExtVariables` = **BOOLEAN** ; Determines if FA2sp supports unlimited count of local variables, defaults to **false** (Phobos required)
     - **`[Sides]`** (**x** means this item is **essensial**, fa2sp need this section to work properly)
         - Contains a list of sides registered in rules
         ```ini

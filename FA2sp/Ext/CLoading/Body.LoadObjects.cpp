@@ -1199,6 +1199,16 @@ void CLoadingExt::SetValidBuffer(ImageDataClass* pData, int Width, int Height)
 
 void CLoadingExt::GetFullPaletteName(ppmfc::CString& PaletteName)
 {
+	const int len = PaletteName.GetLength();
+	if (len >= 4 &&
+		PaletteName[len - 4] == '.' &&
+		(PaletteName[len - 3] == 'p' || PaletteName[len - 3] == 'P') &&
+		(PaletteName[len - 2] == 'a' || PaletteName[len - 2] == 'A') &&
+		(PaletteName[len - 1] == 'l' || PaletteName[len - 1] == 'L'))
+	{
+		return;
+	}
+
 	switch (this->TheaterIdentifier)
 	{
 	case 'A':

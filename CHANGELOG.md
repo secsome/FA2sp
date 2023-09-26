@@ -1,5 +1,8 @@
 # FINALALERT2 - SP  CHANGELOG
 
+## RELEASE 1.6.3 (2023-XX-XX)
+- New ***ExtConfig*** : `ExtVariables` = **BOOLEAN**, defaults to false
+
 ## RELEASE 1.6.2 (2023-07-18)
 - Renamed ***ExtConfig*** : `BrowserRedraw.GuessMode` to `ObjectBrowser.GuessMode`
 - Renamed ***ExtConfig*** : `BrowserRedraw.CleanUp` to `ObjectBrowser.CleanUp`

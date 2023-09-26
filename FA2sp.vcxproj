@@ -205,7 +205,9 @@
     <ClCompile Include="FA2sp\Hooks.Debug.cpp" />
     <ClCompile Include="FA2sp\MFCWindow\Hooks.cpp" />
     <ClCompile Include="FA2sp\Miscs\FileWatcher.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.DialogStyle.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.DirectDraw.cpp" />
+    <ClCompile Include="FA2sp\Miscs\Hooks.ExtLocalVariables.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.ShpLoad.cpp" />
     <ClCompile Include="FA2sp\Miscs\Hooks.Memory.cpp" />
     <ClCompile Include="FA2sp\Miscs\PlaceHolder.cpp" />

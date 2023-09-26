@@ -67,6 +67,7 @@ public:
     static bool ExtendedValidationNoError;
     static bool HideNoRubbleBuilding;
     static bool ModernObjectBrowser;
+    static bool ExtVariables;
 };
 
 class Variables
