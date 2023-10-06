@@ -8,6 +8,7 @@
 struct OverlayTypeData
 {
     bool Rock;
+    ppmfc::CString PaletteName;
 };
 
 struct BuildingDataExt

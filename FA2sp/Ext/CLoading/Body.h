@@ -34,8 +34,8 @@ public:
 	static ppmfc::CString GetBuildingImageName(ppmfc::CString ID, int nFacing, int state);
 	
 	static void ClearItemTypes();
-private:
 	void GetFullPaletteName(ppmfc::CString& PaletteName);
+private:
 	static ppmfc::CString* __cdecl GetDictName(ppmfc::CString* ret, const char* ID, int nFacing) { JMP_STD(0x475450); }
 	static ppmfc::CString GetDictName(ppmfc::CString ID, int nFacing)
 	{
