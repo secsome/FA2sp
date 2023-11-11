@@ -7,6 +7,8 @@
 
 #include "../Helpers/Translations.h"
 
+#include <thread>
+
 FileWatcher::FileWatcher(const char* path, std::chrono::milliseconds delay, bool& running,
     std::optional<std::filesystem::file_time_type>& savemap_time)
     : path_{ path }

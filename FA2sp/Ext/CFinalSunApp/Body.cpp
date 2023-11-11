@@ -9,6 +9,8 @@
 #include "../../Miscs/FileWatcher.h"
 #include "../../Miscs/SaveMap.h"
 
+#include <thread>
+
 #pragma warning(disable : 6262)
 
 std::vector<std::string> CFinalSunAppExt::RecentFilesExt;
