@@ -1,14 +1,13 @@
 #include "FileWatcher.h"
 
-#include <Helpers/Macro.h>
-
 #include "../Ext/CFinalSunApp/Body.h"
 #include "../Ext/CFinalSunDlg/Body.h"
 
-#include <sstream>
-#include <iomanip>
+#include "../FA2sp.h"
 
 #include "../Helpers/Translations.h"
+
+#include <thread>
 
 FileWatcher::FileWatcher(const char* path, std::chrono::milliseconds delay, bool& running,
     std::optional<std::filesystem::file_time_type>& savemap_time)
@@ -46,6 +45,9 @@ void FileWatcher::start(const std::function<void(std::string, Status)>& action)
     while (running_)
     {
         std::this_thread::sleep_for(delay_);
+
+        if (!ExtConfigs::FileWatcher)
+            return;
 
         const std::string curr_path = path_;
         if (curr_path != previous_path_)

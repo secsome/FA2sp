@@ -125,6 +125,25 @@ BOOL CFinalSunDlgExt::OnCommandExt(WPARAM wParam, LPARAM lParam)
 		}
 		break;
 	}
+	case 33000:
+	case 33001:
+	case 33002:
+	case 33003:
+	case 33004:
+	case 33005:
+	case 33006:
+	{
+		const auto& url = CFinalSunAppExt::ExternalLinks[wmID - 33000].first;
+		if (url.empty())
+			break;
+		if (!ShellExecute(NULL, "open", url.c_str(), NULL, NULL, SW_SHOWNORMAL))
+		{
+			std::string buffer = "Failed to open url, try manually: ";
+			buffer += url;
+			MessageBox(buffer.c_str());
+		}
+		break;
+	}
 	default:
 		break;
 	}

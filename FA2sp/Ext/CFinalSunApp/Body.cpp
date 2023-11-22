@@ -9,9 +9,21 @@
 #include "../../Miscs/FileWatcher.h"
 #include "../../Miscs/SaveMap.h"
 
+#include <thread>
+
 #pragma warning(disable : 6262)
 
 std::vector<std::string> CFinalSunAppExt::RecentFilesExt;
+std::array<std::pair<std::string, std::string>, 7> CFinalSunAppExt::ExternalLinks
+{
+	std::make_pair("https://github.com/secsome/FA2sp", ""),
+	std::make_pair("https://github.com/Phobos-developers/Phobos", ""),
+	std::make_pair("https://www.ppmforums.com/", ""),
+	std::make_pair("https://modenc.renegadeprojects.com/Main_Page", ""),
+	std::make_pair("", ""),
+	std::make_pair("", ""),
+	std::make_pair("", "")
+};
 
 CFinalSunAppExt* CFinalSunAppExt::GetInstance()
 {

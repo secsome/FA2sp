@@ -36,13 +36,21 @@ void CMapValidatorExt::ValidateStructureOverlapping(BOOL& result)
 				for (int dx = 0; dx < DataExt.Height; ++dx)
 				{
 					for (int dy = 0; dy < DataExt.Width; ++dy)
-						Occupied[CMapData::Instance->GetCoordIndex(X + dx, Y + dy)].emplace_back(splits[1].m_pchData);
+					{
+						MapCoord coord = { X + dx, Y + dy };
+						if (CMapData::Instance->IsCoordInMap(coord.X, coord.Y))
+							Occupied[CMapData::Instance->GetCoordIndex(coord.X, coord.Y)].emplace_back(splits[1].m_pchData);
+					}
 				}
 			}
 			else
 			{
 				for (const auto& block : *DataExt.Foundations)
-					Occupied[CMapData::Instance->GetCoordIndex(X + block.Y, Y + block.X)].emplace_back(splits[1].m_pchData);
+				{
+					MapCoord coord = { X + block.Y, Y + block.X };
+					if (CMapData::Instance->IsCoordInMap(coord.X, coord.Y))
+						Occupied[CMapData::Instance->GetCoordIndex(coord.X, coord.Y)].emplace_back(splits[1].m_pchData);
+				}
 			}
 		}
 	}

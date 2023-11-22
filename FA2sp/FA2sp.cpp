@@ -3,9 +3,12 @@
 
 #include "Helpers/MutexHelper.h"
 #include "Helpers/InstructionSet.h"
+#include "Helpers/STDHelpers.h"
 #include "Miscs/Palettes.h"
 #include "Miscs/VoxelDrawer.h"
 #include "Miscs/Exception.h"
+
+#include "Ext/CFinalSunApp/Body.h"
 
 #include <CINI.h>
 
@@ -60,6 +63,9 @@ bool ExtConfigs::EnableMultiSelection;
 bool ExtConfigs::ExtendedValidationNoError;
 bool ExtConfigs::HideNoRubbleBuilding;
 bool ExtConfigs::ModernObjectBrowser;
+bool ExtConfigs::ExtVariables;
+bool ExtConfigs::FileWatcher;
+bool ExtConfigs::CustomOnlineWebsites;
 
 MultimapHelper Variables::Rules = { &CINI::Rules(), &CINI::CurrentDocument() };
 MultimapHelper Variables::FAData = { &CINI::FAData() };
@@ -150,6 +156,42 @@ void FA2sp::ExtConfigsInitialize()
 
 	ExtConfigs::ExtendedValidationNoError = CINI::FAData->GetBool("ExtConfigs", "ExtendedValidationNoError");
 	ExtConfigs::HideNoRubbleBuilding = CINI::FAData->GetBool("ExtConfigs", "HideNoRubbleBuilding");
+
+	ExtConfigs::ExtVariables = CINI::FAData->GetBool("ExtConfigs", "ExtVariables");
+
+	ExtConfigs::FileWatcher = CINI::FAData->GetBool("ExtConfigs", "FileWatcher", true);
+
+	ExtConfigs::CustomOnlineWebsites = CINI::FAData->GetBool("ExtConfigs", "CustomOnlineWebsites");
+	if (ExtConfigs::CustomOnlineWebsites)
+	{
+		if (auto pStr = CINI::FAData->TryGetString("OnlineWebsites", "Custom1"))
+		{
+			auto res = STDHelpers::SplitString(*pStr);
+			if (res.size() == 2)
+			{
+				CFinalSunAppExt::ExternalLinks[4].first = res[1];
+				CFinalSunAppExt::ExternalLinks[4].second = res[0];
+			}
+		}
+		if (auto pStr = CINI::FAData->TryGetString("OnlineWebsites", "Custom2"))
+		{
+			auto res = STDHelpers::SplitString(*pStr);
+			if (res.size() == 2)
+			{
+				CFinalSunAppExt::ExternalLinks[5].first = res[1];
+				CFinalSunAppExt::ExternalLinks[5].second = res[0];
+			}
+		}
+		if (auto pStr = CINI::FAData->TryGetString("OnlineWebsites", "Custom3"))
+		{
+			auto res = STDHelpers::SplitString(*pStr);
+			if (res.size() == 2)
+			{
+				CFinalSunAppExt::ExternalLinks[6].first = res[1];
+				CFinalSunAppExt::ExternalLinks[6].second = res[0];
+			}
+		}
+	}
 }
 
 // DllMain

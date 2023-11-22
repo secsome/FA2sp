@@ -2,6 +2,7 @@
 
 #include <CFinalSunApp.h>
 
+#include <array>
 #include <vector>
 #include <string>
 
@@ -15,4 +16,5 @@ public:
     BOOL InitInstanceExt();
 
     static std::vector<std::string> RecentFilesExt;
+    static std::array<std::pair<std::string, std::string>, 7> ExternalLinks;
 };

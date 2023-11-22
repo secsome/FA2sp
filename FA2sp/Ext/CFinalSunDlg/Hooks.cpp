@@ -77,6 +77,12 @@ DEFINE_HOOK(432380, CFinalSunDlg_Update_RecentFiles, A)
             pMenu->GetSubMenu(0)->InsertMenu(10 + i, MF_BYPOSITION, 40140 + i, CFinalSunAppExt::RecentFilesExt[i].c_str());
     }
 
+    for (size_t i = 4; i < 7; ++i)
+    {
+        if (!CFinalSunAppExt::ExternalLinks[i].first.empty())
+            pMenu->GetSubMenu(4)->InsertMenu(3 + i, MF_BYPOSITION, 33000 + i, CFinalSunAppExt::ExternalLinks[i].second.c_str());
+    }
+
     R->EDI(::CheckMenuItem);
 
     return 0x432442;
@@ -162,13 +168,11 @@ DEFINE_HOOK(43209D, CFinalSunDlg_Update_TranslateMenuItems, A)
     translateMenuItem(40134, "Menu.MapTools.NavigateCoordinate");
     translateMenuItem(40135, "Menu.MapTools.ToolScripts");
 
-    if (0)
-    {
-        translateSubMenu(i++, "Menu.Online");
-        translateMenuItem(40078, "Menu.Online.Westwood");
-        translateMenuItem(40081, "Menu.Online.FA2Fansite");
-        translateMenuItem(40119, "Menu.Online.FA2Forum");
-    }
+    translateSubMenu(i++, "Menu.Online");
+    translateMenuItem(33000, "Menu.Online.FA2sp");
+    translateMenuItem(33001, "Menu.Online.Phobos");
+    translateMenuItem(33002, "Menu.Online.PPM");
+    translateMenuItem(33003, "Menu.Online.ModEnc");
 
     translateSubMenu(i++, "Menu.Options");
     translateMenuItem(40004, "Menu.Options.Settings");

@@ -5,7 +5,7 @@
 
 #define PRODUCT_MAJOR 1
 #define PRODUCT_MINOR 6
-#define PRODUCT_REVISION 2
+#define PRODUCT_REVISION 3
 
 #ifdef NDEBUG
 #define PRODUCT_STR __str(PRODUCT_MAJOR) "." __str(PRODUCT_MINOR) "." __str(PRODUCT_REVISION)
