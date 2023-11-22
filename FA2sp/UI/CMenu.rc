@@ -81,12 +81,13 @@ POPUP "Map tools"
 	MENUITEM SEPARATOR
 	MENUITEM "Tool Scripts",  40135
 }
-//POPUP "Online"
-//{
-//	MENUITEM "Westwood.com",  40078
-//	MENUITEM "FinalAlert 2(tm) Fansite link",  40081
-//	MENUITEM "FinalAlert 2(tm) Forum",  40119
-//}
+POPUP "Online"
+{
+	MENUITEM "FA2sp Github Page",  33000
+	MENUITEM "Phobos Github Page",  33001
+	MENUITEM "PPM Forum MainPage",  33002
+	MENUITEM "ModEnc MainPage",  33003
+}
 POPUP "Options"
 {
 	MENUITEM "Settings",  40004

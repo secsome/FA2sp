@@ -75,7 +75,8 @@ Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "
         - `HideNoRubbleBuilding` = **BOOLEAN** ; If this value is true, then building whose HP = 0 with `LeaveRubble=no` won't be rendered, defaults to **false**
         - `ExtVariables` = **BOOLEAN** ; Determines if FA2sp supports unlimited count of local variables, defaults to **false** (Phobos required)
         - `FileWatcher` = **BOOLEAN** ; Determines if FA2sp will detect if map file is modified external, defaults to **true**
-    - **`[Sides]`** (**x** means this item is **essensial**, fa2sp need this section to work properly)
+        - `CustomOnlineWebsites` = **BOOLEAN** ; Determines if FA2sp will read custom online websites
+    - - **`[Sides]`** (**x** means this item is **essensial**, fa2sp need this section to work properly)
         - Contains a list of sides registered in rules
         ```ini
         [Sides]
@@ -373,6 +374,14 @@ Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "
     Index = RegName
     ; Like 0=INORANLAMP, value must be a valid building regname
     ```
+
+    - `[OnlineWebsites]`
+    ```ini
+    [OnlineWebsites]
+    Custom1=My Website Name 1,https://website1.com
+    Custom2=My Website Name 2,https://website2.com
+    Custom3=My Website Name 3,ahttps://website3.com
+    ```
 - `FALanguage.ini`
     ```ini
     [CURRENTLANGUAGE-StringsRA2]
@@ -434,9 +443,10 @@ Now this feature supports RaiseSingleTile/LowerSingleTile (though they are not "
     Menu.MapTools.NavigateCoordinate = TEXT
     Menu.MapTools.ToolScripts = TEXT
     Menu.Online = TEXT
-    Menu.Online.Westwood = TEXT
-    Menu.Online.FA2Fansite = TEXT
-    Menu.Online.FA2Forum = TEXT
+    Menu.Online.FA2sp = TEXT
+    Menu.Online.Phobos = TEXT
+    Menu.Online.PPM = TEXT
+    Menu.Online.ModEnc = TEXT
     Menu.Options = TEXT
     Menu.Options.Settings = TEXT
     Menu.Options.ShowMinimap = TEXT

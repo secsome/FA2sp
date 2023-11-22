@@ -69,6 +69,7 @@ public:
     static bool ModernObjectBrowser;
     static bool ExtVariables;
     static bool FileWatcher;
+    static bool CustomOnlineWebsites;
 };
 
 class Variables

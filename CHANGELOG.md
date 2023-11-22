@@ -1,8 +1,22 @@
 # FINALALERT2 - SP  CHANGELOG
 
-## RELEASE 1.6.3 (2023-09-26)
+## RELEASE 1.6.3 (2023-11-22)
 - New ***ExtConfig*** : `ExtVariables` = **BOOLEAN**, defaults to false
 - New ***ExtConfig*** : `FileWatcher` = **BOOLEAN**, defaults to true
+- Add shortcuts to some online websites
+    - [FA2sp Github Page](https://github.com/secsome/FA2sp), translation key: `Menu.Online.FA2sp`
+    - [Phobos Github Page](https://github.com/Phobos-developers/Phobos), translation key: `Menu.Online.Phobos`
+    - [PPM Forum MainPage](https://www.ppmforums.com/), translation key: `Menu.Online.PPM`
+    - [ModEnc MainPage](https://modenc.renegadeprojects.com/Main_Page), translation key: `Menu.Online.ModEnc`
+    - You can also add your own shortcuts (3 at max) by editing `FAData.ini` section `[Online]`
+        - This feature might be vulnerable in some cases, so it is disabled by default, you can enable it by setting ***ExtConfig*** : `CustomOnlineWebsites` = **BOOLEAN**, defaults to false
+    ```ini
+    ; In `FAData.ini`
+    [OnlineWebsites]
+    Custom1=My Website Name 1,https://website1.com
+    Custom2=My Website Name 2,https://website2.com
+    Custom3=My Website Name 3,https://website3.com
+    ```
 
 ## RELEASE 1.6.2 (2023-07-18)
 - Renamed ***ExtConfig*** : `BrowserRedraw.GuessMode` to `ObjectBrowser.GuessMode`
