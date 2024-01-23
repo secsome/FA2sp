@@ -131,24 +131,24 @@ bool CLoadingExt::InitMixFilesFix()
 	if (!LoadMixFile("CONQUER.MIX"))	return false;
 
 	// Init_Theaters
+	LoadMixFile("TEMPERATMD.MIX");
+	LoadMixFile("ISOTEMMD.MIX");
 	LoadMixFile("TEMPERAT.MIX");
 	LoadMixFile("ISOTEMP.MIX");
-	LoadMixFile("ISOTEMMD.MIX");
 	LoadMixFile("TEM.MIX");
-	LoadMixFile("TEMPERATMD.MIX");
-
+	
+	LoadMixFile("SNOWMD.MIX");
+	LoadMixFile("ISOSNOMD.MIX");
 	LoadMixFile("SNOW.MIX");
 	LoadMixFile("ISOSNOW.MIX");
 	LoadMixFile("ISOSNO.MIX");
-	LoadMixFile("ISOSNOMD.MIX");
 	LoadMixFile("SNO.MIX");
-	LoadMixFile("SNOWMD.MIX");
 
+	LoadMixFile("URBANMD.MIX");
+	LoadMixFile("ISOURBMD.MIX");
 	LoadMixFile("URBAN.MIX");
 	LoadMixFile("ISOURB.MIX");
-	LoadMixFile("ISOURBMD.MIX");
 	LoadMixFile("URB.MIX");
-	LoadMixFile("URBANMD.MIX");
 
 	LoadMixFile("DESERT.MIX");
 	LoadMixFile("ISODES.MIX");
@@ -156,17 +156,18 @@ bool CLoadingExt::InitMixFilesFix()
 	LoadMixFile("DES.MIX");
 	LoadMixFile("DESERTMD.MIX");
 
+	LoadMixFile("URBANNMD.MIX");
+	LoadMixFile("ISOUBNMD.MIX");
 	LoadMixFile("URBANN.MIX");
 	LoadMixFile("ISOUBN.MIX");
-	LoadMixFile("ISOUBNMD.MIX");
 	LoadMixFile("UBN.MIX");
-	LoadMixFile("URBANNMD.MIX");
 
+	LoadMixFile("LUNARMD.MIX");
+	LoadMixFile("ISOLUNMD.MIX");
 	LoadMixFile("LUNAR.MIX");
 	LoadMixFile("ISOLUN.MIX");
-	LoadMixFile("ISOLUNMD.MIX");
 	LoadMixFile("LUN.MIX");
-	LoadMixFile("LUNARMD.MIX");
+	
 
 	if (LoadMixFile("MARBLE.MIX"))
 		CFinalSunApp::Instance->MarbleLoaded = TRUE;
