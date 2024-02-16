@@ -1,3 +1,4 @@
+#include <CPalette.h>
 #include <CTileSetBrowserView.h>
 #include <Helpers/Macro.h>
 
@@ -20,6 +21,23 @@ DEFINE_HOOK(4F258B, CTileSetBrowserView_OnDraw_SetOverlayFrameToDisplay, 7)
     return i < nDisplayLimit ? 0x4F2230 : 0x4F2598;
 }
 
+DEFINE_HOOK(4F22F7, CTileSetBrowserView_OnDraw_OverlayPalette, 5)
+{
+    GET(Palette*, pPalette, EAX);
+    GET_STACK(BytePalette*, pBytePalette, STACK_OFFS(0xDC, 0xBC));
+
+    if (pPalette == Palette::PALETTE_ISO || pPalette == Palette::PALETTE_THEATER || pPalette == Palette::PALETTE_UNIT)
+        return 0;
+
+    *pBytePalette = BytePalette();
+
+    for (int i = 0; i < 256; i++) 
+    {
+        pBytePalette->Data[i] = pPalette->GetByteColor(i);
+    }
+
+    return 0x4F2315;
+}
 
 //DEFINE_HOOK(4F1D70, ASDG, 6)
 //{
