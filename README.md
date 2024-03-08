@@ -2,6 +2,8 @@
 [![Workflow](https://img.shields.io/github/actions/workflow/status/secsome/FA2sp/nighty.yml?label=Nighty%20Build&style=flat-square)](https://github.com/secsome/FA2sp/actions)
 [![license](https://img.shields.io/github/license/secsome/FA2sp?label=License&style=flat-square)](https://www.gnu.org/licenses/agpl-3.0.en.html)
 
+> NOTICE: As EA has released the source code of FA2, this project will be no longer maintained, I will work on migrating features based on the source code.
+
 # FA2sp
 ...is an engine extension project launched by secsome and aimed at providing a set of new features and fixes for FinalAlert2 based on [FA2pp](https://github.com/secsome/FA2pp) and [Syringe](https://github.com/Ares-Developers/Syringe) to allow injecting code.
 
