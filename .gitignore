@@ -1,21 +1,12 @@
-#Don't always push resource temp file OK?
+# Ignore these files:
 *.aps
 *.user
-/VC5
-/MFC42
-/Debug
-/.vs/FA2sp/v16
-/.vs/FA2sp/v16
-/Release
-/SyringeDebug
-/SyringeRelease
-/O2_enabled
-/.vs/FA2sp/v17
+VC5
+MFC42
+Debug
+Release
+.vs
 
-#Don't ignore these files
-!/Debug/vxl_drawing_lib.lib
-!/Release/vxl_drawing_lib.lib
-/.vs/FA2sp/project-colors.json
-
-
-.vs/
+# Don't ignore these files:
+!Debug/vxl_drawing_lib.lib
+!Release/vxl_drawing_lib.lib
